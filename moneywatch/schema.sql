@@ -31,7 +31,7 @@ CREATE TABLE ruleset (
   type TEXT CHECK( type IN ('in', 'out') ) NOT NULL,
   description TEXT NOT NULL,
   category_id INTEGER REFERENCES categories,
-  regular INTEGER NULL DEFAULT 0
+  regular INTEGER NULL DEFAULT 0,
   next_days INTEGER NOT NULL DEFAULT 0,
   next_valuta INTEGER NOT NULL DEFAULT 0
   );

@@ -17,7 +17,7 @@ def createOverview(start, end):
     
     oldest_transaction = Transaction.getOldestTransaction()
    
-    if start < oldest_transaction.date:
+    if oldest_transaction is not None and start < oldest_transaction.date:
         start = oldest_transaction.date
    
     if end < start:
@@ -69,7 +69,9 @@ def createOverview(start, end):
     timing["months"] = months
     timing["start"] = start
     timing["end"] = end
-    timing["oldest"] = oldest_transaction.date
+    
+    if oldest_transaction:
+        timing["oldest"] = oldest_transaction.date
 
     return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing = timing) 
         

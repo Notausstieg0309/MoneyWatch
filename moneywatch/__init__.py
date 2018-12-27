@@ -10,15 +10,13 @@ from flask_babel import Babel
 def create_app(test_config=None):
 
     from moneywatch import ruleset, categories, transactions, overview, utils, importer
-
+    from moneywatch.utils import db
     app = Flask(__name__, instance_relative_config=True)
     
     app.config.from_mapping(
-            SECRET_KEY='dev',
             SESSION_TYPE="filesystem",
             DATABASE=os.path.join(app.instance_path,'db.sqlite'),
             BABEL_DEFAULT_LOCALE='en',         
-           
     )
 
 
@@ -36,7 +34,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-
+    # register database commands
+    db.init_app(app)
 
     app.register_blueprint(ruleset.bp)
     app.register_blueprint(categories.bp)
