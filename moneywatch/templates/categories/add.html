@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}Neue Kategorie {% if type == "in" %} (Einkommen){% endif %}{% if type == "out" %} (Ausgaben){% endif %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="name">Kategorie-Name{% if path %} (unterhalb von {{ path }}){% endif %}</label>
+    <input name="name" id="name" value="{{ request.form['name'] }}" required>
+    {% if type == "out" %}
+    <label for="budget_monthly">Monatliches Pauschalbudget (optional)</label>
+    <input name="budget_monthly" id="budget_monthly" value="{{ request.form['budget_monthly'] }}">
+    {% endif %}
+    
+    {% if parent %}
+     <input type="hidden" name="parent" id="name" value="{{ parent }}">
+    {% endif %}
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}

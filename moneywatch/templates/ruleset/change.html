@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}Change Rule{% endtrans %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+{% set selected_category = request.form['category_id'] | default(rule.category_id) | int -%}
+{% set selected_regular = request.form['regular'] | default(rule.regular) | int -%}
+  <form method="post">
+    <label for="name">{% trans %}Rule Name{% endtrans %}</label>
+    <input name="name" id="name" value="{{ request.form['name'] or rule['name'] }}" required><br>
+    
+    <label for="pattern">{% trans %}Search Pattern{% endtrans %}</label>
+    <input name="pattern" id="pattern" value="{{ request.form['pattern'] or rule['pattern']  }}" required><br>
+    
+    <label for="description">{% trans %}Short Description{% endtrans %}</label>
+    <input name="description" id="description" value="{{ request.form['description'] or rule['description'] }}" required><br>
+
+    <label for="category">{% trans %}Category{% endtrans %}</label>
+    <select name="category_id">
+        {% for category in categories recursive -%}
+        <option value="{{ category['id'] }}"{% if selected_category == category.id %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
+        {% if category.childs | length > 0 %}
+            {{ loop(category.childs)}} 
+        {% endif %}
+        {% endfor -%}
+    </select><br>
+    
+    <label for="category">{% trans %}Regularity{% endtrans %}</label>
+    <select name="regular">
+       <option value="0"{% if 0 == selected_regular %} selected{% endif %}>{% trans %}no regularity{% endtrans %}</option>
+       <option value="1"{% if 1 == selected_regular %} selected{% endif %}>{% trans %}monthly{% endtrans %}</option>
+       <option value="3"{% if 3 == selected_regular %} selected{% endif %}>{% trans %}quarterly{% endtrans %}</option>
+       <option value="6"{% if 6 == selected_regular %} selected{% endif %}>{% trans %}every half year{% endtrans %}</option>
+       <option value="12"{% if 12 == selected_regular %} selected{% endif %}>{% trans %}every year{% endtrans %}</option>
+    </select><br>
+    
+    <div id="regular_form_fields"{% if selected_regular == 0 %} style="display:none;"{% endif %}>
+    <label for="next_due">{% trans %}Next Due{% endtrans %}</label>
+    <input name="next_due" id="next_due" type="date" value="{{ request.form['next_due'] or rule.next_due.strftime('%Y-%m-%d') }}"><br>
+    
+    <label for="next_valuta">{% trans %}Amount{% endtrans %}</label>
+    <input name="next_valuta" type="number" step="0.01" id="next_valuta" value="{{ request.form['next_valuta'] or rule['next_valuta'] }}"><br>
+    
+    </div>
+    <input type="submit" value="{% trans %}Save{% endtrans %}">
+  </form>
+{% endblock %}

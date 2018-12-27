@@ -1,0 +1,270 @@
+/*
+  _____                           _ 
+ / ____|                         | |
+| |  __  ___ _ __   ___ _ __ __ _| |
+| | |_ |/ _ \ '_ \ / _ \ '__/ _` | |
+| |__| |  __/ | | |  __/ | | (_| | |
+ \_____|\___|_| |_|\___|_|  \__,_|_|
+                                    
+====================================
+ 
+
+
+/* colorize positive/negative numbers */
+.num.negative {color: #ff0000;}
+.num.positive {color: #006d14;}
+
+
+div.flash {
+   background: #ffeded;
+   padding: 1em !important;
+   border-radius:5px;
+   border: 1px solid #773939;
+   color: #f00;
+}
+
+nav {
+    background: #2e4c79;
+}
+/*
+  ____                       _               
+ / __ \                     (_)              
+| |  | |_   _____ _ ____   ___  _____      __
+| |  | \ \ / / _ \ '__\ \ / / |/ _ \ \ /\ / /
+| |__| |\ V /  __/ |   \ V /| |  __/\ V  V / 
+ \____/  \_/ \___|_|    \_/ |_|\___| \_/\_/  
+                                                                              
+=============================================
+*/
+
+
+/* set margins to create parent/child look */
+div.overview div.category_container {
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    overflow:hidden; 
+}
+div.overview div.category_content {
+    margin-left:0.5em;
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+}
+
+
+/* border definitions */
+div.overview div.in div.category_container {
+    border-style: solid;
+    border-width: 1px 0px 1px 1px;
+    /*border-radius: 5px 0px 0px 5px; */
+    border-color: #2e7b39;
+}
+div.overview div.in div.category_container.root {
+  border-right: 1px solid #2e7b39;
+  /* border-radius: 5px; */
+}   
+
+div.overview div.out div.category_container {
+    border-style: solid;
+    border-width: 1px 0px 1px 1px;
+    /*border-radius: 5px 0px 0px 5px; */
+    border-color: #773939;
+}
+div.overview div.out div.category_container.root {
+  border-right: 1px solid #773939;
+  /* border-radius: 5px; */
+}   
+
+
+
+/* make category headers a bit bigger */
+div.overview div.category_header {
+    /*
+    
+    currently colors are set via materialize color class
+    
+    background: -moz-linear-gradient(top, #e3f4ff 0%, #c4e3fe 100%);
+    background: -webkit-linear-gradient(top, #e3f4ff 0%,#c4e3fe 100%);
+    background: linear-gradient(to bottom, #e3f4ff 0%,#c4e3fe 100%);
+    */
+    
+    padding:0.25em;
+}
+div.overview div.in div.category_header {
+	background: #d4fbdf;
+}
+
+div.overview div.out div.category_header {
+	background: #ffeded;
+}
+
+/* make planned transaction names appear grey and italic to indicate it's a planned (not yet performed) transaction */
+div.overview div.planned_transaction > div.name {
+    font-style: italic;
+    color: grey;
+}
+
+/* category names and current valutas should appear bold */
+div.overview div.category_header div.name {
+    font-weight: bold;
+}
+div.overview div.category_header div.current {
+    font-weight: bold;
+}
+
+div.overview div.category_content.no_transactions {
+    font-style: italic;
+    text-align:center;
+}
+
+/* overrule Materialize CSS row margin to get a smooth overview */
+div.overview div.row {
+    margin-bottom: 0px;
+
+}
+/* overrule Materialize CSS row padding */
+div.overview div.col.num {
+    padding-left:0px;
+}
+
+div.overview div.caption > div.name {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+div.overview div.caption {
+    vertical-align:bottom;
+}
+
+table.balance {
+    width:unset;
+    margin-left:auto;
+    margin-right:auto;
+}    
+
+table.balance th,td {
+    padding: 5px 10px 5px 10px;
+}
+
+table.balance .num {
+    text-align:right;
+}
+table.balance td:nth-child(1), table.balance th:nth-child(1) {  
+    border-right: 1px solid #000;
+    font-weight: bold;
+}
+
+table.balance tr:first-child > th {  
+    border-bottom: 1px solid #000;
+}
+
+table.balance tr.final_balance {
+    border-top: 3px double #000;
+    font-size: 1.15em;
+}
+
+table.balance tr.final_balance td.current { 
+   font-weight: bold;
+}
+
+
+/*
+ _______                             _   _                 
+|__   __|                           | | (_)                
+   | |_ __ __ _ _ __  ___  __ _  ___| |_ _  ___  _ __  ___ 
+   | | '__/ _` | '_ \/ __|/ _` |/ __| __| |/ _ \| '_ \/ __|
+   | | | | (_| | | | \__ \ (_| | (__| |_| | (_) | | | \__ \
+   |_|_|  \__,_|_| |_|___/\__,_|\___|\__|_|\___/|_| |_|___/
+   
+===========================================================
+
+*/
+
+table.transactions tr:first-child {
+    border: unset;
+}
+
+table.transactions tr:last-child {
+    border: unset;
+}
+table.transactions td.short_description{
+    font-weight: bold;
+    padding-bottom:0px;
+}
+table.transactions td.category{
+    font-size: 0.8em;
+    padding-top: 0px;
+    font-style:italic;
+    
+}
+table.transactions td.valuta {
+    text-align:right;
+    font-weight: bold;
+    width:1%;
+    white-space:nowrap;
+    
+}
+table.transactions td.date{
+    text-align:center;
+    font-weight: bold;
+    width:1%;
+    white-space:nowrap;
+}
+
+table.transactions td.full_text {
+    color:grey;
+    font-family: monospace;
+}
+
+
+/*
+  _____      _                        _           
+ / ____|    | |                      (_)          
+| |     __ _| |_ ___  __ _  ___  _ __ _  ___  ___ 
+| |    / _` | __/ _ \/ _` |/ _ \| '__| |/ _ \/ __|
+| |___| (_| | ||  __/ (_| | (_) | |  | |  __/\__ \
+ \_____\__,_|\__\___|\__, |\___/|_|  |_|\___||___/
+                      __/ |                       
+==================== |___/ =======================                       
+
+*/
+div.categories {
+    border-right: 2px solid grey;
+    border-left: 2px solid grey;
+}
+
+ 
+
+div.categories div.subcategories {
+    margin-left: 2em;
+    margin-bottom:2em;
+}
+
+div.categories div.category {
+    border: 1px solid grey;
+    margin: 0.5em;
+    padding: 0.25em;
+    font-size: 1.2em;
+    border-radius:4px;
+}
+div.categories div.category  i.material-icons {
+    font-size: unset; 
+}
+
+
+
+/*
+ _____                            _            
+|_   _|                          | |           
+  | |  _ __ ___  _ __   ___  _ __| |_ ___ _ __ 
+  | | | '_ ` _ \| '_ \ / _ \| '__| __/ _ \ '__|
+ _| |_| | | | | | |_) | (_) | |  | ||  __/ |   
+|_____|_| |_| |_| .__/ \___/|_|   \__\___|_|   
+                | |                            
+=============== |_| ==========================
+
+*/
+
+table.transactions.imports td.short_description {
+    font-weight: unset;
+}
+

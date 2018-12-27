@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}Import Ruleset{% endtrans %}{% endblock %}
+{% endblock %}
+
+
+{% macro rule_table(rules) %}
+    {% if rules %}
+    <table cellspacing="0" class="ruleset">
+    <tr>
+    <th>{% trans %}Rule Name{% endtrans %}</th>
+    <th>{% trans %}Match Pattern{% endtrans %}</th>
+    <th>{% trans %}Category{% endtrans %}</th>
+    </tr>
+
+      {% for rule in rules %}
+      <!-- id: {{ rule['id'] }} -->
+      <tr>
+      <td>{{ rule['description'] }}</td>
+      <td>{{ rule['pattern'] }}</td>
+      <td>{{ rule.category.getCategoryPath(" > ") }}
+      <a class="btn-small tooltipped right" data-position="bottom" href="{{ url_for('ruleset.delete', id=rule['id']) }}" data-tooltip="{% trans %}delete this rule{% endtrans %}"><i class="material-icons">delete</i></a> 
+      <a class="btn-small tooltipped right" data-position="bottom" href="{{ url_for('ruleset.change', id=rule['id']) }}" data-tooltip="{% trans %}change this rule{% endtrans %}"><i class="material-icons">edit</i></a>
+       </td>
+      </tr> 
+      {% endfor %}
+      
+    </table>
+    {% else %}
+    <div class="no_content">Keine Regeln vorhanden</div>
+    {% endif %}
+{% endmacro %}
+
+{% block content %}
+<h4>{% trans %}Rules for earnings{% endtrans %}</h4>
+
+{{ rule_table(rules_in) }}
+
+<br><a class="btn" href="{{ url_for('ruleset.add', type='in') }}"><i class="material-icons left">add</i> {% trans %}Add rule{% endtrans %}</a>
+<br><br><div class="divider"></div>
+
+<h4>{% trans %}Rules for spendings{% endtrans %}</h4>
+{{ rule_table(rules_out) }}
+<br>
+<a class="btn" href="{{ url_for('ruleset.add', type='out') }}"><i class="material-icons left">add</i> {% trans %}Add rule{% endtrans %}</a>
+
+
+
+{% endblock %}

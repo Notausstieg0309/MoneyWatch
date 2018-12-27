@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}Categories{% endtrans %}{% endblock %}
+{% endblock %}
+
+{% macro category_list(categories,type) %}
+{% if categories %}
+  <div class="categories {{type}}">
+  {%- for category in categories recursive %}
+  <div class="category row">
+
+    <div class="col s12">
+     {{ category.name }} 
+     {% if category.budget %}
+     ({% trans budget=category.budget|currencyformat("EUR") %}mthly. budget: {{budget}}{% endtrans %})
+     {% endif %}
+     
+
+     <span class="right">
+      <a class="btn-small tooltipped" data-tooltip="{% trans %}Add new subcategory{% endtrans %}" data-position="right" href="{{ url_for('categories.add', type=type, parent=category['id']) }}"><i class="material-icons">add</i></a> |
+      {% if not (loop.depth == 1 and categories|length == 1)%}
+       <a class="btn-small tooltipped" data-tooltip="{% trans %}Delete this category{% endtrans %}" data-position="left" href="{{ url_for('categories.delete', id=category['id']) }}"><i class="material-icons">delete</i></a> | 
+      {% endif %}
+      <a class="btn-small tooltipped" data-tooltip="{% trans %}Edit this category{% endtrans %}" data-position="bottom" href="{{ url_for('categories.change', type=type,id=category['id']) }}"><i class="material-icons">edit</i></a>
+     </span>
+    </div>
+  </div>
+  {%- if category.childs | length > 0 %}
+  <div class="subcategories">   
+      {{ loop(category.childs) }}
+  </div>
+{% endif %}
+  {%- endfor %}
+</div>
+{% else %}
+<div class="no_content">{% trans %}No categories for earnings exist.{% endtrans %}</div>
+{% endif %}
+<a class="btn" href="{{ url_for('categories.add', type=type) }}">{% trans %}New Main Category{% endtrans %}</a>
+{% endmacro %}
+
+
+
+{% block content %}
+<h5>{% trans %}Categories{% endtrans %} - {% trans %}Earnings{% endtrans %}</h5><br>
+{{ category_list( categories_in, "in") }}
+<br><br><br>
+<div class="divider"></div>
+<br><br>
+<h5>{% trans %}Categories{% endtrans %} - {% trans %}Spendings{% endtrans %}</h5><br>
+{{ category_list( categories_out, "out") }}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}Check imported transactions{% endtrans %}{% endblock %}
+{% endblock %}
+
+{% macro transaction_item(transaction, index) %}
+<table class="transactions imports{% if transaction['category_id'] and transaction['description'] %} success{% endif %}">
+  <tr>
+  <td class="date" rowspan="3">{{ transaction.date | dateformat(_("YYYY-MM-dd")) }}</td>
+  <td class="short_description">
+  <label for="{{index}}_description">{% trans %}Description{% endtrans %}</label>
+  <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="{{index}}_description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %}>
+  </td>
+  <td rowspan=2" class="valuta num" num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</td>
+  
+  </tr>
+  <tr>
+  <td>
+  <label>{% trans %}Category{% endtrans %}</label>
+  <select name="{{ index }}_category">
+  <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
+  {% for category in categories[transaction.type] %}
+  <option value="{{category[0]}}"{% if transaction.category_id and transaction.category_id |int == category[0] %} selected{% endif %}>{{ category[1] }}</option>
+  {% endfor %}
+  </select>
+  </td>
+  </tr>
+  <tr>
+
+  
+  <td colspan="2" class="full_text" colspan="2">{{transaction.full_text}}</td>
+  </tr>
+  </table> 
+{% endmacro %}
+
+{% block content %}
+<br>
+
+{% if data %}
+<form method="post">
+<button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
+
+<button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
+
+<ul class="collection">
+
+{% for transaction in data %}
+<li class="collection-item">
+{{ transaction_item(transaction, loop.index0) }} 
+</li>
+{% endfor %}
+ </ul>
+{% else %}
+<div class="no_content">{% trans %}No transactions found.{% endtrans %}</div>
+{% endif %}
+
+{% endblock %}

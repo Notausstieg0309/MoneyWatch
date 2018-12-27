@@ -1,0 +1,375 @@
+# Translations template for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-12-27 13:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: importer.py:29
+msgid "No file uploaded"
+msgstr ""
+
+#: importer.py:46
+msgid "Multiple plugins match file content"
+msgstr ""
+
+#: importer.py:49
+msgid "No import plugin available that can handle this file."
+msgstr ""
+
+#: ruleset.py:40
+msgid "Rule name is required."
+msgstr ""
+
+#: ruleset.py:43 ruleset.py:107
+msgid "Search pattern is required."
+msgstr ""
+
+#: ruleset.py:45 ruleset.py:109
+msgid "Category is required."
+msgstr ""
+
+#: ruleset.py:72
+msgid ""
+"Unable to create new rules. No categories are available to create rules "
+"for. Please create categories first."
+msgstr ""
+
+#: ruleset.py:105
+msgid "Name is required."
+msgstr ""
+
+#: templates/base.html:19 templates/base.html:32 templates/base_old.html:18
+msgid "Import New Transactions"
+msgstr ""
+
+#: templates/base.html:20 templates/base.html:33 templates/base_old.html:15
+#: templates/transactions/index.html:4
+msgid "Transactions"
+msgstr ""
+
+#: templates/base.html:21 templates/base.html:34 templates/base_old.html:16
+#: templates/ruleset/index.html:4
+msgid "Import Ruleset"
+msgstr ""
+
+#: templates/base.html:22 templates/base.html:35 templates/base_old.html:17
+#: templates/categories/index.html:4 templates/categories/index.html:45
+#: templates/categories/index.html:50
+msgid "Categories"
+msgstr ""
+
+#: templates/base.html:23 templates/base.html:36 templates/base_old.html:19
+#: templates/overview/index.html:4
+msgid "Overview"
+msgstr ""
+
+#: templates/categories/change.html:4
+msgid "Edit Category"
+msgstr ""
+
+#: templates/categories/change.html:4 templates/categories/index.html:45
+#: templates/overview/index.html:119 templates/overview/index.html:153
+#: templates/ruleset/add.html:4
+msgid "Earnings"
+msgstr ""
+
+#: templates/categories/change.html:4 templates/categories/index.html:50
+#: templates/overview/index.html:124 templates/overview/index.html:157
+#: templates/ruleset/add.html:4
+msgid "Spendings"
+msgstr ""
+
+#: templates/categories/change.html:10
+msgid "Category Name"
+msgstr ""
+
+#: templates/categories/change.html:14
+msgid "Monthly Budget"
+msgstr ""
+
+#: templates/categories/change.html:14
+msgid "optional"
+msgstr ""
+
+#: templates/categories/change.html:18
+msgid "Superior Category"
+msgstr ""
+
+#: templates/categories/change.html:20
+msgid "none"
+msgstr ""
+
+#: templates/categories/change.html:31 templates/importer/check.html:44
+#: templates/ruleset/add.html:68 templates/ruleset/change.html:47
+msgid "Save"
+msgstr ""
+
+#: templates/categories/index.html:16
+#, python-format
+msgid "mthly. budget: %(budget)s"
+msgstr ""
+
+#: templates/categories/index.html:21
+msgid "Add new subcategory"
+msgstr ""
+
+#: templates/categories/index.html:23
+msgid "Delete this category"
+msgstr ""
+
+#: templates/categories/index.html:25
+msgid "Edit this category"
+msgstr ""
+
+#: templates/categories/index.html:37
+msgid "No categories for earnings exist."
+msgstr ""
+
+#: templates/categories/index.html:39
+msgid "New Main Category"
+msgstr ""
+
+#: templates/importer/check.html:4
+msgid "Check imported transactions"
+msgstr ""
+
+#: templates/importer/check.html:10 templates/overview/index.html:44
+#: templates/overview/index.html:52 templates/transactions/index.html:10
+msgid "YYYY-MM-dd"
+msgstr ""
+
+#: templates/importer/check.html:12
+msgid "Description"
+msgstr ""
+
+#: templates/importer/check.html:13
+msgid "Please enter a description"
+msgstr ""
+
+#: templates/importer/check.html:20 templates/ruleset/add.html:31
+#: templates/ruleset/change.html:20 templates/ruleset/index.html:14
+msgid "Category"
+msgstr ""
+
+#: templates/importer/check.html:22
+msgid "Please Choose"
+msgstr ""
+
+#: templates/importer/check.html:42
+msgid "Check again"
+msgstr ""
+
+#: templates/importer/check.html:55
+msgid "No transactions found."
+msgstr ""
+
+#: templates/importer/index.html:4
+msgid "Import Transactions"
+msgstr ""
+
+#: templates/importer/index.html:9
+msgid "File to import"
+msgstr ""
+
+#: templates/importer/index.html:9
+msgid "allowed file extensions"
+msgstr ""
+
+#: templates/importer/index.html:14
+msgid "Choose File"
+msgstr ""
+
+#: templates/importer/index.html:22
+msgid "Load"
+msgstr ""
+
+#: templates/overview/index.html:4
+msgid "YYYY/MM"
+msgstr ""
+
+#: templates/overview/index.html:4
+msgid "Months"
+msgstr ""
+
+#: templates/overview/index.html:44
+msgid "MM-dd"
+msgstr ""
+
+#: templates/overview/index.html:91
+msgid "No transactions available"
+msgstr ""
+
+#: templates/overview/index.html:103
+msgid "previous month"
+msgstr ""
+
+#: templates/overview/index.html:104 templates/overview/index.html:139
+#, python-format
+msgid "current month in %(year)s"
+msgstr ""
+
+#: templates/overview/index.html:106
+msgid "previous year"
+msgstr ""
+
+#: templates/overview/index.html:108
+msgid "previous timeperiod"
+msgstr ""
+
+#: templates/overview/index.html:115 templates/overview/index.html:153
+#: templates/overview/index.html:157
+msgid "Planned"
+msgstr ""
+
+#: templates/overview/index.html:116 templates/overview/index.html:153
+#: templates/overview/index.html:157
+msgid "Current"
+msgstr ""
+
+#: templates/overview/index.html:129
+msgid "Balance"
+msgstr ""
+
+#: templates/overview/index.html:137
+msgid "next month"
+msgstr ""
+
+#: templates/overview/index.html:141
+msgid "next year"
+msgstr ""
+
+#: templates/overview/index.html:143
+msgid "next timeperiod"
+msgstr ""
+
+#: templates/ruleset/add.html:4
+msgid "New Rule"
+msgstr ""
+
+#: templates/ruleset/add.html:13
+msgid ""
+"The name of the rule. This value is only displayed in the ruleset "
+"overview."
+msgstr ""
+
+#: templates/ruleset/add.html:14 templates/ruleset/change.html:11
+#: templates/ruleset/index.html:12
+msgid "Rule Name"
+msgstr ""
+
+#: templates/ruleset/add.html:19
+msgid ""
+"The search pattern (phython based regular expression) used to identify "
+"matching transactions during import based on their booking text."
+msgstr ""
+
+#: templates/ruleset/add.html:20 templates/ruleset/change.html:14
+msgid "Search Pattern"
+msgstr ""
+
+#: templates/ruleset/add.html:25
+msgid ""
+"The short description that will be used for all matched transactions "
+"during import. The short description still can be changed during import."
+msgstr ""
+
+#: templates/ruleset/add.html:26 templates/ruleset/change.html:17
+msgid "Short Description"
+msgstr ""
+
+#: templates/ruleset/add.html:33
+msgid "Please select..."
+msgstr ""
+
+#: templates/ruleset/add.html:45 templates/ruleset/change.html:30
+msgid "Regularity"
+msgstr ""
+
+#: templates/ruleset/add.html:47 templates/ruleset/change.html:32
+msgid "no regularity"
+msgstr ""
+
+#: templates/ruleset/add.html:48 templates/ruleset/change.html:33
+msgid "monthly"
+msgstr ""
+
+#: templates/ruleset/add.html:49 templates/ruleset/change.html:34
+msgid "quarterly"
+msgstr ""
+
+#: templates/ruleset/add.html:50 templates/ruleset/change.html:35
+msgid "every half year"
+msgstr ""
+
+#: templates/ruleset/add.html:51 templates/ruleset/change.html:36
+msgid "every year"
+msgstr ""
+
+#: templates/ruleset/add.html:59 templates/ruleset/change.html:40
+msgid "Next Due"
+msgstr ""
+
+#: templates/ruleset/add.html:63 templates/ruleset/change.html:43
+msgid "Amount"
+msgstr ""
+
+#: templates/ruleset/change.html:4
+msgid "Change Rule"
+msgstr ""
+
+#: templates/ruleset/index.html:13
+msgid "Match Pattern"
+msgstr ""
+
+#: templates/ruleset/index.html:23
+msgid "delete this rule"
+msgstr ""
+
+#: templates/ruleset/index.html:24
+msgid "change this rule"
+msgstr ""
+
+#: templates/ruleset/index.html:36
+msgid "Rules for earnings"
+msgstr ""
+
+#: templates/ruleset/index.html:40 templates/ruleset/index.html:46
+msgid "Add rule"
+msgstr ""
+
+#: templates/ruleset/index.html:43
+msgid "Rules for spendings"
+msgstr ""
+
+#: templates/transactions/index.html:35
+msgid "No transactions available."
+msgstr ""
+
+#: utils/db.py:274
+#, python-format
+msgid "transaction id %(id)d does not exist."
+msgstr ""
+
+#: utils/db.py:307 utils/db.py:330
+#, python-format
+msgid "transactions for category id %(id)d does not exist."
+msgstr ""
+
+#: utils/plugins.py:112
+#, python-format
+msgid "The plugin %s has no parse_function implemented or registered"
+msgstr ""
+

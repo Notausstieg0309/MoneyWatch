@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}{% trans %}Edit Category{% endtrans %}{% if type == "in" %} ({% trans %}Earnings{% endtrans %}){% endif %}{% if type == "out" %} ({% trans %}Spendings{% endtrans %}){% endif %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+{% set selected_parent = request.form['parent'] | default(category['parent_id']) | int -%}
+  <form method="post">
+    <label for="name">{% trans %}Category Name{% endtrans %}</label>
+    <input name="name" id="name" value="{{ request.form['name'] or category['name'] }}" required><br>
+    
+    {% if type == "out" %}
+    <label for="budget_monthly">{% trans %}Monthly Budget{% endtrans %} ({% trans %}optional{% endtrans %})</label>
+    <input name="budget_monthly" min="0" type="number" id="budget_monthly" value="{{ request.form['budget_monthly'] or category.budget_monthly }}"><br>
+    {% endif %}
+    
+    <label for="parent">{% trans %}Superior Category{% endtrans %}</label>
+    <select name="parent">
+        <option {% if selected_parent == 0 %} selected{% endif %} value="0">[{% trans %}none{% endtrans %}]</option>
+        {% for cat in categories recursive %}
+            {% if cat.id != category.id %}
+            <option value="{{ cat['id'] }}"{% if selected_parent == cat['id'] %} selected{% endif %}>{{ cat.getCategoryPath(" > ") }}</option>
+            {% endif %}
+            {% if cat.childs | length > 0 %}
+                {{ loop(cat.childs)}} 
+            {% endif %}
+
+        {% endfor %}
+    </select><br>
+    <input type="submit" value="{% trans %}Save{% endtrans %}">
+  </form>
+{% endblock %}

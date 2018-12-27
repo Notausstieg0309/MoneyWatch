@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}New Rule{% endtrans %} ({% if type == "in" %}{% trans %}Earnings{% endtrans %}{% else %}{% trans %}Spendings{% endtrans %}{% endif %}){% endblock %}
+{% endblock %}
+
+{% block content %}
+{% set selected_category = request.form['category_id'] | default(0) | int -%}
+{% set selected_regular = request.form['regular'] | default(0) | int -%}
+  <form class="row" method="post">
+  <div class="row">
+    <div class="input-field col s12">
+    <input name="name" id="name" type="text" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The name of the rule. This value is only displayed in the ruleset overview.{% endtrans %}" value="{{ request.form['name'] }}" required>
+    <label for="name" class="active">{% trans %}Rule Name{% endtrans %}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+      <input name="pattern" id="pattern" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The search pattern (phython based regular expression) used to identify matching transactions during import based on their booking text.{% endtrans %}"type="text" value="{{ request.form['pattern'] }}" required>
+      <label for="pattern">{% trans %}Search Pattern{% endtrans %}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required> 
+      <label for="description">{% trans %}Short Description{% endtrans %}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <label>{% trans %}Category{% endtrans %}</label>
+      <select name="category_id" required>
+        <option disabled{% if selected_category == 0 %} selected{% endif %} value>{% trans %}Please select...{% endtrans %}</option>
+        {% for category in categories recursive %}
+        <option value="{{ category['id'] }}"{% if selected_category == category['id'] %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
+        {% if category.childs | length > 0 %}
+            {{ loop(category.childs)}} 
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s6">
+    <label>{% trans %}Regularity{% endtrans %}</label>
+    <select class="browser-default" name="regular">
+       <option value="0"{% if 0 == selected_regular %} selected{% endif %}>{% trans %}no regularity{% endtrans %}</option>
+       <option value="1"{% if 1 == selected_regular %} selected{% endif %}>{% trans %}monthly{% endtrans %}</option>
+       <option value="3"{% if 3 == selected_regular %} selected{% endif %}>{% trans %}quarterly{% endtrans %}</option>
+       <option value="6"{% if 6 == selected_regular %} selected{% endif %}>{% trans %}every half year{% endtrans %}</option>
+       <option value="12"{% if 12 == selected_regular %} selected{% endif %}>{% trans %}every year{% endtrans %}</option>
+    </select>
+
+    </div>
+    </div>
+    <div id="regular_form_fields" class="row" style="display:none;">
+    <div class="input-field col s6">
+    <input name="next_date" id="next_date" type="date" value="{{ request.form['next_date'] }}">
+    <label for="next_date">{% trans %}Next Due{% endtrans %}</label>
+    </div>
+    <div class="input-field col s6">
+    <input name="next_valuta" type="number" step="0.01" id="next_valuta" value="{{ request.form['next_valuta'] }}">
+    <label for="next_valuta">{% trans %}Amount{% endtrans %}</label>
+    </div>
+    
+    </div>
+    <br>
+    <input class="btn" type="submit" value="{% trans %}Save{% endtrans %}">
+  </form>
+{% endblock %}
