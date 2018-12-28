@@ -5,6 +5,6 @@ MoneyWatch is a lightweight web application helps you to monitor your bank accou
 You can import your transactions via file import. Currently supported file formats are:
 * Targobank CSV
 
-The supported formats can be extended by implementing a import plugin.
+The supported file formats can be easily extended by implementing an own [import plugin](/moneywatch/import_plugins).
 
 It is written in [Python 3](https://www.python.org/) and based on [Flask](http://flask.pocoo.org/). It is licensed under [MIT License](/LICENSE)
