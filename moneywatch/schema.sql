@@ -41,5 +41,5 @@ CREATE INDEX idx_days ON transactions (days);
 CREATE INDEX idx_rule_id ON transactions (rule_id);
 CREATE INDEX idx_category_id ON transactions (category_id);
 
-INSERT INTO categories (name, type) VALUES ('Einkommen', 'in');
-INSERT INTO categories (name, type) VALUES ('Ausgaben', 'out');
+INSERT INTO categories (name, type) VALUES ('Earnings', 'in');
+INSERT INTO categories (name, type) VALUES ('Spendings', 'out');
