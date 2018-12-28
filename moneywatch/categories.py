@@ -3,6 +3,8 @@ from flask import (
             )
 from werkzeug.exceptions import abort
 
+from flask_babel import gettext
+
 from moneywatch.utils.db import get_db
 from moneywatch.utils.objects import Category
 
@@ -38,14 +40,14 @@ def add(type):
         
         
         if not name:
-            error = 'Title is required.'
+            error = gettext('Name is required.')
             
         if budget_monthly and not budget_monthly.isdigit():
-            error = 'The budget must be given as numeric value.'
+            error = gettext('The budget must be given as numeric value.')
             
         if parent:
-            if Category(parent).subcategoryNameExist(name):
-                error = "The name '"+name+"' already exists on this level"
+            if Category(parent).child_name_exists(name):
+                error = gettext("The name '%{name}s' already exists on this level", name=name)
                     
         if error is not None:
             flash(error)
@@ -104,13 +106,13 @@ def change(type, id):
             budget_monthly = 0
             
         if not name:
-            error = 'Name is required.'
+            error = gettext('Name is required.')
             
         if budget_monthly and not budget_monthly.isdigit():
-            error = 'The budget must be given as numeric value.'
+            error = gettext('The budget must be given as numeric value.')
 
-        if current_category.name != name and current_category.parent.subcategoryNameExist(name):
-            error = "The name '"+name+"' already exists on this level"
+        if current_category.name != name and current_category.sibling_name_exists(name):
+            error = gettext("The name '%{name}s' already exists on this level", name=name)
                 
         if error is not None:
             flash(error)

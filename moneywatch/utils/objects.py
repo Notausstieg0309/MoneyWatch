@@ -450,7 +450,10 @@ class Category:
    
     @parent_id.setter                    
     def parent_id(self, value):
-        self._data["parent"] = int(value)
+        if value is None:
+            self._data["parent"] = None
+        else:
+            self._data["parent"] = int(value)
     
 
     @property       
@@ -619,11 +622,20 @@ class Category:
             result = False
             
         return result
-        
-    def subcategoryNameExist(self,name):
+    
+    def child_name_exists(self,name):
     
         for category in self.childs:
             if category.name == name:
+                return True
+        return False
+        
+    def sibling_name_exists(self,name):
+    
+        siblings = db.get_category_childs(self.type,self.parent_id)
+        
+        for category in siblings:
+            if category["name"] == name:
                 return True
         return False
         
