@@ -44,6 +44,6 @@
     <input name="next_valuta" type="number" step="0.01" id="next_valuta" value="{{ request.form['next_valuta'] or rule['next_valuta'] }}"><br>
     
     </div>
-    <input type="submit" value="{% trans %}Save{% endtrans %}">
+    <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
 {% endblock %}

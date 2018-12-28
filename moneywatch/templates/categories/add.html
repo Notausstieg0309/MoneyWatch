@@ -16,6 +16,6 @@
     {% if parent %}
      <input type="hidden" name="parent" id="name" value="{{ parent }}">
     {% endif %}
-    <input type="submit" value="Save">
+    <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
 {% endblock %}
