@@ -35,7 +35,7 @@ def index():
             if "file" in request.files:
             
                 available_plugins = plugins.resolve_plugins_for_file(request.files['file'])
-
+                session.clear()
                 if len(available_plugins) > 0:
                     
                     if len(available_plugins) == 1:
@@ -61,7 +61,7 @@ def index():
 
             
             if request.form:
-                apply_import_edits(session['import_data'], request.form)
+                apply_import_edits(session.get("import_data",[] ), request.form)
 
                 session.modified = True
 
@@ -74,7 +74,7 @@ def index():
                     return redirect(url_for('overview.index'))
             
 
-            return render_template('importer/check.html', data=(session['import_data'] or []), complete=check_if_items_complete(session['import_data'] or []), categories=categories)  
+            return render_template('importer/check.html', data=(session.get("import_data",[] )), complete=check_if_items_complete(session.get("import_data",[] )), categories=categories)  
             
 
         
