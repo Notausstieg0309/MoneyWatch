@@ -7,4 +7,4 @@ You can import your transactions via file import. Currently supported file forma
 
 The supported formats can be extended by implementing a import plugin.
 
-It is written in [Python 3](https://www.python.org/) and based on [Flask](http://flask.pocoo.org/). It is licensed under [MIT Licens](/LICENSE)
+It is written in [Python 3](https://www.python.org/) and based on [Flask](http://flask.pocoo.org/). It is licensed under [MIT License](/LICENSE)
