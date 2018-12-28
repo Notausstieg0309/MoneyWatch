@@ -268,3 +268,13 @@ table.transactions.imports td.short_description {
     font-weight: unset;
 }
 
+
+
+table.ruleset td.pattern {
+    font-family: monospace;
+}
+
+table.ruleset td.buttons {
+    width:1%;
+    white-space:nowrap;
+}

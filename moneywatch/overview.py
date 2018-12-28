@@ -7,7 +7,6 @@ import re
 import moneywatch.utils.functions as utils
 from moneywatch.utils.objects import Category, Transaction
 
-from flask_babel import format_date
 import datetime
 import moneywatch.utils.objects
 

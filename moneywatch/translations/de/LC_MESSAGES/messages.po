@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-27 13:45+0100\n"
-"PO-Revision-Date: 2018-12-27 10:46+0100\n"
+"POT-Creation-Date: 2018-12-28 11:12+0100\n"
+"PO-Revision-Date: 2018-12-28 10:16+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,6 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+
+#: categories.py:43 categories.py:109 ruleset.py:105
+msgid "Name is required."
+msgstr "Name ist notwendig."
+
+#: categories.py:46 categories.py:112
+msgid "The budget must be given as numeric value."
+msgstr "Das Budget muss als numerischer Wert angegeben werden"
+
+#: categories.py:50 categories.py:115
+msgid "The name '%{name}s' already exists on this level"
+msgstr "Der Name '%{name}s' existiert bereits auf dieser Ebene."
 
 #: importer.py:29
 msgid "No file uploaded"
@@ -53,34 +65,35 @@ msgstr ""
 "vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien"
 " anlegen."
 
-#: ruleset.py:105
-msgid "Name is required."
-msgstr "Name ist notwendig."
-
-#: templates/base.html:19 templates/base.html:32 templates/base_old.html:18
+#: templates/base.html:19 templates/base.html:32
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
-#: templates/base.html:20 templates/base.html:33 templates/base_old.html:15
+#: templates/base.html:20 templates/base.html:33
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: templates/base.html:21 templates/base.html:34 templates/base_old.html:16
-#: templates/ruleset/index.html:4
+#: templates/base.html:21 templates/base.html:34 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr "Import-Regeln"
 
-#: templates/base.html:22 templates/base.html:35 templates/base_old.html:17
+#: templates/base.html:22 templates/base.html:35
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:50
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:23 templates/base.html:36 templates/base_old.html:19
+#: templates/base.html:23 templates/base.html:36
 #: templates/overview/index.html:4
 msgid "Overview"
 msgstr "Übersicht"
+
+#: templates/categories/add.html:19 templates/categories/change.html:31
+#: templates/importer/check.html:44 templates/ruleset/add.html:68
+#: templates/ruleset/change.html:47
+msgid "Save"
+msgstr "Speichern"
 
 #: templates/categories/change.html:4
 msgid "Edit Category"
@@ -117,11 +130,6 @@ msgstr "übergeordnete Kategorie"
 #: templates/categories/change.html:20
 msgid "none"
 msgstr "keine"
-
-#: templates/categories/change.html:31 templates/importer/check.html:44
-#: templates/ruleset/add.html:68 templates/ruleset/change.html:47
-msgid "Save"
-msgstr "Speichern"
 
 #: templates/categories/index.html:16
 #, python-format
@@ -212,7 +220,7 @@ msgstr "Monate"
 
 #: templates/overview/index.html:44
 msgid "MM-dd"
-msgstr ""
+msgstr "dd.MM"
 
 #: templates/overview/index.html:91
 msgid "No transactions available"
@@ -348,23 +356,27 @@ msgstr "Ändere Regel"
 msgid "Match Pattern"
 msgstr "Suchausdruck"
 
-#: templates/ruleset/index.html:23
-msgid "delete this rule"
-msgstr "Diese Regel löschen"
-
 #: templates/ruleset/index.html:24
 msgid "change this rule"
 msgstr "Diese Regel ändern"
 
-#: templates/ruleset/index.html:36
+#: templates/ruleset/index.html:25
+msgid "delete this rule"
+msgstr "Diese Regel löschen"
+
+#: templates/ruleset/index.html:32
+msgid "No rules exist yet."
+msgstr "Es existieren aktuell keine Regeln."
+
+#: templates/ruleset/index.html:37
 msgid "Rules for earnings"
 msgstr "Regeln für Einnahmen"
 
-#: templates/ruleset/index.html:40 templates/ruleset/index.html:46
+#: templates/ruleset/index.html:41 templates/ruleset/index.html:47
 msgid "Add rule"
 msgstr "Neue Regel"
 
-#: templates/ruleset/index.html:43
+#: templates/ruleset/index.html:44
 msgid "Rules for spendings"
 msgstr "Regeln für Ausgaben"
 

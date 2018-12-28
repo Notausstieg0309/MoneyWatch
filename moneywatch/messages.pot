@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-27 13:45+0100\n"
+"POT-Creation-Date: 2018-12-28 11:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+
+#: categories.py:43 categories.py:109 ruleset.py:105
+msgid "Name is required."
+msgstr ""
+
+#: categories.py:46 categories.py:112
+msgid "The budget must be given as numeric value."
+msgstr ""
+
+#: categories.py:50 categories.py:115
+msgid "The name '%{name}s' already exists on this level"
+msgstr ""
 
 #: importer.py:29
 msgid "No file uploaded"
@@ -47,33 +59,34 @@ msgid ""
 "for. Please create categories first."
 msgstr ""
 
-#: ruleset.py:105
-msgid "Name is required."
-msgstr ""
-
-#: templates/base.html:19 templates/base.html:32 templates/base_old.html:18
+#: templates/base.html:19 templates/base.html:32
 msgid "Import New Transactions"
 msgstr ""
 
-#: templates/base.html:20 templates/base.html:33 templates/base_old.html:15
+#: templates/base.html:20 templates/base.html:33
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr ""
 
-#: templates/base.html:21 templates/base.html:34 templates/base_old.html:16
-#: templates/ruleset/index.html:4
+#: templates/base.html:21 templates/base.html:34 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr ""
 
-#: templates/base.html:22 templates/base.html:35 templates/base_old.html:17
+#: templates/base.html:22 templates/base.html:35
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:50
 msgid "Categories"
 msgstr ""
 
-#: templates/base.html:23 templates/base.html:36 templates/base_old.html:19
+#: templates/base.html:23 templates/base.html:36
 #: templates/overview/index.html:4
 msgid "Overview"
+msgstr ""
+
+#: templates/categories/add.html:19 templates/categories/change.html:31
+#: templates/importer/check.html:44 templates/ruleset/add.html:68
+#: templates/ruleset/change.html:47
+msgid "Save"
 msgstr ""
 
 #: templates/categories/change.html:4
@@ -110,11 +123,6 @@ msgstr ""
 
 #: templates/categories/change.html:20
 msgid "none"
-msgstr ""
-
-#: templates/categories/change.html:31 templates/importer/check.html:44
-#: templates/ruleset/add.html:68 templates/ruleset/change.html:47
-msgid "Save"
 msgstr ""
 
 #: templates/categories/index.html:16
@@ -334,23 +342,27 @@ msgstr ""
 msgid "Match Pattern"
 msgstr ""
 
-#: templates/ruleset/index.html:23
-msgid "delete this rule"
-msgstr ""
-
 #: templates/ruleset/index.html:24
 msgid "change this rule"
 msgstr ""
 
-#: templates/ruleset/index.html:36
+#: templates/ruleset/index.html:25
+msgid "delete this rule"
+msgstr ""
+
+#: templates/ruleset/index.html:32
+msgid "No rules exist yet."
+msgstr ""
+
+#: templates/ruleset/index.html:37
 msgid "Rules for earnings"
 msgstr ""
 
-#: templates/ruleset/index.html:40 templates/ruleset/index.html:46
+#: templates/ruleset/index.html:41 templates/ruleset/index.html:47
 msgid "Add rule"
 msgstr ""
 
-#: templates/ruleset/index.html:43
+#: templates/ruleset/index.html:44
 msgid "Rules for spendings"
 msgstr ""
 

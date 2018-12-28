@@ -9,26 +9,27 @@
     {% if rules %}
     <table cellspacing="0" class="ruleset">
     <tr>
-    <th>{% trans %}Rule Name{% endtrans %}</th>
-    <th>{% trans %}Match Pattern{% endtrans %}</th>
-    <th>{% trans %}Category{% endtrans %}</th>
+      <th class="description">{% trans %}Rule Name{% endtrans %}</th>
+      <th class="pattern">{% trans %}Match Pattern{% endtrans %}</th>
+      <th class="category_path">{% trans %}Category{% endtrans %}</th>
+      <th class="buttons">&nbsp;</th>
     </tr>
 
-      {% for rule in rules %}
-      <!-- id: {{ rule['id'] }} -->
-      <tr>
-      <td>{{ rule['description'] }}</td>
-      <td>{{ rule['pattern'] }}</td>
-      <td>{{ rule.category.getCategoryPath(" > ") }}
-      <a class="btn-small tooltipped right" data-position="bottom" href="{{ url_for('ruleset.delete', id=rule['id']) }}" data-tooltip="{% trans %}delete this rule{% endtrans %}"><i class="material-icons">delete</i></a> 
-      <a class="btn-small tooltipped right" data-position="bottom" href="{{ url_for('ruleset.change', id=rule['id']) }}" data-tooltip="{% trans %}change this rule{% endtrans %}"><i class="material-icons">edit</i></a>
-       </td>
-      </tr> 
-      {% endfor %}
+    {% for rule in rules %}
+    <tr>
+      <td class="description">{{ rule['description'] }}</td>
+      <td class="pattern">{{ rule['pattern'] }}</td>
+      <td class="category_path">{{ rule.category.getCategoryPath(" > ") }}</td>
+      <td class="buttons">
+        <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.change', id=rule['id']) }}" data-tooltip="{% trans %}change this rule{% endtrans %}"><i class="material-icons">edit</i></a>
+        <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.delete', id=rule['id']) }}" data-tooltip="{% trans %}delete this rule{% endtrans %}"><i class="material-icons">delete</i></a> 
+      </td>
+    </tr> 
+    {% endfor %}
       
     </table>
     {% else %}
-    <div class="no_content">Keine Regeln vorhanden</div>
+    <div class="no_content">{% trans %}No rules exist yet.{% endtrans %}</div>
     {% endif %}
 {% endmacro %}
 
