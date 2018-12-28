@@ -18,11 +18,11 @@
      
 
      <span class="right">
-      <a class="btn-small tooltipped" data-tooltip="{% trans %}Add new subcategory{% endtrans %}" data-position="right" href="{{ url_for('categories.add', type=type, parent=category['id']) }}"><i class="material-icons">add</i></a> |
-      {% if not (loop.depth == 1 and categories|length == 1)%}
-       <a class="btn-small tooltipped" data-tooltip="{% trans %}Delete this category{% endtrans %}" data-position="left" href="{{ url_for('categories.delete', id=category['id']) }}"><i class="material-icons">delete</i></a> | 
-      {% endif %}
+      <a class="btn-small tooltipped" data-tooltip="{% trans %}Add new subcategory{% endtrans %}" data-position="right" href="{{ url_for('categories.add', type=type, parent=category['id']) }}"><i class="material-icons">add</i></a>
       <a class="btn-small tooltipped" data-tooltip="{% trans %}Edit this category{% endtrans %}" data-position="bottom" href="{{ url_for('categories.change', type=type,id=category['id']) }}"><i class="material-icons">edit</i></a>
+      {% if not (loop.depth == 1 and categories|length == 1)%}
+       <a class="btn-small tooltipped" data-tooltip="{% trans %}Delete this category{% endtrans %}" data-position="left" href="{{ url_for('categories.delete', id=category['id']) }}"><i class="material-icons">delete</i></a>
+      {% endif %}
      </span>
     </div>
   </div>
