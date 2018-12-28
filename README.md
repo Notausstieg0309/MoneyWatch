@@ -1,6 +1,6 @@
 # MoneyWatch
 
-MoneyWatch is a lightweight web application helps you to monitor your bank account about performed and planned transactions. It helps you to track your earnigns/spendings and gives you indication of your current and planned balance. 
+MoneyWatch is a lightweight web application helps you to monitor your bank account about performed and planned transactions. It helps you to track your earnings/spendings and gives you indication of your current and planned balance. 
 
 You can import your transactions via file import. Currently supported file formats are:
 * Targobank CSV
