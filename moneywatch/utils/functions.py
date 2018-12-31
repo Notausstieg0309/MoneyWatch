@@ -5,20 +5,6 @@ from calendar import monthrange
 
 
 
-def format_date(days, format):
-    return get_date_from_days(days).strftime(format)
-    
-def get_formatted_date(days):
-    return format_date(days,"%d.%m.%Y")
-    
-def get_days_from_string(date, format):
-
-    date_unix = datetime.date(1970,1,1)
-    date_given = datetime.datetime.strptime(date, format).date()
-    delta = date_given - date_unix
-    return delta.days
-    
-    
 def get_date_from_string(date, format):
 
     return datetime.datetime.strptime(date, format).date()
@@ -40,7 +26,7 @@ def get_days_from_date(date):
     
 def get_first_day_of_month(year=None, month=None):
 
-    
+
     date_today = datetime.date.today()
     date_month = date_today.month
     date_year = date_today.year
