@@ -121,7 +121,7 @@ def add_months(date, months):
         year = date_new.year
         month = date_new.month
         day = date_new.day
-        mdays_before = monthrange(year, month)[1]
+        maxdays_before = monthrange(year, month)[1]
         
         if month == 12:
             month = 1
@@ -129,11 +129,11 @@ def add_months(date, months):
         else:
             month += 1
 
-        mdays_after = monthrange(year, month)[1]
+        maxdays_after = monthrange(year, month)[1]
         
         # avoid 31.10 => 31.11 (does not exist, last day in november is 30.11)
-        if day == mdays_before or day > mdays_after:
-            date_new = datetime.date(year,month,mdays_after)
+        if day == maxdays_before or day > maxdays_after:
+            date_new = datetime.date(year,month,maxdays_after)
        
         else:  
             date_new = datetime.date(year,month,day)
@@ -147,7 +147,7 @@ def substract_months(date, months):
         year = date.year
         month = date.month
         day = date.day
-        mdays_before = monthrange(year, month)[1]
+        maxdays_before = monthrange(year, month)[1]
         
         if month == 1:
             month = 12
@@ -156,11 +156,11 @@ def substract_months(date, months):
             month -= 1
         
         
-        mdays_after = monthrange(year, month)[1]
+        maxdays_after = monthrange(year, month)[1]
         
         # avoid 31.10 => 31.11 (does not exist, last day in november is 30.11)
-        if day == mdays_before or day > mdays_after:
-            date = datetime.date(year,month,mdays_after)
+        if day == maxdays_before or day > maxdays_after:
+            date = datetime.date(year,month,maxdays_after)
        
         else:  
             date = datetime.date(year,month,day)
@@ -189,13 +189,6 @@ def get_cyclic_dates_for_timerange(date, months_interval, start, end):
 
     result = []
 
-    if date > start:
-        while True:
-
-            date = substract_months(date, months_interval)
-            if date <= start:
-                break
-    
     while True:
 
         if date >= start and date <= end:
