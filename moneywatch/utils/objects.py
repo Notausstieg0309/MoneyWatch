@@ -588,10 +588,7 @@ class Category:
              
             result = 0
             for transaction in self.transactions:
-                if transaction.trend:
-                    result += transaction.valuta  - transaction.trend
-                else:
-                    result += transaction.valuta 
+                result += transaction.valuta 
                 
             for transaction in self.planned_transactions:
                 result += transaction.valuta 
