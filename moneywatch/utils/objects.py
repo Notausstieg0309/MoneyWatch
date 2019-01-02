@@ -116,10 +116,13 @@ class Rule:
     
     def saveByTransaction(self, date, valuta):
     
-        if self.regular and self.last_transaction.date < date:
-            self.next_valuta = valuta
-            self.next_due = utils.add_months(date, self.regular)
-            self.save()
+        if self.regular:
+            last_transaction = self.last_transaction()
+            if last_transaction and last_transaction.date < date:
+            
+                self.next_valuta = valuta
+                self.next_due = utils.add_months(date, self.regular)
+                self.save()
         
     def save(self):
         return db.save_rule(self._data)
@@ -255,8 +258,9 @@ class Transaction:
                
                     if last_transaction is not None:
                         self._data["trend"] = self.valuta - last_transaction.valuta 
-            self._data["trend_calculated"] = 1
-            self.save()
+                        
+                self._data["trend_calculated"] = 1
+                self.save()
 
             return self._data["trend"]
         
