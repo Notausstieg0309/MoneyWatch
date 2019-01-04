@@ -298,14 +298,13 @@ class Transaction:
 	
     def save(self):
     
-        try:
-            self.rule.saveByTransaction(self.date,self.valuta)
-        except:
-            pass
+        rule = self.rule
+        
+        if rule is not None:
+            rule.saveByTransaction(self.date,self.valuta)
             
         db.save_transaction(self._data)
        
-
 	
     @property
     def category(self):
