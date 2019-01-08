@@ -1,9 +1,20 @@
 import sqlite3
-
 import click
+
 from flask import current_app, g
 from flask.cli import with_appcontext
+
 import moneywatch.utils.functions as utils
+
+
+#   _____                           _ 
+#  / ____|                         | |
+# | |  __  ___ _ __   ___ _ __ __ _| |
+# | | |_ |/ _ \ '_ \ / _ \ '__/ _` | |
+# | |__| |  __/ | | |  __/ | | (_| | |
+#  \_____|\___|_| |_|\___|_|  \__,_|_|
+#                                    
+# ====================================
 
 def get_db():
     if 'db' not in g:
@@ -36,9 +47,6 @@ def init_db():
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf-8'))
 
-        
-        
-        
 @click.command('init-db')
 @with_appcontext
 def init_db_command():
@@ -51,44 +59,45 @@ def init_app(app):
     app.cli.add_command(init_db_command)
 
     
-    
+#   _____      _                        _           
+#  / ____|    | |                      (_)          
+# | |     __ _| |_ ___  __ _  ___  _ __ _  ___  ___ 
+# | |    / _` | __/ _ \/ _` |/ _ \| '__| |/ _ \/ __|
+# | |___| (_| | ||  __/ (_| | (_) | |  | |  __/\__ \
+#  \_____\__,_|\__\___|\__, |\___/|_|  |_|\___||___/
+#                       __/ |                       
+# ==================== |___/ =======================     
     
 def get_category(id):
     """Get a specific category by id.
 
-    :param id: id of the rule
-    :return: the complete category from database.
-    :rause 404: if a rule with the given id does not exist
+    :param int id: numeric id of the rule
+    :return: the complete category data as dict from database. If not exists, None will be returned
+    :rtype: dict or None
     """
 
-    category = get_db().execute('SELECT * FROM categories  WHERE id = ?', (id, )).fetchone()
-
-    if not category:
-        abort(404, "category id {0} does not exist.".format(id))
+    category = get_db().execute('SELECT * FROM categories WHERE id = ?', (id, )).fetchone()
 
     return category
  
 def get_root_categories(type):
-    """Get a specific category by id.
+    """Get all root categories (categories with no parents)
 
-    :param id: id of the rule
-    :return: the complete category from database.
-    :rause 404: if a rule with the given id does not exist
+    :param type: the type of the categories to query ("in" or "out") as string.
+    :return: A list of categories as dict, that have no parents or None if no categories exist.
+    :rtype: list(dict) or None
     """
 
     categories = get_db().execute('SELECT * FROM categories WHERE type = ? AND parent IS NULL', (type,)).fetchall()
-
-    if not categories:
-        categories = None
         
     return categories    
 
 def get_all_categories(type=None):
-    """Get a specific category by id.
+    """Query all categories from database.
 
-    :param id: id of the rule
-    :return: the complete category from database.
-    :rause 404: if a rule with the given id does not exist
+    :param str type: the category type as string ("in" or "out") 
+    :return: a list of all categories as dict or None if no categories exist.
+    :rtype: list(dict) or None
     """
     
     categories = None
@@ -101,91 +110,152 @@ def get_all_categories(type=None):
  
  
 def get_category_childs(type, id=None):
+    """Query all child categories from database for a specific parent category id .
+
+    :param int id: numeric id of the parent category or None to get all root categories
+    :return: a list of all childs of the category as dicts
+    :rtype: list(dict) or None
+    """ 
     
-    if id:
+    if id is not None:
         return get_db().execute('SELECT * FROM categories WHERE parent = ? AND type = ?', (id,type)).fetchall()
     else:
         return get_root_categories(type)
 
-def delete_category(data):
+        
+def delete_category(id):
+    """Deletes a category from the database by their numeric id.
 
+    :param int id: numeric id of the category to be delete
+    """ 
+    
     db = get_db()
-    db.execute('DELETE FROM categories WHERE id = ?', (data["id"], ))
+    db.execute('DELETE FROM categories WHERE id = ?', (id, ))
     db.commit()
     
 
+  
 def save_category(data):
+    """Saves a category to the database.
+
+    :param dict data: the category data as dict.
+    """  
+    
     db = get_db()
     
-    if data.get("id",None):
+    if data.get("id",None) is not None:
         db.execute('UPDATE categories SET name = ?, budget_monthly = ?, parent = ? WHERE id = ?', (data["name"], data.get("budget_monthly",None), data.get("parent", None), data["id"]))
     
-    else:
+    else: # no id, so let's insert it as a new category
         db.execute('INSERT INTO categories (name, budget_monthly, parent,type) VALUES (?, ?, ? ,?)', (data["name"], data.get("budget_monthly",None), data.get("parent", None), data["type"]))
     
     db.commit()
     
 
+#  _____       _           
+# |  __ \     | |          
+# | |__) |   _| | ___  ___ 
+# |  _  / | | | |/ _ \/ __|
+# | | \ \ |_| | |  __/\__ \
+# |_|  \_\__,_|_|\___||___/
+#
+# =========================                           
     
-    
-def get_rule(rule_id):
-    """Get a specific rule by id.
+def get_rule(id):
+    """Get a specific rule by their numeric id.
 
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
+    :param int id: numeric id of the rule
+    :return: the complete rule data as a dict or None if the id does not exist.
+    :rtype: dict or None
     """
 
-    rule = get_db().execute('SELECT i.*, c.name as category_name FROM ruleset i JOIN categories c ON i.category_id = c.id WHERE i.id = ?', (rule_id, )).fetchone()
+    rule = get_db().execute('SELECT i.*, c.name as category_name FROM ruleset i JOIN categories c ON i.category_id = c.id WHERE i.id = ?', (id, )).fetchone()
 
     return rule
     
     
 def get_rules_for_type(type):
-    """Get a specific rule by id.
+    """Get all rules by type.
 
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
+    :param str type: the type as string ("in" or "out").
+    :return: a list of all rules of the given type as a list of dicts or None if no rules exist for the given type.
+    :rtype: list(dict) or None
     """
 
     rules = get_db().execute('SELECT * FROM ruleset WHERE type=?', (type,)).fetchall()
 
     return rules
     
-def get_rules_for_category(category):
-    """Get a specific rule by id.
+def get_rules_for_category(category_id):
+    """Get all rules that are configured for a specific category id
 
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
+    :param int category_id: the category id as int
+    :return: a list of all rules that are configured with the given category id as a list of dicts or None if no rules exist, that have this category id set.
+    :rtype: list(dict) or None
     """
 
-    rules = get_db().execute('SELECT * FROM ruleset WHERE category_id = ?', (category,)).fetchall()
+    rules = get_db().execute('SELECT * FROM ruleset WHERE category_id = ?', (category_id,)).fetchall()
 
     return rules
     
  
 def save_rule(data):
+    """Save a rule to the database
 
+    :param dict data: the rule data as a dict
+    """
     db = get_db()
-    if data.get("id", None):
+    
+    if data.get("id", None) is not None:
         db.execute('UPDATE ruleset SET name = ?, pattern = ?, description = ?, category_id = ?, regular = ?, next_days = ?, next_valuta = ? WHERE id = ? ', (data["name"], data["pattern"], data["description"], data["category_id"], data["regular"], utils.get_days_from_date(data["next_due"]), data["next_valuta"], data["id"]))
-    else:
+   
+    else: # no id exist, so let's create a new rule
         db.execute('INSERT INTO ruleset (name, pattern, description, category_id, type, regular, next_valuta, next_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                (data["name"], data["pattern"], data["description"], data["category_id"], data["type"], data["regular"], data["next_valuta"], utils.get_days_from_date(data.get("next_due", None)))
-            )   
+                    (data["name"], data["pattern"], data["description"], data["category_id"], data["type"], data["regular"], data["next_valuta"], utils.get_days_from_date(data.get("next_due", None)))
+                    )   
     db.commit()
 
  
-def delete_rule(data):
+def delete_rule(id):
+    """Deletes a rule from the database by their numeric id.
+
+    :param int id: numeric id of the rule to be delete
+    """ 
+    
     db = get_db()
-    db.execute('DELETE FROM ruleset WHERE id = ?', (data["id"], ))
+    db.execute('DELETE FROM ruleset WHERE id = ?', (id, ))
     db.commit()
     
+#  _______                             _   _                 
+# |__   __|                           | | (_)                
+#    | |_ __ __ _ _ __  ___  __ _  ___| |_ _  ___  _ __  ___ 
+#    | | '__/ _` | '_ \/ __|/ _` |/ __| __| |/ _ \| '_ \/ __|
+#    | | | | (_| | | | \__ \ (_| | (__| |_| | (_) | | | \__ \
+#    |_|_|  \__,_|_| |_|___/\__,_|\___|\__|_|\___/|_| |_|___/
+#   
+# ===========================================================    
 
+def get_transaction(id):
+    """Get a specific transaction by id.
+
+    :param id: id of the transaction
+    :return: the data of the transaction as a dict or None if no transaction exists with this id.
+    :rtype: dict or None
+    """
+
+    transaction = get_db().execute('SELECT * FROM transactions WHERE id = ?', (id, )).fetchone()
+
+    return transaction
+    
 def get_transactions(start=None, end=None):
+    """Get all transaction from the database. Optionally filter within a specific start or/and end date.
 
+    :param date start: a optional start date to get only transactions that are newer or equal to this date.
+    :param date end: a optional end date to get only transactions that are older or equal to this date.
+    :return: a list of all transactions that are available within the given timeframe as a list of dicts.
+    :rtype: list(dict) or None
+    """
+    
     transactions = None
     
     if start is not None and end is not None:
@@ -201,30 +271,35 @@ def get_transactions(start=None, end=None):
 
 
 def get_latest_transaction():
-    """Get a specific rule by id.
+    """Get the newest overall transaction from the database.
 
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
+    :return: the data of the newest transaction as a dict or None if no transactions exist.
+    :rtype: dict or None
     """
-
+    
     transaction = get_db().execute('SELECT * FROM transactions ORDER BY id DESC').fetchone()
 
     return transaction
   
 def get_oldest_transaction():
-    """Get a specific rule by id.
-
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
+    """Get the oldest overall transaction from the database.
+    
+    :return: the data of the newest transaction as a dict or None if no transactions exist.
+    :rtype: dict or None
     """
-
+    
     transaction = get_db().execute('SELECT * FROM transactions ORDER BY days ASC').fetchone()
 
     return transaction  
     
 def get_transaction_by_date_valuta(date, valuta):
+    """Get a transaction with the same date and valuta.
+
+    :param date date: the date to search for
+    :param float valuta: the valuta to search for
+    :return: a transaction as dict that matches the given date and valuta, otherwise None if no such transaction exist in the database.
+    :rtype: dict or None
+    """   
     
     db = get_db()
     
@@ -233,77 +308,59 @@ def get_transaction_by_date_valuta(date, valuta):
     return transaction
 
  
-def get_transactions_by_category(id, start=None, end=None):
-    """Get a specific rule by id.
+def get_transactions_by_category(category_id, start=None, end=None):
+    """Get all transaction for a specific category id from the database. Optionally filter within a specific start or/and end date.
 
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
-    """
+    :param int category_id: a optional start date to get only transactions that are newer or equal to this date.
+    :param date start: a optional start date to get only transactions that are newer or equal to this date.
+    :param date end: a optional end date to get only transactions that are older or equal to this date.
+    :return: a list of all transactions for the given category id that are available within the given timeframe as a list of dicts.
+    :rtype: list(dict) or None
+    """   
+    
     transactions = None
     
     if start is not None and end is not None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? AND days <= ? ORDER BY days ASC', (id,start, end)).fetchall()
+        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? AND days <= ? ORDER BY days ASC', (category_id, start, end)).fetchall()
     elif start is None and end is not None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days <= ? ORDER BY days ASC', (id, end)).fetchall()
+        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days <= ? ORDER BY days ASC', (category_id, end)).fetchall()
     elif start is not None and end is None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? ORDER BY days ASC' , (id, start)).fetchall()
+        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? ORDER BY days ASC' , (category_id, start)).fetchall()
     else:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? ORDER BY days ASC', (id, )).fetchall()
-
-    if transactions is None:
-        abort(404, gettext("transactions for category id %(id)d does not exist.", id=id))
+        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? ORDER BY days ASC', (category_id, )).fetchall()
 
     return transactions    
-	
-def get_transactions_by_rule(id, start=None, end=None):
-    """Get all transactions for a specific rule id.
-
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
-    """
-    transactions = None
+	 
     
-    if start is not None and end is not None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days >= ? AND days <= ? ORDER BY days DESC', (id,start, end)).fetchall()
-    elif start is None and end is not None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days <= ? ORDER BY days DESC', (id, end)).fetchall()
-    elif start is not None and end is None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days >= ? ORDER BY days DESC' , (id, start)).fetchall()
-    else:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? ORDER BY days DESC', (id, )).fetchall()
-
-    if transactions is None:
-        abort(404, gettext("transactions for category id %(id)d does not exist.", id=id))
-
-    return transactions    
-def get_last_transaction_by_rule(id, end=None):
-
-    """Get all transactions for a specific rule id.
-
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
+def get_last_transaction_by_rule(rule_id, end=None):
+    """Get the latest transaction for a specific rule id from the database.
+    :param int rule_id: the rule id to get the latest transaction for.
+    :param date end: a optional end date to get only the latest transactions before this date.
+    :return: the data of the newest transaction as a dict or None if no transaction can be found.
+    :rtype: dict or None
     """
+    
     transaction = None
     
     if end is not None:
-        transaction = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days < ? ORDER BY days DESC LIMIT 1', (id, utils.get_days_from_date(end) )).fetchone()
+        transaction = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days < ? ORDER BY days DESC LIMIT 1', (rule_id, utils.get_days_from_date(end) )).fetchone()
     else:
-        transaction = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? ORDER BY days DESC LIMIT 1', (id, )).fetchone()
+        transaction = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? ORDER BY days DESC LIMIT 1', (rule_id, )).fetchone()
 
-    return transaction    		
+    return transaction  
+    
+
+    
 def save_transaction(item):
+    """Save a transaction to the database
 
+    :param dict data: the rule data as a dict
+    """
+    
     db = get_db()
 
     if item.get("id", None):
         db.execute('UPDATE transactions SET description = ?, category_id = ?, trend = ?, trend_calculated = ? WHERE id = ? ', (item["description"], item["category_id"], item["trend"], item["trend_calculated"], item["id"]))
-    else:
+    else: # no id exist, so let's create a new transaction
         db.execute("INSERT INTO transactions (days, valuta, full_text, description, category_id, rule_id) VALUES (?, ?, ? ,? , ?, ?)",(utils.get_days_from_date(item['date']) ,item['valuta'], item['full_text'], item['description'], item['category_id'], item.get('rule_id', None)))
     db.commit()
-
-
-    
-   
