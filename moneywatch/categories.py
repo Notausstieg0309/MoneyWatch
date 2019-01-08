@@ -1,11 +1,7 @@
-from flask import (
-            Blueprint, flash, g, redirect, render_template, request, url_for, app
-            )
-from werkzeug.exceptions import abort
+from flask import (Blueprint, flash, g, redirect, render_template, request, url_for)
 
 from flask_babel import gettext
 
-from moneywatch.utils.db import get_db
 from moneywatch.utils.objects import Category
 
 bp = Blueprint('categories', __name__)
