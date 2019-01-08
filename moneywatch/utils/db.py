@@ -165,16 +165,7 @@ def get_rules_for_category(category):
 
     return rules
     
-def update_rule_next_due(rule, valuta, days):
-
-    db = get_db()
-    
-    next_days = get_days_from_date(add_months(get_date_from_days(days), rule['regular']))
-
-    db.execute('UPDATE ruleset SET next_valuta = ?, next_days = ? WHERE id = ? ', (valuta, next_days, rule))
-    db.commit()   
-
-    
+ 
 def save_rule(data):
 
     db = get_db()
@@ -233,49 +224,6 @@ def get_oldest_transaction():
 
     return transaction  
     
-def get_first_transaction_by_rule(id, start=None):
-    """Get a specific rule by id.
-
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
-    """
-    if start is None:
-        start = utils.get_first_day_of_month()
-        
-    transaction = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days > ? ORDER BY id ASC LIMIT 1', (id, start)).fetchone()
-
-    return transaction
-def get_latest_transaction_by_rule(id, start=None):
-    """Get a specific rule by id.
-
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
-    """
-    if start is None:
-        start = utils.get_first_day_of_month()
-
-    transaction = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days < ? ORDER BY id DESC LIMIT 1', (id, start)).fetchone()
-
-    return transaction
-    
-def get_transaction(id):
-    """Get a specific rule by id.
-
-    :param id: id of the rule
-    :return: the complete rule.
-    :rause 404: if a rule with the given id does not exist
-    """
-
-    transaction = get_db().execute('SELECT * FROM transactions WHERE id = ?', (id, )).fetchone()
-
-    if transaction is None:
-        abort(404, gettext("transaction id %(id)d does not exist.", id=id))
-
-    return transaction
- 
-
 def get_transaction_by_date_valuta(date, valuta):
     
     db = get_db()

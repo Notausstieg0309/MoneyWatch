@@ -8,7 +8,7 @@ import re
 class Rule:
 
     def __new__(cls, data):
-        if isinstance(data, (int,str)):
+        if isinstance(data, int):
             item = db.get_rule(data)
 
             if item is not None:
@@ -128,7 +128,7 @@ class Rule:
         return db.save_rule(self._data)
         
     def delete(self):
-        return db.delete_rule(self._data)
+        return db.delete_rule(self.id)
         
     def matchTransaction(self, transaction):
         if re.search(self.pattern, transaction.full_text, re.IGNORECASE):
@@ -163,7 +163,7 @@ class Transaction:
 
     def __init__(self, data, **kwargs):
     
-        if isinstance(data, (int,str)):
+        if isinstance(data, int):
             self._data = db.get_transaction(data)
         elif isinstance(data, dict):            
             self._data = data.copy()
@@ -436,7 +436,7 @@ class Category:
             for category in self.childs:
                 category.delete()
              
-            db.delete_category(self._data)
+            db.delete_category(self.id)
             
    
     @property                    
@@ -510,7 +510,6 @@ class Category:
     @property
     def childs(self):
       
-        
         if "childs" in self._cache:
             return self._cache["childs"]
         else:
@@ -523,7 +522,6 @@ class Category:
     @property
     def transactions(self):
        
-        
         if "transactions" in self._cache:
             return self._cache["transactions"]
         else:
