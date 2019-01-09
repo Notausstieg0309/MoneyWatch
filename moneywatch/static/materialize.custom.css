@@ -270,6 +270,14 @@ table.transactions.imports td.short_description {
     font-weight: unset;
 }
 
+li.collection-item.complete {
+    background: #d5ffd5;
+}
+
+td.short_description input {
+    font-weight: bold;
+}
+
 
 
 /*
