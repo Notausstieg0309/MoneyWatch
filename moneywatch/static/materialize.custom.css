@@ -13,7 +13,7 @@
 /* colorize positive/negative numbers */
 .num.negative {color: #ff0000;}
 .num.positive {color: #006d14;}
-
+.num {white-space: nowrap; }
 
 div.flash {
    background: #ffeded;
