@@ -54,6 +54,69 @@ Transactions, which are not covered by any rule, must be assigned manually.
 
 ![Screenshot of transaction import](screenshots/imports.png?raw=true "Screenshot of importing new transactions")
 
+## Quickstart Guide
+
+To get quickly started with MoneyWatch, just check out the repo and launch `start_flask_devel.sh` to start the flask server in development mode.
+
+At the first start, it will create a python virual environment, install all dependencies within and initializes the database:
+
+```
+$ ./start_flask_devel.sh
+-> creating python virtual environment
+-> enable virtual environment
+-> installing moneywatch in virtual environment
+Obtaining file:///opt/moneywatch
+Collecting Flask (from moneywatch==0.1)
+  Using cached https://files.pythonhosted.org/packages/7f/e7/08578774ed4536d3242b14dacb4696386634607af824ea997202cd0edb4b/Flask-1.0.2-py2.py3-none-any.whl
+Collecting Flask-Session (from moneywatch==0.1)
+  Using cached https://files.pythonhosted.org/packages/7e/a3/3ba4cec2becb7c4e65dfa95052c7050832c12a1fc8a475ac572842c460bc/Flask_Session-0.3.1-py2.py3-none-any.whl
+Collecting Flask-Babel (from moneywatch==0.1)
+Collecting itsdangerous>=0.24 (from Flask->moneywatch==0.1)
+  Using cached https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting Werkzeug>=0.14 (from Flask->moneywatch==0.1)
+  Using cached https://files.pythonhosted.org/packages/20/c4/12e3e56473e52375aa29c4764e70d1b8f3efa6682bef8d0aae04fe335243/Werkzeug-0.14.1-py2.py3-none-any.whl
+Collecting click>=5.1 (from Flask->moneywatch==0.1)
+  Using cached https://files.pythonhosted.org/packages/fa/37/45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec/Click-7.0-py2.py3-none-any.whl
+Collecting Jinja2>=2.10 (from Flask->moneywatch==0.1)
+  Using cached https://files.pythonhosted.org/packages/7f/ff/ae64bacdfc95f27a016a7bed8e8686763ba4d277a78ca76f32659220a731/Jinja2-2.10-py2.py3-none-any.whl
+Collecting Babel>=2.3 (from Flask-Babel->moneywatch==0.1)
+  Using cached https://files.pythonhosted.org/packages/b8/ad/c6f60602d3ee3d92fbed87675b6fb6a6f9a38c223343ababdb44ba201f10/Babel-2.6.0-py2.py3-none-any.whl
+Collecting MarkupSafe>=0.23 (from Jinja2>=2.10->Flask->moneywatch==0.1)
+Collecting pytz>=0a (from Babel>=2.3->Flask-Babel->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/61/28/1d3920e4d1d50b19bc5d24398a7cd85cc7b9a75a490570d5a30c57622d34/pytz-2018.9-py2.py3-none-any.whl (510kB)
+    100% |████████████████████████████████| 512kB 111kB/s
+Installing collected packages: itsdangerous, Werkzeug, click, MarkupSafe, Jinja2, Flask, Flask-Session, pytz, Babel, Flask-Babel, moneywatch
+  Running setup.py develop for moneywatch
+Successfully installed Babel-2.6.0 Flask-1.0.2 Flask-Babel-0.12.2 Flask-Session-0.3.1 Jinja2-2.10 MarkupSafe-1.1.0 Werkzeug-0.14.1 click-7.0 itsdangerous-1.1.0 moneywatch pytz-2018.9
+You are using pip version 7.1.2, however version 18.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+-> initializing SQLite database
+initialized database.
+-> starting flask webserver on port 1234
+ * Serving Flask app "moneywatch" (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on http://0.0.0.0:1234/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 292-414-762
+```
+
+You can stop the server by pressing CTRL+C.
+
+After the first run, the startup is faster:
+
+```
+$ ./start_flask_devel.sh
+-> enable virtual environment
+-> starting flask webserver on port 1234
+ * Serving Flask app "moneywatch" (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on http://0.0.0.0:1234/ (Press CTRL+C to quit)
+ * Restarting with stat
+```
+
 ## Import Plugin Mechanism
 
 As every bank has its own export format for account transactions, MoneyWatch uses a import plugin mechanism, so it is possible to implement other file formats quite easily. 
