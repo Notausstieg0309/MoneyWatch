@@ -19,7 +19,8 @@ CREATE TABLE transactions (
   description TEXT NULL,
   rule_id INTEGER NULL REFERENCES ruleset,
   category_id INTEGER REFERENCES categories,
-  trend NUMERIC NULL
+  trend NUMERIC NULL,
+  trend_calculated INTEGER CHECK( trend_calculated IN(0, 1) ) NOT NULL DEFAULT 0
   );
 
  
