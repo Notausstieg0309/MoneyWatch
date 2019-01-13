@@ -18,3 +18,4 @@ _mailinglist
 .cache/
 .pytest_cache/
 .idea/
+Thumbs.db
