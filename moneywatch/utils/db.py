@@ -1,5 +1,6 @@
 import sqlite3
 import click
+import datetime
 
 from flask import current_app, g
 from flask.cli import with_appcontext
@@ -58,7 +59,28 @@ def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
+ 
+def convert_date_to_days(data, source, dest):
+    if data is None:
+        return
+        
+    if dest in data and isinstance(data[dest], (int, str)):
+        return
+    elif source in data and isinstance(data[source], datetime.date):
+        data[dest] = utils.get_days_from_date(data[source])
+        del data[source]
+ 
+def convert_days_to_date(data, source, dest):
+    if data is None:
+        return
     
+    if dest in data and isinstance(data[dest], datetime.date):
+        return
+    elif source in data and isinstance(data[source], (int, str)):
+        data[dest] = utils.get_date_from_days(data[source])
+        del data[source]
+        
+        
 #   _____      _                        _           
 #  / ____|    | |                      (_)          
 # | |     __ _| |_ ___  __ _  ___  _ __ _  ___  ___ 
@@ -170,7 +192,9 @@ def get_rule(id):
     """
 
     rule = get_db().execute('SELECT i.*, c.name as category_name FROM ruleset i JOIN categories c ON i.category_id = c.id WHERE i.id = ?', (id, )).fetchone()
-
+    
+    convert_days_to_date(rule, "next_days", "next_due")
+    
     return rule
     
     
@@ -183,7 +207,10 @@ def get_rules_for_type(type):
     """
 
     rules = get_db().execute('SELECT * FROM ruleset WHERE type=?', (type,)).fetchall()
-
+    
+    for rule in rules or []:
+        convert_days_to_date(rule, "next_days", "next_due")
+    
     return rules
     
 def get_rules_for_category(category_id):
@@ -195,7 +222,10 @@ def get_rules_for_category(category_id):
     """
 
     rules = get_db().execute('SELECT * FROM ruleset WHERE category_id = ?', (category_id,)).fetchall()
-
+    
+    for rule in rules or []:
+        convert_days_to_date(rule, "next_days", "next_due")
+        
     return rules
     
  
@@ -206,12 +236,16 @@ def save_rule(data):
     """
     db = get_db()
     
+    convert_date_to_days(data, "next_due", "next_days")
+    
     if data.get("id", None) is not None:
-        db.execute('UPDATE ruleset SET name = ?, pattern = ?, description = ?, category_id = ?, regular = ?, next_days = ?, next_valuta = ? WHERE id = ? ', (data["name"], data["pattern"], data["description"], data["category_id"], data["regular"], utils.get_days_from_date(data["next_due"]), data["next_valuta"], data["id"]))
+        db.execute('UPDATE ruleset SET name = ?, pattern = ?, description = ?, category_id = ?, regular = ?, next_days = ?, next_valuta = ? WHERE id = ? ',
+                   (data["name"], data["pattern"], data["description"], data["category_id"], data["regular"], data["next_days"], data["next_valuta"], data["id"])
+                  )
    
     else: # no id exist, so let's create a new rule
         db.execute('INSERT INTO ruleset (name, pattern, description, category_id, type, regular, next_valuta, next_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                    (data["name"], data["pattern"], data["description"], data["category_id"], data["type"], data["regular"], data["next_valuta"], utils.get_days_from_date(data.get("next_due", None)))
+                    (data["name"], data["pattern"], data["description"], data["category_id"], data["type"], data["regular"], data["next_valuta"], data["next_days"])
                     )   
     db.commit()
 
@@ -244,7 +278,9 @@ def get_transaction(id):
     """
 
     transaction = get_db().execute('SELECT * FROM transactions WHERE id = ?', (id, )).fetchone()
-
+    
+    convert_days_to_date(transaction, "days", "date")
+    
     return transaction
     
 def get_transactions(start=None, end=None):
@@ -266,6 +302,9 @@ def get_transactions(start=None, end=None):
         transactions = get_db().execute('SELECT * FROM transactions WHERE  days >= ? ORDER BY days ASC', (utils.get_days_from_date(start),)).fetchall()
     else:
         transactions = get_db().execute('SELECT * FROM transactions ORDER BY days ASC').fetchall()
+
+    for transaction in transactions or []:
+        convert_days_to_date(transaction, "days", "date")
     
     return transactions
 
@@ -278,7 +317,9 @@ def get_latest_transaction():
     """
     
     transaction = get_db().execute('SELECT * FROM transactions ORDER BY id DESC').fetchone()
-
+    
+    convert_days_to_date(transaction, "days", "date")
+    
     return transaction
   
 def get_oldest_transaction():
@@ -289,7 +330,9 @@ def get_oldest_transaction():
     """
     
     transaction = get_db().execute('SELECT * FROM transactions ORDER BY days ASC').fetchone()
-
+    
+    convert_days_to_date(transaction, "days", "date")
+    
     return transaction  
     
 def get_transaction_by_date_valuta(date, valuta):
@@ -304,6 +347,8 @@ def get_transaction_by_date_valuta(date, valuta):
     db = get_db()
     
     transaction = db.execute('SELECT * FROM transactions WHERE days = ? AND valuta = ?', (utils.get_days_from_date(date), valuta)).fetchone()
+    
+    convert_days_to_date(transaction, "days", "date")
     
     return transaction
 
@@ -321,14 +366,17 @@ def get_transactions_by_category(category_id, start=None, end=None):
     transactions = None
     
     if start is not None and end is not None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? AND days <= ? ORDER BY days ASC', (category_id, start, end)).fetchall()
+        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? AND days <= ? ORDER BY days ASC', (category_id, utils.get_days_from_date(start), utils.get_days_from_date(end))).fetchall()
     elif start is None and end is not None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days <= ? ORDER BY days ASC', (category_id, end)).fetchall()
+        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days <= ? ORDER BY days ASC', (category_id, utils.get_days_from_date(end))).fetchall()
     elif start is not None and end is None:
-        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? ORDER BY days ASC' , (category_id, start)).fetchall()
+        transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? AND days >= ? ORDER BY days ASC' , (category_id, utils.get_days_from_date(start))).fetchall()
     else:
         transactions = get_db().execute('SELECT * FROM transactions WHERE category_id = ? ORDER BY days ASC', (category_id, )).fetchall()
-
+    
+    for transaction in transactions or []:
+        convert_days_to_date(transaction, "days", "date")
+    
     return transactions    
 	 
     
@@ -347,6 +395,8 @@ def get_last_transaction_by_rule(rule_id, end=None):
     else:
         transaction = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? ORDER BY days DESC LIMIT 1', (rule_id, )).fetchone()
 
+    convert_days_to_date(transaction, "days", "date")
+        
     return transaction  
     
 
@@ -358,9 +408,12 @@ def save_transaction(item):
     """
     
     db = get_db()
-
+    
+    convert_date_to_days(item, "date", "days")
+    
     if item.get("id", None):
         db.execute('UPDATE transactions SET description = ?, category_id = ?, trend = ?, trend_calculated = ? WHERE id = ? ', (item["description"], item["category_id"], item["trend"], item["trend_calculated"], item["id"]))
     else: # no id exist, so let's create a new transaction
-        db.execute("INSERT INTO transactions (days, valuta, full_text, description, category_id, rule_id) VALUES (?, ?, ? ,? , ?, ?)",(utils.get_days_from_date(item['date']) ,item['valuta'], item['full_text'], item['description'], item['category_id'], item.get('rule_id', None)))
+        db.execute("INSERT INTO transactions (days, valuta, full_text, description, category_id, rule_id) VALUES (?, ?, ? ,? , ?, ?)",(item['days'] ,item['valuta'], item['full_text'], item['description'], item['category_id'], item.get('rule_id', None)))
+    
     db.commit()

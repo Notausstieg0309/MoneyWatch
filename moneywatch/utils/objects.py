@@ -1,8 +1,9 @@
 import moneywatch.utils.db as db
 import moneywatch.utils.functions as utils
-
+import moneywatch.utils.exceptions
 import datetime
 import re
+
 
 
 class Rule:
@@ -16,7 +17,7 @@ class Rule:
                 new._data = item
                 return new
             else:
-                raise ValueError
+                raise NoSuchItemError
         elif isinstance(data, dict):
                 new = super(Rule, cls).__new__(cls)
                 new._data = data
@@ -71,10 +72,6 @@ class Rule:
         
     @property
     def next_due(self):
-
-        if self._data.get("next_due", None) is None and "next_days" in self._data:
-             self._data["next_due"] = utils.get_date_from_days(self._data["next_days"])
-            
         return self._data["next_due"]
         
     @next_due.setter
@@ -161,18 +158,38 @@ class Rule:
     
 class Transaction:
 
-    def __init__(self, data, **kwargs):
+    def __new__(cls, data):
     
         if isinstance(data, int):
-            self._data = db.get_transaction(data)
-        elif isinstance(data, dict):            
+            item = db.get_transaction(data)
+
+            if item is not None:
+            
+                new = super(Transaction, cls).__new__(cls)
+                new._data = item
+                
+                return new
+                
+            else:
+                raise NoSuchItemError
+                
+        elif isinstance(data, dict):      
+            if data.get("full_text", None) is None or data.get("valuta") is None or data.get("valuta", None) is None or data.get("date", None) is None:
+                raise ValueError
+                
+            new = super(Transaction, cls).__new__(cls)
+            new._data = data
+            return new
+        else:
+            raise TypeError
+
+    def __init__(self, data, **kwargs):
+    
+        if not hasattr(self, '_data'): # data is already set by __new__()
             self._data = data.copy()
+            
+        self._cache = {}
         
-        if not "date" in self._data and "days" in self._data:
-            self._data["date"] = utils.get_date_from_days(self._data["days"])
-        elif not "date" in self._data and not "days" in self._data:
-            raise Exception("wether date nor days present in Transaction data")
-       
         # apply ruleset if transaction is new
         if self._data.get('rule_id', None) is None and self.id is None:
         
@@ -185,7 +202,7 @@ class Transaction:
             if len(founded_rules) == 1:
                 self.rule_id = founded_rules[0].id
             elif len(founded_rules) > 1:
-                raise Exception("multiple rule match for transaction: "+str(founded_rules)+" matches full text: "+self.full_text)
+                raise MultipleRuleMatchError(self,founded_rules)
             
             if self.description is None and self._data.get('rule_id', None) is not None:
                 self.description = self.rule.description
@@ -193,7 +210,7 @@ class Transaction:
             if self.category_id is None and self._data.get('rule_id', None) is not None:
                 self.category_id = self.rule.category_id
         
-        self._cache = {}
+
     
     # read/write-able properties
     @property
@@ -268,13 +285,7 @@ class Transaction:
     @property
     def date(self):
              
-        date = self._data.get("date", None)
-        
-        if date is None and "days" in self._data:
-        
-            return utils.get_date_from_days(self._data["days"])
-        else:
-            return date
+        return self._data.get("date", None)
             
     @property
     def rule(self):
@@ -399,23 +410,23 @@ class Category:
 
                     if rule.regular and not rule.next_due > self.end:
 
-                        booked_days = []
-                        planned_days = []
+                        booked_dates = []
+                        planned_dates = []
                         
                         # get already existing transaction dates
                         for transaction in self.transactions:
                             if transaction.rule_id == rule.id:
-                                booked_days.append(transaction.date)
+                                booked_dates.append(transaction.date)
                          
                         # if already transactions available, just calculate from the date of newest transactions
-                        if len(booked_days) > 0:
-                            planned_days = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, max(booked_days), self.end)
+                        if len(booked_dates) > 0:
+                            planned_dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, max(booked_dates), self.end)
                         else:
-                            planned_days = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, self.start, self.end)
+                            planned_dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, self.start, self.end)
                         
 
-                        for day in planned_days:
-                            if not utils.is_same_month_in_list(day, booked_days):
+                        for day in planned_dates:
+                            if not utils.is_same_month_in_list(day, booked_dates):
                                 if self.type == "out":
                                     result.append(PlannedTransaction(day, rule.next_valuta * -1, rule.description, rule.id))
                                 else:
@@ -527,7 +538,7 @@ class Category:
         else:
             result = []
             
-            for transaction in db.get_transactions_by_category(self.id, start=utils.get_days_from_date(self.start), end=utils.get_days_from_date(self.end)) or []:              
+            for transaction in db.get_transactions_by_category(self.id, start=self.start, end=self.end) or []:              
                 result.append(Transaction(transaction))
             
             self._cache["transactions"] = result
