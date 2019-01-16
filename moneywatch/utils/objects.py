@@ -117,7 +117,7 @@ class Rule:
             result = Transaction(result)
         return result
     
-    def saveByTransaction(self, date, valuta):
+    def updateNextDue(self, date, valuta):
     
         if self.regular:
             last_transaction = self.last_transaction()
@@ -324,7 +324,7 @@ class Transaction:
         rule = self.rule
         
         if rule is not None:
-            rule.saveByTransaction(self.date,self.valuta)
+            rule.updateNextDue(self.date,self.valuta)
             
         db.save_transaction(self._data)
        
