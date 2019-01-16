@@ -398,8 +398,37 @@ class PlannedTransaction:
          
     
 class Category:
-    def __init__(self,data, **kwargs):
-      
+
+
+    def __new__(cls, data, **kwargs):
+        if isinstance(data, int):
+            item = db.get_category(data)
+
+            if item is not None:
+                new = super(Category, cls).__new__(cls)
+                new._data = item
+                return new
+            else:
+                raise NoSuchItemError("Category", data)
+                
+        elif isinstance(data, dict):
+            if data.get("name", None) is None or data.get("type") is None:
+                raise ValueError
+                
+            if "budget_monthly" in data:
+                if isinstance(data["budget_monthly"], str) and data["budget_monthly"] == "":
+                    data["budget_monthly"] = 0
+                    
+                data["budget_monthly"] = int(data["budget_monthly"])
+                
+            new = super(Category, cls).__new__(cls)
+            new._data = data
+            return new
+            
+        else:
+            raise ValueError
+
+    def __init__(self, data, **kwargs):
     
         if isinstance(data, (int,str)):
             self._data = self._data = db.get_category(data)
