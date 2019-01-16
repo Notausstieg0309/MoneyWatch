@@ -44,7 +44,7 @@ def close_db(e=None):
 
 def init_db():
     db = get_db()
-
+    
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf-8'))
 
@@ -97,7 +97,9 @@ def get_category(id):
     :return: the complete category data as dict from database. If not exists, None will be returned
     :rtype: dict or None
     """
-
+    
+    current_app.logger.debug("requesting category from database by id '%s'", id)
+    
     category = get_db().execute('SELECT * FROM categories WHERE id = ?', (id, )).fetchone()
 
     return category
@@ -109,7 +111,9 @@ def get_root_categories(type):
     :return: A list of categories as dict, that have no parents or None if no categories exist.
     :rtype: list(dict) or None
     """
-
+    
+    current_app.logger.debug("requesting root categories from database by type '%s'", type)
+    
     categories = get_db().execute('SELECT * FROM categories WHERE type = ? AND parent IS NULL', (type,)).fetchall()
         
     return categories    
@@ -121,6 +125,8 @@ def get_all_categories(type=None):
     :return: a list of all categories as dict or None if no categories exist.
     :rtype: list(dict) or None
     """
+    
+    current_app.logger.debug("requesting all categories from database by type '%s'", type)
     
     categories = None
     if type is None:
@@ -139,6 +145,8 @@ def get_category_childs(type, id=None):
     :rtype: list(dict) or None
     """ 
     
+    current_app.logger.debug("requesting child categories from database by type '%s' and id '%s'", type, id)
+    
     if id is not None:
         return get_db().execute('SELECT * FROM categories WHERE parent = ? AND type = ?', (id,type)).fetchall()
     else:
@@ -150,6 +158,8 @@ def delete_category(id):
 
     :param int id: numeric id of the category to be delete
     """ 
+    
+    current_app.logger.debug("delete category from database by id '%s'", id)
     
     db = get_db()
     db.execute('DELETE FROM categories WHERE id = ?', (id, ))
@@ -163,13 +173,15 @@ def save_category(data):
     :param dict data: the category data as dict.
     """  
     
+    current_app.logger.debug("save category to database: %s", data)
+    
     db = get_db()
     
     if data.get("id",None) is not None:
-        db.execute('UPDATE categories SET name = ?, budget_monthly = ?, parent = ? WHERE id = ?', (data["name"], data.get("budget_monthly",None), data.get("parent", None), data["id"]))
+        db.execute('UPDATE categories SET name = ?, budget_monthly = ?, parent = ? WHERE id = ?', (data["name"], data.get("budget_monthly",0), data.get("parent", None), data["id"]))
     
     else: # no id, so let's insert it as a new category
-        db.execute('INSERT INTO categories (name, budget_monthly, parent,type) VALUES (?, ?, ? ,?)', (data["name"], data.get("budget_monthly",None), data.get("parent", None), data["type"]))
+        db.execute('INSERT INTO categories (name, budget_monthly, parent,type) VALUES (?, ?, ? ,?)', (data["name"], data.get("budget_monthly",0), data.get("parent", None), data["type"]))
     
     db.commit()
     
@@ -190,7 +202,9 @@ def get_rule(id):
     :return: the complete rule data as a dict or None if the id does not exist.
     :rtype: dict or None
     """
-
+    
+    current_app.logger.debug("requesting rule from database by id '%s'", id)
+    
     rule = get_db().execute('SELECT i.*, c.name as category_name FROM ruleset i JOIN categories c ON i.category_id = c.id WHERE i.id = ?', (id, )).fetchone()
     
     convert_days_to_date(rule, "next_days", "next_due")
@@ -205,7 +219,9 @@ def get_rules_for_type(type):
     :return: a list of all rules of the given type as a list of dicts or None if no rules exist for the given type.
     :rtype: list(dict) or None
     """
-
+    
+    current_app.logger.debug("requesting rules from database by type '%s'", type)
+    
     rules = get_db().execute('SELECT * FROM ruleset WHERE type=?', (type,)).fetchall()
     
     for rule in rules or []:
@@ -221,6 +237,8 @@ def get_rules_for_category(category_id):
     :rtype: list(dict) or None
     """
 
+    current_app.logger.debug("requesting rules from database by category id '%s'", category_id)
+        
     rules = get_db().execute('SELECT * FROM ruleset WHERE category_id = ?', (category_id,)).fetchall()
     
     for rule in rules or []:
@@ -234,6 +252,9 @@ def save_rule(data):
 
     :param dict data: the rule data as a dict
     """
+    
+    current_app.logger.debug("save rule to database: %s", data)
+    
     db = get_db()
     
     convert_date_to_days(data, "next_due", "next_days")
@@ -255,6 +276,8 @@ def delete_rule(id):
 
     :param int id: numeric id of the rule to be delete
     """ 
+    
+    current_app.logger.debug("delete rule from database by id '%s'", id)  
     
     db = get_db()
     db.execute('DELETE FROM ruleset WHERE id = ?', (id, ))

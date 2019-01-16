@@ -5,6 +5,7 @@ import datetime
 import re
 
 
+from flask import current_app
 
 class Rule:
 
@@ -117,8 +118,12 @@ class Rule:
             last_transaction = self.last_transaction()
             if last_transaction and last_transaction.date < date:
             
+                next_due = utils.add_months(date, self.regular)
+                
+                current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%s'", self.name, self.id, next_due, valuta)
+                
                 self.next_valuta = valuta
-                self.next_due = utils.add_months(date, self.regular)
+                self.next_due = next_due
                 self.save()
         
     def save(self):
@@ -274,7 +279,9 @@ class Transaction:
                     last_transaction = rule.last_transaction(self.date)
                
                     if last_transaction is not None:
+                    
                         self._data["trend"] = self.valuta - last_transaction.valuta 
+                        current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , self._data["trend"], self.description, self.valuta, self.date)
                         
                 self._data["trend_calculated"] = 1
                 self.save()
@@ -406,6 +413,7 @@ class Category:
             
         else:
             result = []
+            current_app.logger.debug("calculate planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
             for rule in Rule.getRulesByCategory(self) or []:
 
                     if rule.regular and not rule.next_due > self.end:
@@ -424,7 +432,8 @@ class Category:
                         else:
                             planned_dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, self.start, self.end)
                         
-
+                        current_app.logger.debug("found planned transactions for rule '%s': %s", rule.name, planned_dates)
+                        
                         for day in planned_dates:
                             if not utils.is_same_month_in_list(day, booked_dates):
                                 if self.type == "out":
