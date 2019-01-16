@@ -525,10 +525,8 @@ class Category:
     @property
     def budget(self):
     
-        budget = self._data.get('budget_monthly', 0)
+        budget = self.budget_monthly
         
-        budget = float(0 if isinstance(budget,str) and budget.strip() == "" else budget)      
-
         if budget > 0 and self.type == "out":
         
             # adapt budget to number of months
@@ -542,7 +540,10 @@ class Category:
         
     @budget_monthly.setter                    
     def budget_monthly(self, value):
-        self._data['budget_monthly'] = abs(float(value))
+        if value:
+            self._data['budget_monthly'] = abs(float(value))
+        else:
+            self._data.pop("budget_monthly", None)
 
         
     @property                    
