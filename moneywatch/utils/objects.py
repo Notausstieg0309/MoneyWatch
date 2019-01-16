@@ -157,8 +157,8 @@ class Rule:
         for rule in db.get_rules_for_category(category.id):
             try:
                 result.append(Rule(rule, **kwargs))
-            except ValueError:
-                print("unable to find rule", rule)
+            except NoSuchItemError(type, id):
+                pass
 
             
         return result
