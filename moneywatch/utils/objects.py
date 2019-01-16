@@ -160,7 +160,6 @@ class Rule:
             except NoSuchItemError(type, id):
                 pass
 
-            
         return result
         
     def __repr__(self):
@@ -430,14 +429,12 @@ class Category:
 
     def __init__(self, data, **kwargs):
     
-        if isinstance(data, (int,str)):
-            self._data = self._data = db.get_category(data)
-        elif isinstance(data, dict):            
+        if not hasattr(self, '_data'): # data is already set by __new__()
             self._data = data.copy()
-
+        
         self._kwargs = kwargs.copy()
         self._cache = {}
-        
+
 
     @property      
     def planned_transactions(self):
