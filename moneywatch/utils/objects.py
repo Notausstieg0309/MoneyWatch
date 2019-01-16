@@ -1,9 +1,9 @@
 import moneywatch.utils.db as db
 import moneywatch.utils.functions as utils
-import moneywatch.utils.exceptions
 import datetime
 import re
 
+from moneywatch.utils.exceptions import *
 
 from flask import current_app
 
@@ -18,13 +18,18 @@ class Rule:
                 new._data = item
                 return new
             else:
-                raise NoSuchItemError
+                raise NoSuchItemError("Rule", data)
+                
         elif isinstance(data, dict):
-                new = super(Rule, cls).__new__(cls)
-                new._data = data
-                return new
+        
+            if "name" not in data or "pattern" not in data or "description" not in data or "category_id" not in data or "regular" not in data:
+                raise ValueError
+                
+            new = super(Rule, cls).__new__(cls)
+            new._data = data
+            return new
         else:
-            raise ValueError
+            raise TypeError
 
     def __init__(self, data, **kwargs):
     
@@ -176,10 +181,10 @@ class Transaction:
                 return new
                 
             else:
-                raise NoSuchItemError
+                raise NoSuchItemError("Transaction", data)
                 
         elif isinstance(data, dict):      
-            if data.get("full_text", None) is None or data.get("valuta") is None or data.get("valuta", None) is None or data.get("date", None) is None:
+            if data.get("full_text", None) is None or data.get("valuta") is None or data.get("date", None) is None:
                 raise ValueError
                 
             new = super(Transaction, cls).__new__(cls)
@@ -301,7 +306,7 @@ class Transaction:
             rule = None
             try:
                 rule = Rule(self._data["rule_id"])
-            except ValueError:
+            except NoSuchItemError:
                 pass
             return rule
             

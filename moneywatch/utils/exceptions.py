@@ -11,5 +11,7 @@ class NoSuchItemError(Exception):
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
+        self.type = kwargs.get("type",None)
+        self.rules = kwargs.get("id", None)
 
         

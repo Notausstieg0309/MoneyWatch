@@ -6,6 +6,7 @@ import re
 import os
 
 import moneywatch.utils.functions as utils
+
 import datetime
 
 from flask_babel import gettext
@@ -13,6 +14,7 @@ from flask_babel import gettext
 
 from moneywatch.utils.objects import Rule,Category, Transaction
 from moneywatch.utils.plugins import ImportPluginsManager
+from moneywatch.utils.exceptions import MultipleRuleMatchError
 bp = Blueprint('import', __name__)
 
 plugins = ImportPluginsManager(os.path.dirname(os.path.realpath(__file__))+"/import_plugins")
