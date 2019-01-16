@@ -505,7 +505,7 @@ class Category:
     @parent_id.setter                    
     def parent_id(self, value):
         if value is None:
-            self._data["parent"] = None
+            self._data.pop("parent", None)
         else:
             self._data["parent"] = int(value)
     
@@ -566,9 +566,12 @@ class Category:
             return self._cache["childs"]
         else:
             result = []
+            
             for category in db.get_category_childs(self.type, self.id) or []:
                 result.append(Category(category,  **self._kwargs))
+                
             self._cache["childs"] = result
+            
             return result
         
     @property
@@ -583,6 +586,7 @@ class Category:
                 result.append(Transaction(transaction))
             
             self._cache["transactions"] = result
+            
             return result
         
     def getCategoryPath(self, delimiter):
@@ -598,10 +602,8 @@ class Category:
                 
             return self._cache["path"]
             
-
     def getCategoryIdsAndPaths(self, delimiter):
     
-
         result = []
         
         result.append( (self.id, self.getCategoryPath(delimiter)) )
@@ -631,9 +633,7 @@ class Category:
     
     @property
     def planned_valuta(self):
-       
-            
-            
+        
         if "planned_valuta" in self._cache:
             
             return self._cache["planned_valuta"]
