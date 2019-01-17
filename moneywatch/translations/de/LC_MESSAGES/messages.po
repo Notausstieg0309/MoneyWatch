@@ -7,90 +7,81 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-28 11:12+0100\n"
-"PO-Revision-Date: 2018-12-28 10:16+0100\n"
+"POT-Creation-Date: 2019-01-17 13:08+0100\n"
+"PO-Revision-Date: 2019-01-17 13:20+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 2.2\n"
 
-#: categories.py:43 categories.py:109 ruleset.py:105
+#: categories.py:35 categories.py:102 ruleset.py:107
 msgid "Name is required."
 msgstr "Name ist notwendig."
 
-#: categories.py:46 categories.py:112
+#: categories.py:38 categories.py:105
 msgid "The budget must be given as numeric value."
-msgstr "Das Budget muss als numerischer Wert angegeben werden"
+msgstr "Das Budget muss als numerischer Wert angegeben werden."
 
-#: categories.py:50 categories.py:115
+#: categories.py:42 categories.py:108
 msgid "The name '%{name}s' already exists on this level"
 msgstr "Der Name '%{name}s' existiert bereits auf dieser Ebene."
 
-#: importer.py:29
+#: importer.py:28
 msgid "No file uploaded"
 msgstr "Keine Datei hochgeladen"
-
-#: importer.py:46
-msgid "Multiple plugins match file content"
-msgstr "Mehrere Plugins passen zur hochgeladenen Datei."
-
-#: importer.py:49
-msgid "No import plugin available that can handle this file."
-msgstr ""
-"Kein Import-Plugin vorhanden, welches die hochgeladene Datei verarbeiten "
-"kann."
 
 #: ruleset.py:40
 msgid "Rule name is required."
 msgstr "Regel-Name ist notwendig."
 
-#: ruleset.py:43 ruleset.py:107
+#: ruleset.py:43 ruleset.py:109
 msgid "Search pattern is required."
 msgstr "Suchausdruck ist notwendig."
 
-#: ruleset.py:45 ruleset.py:109
+#: ruleset.py:45 ruleset.py:111
 msgid "Category is required."
 msgstr "Kategorie ist notwendig."
 
-#: ruleset.py:72
+#: ruleset.py:74
 msgid ""
-"Unable to create new rules. No categories are available to create rules "
-"for. Please create categories first."
+"Unable to create new rules. No categories are available to create rules for. "
+"Please create categories first."
 msgstr ""
 "Es können keine neuen Regeln angelegt werden. Es sind keine Kategorien "
-"vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien"
-" anlegen."
+"vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien "
+"anlegen."
 
-#: templates/base.html:19 templates/base.html:32
+#: templates/base.html:15 templates/base.html:28
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
-#: templates/base.html:20 templates/base.html:33
+#: templates/base.html:16 templates/base.html:29
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: templates/base.html:21 templates/base.html:34 templates/ruleset/index.html:4
+#: templates/base.html:17 templates/base.html:30 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr "Import-Regeln"
 
-#: templates/base.html:22 templates/base.html:35
+#: templates/base.html:18 templates/base.html:31
 #: templates/categories/index.html:4 templates/categories/index.html:45
-#: templates/categories/index.html:50
+#: templates/categories/index.html:49
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:23 templates/base.html:36
+#: templates/base.html:19 templates/base.html:32
 #: templates/overview/index.html:4
 msgid "Overview"
 msgstr "Übersicht"
 
 #: templates/categories/add.html:19 templates/categories/change.html:31
-#: templates/importer/check.html:44 templates/ruleset/add.html:68
+#: templates/importer/check.html:43 templates/ruleset/add.html:68
 #: templates/ruleset/change.html:47
 msgid "Save"
 msgstr "Speichern"
@@ -100,13 +91,13 @@ msgid "Edit Category"
 msgstr "Kategorie ändern"
 
 #: templates/categories/change.html:4 templates/categories/index.html:45
-#: templates/overview/index.html:119 templates/overview/index.html:153
+#: templates/overview/index.html:131 templates/overview/index.html:165
 #: templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr "Einnahmen"
 
-#: templates/categories/change.html:4 templates/categories/index.html:50
-#: templates/overview/index.html:124 templates/overview/index.html:157
+#: templates/categories/change.html:4 templates/categories/index.html:49
+#: templates/overview/index.html:136 templates/overview/index.html:169
 #: templates/ruleset/add.html:4
 msgid "Spendings"
 msgstr "Ausgaben"
@@ -140,13 +131,13 @@ msgstr "mtl. Budget: %(budget)s"
 msgid "Add new subcategory"
 msgstr "Neue Unterkategorie"
 
-#: templates/categories/index.html:23
-msgid "Delete this category"
-msgstr "Diese Kategorie löschen"
-
-#: templates/categories/index.html:25
+#: templates/categories/index.html:22
 msgid "Edit this category"
 msgstr "Diese Kategorie ändern"
+
+#: templates/categories/index.html:24
+msgid "Delete this category"
+msgstr "Diese Kategorie löschen"
 
 #: templates/categories/index.html:37
 msgid "No categories for earnings exist."
@@ -160,16 +151,16 @@ msgstr "Neue Hauptkategorie"
 msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
-#: templates/importer/check.html:10 templates/overview/index.html:44
+#: templates/importer/check.html:11 templates/overview/index.html:44
 #: templates/overview/index.html:52 templates/transactions/index.html:10
 msgid "YYYY-MM-dd"
 msgstr "dd.MM.YYYY"
 
-#: templates/importer/check.html:12
+#: templates/importer/check.html:13
 msgid "Description"
 msgstr "Beschreibung"
 
-#: templates/importer/check.html:13
+#: templates/importer/check.html:14
 msgid "Please enter a description"
 msgstr "Bitte eine Beschreibung eingeben"
 
@@ -182,11 +173,11 @@ msgstr "Kategorie"
 msgid "Please Choose"
 msgstr "Bitte auswählen"
 
-#: templates/importer/check.html:42
+#: templates/importer/check.html:41
 msgid "Check again"
 msgstr "Erneut überprüfen"
 
-#: templates/importer/check.html:55
+#: templates/importer/check.html:51
 msgid "No transactions found."
 msgstr "Keine Transaktionen verfügbar."
 
@@ -222,50 +213,60 @@ msgstr "Monate"
 msgid "MM-dd"
 msgstr "dd.MM"
 
-#: templates/overview/index.html:91
+#: templates/overview/index.html:73
+msgid "pending"
+msgstr "ausstehend"
+
+#: templates/overview/index.html:75
+msgid "All regular transactions for this category are already done."
+msgstr ""
+"Alle regelmäßigen Transaktionen für diese Kategorie sind bereits "
+"durchgeführt."
+
+#: templates/overview/index.html:103
 msgid "No transactions available"
 msgstr "Keine Transaktionen verfügbar."
 
-#: templates/overview/index.html:103
+#: templates/overview/index.html:115
 msgid "previous month"
 msgstr "vorheriger Monat"
 
-#: templates/overview/index.html:104 templates/overview/index.html:139
+#: templates/overview/index.html:116 templates/overview/index.html:151
 #, python-format
 msgid "current month in %(year)s"
 msgstr "aktueller Monat in %(year)s"
 
-#: templates/overview/index.html:106
+#: templates/overview/index.html:118
 msgid "previous year"
 msgstr "vorheriges Jahr"
 
-#: templates/overview/index.html:108
+#: templates/overview/index.html:120
 msgid "previous timeperiod"
 msgstr "vorheriger Zeitraum"
 
-#: templates/overview/index.html:115 templates/overview/index.html:153
-#: templates/overview/index.html:157
+#: templates/overview/index.html:127 templates/overview/index.html:165
+#: templates/overview/index.html:169
 msgid "Planned"
 msgstr "Geplant"
 
-#: templates/overview/index.html:116 templates/overview/index.html:153
-#: templates/overview/index.html:157
+#: templates/overview/index.html:128 templates/overview/index.html:165
+#: templates/overview/index.html:169
 msgid "Current"
 msgstr "Aktuell"
 
-#: templates/overview/index.html:129
+#: templates/overview/index.html:141
 msgid "Balance"
 msgstr "Bilanz"
 
-#: templates/overview/index.html:137
+#: templates/overview/index.html:149
 msgid "next month"
 msgstr "nächster Monat"
 
-#: templates/overview/index.html:141
+#: templates/overview/index.html:153
 msgid "next year"
 msgstr "nächstes Jahr"
 
-#: templates/overview/index.html:143
+#: templates/overview/index.html:155
 msgid "next timeperiod"
 msgstr "nächster Zeitraum"
 
@@ -275,8 +276,7 @@ msgstr "Neue Regel"
 
 #: templates/ruleset/add.html:13
 msgid ""
-"The name of the rule. This value is only displayed in the ruleset "
-"overview."
+"The name of the rule. This value is only displayed in the ruleset overview."
 msgstr ""
 "Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-"
 "Regeln benutzt."
@@ -301,12 +301,12 @@ msgstr "Suchausdruck"
 
 #: templates/ruleset/add.html:25
 msgid ""
-"The short description that will be used for all matched transactions "
-"during import. The short description still can be changed during import."
+"The short description that will be used for all matched transactions during "
+"import. The short description still can be changed during import."
 msgstr ""
-"Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend "
-"es Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des"
-" Imports dennoch geändert werden."
+"Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend es "
+"Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des "
+"Imports dennoch geändert werden."
 
 #: templates/ruleset/add.html:26 templates/ruleset/change.html:17
 msgid "Short Description"
@@ -384,16 +384,6 @@ msgstr "Regeln für Ausgaben"
 msgid "No transactions available."
 msgstr "Keine Transaktionen verfügbar."
 
-#: utils/db.py:274
-#, python-format
-msgid "transaction id %(id)d does not exist."
-msgstr "Eine Transaktion mit der ID %(id)d existiert nicht."
-
-#: utils/db.py:307 utils/db.py:330
-#, python-format
-msgid "transactions for category id %(id)d does not exist."
-msgstr "Transaktionen für Kategorie %(id)d existieren nicht."
-
 #: utils/plugins.py:112
 #, python-format
 msgid "The plugin %s has no parse_function implemented or registered"
@@ -405,3 +395,16 @@ msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert"
 #~ msgid "MM/dd"
 #~ msgstr "dd.MM"
 
+#~ msgid "Multiple plugins match file content"
+#~ msgstr "Mehrere Plugins passen zur hochgeladenen Datei."
+
+#~ msgid "No import plugin available that can handle this file."
+#~ msgstr ""
+#~ "Kein Import-Plugin vorhanden, welches die hochgeladene Datei verarbeiten "
+#~ "kann."
+
+#~ msgid "transaction id %(id)d does not exist."
+#~ msgstr "Eine Transaktion mit der ID %(id)d existiert nicht."
+
+#~ msgid "transactions for category id %(id)d does not exist."
+#~ msgstr "Transaktionen für Kategorie %(id)d existieren nicht."
