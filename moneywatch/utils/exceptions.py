@@ -6,6 +6,20 @@ class MultipleRuleMatchError(Exception):
         self.transaction = transaction
         self.rules = rules
    
+class MultiplePluginMatchError(Exception):
+    def __init__(self, file, plugins):
+
+        super().__init__()
+
+        self.file = file
+        self.plugins = plugins 
+        
+class NoPluginMatchError(Exception):
+    def __init__(self, file):
+
+        super().__init__()
+
+        self.file = file
         
 class NoSuchItemError(Exception):
     def __init__(self, *args, **kwargs):

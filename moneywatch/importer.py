@@ -1,6 +1,4 @@
-from flask import (
-            Blueprint, flash, g, redirect, render_template, request, url_for,session
-            )
+from flask import (Blueprint, flash, g, redirect, render_template, request, url_for, session, current_app)
 
 import re
 import os
@@ -11,14 +9,13 @@ import datetime
 
 from flask_babel import gettext
 
-
 from moneywatch.utils.objects import Rule,Category, Transaction
 from moneywatch.utils.plugins import ImportPluginsManager
-from moneywatch.utils.exceptions import MultipleRuleMatchError
-bp = Blueprint('import', __name__)
+from moneywatch.utils.exceptions import *
 
+bp = Blueprint('import', __name__)
 plugins = ImportPluginsManager(os.path.dirname(os.path.realpath(__file__))+"/import_plugins")
- 
+
  
 @bp.route('/import/', methods=('GET', 'POST'))
 def index():
@@ -45,10 +42,10 @@ def index():
                         session['import_data'] = create_transactions_from_import(items)
 
                     else:
-                        flash(gettext("Multiple plugins match file content"))
+                        raise MultiplePluginMatchError(request.files['file'], available_plugins)
                     
                 else:
-                    flash(gettext("No import plugin available that can handle this file."))
+                    raise NoPluginMatchError(request.files['file'])
                 
 
             categories = {}
@@ -78,7 +75,6 @@ def index():
 
             return render_template('importer/check.html', data=(session.get("import_data",[] )), complete=check_if_items_complete(session.get("import_data",[] )), categories=categories)  
             
-
         
     return render_template('importer/index.html', extensions = plugins.get_possible_file_extensions())  
     
