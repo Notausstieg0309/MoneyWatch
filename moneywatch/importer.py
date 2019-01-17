@@ -34,7 +34,9 @@ def index():
             if "file" in request.files:
             
                 available_plugins = plugins.resolve_plugins_for_file(request.files['file'])
-                session.clear()
+                
+                session.pop("import_data", None)
+                
                 if len(available_plugins) > 0:
                     
                     if len(available_plugins) == 1:
@@ -60,22 +62,21 @@ def index():
 
             
             if request.form:
-                apply_import_edits(session.get("import_data",[] ), request.form)
-
-                session.modified = True
+                if "import_data" in session:
+                    apply_import_edits(session['import_data'], request.form)
+                    session.modified = True
 
                 if request.form['action'] == "save":
                 
                     for transaction in session['import_data']:
                         transaction.save()
                         
-                    session.clear()
+                    session.pop("import_data", None)
+                    
                     return redirect(url_for('overview.index'))
             
-
             return render_template('importer/check.html', data=(session.get("import_data",[] )), complete=check_if_items_complete(session.get("import_data",[] )), categories=categories)  
-            
-        
+             
     return render_template('importer/index.html', extensions = plugins.get_possible_file_extensions())  
     
 
