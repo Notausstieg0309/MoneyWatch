@@ -55,7 +55,9 @@ def add(type):
             item["description"] = description
             item["category_id"] = category_id
             item["regular"] = regular
-            item["next_valuta"] = next_valuta
+            
+            if next_valuta.strip() != "":
+                item["next_valuta"] = next_valuta
             if next_date.strip() != "":
                 item["next_due"] = utils.get_date_from_string(next_date, "%Y-%m-%d")
                 

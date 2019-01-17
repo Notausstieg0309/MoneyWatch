@@ -33,8 +33,8 @@ CREATE TABLE ruleset (
   description TEXT NOT NULL,
   category_id INTEGER REFERENCES categories,
   regular INTEGER NULL DEFAULT 0,
-  next_days INTEGER NOT NULL DEFAULT 0,
-  next_valuta INTEGER NOT NULL DEFAULT 0
+  next_days INTEGER NULL ,
+  next_valuta INTEGER NULL
   );
 
 

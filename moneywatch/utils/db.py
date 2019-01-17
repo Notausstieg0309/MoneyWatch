@@ -261,12 +261,12 @@ def save_rule(data):
     
     if data.get("id", None) is not None:
         db.execute('UPDATE ruleset SET name = ?, pattern = ?, description = ?, category_id = ?, regular = ?, next_days = ?, next_valuta = ? WHERE id = ? ',
-                   (data["name"], data["pattern"], data["description"], data["category_id"], data["regular"], data["next_days"], data["next_valuta"], data["id"])
+                   (data["name"], data["pattern"], data["description"], data["category_id"], data["regular"], data.get("next_days", None), data.get("next_valuta", None), data["id"])
                   )
    
     else: # no id exist, so let's create a new rule
         db.execute('INSERT INTO ruleset (name, pattern, description, category_id, type, regular, next_valuta, next_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                    (data["name"], data["pattern"], data["description"], data["category_id"], data["type"], data["regular"], data["next_valuta"], data["next_days"])
+                    (data["name"], data["pattern"], data["description"], data["category_id"], data["type"], data["regular"], data.get("next_valuta", None), data.get("next_days", None))
                     )   
     db.commit()
 
