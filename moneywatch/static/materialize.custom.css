@@ -89,7 +89,8 @@ div.overview div.category_header {
     background: linear-gradient(to bottom, #e3f4ff 0%,#c4e3fe 100%);
     */
     
-    padding:0.25em;
+    padding:0.25em 0em 0.25em 0.25em;
+    
 }
 div.overview div.in div.category_header {
 	background: #d4fbdf;
