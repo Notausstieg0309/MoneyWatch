@@ -445,7 +445,7 @@ class Category:
         else:
             result = []
             current_app.logger.debug("calculate planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
-            for rule in Rule.getRulesByCategory(self) or []:
+            for rule in self.rules:
 
                     if rule.regular and not rule.next_due > self.end:
 
@@ -475,7 +475,32 @@ class Category:
             result.sort(key=lambda x: x.date)   
             self._cache["planned_transactions"] = result
             return result
-                    
+
+    @property
+    def rules(self):
+        
+        if "rules" in self._cache:
+            return self._cache["rules"]  
+        else:
+            rules = Rule.getRulesByCategory(self)
+            self._cache["rules"] = rules
+            return rules
+            
+    @property
+    def has_regular_rules(self):
+        
+        if "has_regular_rules" in self._cache:
+            return self._cache["has_regular_rules"]  
+        else:
+            result = False
+            
+            for rule in self.rules:
+                if rule.regular:
+                    result = True
+                    break
+            
+            self._cache["has_regular_rules"] = result
+            return result
     
     def save(self):
         db.save_category(self._data)

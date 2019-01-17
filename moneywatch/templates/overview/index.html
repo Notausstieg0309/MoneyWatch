@@ -65,13 +65,25 @@
     {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat("EUR")) }}
 {%- endmacro %}
 
-
+{% macro category_row(row_class, category) -%}
+    {%- set name -%}
+        {{ category.name }}
+        {% if category.has_regular_rules %}
+            {% if category.planned_transactions|length > 0 %}
+            <span class="new badge red lighten-2" data-badge-caption="{% trans %}pending{% endtrans %}" >{{category.planned_transactions|length}}</span>
+            {% else %}
+            <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
+            {% endif %}
+        {% endif %}
+    {%- endset -%}
+    {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat("EUR"), category.valuta, category.valuta|currencyformat("EUR") )}}
+{%- endmacro %}
 
 
 {% macro category_item(category_list) %}
 {% for category in category_list recursive %}
     <div class="category_container{% if loop.depth == 1 %} root{% endif %}{% if category.transactions|length == 0 %} no_transactions{% endif %}{% if category.childs|length == 0 %} no_subcategories{% endif %}">
-       {{ item_row("category_header", category.name, category.planned_valuta, category.planned_valuta|currencyformat("EUR"), category.valuta, category.valuta|currencyformat("EUR") )}}
+       {{ category_row("category_header", category) }}
        
        {% if category.childs|length > 0 or category.transactions|length > 0 or category.planned_transactions|length > 0 %} 
        <div class="category_content">
