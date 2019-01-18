@@ -68,7 +68,7 @@
         {{ category.name }}
         {%- if current_month -%}
             {%- if category.planned_transactions_valuta != 0 -%}
-            <span class="new badge red lighten-2" data-badge-caption="{% trans %}pending{% endtrans %}">{% if category.planned_transactions_valuta > 0 %}+{% endif %}{{ category.planned_transactions_valuta | currencyformat("EUR") }}</span>
+            <span class="new badge red lighten-2 tooltipped" data-position="bottom" data-tooltip="{% trans %}The overall amount of pending regular transactions in or underneath this category.{% endtrans %}" data-badge-caption="{% trans %}pending{% endtrans %}">{% if category.planned_transactions_valuta > 0 %}+{% endif %}{{ category.planned_transactions_valuta | currencyformat("EUR") }}</span>
             {%- elif category.has_regular_rules %}
             <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
             {% endif -%}

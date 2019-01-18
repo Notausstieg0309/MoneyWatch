@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-18 09:56+0100\n"
-"PO-Revision-Date: 2019-01-18 10:00+0100\n"
+"POT-Creation-Date: 2019-01-18 11:53+0100\n"
+"PO-Revision-Date: 2019-01-18 11:56+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -212,6 +212,14 @@ msgstr "Monate"
 #: templates/overview/index.html:42
 msgid "MM-dd"
 msgstr "dd.MM"
+
+#: templates/overview/index.html:71
+msgid ""
+"The overall amount of pending regular transactions in or underneath this "
+"category."
+msgstr ""
+"Der ausstehende Betrag aller noch offenen regelmäßigen Transaktion in oder "
+"unterhalb dieser Kategorie."
 
 #: templates/overview/index.html:71
 msgid "pending"
