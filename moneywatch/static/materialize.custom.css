@@ -142,6 +142,7 @@ table.balance {
     width:unset;
     margin-left:auto;
     margin-right:auto;
+    margin-bottom: 1em;
 }    
 
 table.balance th,td {
@@ -167,6 +168,10 @@ table.balance tr.final_balance {
 
 table.balance tr.final_balance td.current { 
    font-weight: bold;
+}
+
+table.balance th.current.with_planned:after {
+    content: "*";
 }
 
 

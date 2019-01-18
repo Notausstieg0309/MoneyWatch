@@ -22,10 +22,12 @@ def createOverview(start, end):
     if end < start:
         end = utils.get_last_day_of_month(start.year,start.month)
    
+    
     list_in = Category.getRootCategories("in", start=start, end=end)
     list_out = Category.getRootCategories("out", start=start, end=end)
 
-        
+    current_month =  start < datetime.date.today() < end
+    
     sum_current_out = 0
     sum_current_in = 0
     
@@ -43,6 +45,16 @@ def createOverview(start, end):
 
     for category in list_out:
         sum_planned_out += category.planned_valuta
+        
+        
+    sum_current_with_planned_transactions_in = 0
+    sum_current_with_planned_transactions_out = 0    
+    
+    for category in list_in:
+        sum_current_with_planned_transactions_in += category.current_valuta_with_planned
+
+    for category in list_out:
+        sum_current_with_planned_transactions_out += category.current_valuta_with_planned
 
     balance = {}
     
@@ -54,9 +66,14 @@ def createOverview(start, end):
     balance['current']['in'] = sum_current_in
     balance['current']['out'] = sum_current_out
     
+    balance['current_with_planned_transactions'] = {}
+    balance['current_with_planned_transactions']['in'] = sum_current_with_planned_transactions_in
+    balance['current_with_planned_transactions']['out'] = sum_current_with_planned_transactions_out
+    
     balance['current']['balance'] = sum_current_in + sum_current_out
     balance['planned']['balance'] = sum_planned_in + sum_planned_out
-
+    balance['current_with_planned_transactions']['balance'] = sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out
+    
     months  = utils.get_number_of_months(start,end)
     
     timing = {}
@@ -72,7 +89,7 @@ def createOverview(start, end):
     if oldest_transaction:
         timing["oldest"] = oldest_transaction.date
 
-    return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing = timing) 
+    return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month) 
         
         
 @bp.route('/')

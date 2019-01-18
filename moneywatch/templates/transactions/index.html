@@ -9,7 +9,7 @@
   <tr>
   <td class="date" rowspan="3">{{transaction.date | dateformat(_("YYYY-MM-dd"))}}</td>
   <td class="short_description">{{transaction.description}}</td>
-  <td class="valuta num" rowspan="2" num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</td>
+  <td class="valuta num" rowspan="2" data-num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</td>
   </tr>
   <tr>
   <td class="category">{{ transaction.category.name }}</td>

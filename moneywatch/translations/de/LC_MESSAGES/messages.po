@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-17 13:08+0100\n"
-"PO-Revision-Date: 2019-01-17 13:20+0100\n"
+"POT-Creation-Date: 2019-01-18 09:56+0100\n"
+"PO-Revision-Date: 2019-01-18 10:00+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -91,13 +91,13 @@ msgid "Edit Category"
 msgstr "Kategorie ändern"
 
 #: templates/categories/change.html:4 templates/categories/index.html:45
-#: templates/overview/index.html:131 templates/overview/index.html:165
+#: templates/overview/index.html:127 templates/overview/index.html:164
 #: templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr "Einnahmen"
 
 #: templates/categories/change.html:4 templates/categories/index.html:49
-#: templates/overview/index.html:136 templates/overview/index.html:169
+#: templates/overview/index.html:132 templates/overview/index.html:168
 #: templates/ruleset/add.html:4
 msgid "Spendings"
 msgstr "Ausgaben"
@@ -151,8 +151,8 @@ msgstr "Neue Hauptkategorie"
 msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
-#: templates/importer/check.html:11 templates/overview/index.html:44
-#: templates/overview/index.html:52 templates/transactions/index.html:10
+#: templates/importer/check.html:11 templates/overview/index.html:42
+#: templates/overview/index.html:50 templates/transactions/index.html:10
 msgid "YYYY-MM-dd"
 msgstr "dd.MM.YYYY"
 
@@ -209,64 +209,68 @@ msgstr "MM.YYYY"
 msgid "Months"
 msgstr "Monate"
 
-#: templates/overview/index.html:44
+#: templates/overview/index.html:42
 msgid "MM-dd"
 msgstr "dd.MM"
 
-#: templates/overview/index.html:73
+#: templates/overview/index.html:71
 msgid "pending"
 msgstr "ausstehend"
 
-#: templates/overview/index.html:75
+#: templates/overview/index.html:73
 msgid "All regular transactions for this category are already done."
 msgstr ""
 "Alle regelmäßigen Transaktionen für diese Kategorie sind bereits "
 "durchgeführt."
 
-#: templates/overview/index.html:103
+#: templates/overview/index.html:97
 msgid "No transactions available"
 msgstr "Keine Transaktionen verfügbar."
 
-#: templates/overview/index.html:115
+#: templates/overview/index.html:109
 msgid "previous month"
 msgstr "vorheriger Monat"
 
-#: templates/overview/index.html:116 templates/overview/index.html:151
+#: templates/overview/index.html:111 templates/overview/index.html:149
 #, python-format
 msgid "current month in %(year)s"
 msgstr "aktueller Monat in %(year)s"
 
-#: templates/overview/index.html:118
+#: templates/overview/index.html:113
 msgid "previous year"
 msgstr "vorheriges Jahr"
 
-#: templates/overview/index.html:120
+#: templates/overview/index.html:115
 msgid "previous timeperiod"
 msgstr "vorheriger Zeitraum"
 
-#: templates/overview/index.html:127 templates/overview/index.html:165
-#: templates/overview/index.html:169
+#: templates/overview/index.html:123 templates/overview/index.html:164
+#: templates/overview/index.html:168
 msgid "Planned"
 msgstr "Geplant"
 
-#: templates/overview/index.html:128 templates/overview/index.html:165
-#: templates/overview/index.html:169
+#: templates/overview/index.html:124 templates/overview/index.html:164
+#: templates/overview/index.html:168
 msgid "Current"
 msgstr "Aktuell"
 
-#: templates/overview/index.html:141
+#: templates/overview/index.html:137
 msgid "Balance"
 msgstr "Bilanz"
 
-#: templates/overview/index.html:149
+#: templates/overview/index.html:142
+msgid "current values incl. pending regular transactions"
+msgstr "aktuellen Zahlen inkl. noch ausstehenden Transaktionen"
+
+#: templates/overview/index.html:147
 msgid "next month"
 msgstr "nächster Monat"
 
-#: templates/overview/index.html:153
+#: templates/overview/index.html:151
 msgid "next year"
 msgstr "nächstes Jahr"
 
-#: templates/overview/index.html:155
+#: templates/overview/index.html:153
 msgid "next timeperiod"
 msgstr "nächster Zeitraum"
 

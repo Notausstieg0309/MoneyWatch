@@ -654,7 +654,24 @@ class Category:
                 result += transaction.valuta
             self._cache["valuta"] = result
             return result
+    @property
+    def current_valuta_with_planned(self):
+    
+        if "current_valuta_with_planned" in self._cache:
+            return self._cache["current_valuta_with_planned"]
+        else:
 
+            result = 0.0
+            
+            for category in self.childs:
+                result += category.current_valuta_with_planned
+            for transaction in self.transactions:
+                result += transaction.valuta
+            for transaction in self.planned_transactions:
+                result += transaction.valuta
+                
+            self._cache["current_valuta_with_planned"] = result
+            return result
     
     @property
     def planned_valuta(self):

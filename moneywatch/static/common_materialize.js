@@ -4,6 +4,20 @@ $(document).ready(function(){
     M.AutoInit();
 });
   
+  
+function formatNumberEl(el) {
+    item = $(el);
+    
+    if (Number(item.attr("data-num")) < 0)
+    {
+        item.addClass('negative').removeClass("positive");
+    } 
+    else
+    {
+        item.addClass('positive').removeClass("negative");
+    }
+}
+  
 $(function() {
     
     // ruleset: hide/show additional inputs at ruleset add/change views
@@ -22,18 +36,43 @@ $(function() {
     });
     
     // general: colorize all numeric values 
-    $('.num').each(function () {
-        item = $(this);
-        
-        if (Number(item.attr("num")) < 0)
-        {
-            item.addClass('negative');
-        } 
-        else
-        {
-            item.addClass('positive');
-        }
-    });
+    $('.num').each(function () { formatNumberEl(this); });
+    
+    // overview: switch between current values and current incl. pending transactions
+    $('table.balance th.current')
+       .css("cursor", "pointer")
+       .click(function() {
+           
+           if($(this).hasClass("with_planned"))
+           {
+                $('table.balance td.current').hide(100, function() {
+                   
+                    $('table.balance td.current').each(function () {
+                        $(this).attr("data-num", $(this).attr("data-without-planned-num"));
+                        $(this).html($(this).attr("data-without-planned-formatted"));
+                        formatNumberEl(this);
+                    }).show(100);
+                    
+                    $('table.balance th.current').removeClass("with_planned");
+                    $('div.with_planned_info').slideUp(200);
+               });
+           }
+           else
+           {
+                $('table.balance td.current').hide(100, function() {
+                    $('table.balance td.current').each(function () {
+                        console.log(this);
+                        $(this).attr("data-num", $(this).attr("data-with-planned-num"));
+                        $(this).html($(this).attr("data-with-planned-formatted"));
+                        formatNumberEl(this);
+                    }).show(100);
+                    
+                    $('table.balance th.current').addClass("with_planned");
+                    $('div.with_planned_info').slideDown(200);
+                });
+           }
+       });
+       
     
     // overview: minimize categories that have no subcategories
     $('div.category_container.no_subcategories').each(function() {
@@ -52,4 +91,5 @@ $(function() {
         ;
     });
 });
+ 
  
