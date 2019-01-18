@@ -39,7 +39,7 @@ $(function() {
     $('.num').each(function () { formatNumberEl(this); });
     
     // overview: switch between current values and current incl. pending transactions
-    $('table.balance th.current')
+    $('table.balance th.current[data-enable-switch=1]')
        .css("cursor", "pointer")
        .click(function() {
            

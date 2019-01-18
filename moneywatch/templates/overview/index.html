@@ -121,7 +121,7 @@
 <tr>
 <th>&nbsp;</th>
 <th class="planned">{% trans %}Planned{% endtrans %}</th>
-<th class="current">{% trans %}Current{% endtrans %}</th>
+<th class="current" data-enable-switch="{{ current_month | int }}">{% trans %}Current{% endtrans %}</th>
 </tr>
 <tr class="earnings">
 <td>{% trans %}Earnings{% endtrans %}</td>
