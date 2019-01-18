@@ -166,12 +166,43 @@ table.balance tr.final_balance {
     font-size: 1.15em;
 }
 
+/* highlight current balance value */
 table.balance tr.final_balance td.current { 
    font-weight: bold;
 }
 
 table.balance th.current.with_planned:after {
     content: "*";
+}
+
+
+
+/* budget indicators */
+
+div.budget_perc {
+  height: 22px;
+  line-height: 22px;
+  width: 60px;
+  background-color: #fff;
+  border-radius:3px;
+  overflow: hidden;
+  border:1px solid #802d2d;
+  
+}
+
+div.budget_perc:before {
+  content: attr(data-label);
+  font-size: 0.8em;
+  position: absolute;
+  text-align: center;
+  width:60px;
+  font-weight: bold;
+}
+
+div.budget_perc span.value {
+  background-color: #7cc4ff;
+  display: inline-block;
+  height: 100%;
 }
 
 

@@ -72,6 +72,12 @@
             {%- elif category.has_regular_rules %}
             <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
             {% endif -%}
+            {%- if category.budget_monthly != 0 -%}
+            {%- set perc = (category.valuta / category.budget) * 100 -%}
+             <div class="budget_perc right" data-label="{{ perc| int}} %">
+              <span class="value {% if perc > 90 %}red{% elif perc > 75 %}yellow{% else %}green{% endif %} lighten-4" style="width:{{ perc }}%;"></span>
+            </div>
+            {% endif -%}
         {%- endif -%}
     {%- endset -%}
     {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat("EUR"), category.valuta, category.valuta|currencyformat("EUR") )}}
