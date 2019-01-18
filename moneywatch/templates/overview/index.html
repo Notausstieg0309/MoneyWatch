@@ -68,7 +68,7 @@
         {{ category.name }}
         {%- if current_month and category.has_regular_rules  -%}
             {%- if category.planned_transactions|length > 0 -%}
-            <span class="new badge red lighten-2" data-badge-caption="{% trans %}pending{% endtrans %}">{{ category.planned_transactions|length }}</span>
+            <span class="new badge red lighten-2" data-badge-caption="{% trans %}pending{% endtrans %}">{{ category.planned_transactions_valuta | currencyformat("EUR") }}</span>
             {%- else %}
             <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
             {% endif -%}

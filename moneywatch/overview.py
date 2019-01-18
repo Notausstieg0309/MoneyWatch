@@ -51,10 +51,10 @@ def createOverview(start, end):
     sum_current_with_planned_transactions_out = 0    
     
     for category in list_in:
-        sum_current_with_planned_transactions_in += category.current_valuta_with_planned
+        sum_current_with_planned_transactions_in += category.valuta + category.planned_transactions_valuta
 
     for category in list_out:
-        sum_current_with_planned_transactions_out += category.current_valuta_with_planned
+        sum_current_with_planned_transactions_out += category.valuta + category.planned_transactions_valuta
 
     balance = {}
     
