@@ -22,15 +22,15 @@
           {%- endif -%}
           
           {%- if num_valuta is not none -%}
-            <div class="col num s6 current right" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
+            <div class="col num s6 current" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
           {%- else -%}
-            <div class="col s6 current right">{{ text_valuta }}</div>
+            <div class="col s6 current">{{ text_valuta }}</div>
           {% endif -%}
 		{%- else -%}
 		  {%- if num_valuta is not none -%}
-            <div class="col num s12 current right" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
+            <div class="col num s12 current" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
           {%- else -%}
-            <div class="col s12 current right">{{ text_valuta }}</div>
+            <div class="col s12 current">{{ text_valuta }}</div>
           {%- endif -%} 
 		{%- endif -%}
         </div>
@@ -120,8 +120,8 @@
 <table border="0" cellspacing="0" class="balance z-depth-2">
 <tr>
 <th>&nbsp;</th>
-<th class="planned">{% trans %}Planned{% endtrans %}</th>
-<th class="current" data-enable-switch="{{ current_month | int }}">{% trans %}Current{% endtrans %}</th>
+<th class="planned right-align">{% trans %}Planned{% endtrans %}</th>
+<th class="current right-align" data-enable-switch="{{ current_month | int }}">{% trans %}Current{% endtrans %}</th>
 </tr>
 <tr class="earnings">
 <td>{% trans %}Earnings{% endtrans %}</td>
