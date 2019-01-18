@@ -9,14 +9,12 @@ from flask import current_app
 
 class Rule:
 
-    def __new__(cls, data):
+    def __init__(self, data, **kwargs):
         if isinstance(data, int):
             item = db.get_rule(data)
 
-            if item is not None:
-                new = super(Rule, cls).__new__(cls)
-                new._data = item
-                return new
+            if item is not None:                
+                self._data = item.copy()
             else:
                 raise NoSuchItemError("Rule", data)
                 
@@ -24,18 +22,13 @@ class Rule:
         
             if "name" not in data or "pattern" not in data or "description" not in data or "category_id" not in data or "regular" not in data:
                 raise ValueError
-                
-            new = super(Rule, cls).__new__(cls)
-            new._data = data
-            return new
+            
+            self._data = data.copy()
+            
         else:
             raise TypeError
-
-    def __init__(self, data, **kwargs):
-    
-        if not hasattr(self, '_data'): # data is already set by __new__()
-            self._data = data.copy()
-
+            
+        
     @property
     def name(self):
         return self._data.get("name", None)
@@ -167,35 +160,24 @@ class Rule:
     
 class Transaction:
 
-    def __new__(cls, data):
+    def __init__(self, data, **kwargs):
     
         if isinstance(data, int):
             item = db.get_transaction(data)
-
-            if item is not None:
             
-                new = super(Transaction, cls).__new__(cls)
-                new._data = item
-                
-                return new
-                
+            if item is not None:
+                self._data = item.copy()
             else:
-                raise NoSuchItemError("Transaction", data)
+                raise NoSuchItemError("Transaction", data)   
                 
         elif isinstance(data, dict):      
             if data.get("full_text", None) is None or data.get("valuta") is None or data.get("date", None) is None:
                 raise ValueError
                 
-            new = super(Transaction, cls).__new__(cls)
-            new._data = data
-            return new
+            self._data = data.copy()
         else:
             raise TypeError
-
-    def __init__(self, data, **kwargs):
-    
-        if not hasattr(self, '_data'): # data is already set by __new__()
-            self._data = data.copy()
+     
             
         self._cache = {}
         
@@ -398,39 +380,29 @@ class PlannedTransaction:
     
 class Category:
 
-
-    def __new__(cls, data, **kwargs):
+    def __init__(self, data, **kwargs):
         if isinstance(data, int):
             item = db.get_category(data)
 
             if item is not None:
-                new = super(Category, cls).__new__(cls)
-                new._data = item
-                return new
+                self._data = item.copy()
             else:
                 raise NoSuchItemError("Category", data)
                 
         elif isinstance(data, dict):
             if data.get("name", None) is None or data.get("type") is None:
                 raise ValueError
-                
-            if "budget_monthly" in data:
-                if isinstance(data["budget_monthly"], str) and data["budget_monthly"] == "":
-                    data["budget_monthly"] = 0
-                    
-                data["budget_monthly"] = int(data["budget_monthly"])
-                
-            new = super(Category, cls).__new__(cls)
-            new._data = data
-            return new
-            
+         
+            self._data = data.copy()
+           
         else:
             raise ValueError
-
-    def __init__(self, data, **kwargs):
-    
-        if not hasattr(self, '_data'): # data is already set by __new__()
-            self._data = data.copy()
+        
+        if "budget_monthly" in self._data:
+            if isinstance(self._data["budget_monthly"], str) and self._data["budget_monthly"] == "":
+                self._data["budget_monthly"] = 0
+                
+            self._data["budget_monthly"] = int(self._data["budget_monthly"])
         
         self._kwargs = kwargs.copy()
         self._cache = {}
