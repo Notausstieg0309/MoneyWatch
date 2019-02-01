@@ -26,7 +26,7 @@ def createOverview(start, end):
     list_in = Category.getRootCategories("in", start=start, end=end)
     list_out = Category.getRootCategories("out", start=start, end=end)
 
-    current_month =  start < datetime.date.today() < end
+    current_month = start <= datetime.date.today() <= end
     
     sum_current_out = 0
     sum_current_in = 0
