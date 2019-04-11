@@ -330,15 +330,15 @@ class Transaction:
     
     @property   
     def exist(self):
-        transaction = db.get_transaction_by_date_valuta(self.date, self.valuta)
+        transactions = db.get_transaction_by_date_valuta(self.date, self.valuta)
         
-        if transaction:
-            if Transaction._normalizeText(transaction["full_text"]) == Transaction._normalizeText(self.full_text):
-                return True
-                
+        for transaction in transactions:
+            if transaction:
+                if Transaction._normalizeText(transaction["full_text"]) == Transaction._normalizeText(self.full_text):
+                    return True
+                    
         return False
         
-    
     @staticmethod   
     def getTransactions(start=None,end=None):
 

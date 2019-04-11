@@ -369,11 +369,12 @@ def get_transaction_by_date_valuta(date, valuta):
     
     db = get_db()
     
-    transaction = db.execute('SELECT * FROM transactions WHERE days = ? AND valuta = ?', (utils.get_days_from_date(date), valuta)).fetchone()
+    transactions = db.execute('SELECT * FROM transactions WHERE days = ? AND valuta = ?', (utils.get_days_from_date(date), valuta)).fetchall()
     
-    convert_days_to_date(transaction, "days", "date")
+    for transaction in transactions:
+        convert_days_to_date(transaction, "days", "date")
     
-    return transaction
+    return transactions
 
  
 def get_transactions_by_category(category_id, start=None, end=None):
