@@ -146,7 +146,7 @@ If the given file can be handled by the plugin, the check function should return
 
 ### parse function
 
-The parse function will be called, if your plugin is selected to import the file. So no we must parse the file and return all transaction, that are available in the file.
+The parse function will be called, if your plugin is selected to import the file. So now we must parse the file and return all transactions, that are available in the file.
 
 The parse function is called with the same arguments as the parse function.
 
@@ -195,7 +195,7 @@ The parse function must return a list of dicts ordered by the date ascending (ol
 ]
 ```
 
-### check function
+### register the plugin
 
 The plugin now registers the two functions via a global plugin_info dict.
 
