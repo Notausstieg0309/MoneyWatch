@@ -61,7 +61,6 @@ $(function() {
            {
                 $('table.balance td.current').hide(100, function() {
                     $('table.balance td.current').each(function () {
-                        console.log(this);
                         $(this).attr("data-num", $(this).attr("data-with-planned-num"));
                         $(this).html($(this).attr("data-with-planned-formatted"));
                         formatNumberEl(this);
@@ -89,6 +88,13 @@ $(function() {
                 $(this).next(".category_content").slideToggle(200);
             })
         ;
+    });
+   
+    // overview: add click handler for transaction charts modal popup
+    $('div.overview i.transaction_chart[data-transaction-id]')
+       .css("cursor", "pointer")
+       .click(function() {
+           modalChart("/ajax/transaction_chart/"+$(this).attr("data-transaction-id")+"/");
     });
 });
  

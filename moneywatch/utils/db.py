@@ -402,7 +402,62 @@ def get_transactions_by_category(category_id, start=None, end=None):
         convert_days_to_date(transaction, "days", "date")
     
     return transactions    
-	 
+
+def get_transactions_by_rule(rule_id, start=None, end=None, limit=None):
+    """Get all transaction that are matched by a specific rule id from the database. Optionally filter within a specific start or/and end date.
+
+    :param int rule_id: the rule id based on the transactions should be filtered.
+    :param date start: a optional start date to get only transactions that are newer or equal to this date.
+    :param date end: a optional end date to get only transactions that are older or equal to this date.
+    :return: a list of all transactions for the given category id that are available within the given timeframe as a list of dicts.
+    :rtype: list(dict) or None
+    """   
+    
+    transactions = None
+	
+    limit = ("LIMIT %d" % limit) if limit is not None else ""
+	
+    if start is not None and end is not None:
+        transactions = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days >= ? AND days <= ? ORDER BY days ASC %s' % limit, (rule_id, utils.get_days_from_date(start), utils.get_days_from_date(end))).fetchall()
+    elif start is None and end is not None:
+        transactions = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? AND days <= ? ORDER BY days ASC %s' % limit, (rule_id, utils.get_days_from_date(end))).fetchall()
+    elif start is not None and end is None:
+        transactions = get_db().execute(("SELECT * FROM transactions WHERE rule_id = ? AND days >= ? ORDER BY days ASC %s" % limit), (rule_id, utils.get_days_from_date(start))).fetchall()
+    else:
+        transactions = get_db().execute('SELECT * FROM transactions WHERE rule_id = ? ORDER BY days ASC %s' % limit, (rule_id, )).fetchall()
+    
+    for transaction in transactions or []:
+        convert_days_to_date(transaction, "days", "date")
+    
+    return transactions 	
+	
+def get_transactions_by_rule_reversed(rule_id, start=None, end=None, limit=None):
+    """Get all transaction that are matched by a specific rule id from the database. Optionally filter within a specific start or/and end date.
+
+    :param int rule_id: the rule id based on the transactions should be filtered.
+    :param date start: a optional start date to get only transactions that are newer or equal to this date.
+    :param date end: a optional end date to get only transactions that are older or equal to this date.
+    :return: a list of all transactions for the given category id that are available within the given timeframe as a list of dicts.
+    :rtype: list(dict) or None
+    """   
+    
+    transactions = None
+	
+    limit = ("LIMIT %d" % limit) if limit is not None else ""
+	
+    if start is not None and end is not None:
+        transactions = get_db().execute('SELECT * FROM (SELECT * FROM transactions WHERE rule_id = ? AND days >= ? AND days <= ? ORDER BY days DESC %s) ORDER BY days ASC' % limit, (rule_id, utils.get_days_from_date(start), utils.get_days_from_date(end))).fetchall()
+    elif start is None and end is not None:
+        transactions = get_db().execute('SELECT * FROM (SELECT * FROM transactions WHERE rule_id = ? AND days <= ? ORDER BY days DESC %s) ORDER BY days ASC' % limit, (rule_id, utils.get_days_from_date(end))).fetchall()
+    elif start is not None and end is None:
+        transactions = get_db().execute('SELECT * FROM (SELECT * FROM transactions WHERE rule_id = ? AND days >= ? ORDER BY days DESC %s) ORDER BY days ASC' % limit, (rule_id, utils.get_days_from_date(start))).fetchall()
+    else:
+        transactions = get_db().execute('SELECT * FROM (SELECT * FROM transactions WHERE rule_id = ? ORDER BY days DESC %s) ORDER BY days ASC' % limit, (rule_id, )).fetchall()
+    
+    for transaction in transactions or []:
+        convert_days_to_date(transaction, "days", "date")
+    
+    return transactions 
     
 def get_last_transaction_by_rule(rule_id, end=None):
     """Get the latest transaction for a specific rule id from the database.

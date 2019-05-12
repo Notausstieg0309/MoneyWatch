@@ -3,12 +3,15 @@ from flask import (
             )
 from werkzeug.exceptions import abort
 
+import datetime
 import re
+
 import moneywatch.utils.functions as utils
+
 from moneywatch.utils.objects import Category, Transaction
 
-import datetime
-import moneywatch.utils.objects
+
+
 
 bp = Blueprint('overview', __name__)
 

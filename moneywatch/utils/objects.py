@@ -101,7 +101,19 @@ class Rule:
     @property
     def category(self):
         return Category(self.category_id, transactions=False, subcategories=False)
+    
+    def getTransactions(self, start=None, end=None, limit=None, reversed=False):
+
+        result = []
         
+        if reversed:
+            for transaction in db.get_transactions_by_rule_reversed(self.id, start, end, limit) or []:
+                result.append(Transaction(transaction))
+        else:
+            for transaction in db.get_transactions_by_rule(self.id, start, end, limit) or []:
+                result.append(Transaction(transaction))
+        return result
+
 
     def last_transaction(self, before=None):
         result = db.get_last_transaction_by_rule(self.id, before)
