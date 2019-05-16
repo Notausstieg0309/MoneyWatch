@@ -23,6 +23,23 @@ div.flash {
    color: #f00;
 }
 
+/* change container default behavior */
+.container {
+  margin: 0 auto;
+  max-width: 1440px;
+  width: 90%;
+}
+@media only screen and (min-width: 1400px) {
+  .container {
+    width: 85%;
+  }
+}
+@media only screen and (min-width: 1800px) {
+  .container {
+    width: 80%;
+  }
+}
+
 nav {
     background: #2e4c79;
 }
