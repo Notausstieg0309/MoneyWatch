@@ -4,7 +4,7 @@ import logging
 from flask import Flask, session, request
 from flask_session import Session
 from flask_babel import Babel
-
+from babel import negotiate_locale
 
 
 
@@ -26,12 +26,11 @@ def create_app(test_config=None):
     
     Session(app)
     babel = Babel(app)
-    
-    @babel.localeselector 
-    def get_locale():
-        translations = [str(translation) for translation in babel.list_translations()]
-        lang = request.accept_languages.best_match(translations)
-        return lang   
+ 
+    @babel.localeselector
+    def get_current_locale():
+        preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
+        return negotiate_locale(preferred, [str(translation) for translation in babel.list_translations()])
     
     # Configure logging
     handler = logging.FileHandler(app.config['LOGGING_LOCATION'])
