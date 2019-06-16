@@ -1,10 +1,11 @@
 class MultipleRuleMatchError(Exception):
-    def __init__(self,  transaction, rules):
+    def __init__(self,  transaction, rules, index = None):
 
         super().__init__()
 
         self.transaction = transaction
         self.rules = rules
+        self.index = index
    
 class MultiplePluginMatchError(Exception):
     def __init__(self, file, plugins):
