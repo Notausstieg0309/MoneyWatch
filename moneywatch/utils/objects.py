@@ -205,7 +205,7 @@ class Transaction:
             if len(founded_rules) == 1:
                 self.rule_id = founded_rules[0].id
             elif len(founded_rules) > 1:
-                raise MultipleRuleMatchError(self,founded_rules)
+                raise MultipleRuleMatchError(self._data,founded_rules)
             
             if self.description is None and self._data.get('rule_id', None) is not None:
                 self.description = self.rule.description
