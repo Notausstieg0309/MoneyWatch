@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-18 13:59+0100\n"
+"POT-Creation-Date: 2019-06-16 23:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,26 +51,26 @@ msgid ""
 "for. Please create categories first."
 msgstr ""
 
-#: templates/base.html:15 templates/base.html:28
+#: templates/base.html:20 templates/base.html:33
 msgid "Import New Transactions"
 msgstr ""
 
-#: templates/base.html:16 templates/base.html:29
+#: templates/base.html:21 templates/base.html:34
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr ""
 
-#: templates/base.html:17 templates/base.html:30 templates/ruleset/index.html:4
+#: templates/base.html:22 templates/base.html:35 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr ""
 
-#: templates/base.html:18 templates/base.html:31
+#: templates/base.html:23 templates/base.html:36
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:49
 msgid "Categories"
 msgstr ""
 
-#: templates/base.html:19 templates/base.html:32
+#: templates/base.html:24 templates/base.html:37
 #: templates/overview/index.html:4
 msgid "Overview"
 msgstr ""
@@ -143,32 +143,41 @@ msgid "New Main Category"
 msgstr ""
 
 #: templates/importer/check.html:4
+#: templates/importer/multiple_rule_match.html:4
 msgid "Check imported transactions"
 msgstr ""
 
-#: templates/importer/check.html:11 templates/overview/index.html:42
-#: templates/overview/index.html:50 templates/transactions/index.html:10
+#: templates/importer/check.html:11
+#: templates/importer/multiple_rule_match.html:11
+#: templates/overview/index.html:42 templates/overview/index.html:50
+#: templates/transactions/index.html:10
 msgid "YYYY-MM-dd"
 msgstr ""
 
 #: templates/importer/check.html:13
+#: templates/importer/multiple_rule_match.html:13
 msgid "Description"
 msgstr ""
 
 #: templates/importer/check.html:14
+#: templates/importer/multiple_rule_match.html:14
 msgid "Please enter a description"
 msgstr ""
 
-#: templates/importer/check.html:20 templates/ruleset/add.html:31
+#: templates/importer/check.html:20
+#: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:31
 #: templates/ruleset/change.html:20 templates/ruleset/index.html:14
 msgid "Category"
 msgstr ""
 
 #: templates/importer/check.html:22
+#: templates/importer/multiple_rule_match.html:22
+#: templates/importer/multiple_rule_match.html:48
 msgid "Please Choose"
 msgstr ""
 
 #: templates/importer/check.html:41
+#: templates/importer/multiple_rule_match.html:40
 msgid "Check again"
 msgstr ""
 
@@ -196,6 +205,26 @@ msgstr ""
 msgid "Load"
 msgstr ""
 
+#: templates/importer/multiple_rule_match.html:42
+msgid ""
+"The following transaction matches multiple rules. This problem can occur "
+"when rules uses a search pattern that is not specific enough for such "
+"edge cases. If this problem happens several times with the same rules "
+"involved please consider to precise the search pattern of these rules."
+msgstr ""
+
+#: templates/importer/multiple_rule_match.html:44
+msgid "Please decide which rule this transaction applies to."
+msgstr ""
+
+#: templates/importer/multiple_rule_match.html:46
+msgid "Matching Rule"
+msgstr ""
+
+#: templates/importer/multiple_rule_match.html:49
+msgid "None"
+msgstr ""
+
 #: templates/overview/index.html:4
 msgid "YYYY/MM"
 msgstr ""
@@ -204,7 +233,7 @@ msgstr ""
 msgid "Months"
 msgstr ""
 
-#: templates/overview/index.html:42
+#: templates/overview/index.html:42 templates/overview/index.html:50
 msgid "MM-dd"
 msgstr ""
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-18 13:59+0100\n"
-"PO-Revision-Date: 2019-01-18 14:00+0100\n"
+"POT-Creation-Date: 2019-06-16 23:05+0200\n"
+"PO-Revision-Date: 2019-06-16 23:09+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: categories.py:35 categories.py:102 ruleset.py:107
 msgid "Name is required."
@@ -56,26 +56,26 @@ msgstr ""
 "vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien "
 "anlegen."
 
-#: templates/base.html:15 templates/base.html:28
+#: templates/base.html:20 templates/base.html:33
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
-#: templates/base.html:16 templates/base.html:29
+#: templates/base.html:21 templates/base.html:34
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: templates/base.html:17 templates/base.html:30 templates/ruleset/index.html:4
+#: templates/base.html:22 templates/base.html:35 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr "Import-Regeln"
 
-#: templates/base.html:18 templates/base.html:31
+#: templates/base.html:23 templates/base.html:36
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:49
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:19 templates/base.html:32
+#: templates/base.html:24 templates/base.html:37
 #: templates/overview/index.html:4
 msgid "Overview"
 msgstr "Übersicht"
@@ -148,32 +148,41 @@ msgid "New Main Category"
 msgstr "Neue Hauptkategorie"
 
 #: templates/importer/check.html:4
+#: templates/importer/multiple_rule_match.html:4
 msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
-#: templates/importer/check.html:11 templates/overview/index.html:42
-#: templates/overview/index.html:50 templates/transactions/index.html:10
+#: templates/importer/check.html:11
+#: templates/importer/multiple_rule_match.html:11
+#: templates/overview/index.html:42 templates/overview/index.html:50
+#: templates/transactions/index.html:10
 msgid "YYYY-MM-dd"
 msgstr "dd.MM.YYYY"
 
 #: templates/importer/check.html:13
+#: templates/importer/multiple_rule_match.html:13
 msgid "Description"
 msgstr "Beschreibung"
 
 #: templates/importer/check.html:14
+#: templates/importer/multiple_rule_match.html:14
 msgid "Please enter a description"
 msgstr "Bitte eine Beschreibung eingeben"
 
-#: templates/importer/check.html:20 templates/ruleset/add.html:31
+#: templates/importer/check.html:20
+#: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:31
 #: templates/ruleset/change.html:20 templates/ruleset/index.html:14
 msgid "Category"
 msgstr "Kategorie"
 
 #: templates/importer/check.html:22
+#: templates/importer/multiple_rule_match.html:22
+#: templates/importer/multiple_rule_match.html:48
 msgid "Please Choose"
 msgstr "Bitte auswählen"
 
 #: templates/importer/check.html:41
+#: templates/importer/multiple_rule_match.html:40
 msgid "Check again"
 msgstr "Erneut überprüfen"
 
@@ -201,6 +210,33 @@ msgstr "Datei auswählen"
 msgid "Load"
 msgstr "Laden"
 
+#: templates/importer/multiple_rule_match.html:42
+msgid ""
+"The following transaction matches multiple rules. This problem can occur "
+"when rules uses a search pattern that is not specific enough for such edge "
+"cases. If this problem happens several times with the same rules involved "
+"please consider to precise the search pattern of these rules."
+msgstr ""
+"Die folgende Transaktion passt zu mehreren Import-Regeln. Dieses Problem "
+"kann auftreten, wenn verschiedene Import-Regeln einen Suchausdruck "
+"verwenden, der nicht spezifisch genug in solchen Fällen ist. Wenn dieses "
+"Problem mit der selben Regel wiederholt auftritt, sollte man den "
+"Suchausdruck basierend auf den bereits vorhandenen Transaktionen versuchen "
+"zu präzisieren."
+
+#: templates/importer/multiple_rule_match.html:44
+msgid "Please decide which rule this transaction applies to."
+msgstr ""
+"Bitte die passende Import-Regel für die folgende Transaktion auswählen."
+
+#: templates/importer/multiple_rule_match.html:46
+msgid "Matching Rule"
+msgstr "Korrekte Import-Regel"
+
+#: templates/importer/multiple_rule_match.html:49
+msgid "None"
+msgstr "Keine"
+
 #: templates/overview/index.html:4
 msgid "YYYY/MM"
 msgstr "MM.YYYY"
@@ -209,7 +245,7 @@ msgstr "MM.YYYY"
 msgid "Months"
 msgstr "Monate"
 
-#: templates/overview/index.html:42
+#: templates/overview/index.html:42 templates/overview/index.html:50
 msgid "MM-dd"
 msgstr "dd.MM"
 

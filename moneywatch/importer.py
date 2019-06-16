@@ -24,7 +24,7 @@ def index():
     if request.method == 'POST':
         error = None
         
-        if not "file" in request.files and not "import_data" in session:
+        if not "file" in request.files and not "import_objects" in session and not "import_items" in session:
             error = gettext("No file uploaded")
 
         if error is not None:
@@ -35,13 +35,14 @@ def index():
             
                 available_plugins = plugins.resolve_plugins_for_file(request.files['file'])
                 
-                session.pop("import_data", None)
+                session.pop("import_objects", None)
                 
                 if len(available_plugins) > 0:
                     
                     if len(available_plugins) == 1:
                         items = plugins.parse_file(request.files['file'], available_plugins[0][0])
-                        session['import_data'] = create_transactions_from_import(items)
+                        session['import_items'] = items
+                        session['import_objects'] = create_transactions_from_import(items)
 
                     else:
                         raise MultiplePluginMatchError(request.files['file'], available_plugins)
@@ -49,52 +50,69 @@ def index():
                 else:
                     raise NoPluginMatchError(request.files['file'])
                 
+               
+                
+            if "import_items" in session and "import_objects" not in session:
+                apply_multiple_rule_match_edits(session['import_items'], request.form)
+                session['import_objects'] = create_transactions_from_import(session['import_items'])
+                session.modified = True
+            elif "import_objects" in session:
+                apply_import_edits(session['import_objects'], request.form)
+                session.modified = True
+
+            if request.form['action'] == "save":
+            
+                for transaction in session['import_objects']:
+                    transaction.save()
+                    
+                session.pop("import_objects", None)
+                session.pop("import_items", None)
+                
+
+                return redirect(url_for('overview.index'))
+
+
+            
 
             categories = {}
-            
-            if len(session.get("import_data",[] )) > 0:
-                for type in ("in", "out"):
-
-                    categories[type] = []
-
-                    for category in Category.getRootCategories(type, transactions=False):
-                        categories[type].extend(category.getCategoryIdsAndPaths(" > "))
-
-            
-            if request.form:
-                if "import_data" in session:
-                    apply_import_edits(session['import_data'], request.form)
-                    session.modified = True
-
-                if request.form['action'] == "save":
-                
-                    for transaction in session['import_data']:
-                        transaction.save()
-                        
-                    session.pop("import_data", None)
+    
+            if len(session.get("import_objects",[] )) > 0:
+                categories = get_categories()
                     
-                    return redirect(url_for('overview.index'))
-            
-            return render_template('importer/check.html', data=(session.get("import_data",[] )), complete=check_if_items_complete(session.get("import_data",[] )), categories=categories)  
+            return render_template('importer/check.html', data=(session.get("import_objects",[] )), complete=check_if_items_complete(session.get("import_objects",[] )), categories = categories)  
              
     return render_template('importer/index.html', extensions = plugins.get_possible_file_extensions())  
     
+    
+@bp.errorhandler(MultipleRuleMatchError)
+def handle_multiple_rule_match(error):
+    current_app.logger.debug("transaction: %s" , error.transaction)
+
+    if error.transaction["valuta"] < 0:
+        categories = get_categories()["out"]
+    else:
+        categories = get_categories()["in"]
+        
+    return render_template('importer/multiple_rule_match.html', transaction = error.transaction, rules = error.rules, index = error.index, categories = categories)  
 
 def create_transactions_from_import(items, check_all=False):
     
     result = []
     
     for item in items:
-        trans = Transaction(item)
-        exist = trans.exist
-        
-        if exist and not check_all:
-            break
+        try:
+            trans = Transaction(item)
+            exist = trans.exist
             
-        if exist and check_all:
-            continue    
-            
-        result.append(trans)
+            if exist and not check_all:
+                break
+                
+            if exist and check_all:
+                continue    
+                
+            result.append(trans)
+        except MultipleRuleMatchError as e:
+            raise MultipleRuleMatchError(e.transaction, e.rules, items.index(item))
         
     return result
 
@@ -110,13 +128,35 @@ def check_if_items_complete(items):
     return not(incomplete)
     
     
-def apply_import_edits(import_data,input_data):
+def apply_import_edits(import_objects,input_data):
 
-    for index, transaction in enumerate(import_data):
+    for index, transaction in enumerate(import_objects):
        
         if str(index)+"_description" in input_data:
             transaction.description = input_data[str(index)+"_description"]
         if str(index)+"_category" in input_data:
             transaction.category_id = input_data[str(index)+"_category"]
-            
-  
+
+def apply_multiple_rule_match_edits(import_objects,input_data):
+
+    item = import_objects[int(input_data["transaction_id"])]
+    
+    if input_data["rule_id"] == "NONE":
+        item["rule_id"] = False
+    else:
+        item["rule_id"] = input_data["rule_id"]
+        
+    if len(input_data["description"]) > 0:
+        item["description"] = input_data["description"]   
+    if "category_id" in input_data:
+        item["category_id"] = input_data["category_id"]      
+             
+def get_categories():
+    categories = {}    
+    for type in ("in", "out"):
+
+        categories[type] = []
+
+        for category in Category.getRootCategories(type, transactions=False):
+            categories[type].extend(category.getCategoryIdsAndPaths(" > "))
+    return categories

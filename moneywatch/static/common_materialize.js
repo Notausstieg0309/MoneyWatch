@@ -81,7 +81,6 @@ $(function() {
 
     // overview: enable collapse functionality of category container
     $('div.category_container:not(.overview)').each(function () {
-        
         $(this).children("div.category_header")
             .css("cursor", "pointer")
             .click(function() {
@@ -90,11 +89,29 @@ $(function() {
         ;
     });
    
-    // overview: add click handler for transaction charts modal popup
-    $('div.overview i.transaction_chart[data-transaction-id]')
-       .css("cursor", "pointer")
-       .click(function() {
-           modalChart("/ajax/transaction_chart/"+$(this).attr("data-transaction-id")+"/");
+    // import: multiple rule match - preset description and category if rule get's changed
+    $('select.multiple-rule-select').change(function() {  
+        var selItem = $("select.multiple-rule-select option:selected");
+        var description = selItem.attr("data-description");
+        var category_id = selItem.attr("data-category-id");
+        
+        if( typeof(description) != "undefined") 
+        {
+            $("table.multiple-rule-transaction input[name='description']").val($("select.multiple-rule-select option:selected" ).attr("data-description"));
+        }
+        else
+        {
+            $("table.multiple-rule-transaction input[name='description']").val(null);
+        }
+        
+        if( typeof(category_id) != "undefined") 
+        {
+            $("table.multiple-rule-transaction select[name='category_id']").val(category_id );
+        }
+        else
+        {
+            $("table.multiple-rule-transaction select[name='category_id']").val(null);
+        }
     });
 });
  

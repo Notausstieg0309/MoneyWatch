@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}Check imported transactions{% endtrans %}{% endblock %}
+{% endblock %}
+
+{% macro transaction_item(transaction, index) %}
+<li class="collection-item">
+<table class="transactions imports multiple-rule-transaction">
+  <tr>
+    <td class="date" rowspan="3">{{ transaction.date | dateformat(_("YYYY-MM-dd")) }}</td>
+    <td class="short_description">
+       <label for="description">{% trans %}Description{% endtrans %}</label>
+       <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %}>
+    </td>
+    <td rowspan=2" class="valuta num" data-num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</td>
+  </tr>
+  <tr>
+    <td>
+        <label>{% trans %}Category{% endtrans %}</label>
+        <select class="browser-default" name="category_id">
+            <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
+            {% for category in categories %}
+            <option value="{{category[0]}}">{{ category[1] }}</option>
+            {% endfor %}
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="full_text" colspan="2">{{transaction.full_text}}</td>
+  </tr>
+</table> 
+</li>
+{% endmacro %}
+
+{% block content %}
+<br>
+
+<form method="post">
+<button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
+<p>
+{% trans %}The following transaction matches multiple rules. This problem can occur when rules uses a search pattern that is not specific enough for such edge cases. If this problem happens several times with the same rules involved please consider to precise the search pattern of these rules.{% endtrans %}.<br>
+<br>
+{% trans %}Please decide which rule this transaction applies to.{% endtrans %}<br><br>
+<input type="hidden" name="transaction_id" value="{{ index }}">
+<label for="rule_id">{% trans %}Matching Rule{% endtrans %}</label>
+ <select class="browser-default multiple-rule-select" name="rule_id" required>
+            <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
+            <option value="NONE">{% trans %}None{% endtrans %}</option>
+            {% for rule in rules %}
+            
+            <option value="{{rule.id}}" data-description="{{rule.description}}" data-category-id="{{rule.category_id}}">{{ rule.name }}</option>
+            {% endfor %}
+        </select>
+</p>
+<p>
+<ul class="collection">
+{{ transaction_item(transaction, index) }} 
+</ul>
+</p>
+{% endblock %}

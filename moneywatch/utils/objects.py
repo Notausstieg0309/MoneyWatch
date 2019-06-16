@@ -213,7 +213,9 @@ class Transaction:
             if self.category_id is None and self._data.get('rule_id', None) is not None:
                 self.category_id = self.rule.category_id
         
-
+        # if multiple match occurs and user selects "None" (value: False)
+        if self._data.get('rule_id', None) == False:
+            self._data.pop('rule_id', None)
     
     # read/write-able properties
     @property
