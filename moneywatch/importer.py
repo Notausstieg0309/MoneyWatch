@@ -144,12 +144,12 @@ def apply_multiple_rule_match_edits(import_objects,input_data):
     if input_data["rule_id"] == "NONE":
         item["rule_id"] = False
     else:
-        item["rule_id"] = input_data["rule_id"]
+        item["rule_id"] = int(input_data["rule_id"])
         
     if len(input_data["description"]) > 0:
         item["description"] = input_data["description"]   
     if "category_id" in input_data:
-        item["category_id"] = input_data["category_id"]      
+        item["category_id"] = int(input_data["category_id"])
              
 def get_categories():
     categories = {}    
