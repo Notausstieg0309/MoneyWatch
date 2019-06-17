@@ -89,6 +89,14 @@ $(function() {
         ;
     });
    
+    // overview: add click handler for transaction charts modal popup
+    $('div.overview i.transaction_chart[data-transaction-id]')
+       .css("cursor", "pointer")
+       .click(function() {
+           modalChart("/ajax/transaction_chart/"+$(this).attr("data-transaction-id")+"/");
+    }); 
+   
+   
     // import: multiple rule match - preset description and category if rule get's changed
     $('select.multiple-rule-select').change(function() {  
         var selItem = $("select.multiple-rule-select option:selected");
