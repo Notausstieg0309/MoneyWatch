@@ -431,9 +431,17 @@ class Category:
         else:
             result = []
             current_app.logger.debug("calculate planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
+
+            newest_transaction = Transaction.getNewestTransaction()
+
+            latest_transaction_date = datetime.date.today()
+
+            if newest_transaction:
+                latest_transaction_date = newest_transaction.date
+
             for rule in self.rules:
 
-                    if rule.regular and not rule.next_due > self.end:
+                    if rule.regular and not rule.next_due > self.end and rule.next_valuta > 0:
 
                         booked_dates = []
                         planned_dates = []
@@ -452,7 +460,7 @@ class Category:
                         current_app.logger.debug("found planned transactions for rule '%s': %s", rule.name, planned_dates)
                         
                         for day in planned_dates:
-                            if not utils.is_same_month_in_list(day, booked_dates):
+                            if (not utils.is_same_month_in_list(day, booked_dates)) and (day.year > latest_transaction_date.year or (day.year == latest_transaction_date.year and day.month >= latest_transaction_date.month)):
                                 if self.type == "out":
                                     result.append(PlannedTransaction(day, rule.next_valuta * -1, rule.description, rule.id))
                                 else:
