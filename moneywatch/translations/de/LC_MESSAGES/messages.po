@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2019-08-13 12:50+0200\n"
-"PO-Revision-Date: 2019-08-13 12:07+0200\n"
+"PO-Revision-Date: 2019-08-13 12:58+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: categories.py:35 categories.py:102 ruleset.py:107
 msgid "Name is required."
@@ -48,12 +49,12 @@ msgstr "Kategorie ist notwendig."
 
 #: ruleset.py:74
 msgid ""
-"Unable to create new rules. No categories are available to create rules "
-"for. Please create categories first."
+"Unable to create new rules. No categories are available to create rules for. "
+"Please create categories first."
 msgstr ""
 "Es können keine neuen Regeln angelegt werden. Es sind keine Kategorien "
-"vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien"
-" anlegen."
+"vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien "
+"anlegen."
 
 #: templates/base.html:20 templates/base.html:33
 msgid "Import New Transactions"
@@ -74,8 +75,7 @@ msgstr "Import-Regeln"
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:24 templates/base.html:37
-#: templates/overview/index.html:4
+#: templates/base.html:24 templates/base.html:37 templates/overview/index.html:4
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -146,8 +146,7 @@ msgstr "Es existieren keine Kategorien für Einnahmen."
 msgid "New Main Category"
 msgstr "Neue Hauptkategorie"
 
-#: templates/importer/check.html:4
-#: templates/importer/multiple_rule_match.html:4
+#: templates/importer/check.html:4 templates/importer/multiple_rule_match.html:4
 msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
@@ -215,17 +214,16 @@ msgstr "Laden"
 
 #: templates/importer/multiple_rule_match.html:42
 msgid ""
-"The following transaction matches multiple rules. This problem can occur "
-"when rules uses a search pattern that is not specific enough for such "
-"edge cases. If this problem happens several times with the same rules "
-"involved please consider to precise the search pattern of these rules."
+"The following transaction matches multiple rules. This problem can occur when "
+"rules uses a search pattern that is not specific enough for such edge cases. "
+"If this problem happens several times with the same rules involved please "
+"consider to precise the search pattern of these rules."
 msgstr ""
-"Die folgende Transaktion passt zu mehreren Import-Regeln. Dieses Problem "
-"kann auftreten, wenn verschiedene Import-Regeln einen Suchausdruck "
-"verwenden, der nicht spezifisch genug in solchen Fällen ist. Wenn dieses "
-"Problem mit der selben Regel wiederholt auftritt, sollte man den "
-"Suchausdruck basierend auf den bereits vorhandenen Transaktionen "
-"versuchen zu präzisieren."
+"Die folgende Transaktion passt zu mehreren Import-Regeln. Dieses Problem kann "
+"auftreten, wenn verschiedene Import-Regeln einen Suchausdruck verwenden, der "
+"nicht spezifisch genug in solchen Fällen ist. Wenn dieses Problem mit der "
+"selben Regel wiederholt auftritt, sollte man den Suchausdruck basierend auf "
+"den bereits vorhandenen Transaktionen versuchen zu präzisieren."
 
 #: templates/importer/multiple_rule_match.html:44
 msgid "Please decide which rule this transaction applies to."
@@ -253,19 +251,19 @@ msgstr "dd.MM"
 
 #: templates/overview/index.html:50
 msgid "Show historical graph"
-msgstr ""
+msgstr "Historischen Verlauf anzeigen"
 
 #: templates/overview/index.html:50
 msgid "Edit transaction"
-msgstr ""
+msgstr "Transaktion bearbeiten"
 
 #: templates/overview/index.html:71
 msgid ""
 "The overall amount of pending regular transactions in or underneath this "
 "category."
 msgstr ""
-"Der ausstehende Betrag aller noch offenen regelmäßigen Transaktionen in "
-"oder unterhalb dieser Kategorie."
+"Der ausstehende Betrag aller noch offenen regelmäßigen Transaktionen in oder "
+"unterhalb dieser Kategorie."
 
 #: templates/overview/index.html:71
 msgid "pending"
@@ -274,8 +272,7 @@ msgstr "ausstehend"
 #: templates/overview/index.html:73
 msgid "All regular transactions for this category are already done."
 msgstr ""
-"Alle regelmäßigen Transaktionen für diese Kategorie sind bereits "
-"durchgeführt."
+"Alle regelmäßigen Transaktionen für diese Kategorie sind bereits durchgeführt."
 
 #: templates/overview/index.html:79
 #, python-format
@@ -339,11 +336,10 @@ msgstr "Neue Regel"
 
 #: templates/ruleset/add.html:13
 msgid ""
-"The name of the rule. This value is only displayed in the ruleset "
-"overview."
+"The name of the rule. This value is only displayed in the ruleset overview."
 msgstr ""
-"Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-"
-"Regeln benutzt."
+"Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-Regeln "
+"benutzt."
 
 #: templates/ruleset/add.html:14 templates/ruleset/change.html:11
 #: templates/ruleset/index.html:12
@@ -365,12 +361,12 @@ msgstr "Suchausdruck"
 
 #: templates/ruleset/add.html:25
 msgid ""
-"The short description that will be used for all matched transactions "
-"during import. The short description still can be changed during import."
+"The short description that will be used for all matched transactions during "
+"import. The short description still can be changed during import."
 msgstr ""
-"Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend "
-"es Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des"
-" Imports dennoch geändert werden."
+"Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend es "
+"Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des "
+"Imports dennoch geändert werden."
 
 #: templates/ruleset/add.html:26 templates/ruleset/change.html:17
 msgid "Short Description"
@@ -450,15 +446,15 @@ msgstr "Transaktion bearbeiten"
 
 #: templates/transactions/edit.html:59
 msgid ""
-"This transaction was identified by a rule. You can clear the binding of "
-"this transaction to the matched rule in case this transaction was "
-"mistakenly matched. In this case you should adapt the search pattern of "
-"the corresponding rule."
+"This transaction was identified by a rule. You can clear the binding of this "
+"transaction to the matched rule in case this transaction was mistakenly "
+"matched. In this case you should adapt the search pattern of the "
+"corresponding rule."
 msgstr ""
-"Diese Transaktion wurde durch eine Import-Regel identifiziert. Die "
-"Verbindung zu dieser Import-Regel kann aufgehoben werden, falls die "
-"Transaktion fälschlicherweise durch diese Regel erkannt wurde. In diesem "
-"Fall sollte der Suchausdruck dieser Regel angepasst werden."
+"Diese Transaktion wurde durch eine Import-Regel identifiziert. Die Verbindung "
+"zu dieser Import-Regel kann aufgehoben werden, falls die Transaktion "
+"fälschlicherweise durch diese Regel erkannt wurde. In diesem Fall sollte der "
+"Suchausdruck dieser Regel angepasst werden."
 
 #: templates/transactions/edit.html:64
 #, python-format
@@ -485,12 +481,11 @@ msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert"
 
 #~ msgid "No import plugin available that can handle this file."
 #~ msgstr ""
-#~ "Kein Import-Plugin vorhanden, welches "
-#~ "die hochgeladene Datei verarbeiten kann."
+#~ "Kein Import-Plugin vorhanden, welches die hochgeladene Datei verarbeiten "
+#~ "kann."
 
 #~ msgid "transaction id %(id)d does not exist."
 #~ msgstr "Eine Transaktion mit der ID %(id)d existiert nicht."
 
 #~ msgid "transactions for category id %(id)d does not exist."
 #~ msgstr "Transaktionen für Kategorie %(id)d existieren nicht."
-
