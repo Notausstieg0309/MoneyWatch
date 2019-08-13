@@ -491,7 +491,7 @@ def save_transaction(item):
     convert_date_to_days(item, "date", "days")
     
     if item.get("id", None):
-        db.execute('UPDATE transactions SET description = ?, category_id = ?, trend = ?, trend_calculated = ? WHERE id = ? ', (item["description"], item["category_id"], item["trend"], item["trend_calculated"], item["id"]))
+        db.execute('UPDATE transactions SET description = ?, category_id = ?, rule_id = ?, trend = ?, trend_calculated = ? WHERE id = ? ', (item["description"], item["category_id"], item.get('rule_id', None), item["trend"], item["trend_calculated"], item["id"]))
     else: # no id exist, so let's create a new transaction
         db.execute("INSERT INTO transactions (days, valuta, full_text, description, category_id, rule_id) VALUES (?, ?, ? ,? , ?, ?)",(item['days'] ,item['valuta'], item['full_text'], item['description'], item['category_id'], item.get('rule_id', None)))
     
