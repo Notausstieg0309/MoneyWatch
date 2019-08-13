@@ -1,5 +1,5 @@
 from flask import (
-            Blueprint, flash, g, redirect, render_template, request, url_for,session
+            Blueprint, flash, g, redirect, render_template, request, url_for,session, current_app
             )
 from werkzeug.exceptions import abort
 
@@ -11,7 +11,8 @@ import datetime
 from flask_babel import gettext
 
 
-from moneywatch.utils.objects import Rule,Category, Transaction
+from moneywatch.utils.objects import Rule,Category,Transaction
+from moneywatch.utils.exceptions import *
 
 bp = Blueprint('transactions', __name__)
 
@@ -29,4 +30,39 @@ def index():
     transactions.reverse()
     
     return render_template('transactions/index.html', transactions=transactions)
+
+
+@bp.route('/transactions/edit/<int:id>/', methods=('GET', 'POST')) 
+def edit(id):
+    
+    current_transaction = Transaction(id)
+    
+    if request.method == 'POST':
+        error = None
+        
+        description = request.form['description'].strip()
+        category_id = int(request.form['category_id'].strip())
+        clear_rule = request.form.get('clear_rule', None)
+
+        current_transaction.description = description
+        current_transaction.category_id = category_id
+        
+        if clear_rule is not None:
+            current_transaction.rule_id = None
+            
+        current_transaction.save()
+        
+        return redirect(url_for('overview.index'))
+            
+    categories = Category.getRootCategories(current_transaction.type)
+    rules = Rule.getRulesByType(current_transaction.type)
+    
+    return render_template('transactions/edit.html', transaction=current_transaction, categories=categories, rules=rules)  
+    
+    
+@bp.errorhandler(NoSuchItemError)
+def handle_no_such_transaction(error):
+    current_app.logger.debug("transaction not found: %s" , error.data)
+   
+    return "Not found", 404
 

@@ -124,8 +124,17 @@ $(function() {
         else if(cat_no_empty != "1")
         {
             $("ul.collection select[name='category_id']").val(null);
-        }
-        
+        }   
+    });
+    
+    // overview: show edit link if available when hovering a transaction
+    $("div.overview div.transaction").hover(function(e) {
+       var id = $(this).attr("data-id");;
+       
+       $(this).find("span.edit").show();
+    },
+    function(e) {
+        $(this).find("span.edit").hide();
     });
 });
  
