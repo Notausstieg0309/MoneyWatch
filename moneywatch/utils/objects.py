@@ -297,7 +297,7 @@ class Transaction:
     @property
     def rule(self):
     
-        if "rule_id" in self._data:
+        if self._data.get("rule_id", None) is not None:
             rule = None
             try:
                 rule = Rule(self._data["rule_id"])
