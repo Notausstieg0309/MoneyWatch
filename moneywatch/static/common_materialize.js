@@ -2,6 +2,11 @@
 // materialize: initialize JS addons
 $(document).ready(function(){
     M.AutoInit();
+    
+    // custom initialization of tooltips due to specific options for tooltip appearance
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems, {"enterDelay": 500});
+    
 });
   
   
