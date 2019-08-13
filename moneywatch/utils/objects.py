@@ -194,7 +194,7 @@ class Transaction:
         self._cache = {}
         
         # apply ruleset if transaction is new
-        if self._data.get('rule_id', None) is None and self.id is None:
+        if self._data.get('rule_id', None) is None and self._data.get("id", None) is None:
         
             founded_rules = []
             
