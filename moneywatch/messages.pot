@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-06-16 23:05+0200\n"
+"POT-Creation-Date: 2019-08-13 12:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 
 #: templates/categories/add.html:19 templates/categories/change.html:31
 #: templates/importer/check.html:43 templates/ruleset/add.html:68
-#: templates/ruleset/change.html:47
+#: templates/ruleset/change.html:47 templates/transactions/edit.html:46
 msgid "Save"
 msgstr ""
 
@@ -86,13 +86,13 @@ msgid "Edit Category"
 msgstr ""
 
 #: templates/categories/change.html:4 templates/categories/index.html:45
-#: templates/overview/index.html:133 templates/overview/index.html:170
+#: templates/overview/index.html:135 templates/overview/index.html:172
 #: templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr ""
 
 #: templates/categories/change.html:4 templates/categories/index.html:49
-#: templates/overview/index.html:138 templates/overview/index.html:174
+#: templates/overview/index.html:140 templates/overview/index.html:176
 #: templates/ruleset/add.html:4
 msgid "Spendings"
 msgstr ""
@@ -150,29 +150,33 @@ msgstr ""
 #: templates/importer/check.html:11
 #: templates/importer/multiple_rule_match.html:11
 #: templates/overview/index.html:42 templates/overview/index.html:50
-#: templates/transactions/index.html:10
+#: templates/transactions/edit.html:11 templates/transactions/index.html:10
 msgid "YYYY-MM-dd"
 msgstr ""
 
 #: templates/importer/check.html:13
 #: templates/importer/multiple_rule_match.html:13
+#: templates/transactions/edit.html:13
 msgid "Description"
 msgstr ""
 
 #: templates/importer/check.html:14
 #: templates/importer/multiple_rule_match.html:14
+#: templates/transactions/edit.html:14
 msgid "Please enter a description"
 msgstr ""
 
 #: templates/importer/check.html:20
 #: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:31
 #: templates/ruleset/change.html:20 templates/ruleset/index.html:14
+#: templates/transactions/edit.html:20
 msgid "Category"
 msgstr ""
 
 #: templates/importer/check.html:22
 #: templates/importer/multiple_rule_match.html:22
 #: templates/importer/multiple_rule_match.html:48
+#: templates/transactions/edit.html:22
 msgid "Please Choose"
 msgstr ""
 
@@ -251,59 +255,59 @@ msgstr ""
 msgid "All regular transactions for this category are already done."
 msgstr ""
 
-#: templates/overview/index.html:77
+#: templates/overview/index.html:79
 #, python-format
 msgid "The current consumption of the planned budget of %(budget)s."
 msgstr ""
 
-#: templates/overview/index.html:103
+#: templates/overview/index.html:105
 msgid "No transactions available"
 msgstr ""
 
-#: templates/overview/index.html:115
+#: templates/overview/index.html:117
 msgid "previous month"
 msgstr ""
 
-#: templates/overview/index.html:117 templates/overview/index.html:155
+#: templates/overview/index.html:119 templates/overview/index.html:157
 #, python-format
 msgid "current month in %(year)s"
 msgstr ""
 
-#: templates/overview/index.html:119
+#: templates/overview/index.html:121
 msgid "previous year"
 msgstr ""
 
-#: templates/overview/index.html:121
+#: templates/overview/index.html:123
 msgid "previous timeperiod"
 msgstr ""
 
-#: templates/overview/index.html:129 templates/overview/index.html:170
-#: templates/overview/index.html:174
+#: templates/overview/index.html:131 templates/overview/index.html:172
+#: templates/overview/index.html:176
 msgid "Planned"
 msgstr ""
 
-#: templates/overview/index.html:130 templates/overview/index.html:170
-#: templates/overview/index.html:174
+#: templates/overview/index.html:132 templates/overview/index.html:172
+#: templates/overview/index.html:176
 msgid "Current"
 msgstr ""
 
-#: templates/overview/index.html:143
+#: templates/overview/index.html:145
 msgid "Balance"
 msgstr ""
 
-#: templates/overview/index.html:148
+#: templates/overview/index.html:150
 msgid "current values incl. pending regular transactions"
 msgstr ""
 
-#: templates/overview/index.html:153
+#: templates/overview/index.html:155
 msgid "next month"
 msgstr ""
 
-#: templates/overview/index.html:157
+#: templates/overview/index.html:159
 msgid "next year"
 msgstr ""
 
-#: templates/overview/index.html:159
+#: templates/overview/index.html:161
 msgid "next timeperiod"
 msgstr ""
 
@@ -408,6 +412,23 @@ msgstr ""
 
 #: templates/ruleset/index.html:44
 msgid "Rules for spendings"
+msgstr ""
+
+#: templates/transactions/edit.html:4
+msgid "Edit Transaction"
+msgstr ""
+
+#: templates/transactions/edit.html:59
+msgid ""
+"This transaction was identified by a rule. You can clear the binding of "
+"this transaction to the matched rule in case this transaction was "
+"mistakenly matched. In this case you should adapt the search pattern of "
+"the corresponding rule."
+msgstr ""
+
+#: templates/transactions/edit.html:64
+#, python-format
+msgid "Clear rule binding (%(rulename)s)"
 msgstr ""
 
 #: templates/transactions/index.html:35
