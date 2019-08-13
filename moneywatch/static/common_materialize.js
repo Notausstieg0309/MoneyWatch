@@ -98,28 +98,34 @@ $(function() {
    
    
     // import: multiple rule match - preset description and category if rule get's changed
-    $('select.multiple-rule-select').change(function() {  
-        var selItem = $("select.multiple-rule-select option:selected");
+    $('select.rule-select').change(function() {  
+        var selItem = $("select.rule-select option:selected");
         var description = selItem.attr("data-description");
         var category_id = selItem.attr("data-category-id");
+        var desc_no_replace = $("ul.collection input[name='description']").attr("data-rule-no-replace");
+        var cat_no_empty = $("ul.collection select[name='category_id']").attr("data-rule-no-empty");
         
-        if( typeof(description) != "undefined") 
+        if(desc_no_replace != "1")
         {
-            $("table.multiple-rule-transaction input[name='description']").val($("select.multiple-rule-select option:selected" ).attr("data-description"));
-        }
-        else
-        {
-            $("table.multiple-rule-transaction input[name='description']").val(null);
+            if( typeof(description) != "undefined") 
+            {
+                $("ul.collection input[name='description']").val(description);
+            }
+            else
+            {
+                $("ul.collection input[name='description']").val(null);
+            }
         }
         
         if( typeof(category_id) != "undefined") 
         {
-            $("table.multiple-rule-transaction select[name='category_id']").val(category_id );
+            $("ul.collection select[name='category_id']").val(category_id);
         }
-        else
+        else if(cat_no_empty != "1")
         {
-            $("table.multiple-rule-transaction select[name='category_id']").val(null);
+            $("ul.collection select[name='category_id']").val(null);
         }
+        
     });
 });
  

@@ -44,11 +44,10 @@
 {% trans %}Please decide which rule this transaction applies to.{% endtrans %}<br><br>
 <input type="hidden" name="transaction_id" value="{{ index }}">
 <label for="rule_id">{% trans %}Matching Rule{% endtrans %}</label>
- <select class="browser-default multiple-rule-select" name="rule_id" required>
+ <select class="browser-default rule-select" name="rule_id" required>
             <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
             <option value="NONE">{% trans %}None{% endtrans %}</option>
             {% for rule in rules %}
-            
             <option value="{{rule.id}}" data-description="{{rule.description}}" data-category-id="{{rule.category_id}}">{{ rule.name }}</option>
             {% endfor %}
         </select>
