@@ -23,10 +23,10 @@ class NoPluginMatchError(Exception):
         self.file = file
         
 class NoSuchItemError(Exception):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, type, data):
 
-        super().__init__(*args, **kwargs)
-        self.type = kwargs.get("type",None)
-        self.rules = kwargs.get("id", None)
+        super().__init__()
+        self.type = type
+        self.data = data
 
         
