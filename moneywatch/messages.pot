@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-13 12:03+0200\n"
+"POT-Creation-Date: 2019-08-13 12:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -239,6 +239,14 @@ msgstr ""
 
 #: templates/overview/index.html:42 templates/overview/index.html:50
 msgid "MM-dd"
+msgstr ""
+
+#: templates/overview/index.html:50
+msgid "Show historical graph"
+msgstr ""
+
+#: templates/overview/index.html:50
+msgid "Edit transaction"
 msgstr ""
 
 #: templates/overview/index.html:71

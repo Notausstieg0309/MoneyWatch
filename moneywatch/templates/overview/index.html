@@ -4,8 +4,8 @@
   {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("YYYY/MM")) }}{% if timing["months"] > 1 %} - {{ timing["end"] | dateformat(_("YYYY/MM")) }} ({{ timing["months"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
 {% endblock %}
 
-{% macro item_row(row_class,id,name,num_planned,text_planned,num_valuta,text_valuta) %}
-    <div class="row {{row_class}}" {%- if id is defined %} data-id="{{ id }}"{% endif %}>
+{% macro item_row(row_class,name,num_planned,text_planned,num_valuta,text_valuta) %}
+    <div class="row {{row_class}}">
         {%- if text_planned is defined -%}
         <div class="col s12 m7 name truncate">{{ name }}</div>
         <div class="col s12 m5 right right-align">
@@ -41,7 +41,7 @@
     {%- set name -%}
         {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("YYYY-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{transaction.description}}
     {%- endset -%}
-    {{ item_row(row_class, transaction.rule_id , name, transaction.valuta, transaction.valuta|currencyformat("EUR"), "0", "0"|currencyformat("EUR")) }}
+    {{ item_row(row_class, name, transaction.valuta, transaction.valuta|currencyformat("EUR"), "0", "0"|currencyformat("EUR")) }}
 {%- endmacro %}
 
 
@@ -60,7 +60,7 @@
         {{ transaction.trend | currencyformat("EUR") }}
     {%- endset -%}
     {%- endif -%}
-    {{ item_row(row_class, transaction.id, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat("EUR")) }}
+    {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat("EUR")) }}
 {%- endmacro %}
 
 {% macro category_row(row_class, category) -%}
@@ -82,7 +82,7 @@
         {% endif -%}
     
     {%- endset -%}
-    {{ item_row(row_class, category.id, name, category.planned_valuta, category.planned_valuta|currencyformat("EUR"), category.valuta, category.valuta|currencyformat("EUR") )}}
+    {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat("EUR"), category.valuta, category.valuta|currencyformat("EUR") )}}
 {%- endmacro %}
 
 
