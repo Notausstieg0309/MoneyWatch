@@ -140,6 +140,16 @@ $(function() {
     },
     function(e) {
         $(this).find("span.edit").hide();
+    });   
+    
+    // transactions: show transaction edit link when hovering a transaction in transactions overview
+    $("ul.transactions_overview table.transactions").hover(function(e) {
+       var id = $(this).attr("data-id");;
+        
+       $(this).find("span.edit").show();
+    },
+    function(e) {
+        $(this).find("span.edit").hide();
     });
 });
  

@@ -8,7 +8,7 @@
  <table cellspacing="0" class="transactions">
   <tr>
   <td class="date" rowspan="3">{{transaction.date | dateformat(_("YYYY-MM-dd"))}}</td>
-  <td class="short_description">{{transaction.description}}</td>
+  <td class="short_description">{{transaction.description}} <span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span></td>
   <td class="valuta num" rowspan="2" data-num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</td>
   </tr>
   <tr>
@@ -24,7 +24,7 @@
 {% block content %}
 
 {% if transactions %}
-<ul class="collection">
+<ul class="collection transactions_overview">
 {% for transaction in transactions %}
 <li class="collection-item">
 {{ transaction_item(transaction) }}
