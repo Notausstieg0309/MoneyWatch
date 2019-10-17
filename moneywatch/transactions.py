@@ -59,7 +59,17 @@ def edit(id):
     
     return render_template('transactions/edit.html', transaction=current_transaction, categories=categories, rules=rules)  
     
+
+@bp.route('/transactions/single/<int:transaction_id>/')
+def transaction_details(transaction_id):
+    try:
+        transaction = Transaction(transaction_id)
+    except Exception as e:
+        return jsonify(None), 404
     
+    return  render_template('transactions/single_transaction.html', transaction=transaction)
+
+
 @bp.errorhandler(NoSuchItemError)
 def handle_no_such_transaction(error):
     current_app.logger.debug("transaction not found: %s" , error.data)

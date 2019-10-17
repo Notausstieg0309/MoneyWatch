@@ -136,6 +136,11 @@ div.overview div.category_content.no_transactions {
     text-align:center;
 }
 
+div.overview div.transaction span.description:hover {
+    cursor:pointer;
+    text-decoration:underline;
+}
+
 /* overrule Materialize CSS row margin to get a smooth overview */
 div.overview div.row {
     margin-bottom: 0px;

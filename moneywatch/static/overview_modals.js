@@ -154,6 +154,8 @@ function modalChart(url)
             }
         });
         
+        $("div.modal canvas").show();
+        
         $("div.modal div.progress").hide();
     });
 }
@@ -171,7 +173,8 @@ function showInitModal()
     
     $("div.modal h4#caption").html("");
     $("div.modal div.progress").fadeIn();
-    $("div.modal canvas").off("click");
+    $("div.modal canvas").off("click").hide();
+    $("div.modal ul").remove();
     
     if(chart)
         chart.destroy();
@@ -183,4 +186,24 @@ function showInitModal()
     context.beginPath();
     
     $('div.modal').modal("open");
+}
+
+
+
+function modalTransactionDetails(url)
+{
+    $.ajax({
+        url: $SCRIPT_ROOT + url,
+        async: true,
+        dataType: 'html',
+        type: "get",
+    }).done(function (res) {
+        
+       
+        showInitModal();
+        $("div.modal div.progress").hide();
+          
+        $("div.modal div.modal-content").append(res);
+        $('div.modal .num').each(function () { formatNumberEl(this); });
+    });
 }

@@ -143,13 +143,18 @@ $(function() {
     });   
     
     // transactions: show transaction edit link when hovering a transaction in transactions overview
-    $("ul.transactions_overview table.transactions").hover(function(e) {
-       var id = $(this).attr("data-id");;
-        
-       $(this).find("span.edit").show();
-    },
-    function(e) {
-        $(this).find("span.edit").hide();
+    //               must be done via on() function as dynamic elements can show up, when opening transaction details modal
+    $("body").on({  "mouseover": function(e) {
+                                   $(this).find("span.edit").show();
+                                 },
+                    "mouseleave": function(e) {
+                                    $(this).find("span.edit").hide();  
+                                  }
+    },"ul.transactions_overview table.transactions");
+    
+    // overview: show edit link if available when hovering a transaction
+    $("div.overview div.transaction span.description").click(function() {
+        modalTransactionDetails("/transactions/single/"+$(this).attr("data-transaction-id")+"/");
     });
 });
  
