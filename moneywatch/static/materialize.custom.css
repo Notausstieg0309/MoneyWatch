@@ -97,17 +97,7 @@ div.overview div.out div.category_container.root {
 
 /* make category headers a bit bigger */
 div.overview div.category_header {
-    /*
-    
-    currently colors are set via materialize color class
-    
-    background: -moz-linear-gradient(top, #e3f4ff 0%, #c4e3fe 100%);
-    background: -webkit-linear-gradient(top, #e3f4ff 0%,#c4e3fe 100%);
-    background: linear-gradient(to bottom, #e3f4ff 0%,#c4e3fe 100%);
-    */
-    
     padding:0.25em 0em 0.25em 0.25em;
-    
 }
 div.overview div.in div.category_header {
 	background: #d4fbdf;
@@ -144,7 +134,6 @@ div.overview div.transaction span.description:hover {
 /* overrule Materialize CSS row margin to get a smooth overview */
 div.overview div.row {
     margin-bottom: 0px;
-
 }
 /* overrule Materialize CSS row padding */
 div.overview div.col.num {
