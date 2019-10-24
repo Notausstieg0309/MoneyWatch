@@ -113,6 +113,11 @@ div.overview div.planned_transaction > div.name {
     color: grey;
 }
 
+/* show overdued planned transactions in red text color */
+div.overview div.planned_transaction.overdue > div.name {
+    color: red;
+}
+
 /* category names and current valutas should appear bold */
 div.overview div.category_header div.name {
     font-weight: bold;

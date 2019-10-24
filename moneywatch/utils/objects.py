@@ -387,7 +387,11 @@ class PlannedTransaction:
         self.valuta = valuta
         self.description = description
         self.rule_id = rule_id
-          
+    
+    @property
+    def overdue(self):
+        return (self.date <= Transaction.getNewestTransaction().date and self.date < datetime.date.today())
+    
     def __repr__(self):
         return self.description+" ("+str(self.valuta)+" €)"
          
@@ -495,6 +499,28 @@ class Category:
             
             self._cache["has_regular_rules"] = result
             return result
+            
+    @property
+    def has_overdued_planned_transactions(self):
+    
+        if "has_overdued_planned_transactions" in self._cache:
+            return self._cache["has_overdued_planned_transactions"]
+        else:
+
+            result = False
+            
+            for category in self.childs:
+                if category.has_overdued_planned_transactions:
+                    result = True
+
+            for transaction in self.planned_transactions:
+               if transaction.overdue:
+                    result = True
+                
+            self._cache["has_overdued_planned_transactions"] = result
+            
+            return result
+    
     
     def save(self):
         db.save_category(self._data)

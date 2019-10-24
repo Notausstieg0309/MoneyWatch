@@ -39,7 +39,10 @@
 
 {% macro planned_transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("YYYY-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{transaction.description}}
+        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("YYYY-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
+    {%- endset -%}
+    {%- set row_class -%}
+    {{ row_class }}{% if transaction.overdue %} overdue{% endif %}
     {%- endset -%}
     {{ item_row(row_class, name, transaction.valuta, transaction.valuta|currencyformat("EUR"), "0", "0"|currencyformat("EUR")) }}
 {%- endmacro %}
@@ -67,11 +70,14 @@
     {%- set name -%}
         {{ category.name }}
         {%- if current_month -%}
+            {%- if category.has_overdued_planned_transactions %}
+            <i class="red-text tiny overdue material-icons tooltipped" data-tooltip="{% trans %}This category contains overdue planned transactions.{% endtrans %}">warning</i>
+            {% endif %}
             {%- if category.planned_transactions_valuta != 0 -%}
             <span class="new badge red lighten-2 tooltipped" data-position="bottom" data-tooltip="{% trans %}The overall amount of pending regular transactions in or underneath this category.{% endtrans %}" data-badge-caption="{% trans %}pending{% endtrans %}">{% if category.planned_transactions_valuta > 0 %}+{% endif %}{{ category.planned_transactions_valuta | currencyformat("EUR") }}</span>
             {%- elif category.has_regular_rules %}
             <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
-            {% endif -%}
+            {%- endif -%}
         {%- endif -%}
         
         {%- if category.budget_monthly != 0 -%}
