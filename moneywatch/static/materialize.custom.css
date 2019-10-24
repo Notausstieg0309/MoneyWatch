@@ -126,11 +126,13 @@ div.overview div.category_header div.current {
     font-weight: bold;
 }
 
+/* show "no transactions" message as centered italic text */
 div.overview div.category_content.no_transactions {
     font-style: italic;
     text-align:center;
 }
 
+/* turn transaction description to link when hovering */
 div.overview div.transaction span.description:hover {
     cursor:pointer;
     text-decoration:underline;
