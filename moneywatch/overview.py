@@ -25,11 +25,10 @@ def createOverview(start, end):
     if end < start:
         end = utils.get_last_day_of_month(start.year,start.month)
    
-    
-    list_in = Category.getRootCategories("in", start=start, end=end)
-    list_out = Category.getRootCategories("out", start=start, end=end)
-
     current_month = start <= datetime.date.today() <= end
+    
+    list_in = Category.getRootCategories("in", start=start, end=end, planned_transactions=current_month)
+    list_out = Category.getRootCategories("out", start=start, end=end, planned_transactions=current_month)
     
     sum_current_out = 0
     sum_current_in = 0

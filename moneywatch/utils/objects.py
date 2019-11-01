@@ -434,8 +434,14 @@ class Category:
             
         else:
             result = []
-            current_app.logger.debug("calculate planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
-
+            
+            if self._kwargs.get("planned_transactions", True):
+                current_app.logger.debug("calculate planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
+            else: # no planned transactions needed (=> overview shows historical data older than current month)
+                current_app.logger.debug("skip calculation of planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
+                self._cache["planned_transactions"] = result
+                return result
+                
             newest_transaction = Transaction.getNewestTransaction()
 
             latest_transaction_date = datetime.date.today()
