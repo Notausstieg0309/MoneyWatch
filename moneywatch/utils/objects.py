@@ -514,7 +514,19 @@ class Category:
                         current_app.logger.debug("found planned transactions for rule '%s': %s", rule.name, planned_dates)
                         
                         for day in planned_dates:
-                            if (not utils.is_same_month_in_list(day, booked_dates)) and (day.year > latest_transaction_date.year or (day.year == latest_transaction_date.year and day.month >= latest_transaction_date.month)):
+                            if (
+                                    # no transaction for the same year/month exists
+                                    (not utils.is_same_month_in_list(day, booked_dates)) and  
+                                    
+                                    # date is older then latest transaction for this rule
+                                    (day.year > latest_transaction_date.year or 
+                                        (day.year == latest_transaction_date.year and 
+                                         day.month >= latest_transaction_date.month)
+                                    ) and
+                                    
+                                    # planned transactions should be listed only for current or future months not
+                                    (day >= datetime.date.today() or utils.is_same_month(day, datetime.date.today()))  
+                               ):
                                 if self.type == "out":
                                     result.append(PlannedTransaction(day, rule.next_valuta * -1, rule.description, rule.id))
                                 else:

@@ -158,14 +158,14 @@ def is_same_month_in_list(days, list):
 
     result = False
     for item in list:
-        if _is_same_month(days, item):
+        if is_same_month(days, item):
             result = True
             break
             
     return result
 
     
-def _is_same_month(date1, date2):
+def is_same_month(date1, date2):
 
     return True if date1.year == date2.year and date1.month == date2.month else False
 
