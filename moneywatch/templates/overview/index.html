@@ -115,6 +115,12 @@
 {% endmacro %}
 
 
+{% macro particular_transaction_item(class, rule_list) -%}
+{% for item in rule_list  %}
+<span class="{{ class }}">{{ item[0].name }} ({{ item[0].next_valuta|currencyformat("EUR") }}){% if not loop.last %}, {% endif -%}
+{%- endfor -%}
+{%- endmacro %}
+
 {% block content %}
 <div class="row  center-align">
 <div class="col m3 left-align hide-on-small-only">
@@ -170,7 +176,18 @@
 <br><br>
 </div>
 </div>
+{% if timing["months"] == 1 and particular_rules["count"] > 0 %}
+<div class="divider"></div>
 <br>
+<div class="row particular_transactions">
+<div class="col s12 center-align">
+{% trans %}particular transactions:{% endtrans %}
+{{ particular_transaction_item("in", particular_rules["in"]) }}
+{%- if particular_rules["in"]|length > 0 and particular_rules["out"]|length > 0  %}, {% endif -%}
+{{ particular_transaction_item("out", particular_rules["out"]) }}
+</div>
+</div>
+{% endif %}
 <div class="divider"></div>
 <br>
 <div class="row overview">

@@ -8,7 +8,7 @@ import re
 
 import moneywatch.utils.functions as utils
 
-from moneywatch.utils.objects import Category, Transaction
+from moneywatch.utils.objects import Category, Transaction, Rule
 
 
 
@@ -58,6 +58,11 @@ def createOverview(start, end):
     for category in list_out:
         sum_current_with_planned_transactions_out += category.valuta + category.planned_transactions_valuta
 
+    particular_rules_dates_in = Rule.getNonMonthlyRegularRulesForTimeframe("in", start=start, end=end)
+    particular_rules_dates_out = Rule.getNonMonthlyRegularRulesForTimeframe("out", start=start, end=end)
+    
+    months = utils.get_number_of_months(start,end)
+
     balance = {}
     
     balance['planned'] = {}
@@ -75,9 +80,8 @@ def createOverview(start, end):
     balance['current']['balance'] = sum_current_in + sum_current_out
     balance['planned']['balance'] = sum_planned_in + sum_planned_out
     balance['current_with_planned_transactions']['balance'] = sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out
-    
-    months  = utils.get_number_of_months(start,end)
-    
+
+
     timing = {}
     
     timing["previous"] =  utils.substract_months(start, months)
@@ -90,8 +94,14 @@ def createOverview(start, end):
     
     if oldest_transaction:
         timing["oldest"] = oldest_transaction.date
-
-    return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month) 
+        
+    particular_rules = {}
+    
+    particular_rules["in"] = particular_rules_dates_in
+    particular_rules["out"] = particular_rules_dates_out
+    particular_rules["count"] = len(particular_rules_dates_in) + len(particular_rules_dates_out)
+    
+    return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules) 
         
         
 @bp.route('/')

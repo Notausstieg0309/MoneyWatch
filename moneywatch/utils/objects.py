@@ -177,6 +177,26 @@ class Rule:
                 pass
 
         return result
+    
+    @staticmethod
+    def getNonMonthlyRegularRulesForTimeframe(type, start, end, **kwargs):
+        result = []
+        for rule in db.get_rules_for_type(type):
+            rule_obj = Rule(rule, **kwargs)
+            
+            if rule_obj.regular and rule_obj.regular > 1 and rule_obj.next_due <= end and rule_obj.next_valuta > 0:
+                
+                dates = utils.get_cyclic_dates_for_timerange(rule_obj.next_due, rule_obj.regular, start, end)
+                date_result = []
+                for date in dates:
+                    if date >= start and date >= rule_obj.next_due and (date >= datetime.date.today() or utils.is_same_month(date, datetime.date.today())):
+                        date_result.append(date)
+                
+                if len(date_result) > 0:
+                    result.append( (rule_obj, date_result) )
+                    
+        return result
+    
         
     def __repr__(self):
         return self.__class__.__name__+"("+str(self._data)+")"

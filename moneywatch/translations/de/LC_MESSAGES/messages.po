@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-10-24 23:51+0200\n"
-"PO-Revision-Date: 2019-10-24 23:55+0200\n"
+"POT-Creation-Date: 2019-12-29 15:39+0100\n"
+"PO-Revision-Date: 2019-12-29 15:41+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -338,6 +338,10 @@ msgstr "nächstes Jahr"
 #: templates/overview/index.html:167
 msgid "next timeperiod"
 msgstr "nächster Zeitraum"
+
+#: templates/overview/index.html:184
+msgid "particular transactions:"
+msgstr "Besondere Transaktionen:"
 
 #: templates/ruleset/add.html:4
 msgid "New Rule"

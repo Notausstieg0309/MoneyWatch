@@ -193,6 +193,17 @@ table.balance th.current.with_planned:after {
     content: "*";
 }
 
+/* highlight particular transactions */
+div.particular_transactions span.out {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+div.particular_transactions span.in {
+    font-weight: bold;
+    color: #006d14;;
+}
+
 
 
 /* budget indicators */
