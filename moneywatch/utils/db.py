@@ -222,7 +222,7 @@ def get_rules_for_type(type):
     
     current_app.logger.debug("requesting rules from database by type '%s'", type)
     
-    rules = get_db().execute('SELECT * FROM ruleset WHERE type=?', (type,)).fetchall()
+    rules = get_db().execute('SELECT * FROM ruleset WHERE type=? ORDER BY name ASC', (type,)).fetchall()
     
     for rule in rules or []:
         convert_days_to_date(rule, "next_days", "next_due")
