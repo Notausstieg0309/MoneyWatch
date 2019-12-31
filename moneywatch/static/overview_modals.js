@@ -100,6 +100,7 @@ function modalChart(url)
                                 backgroundColor: backgroundColor,
                                 pointRadius: 5,
                                 pointHoverRadius: 10,
+                                cubicInterpolationMode: 'monotone',
                             }
                           ]
             },
