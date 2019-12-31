@@ -15,6 +15,19 @@
 .num.positive {color: #006d14;}
 .num {white-space: nowrap; }
 
+/* change mouse icon for tooltipped icons, disable selection */
+i.material-icons.tooltipped {
+    cursor: default;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none; 
+}
+
+
 div.flash {
    background: #ffeded;
    padding: 1em !important;
