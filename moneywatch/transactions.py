@@ -1,5 +1,5 @@
 from flask import (
-            Blueprint, flash, g, redirect, render_template, request, url_for,session, current_app
+            Blueprint, flash, g, redirect, render_template, request, url_for,session, current_app, jsonify
             )
 from werkzeug.exceptions import abort
 
@@ -72,6 +72,9 @@ def transaction_details(transaction_id):
     except Exception as e:
         return jsonify(None), 404
     
+    if transaction.type == "message":
+        return jsonify(None), 404
+        
     return  render_template('transactions/single_transaction.html', transaction=transaction)
 
 
