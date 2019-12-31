@@ -296,6 +296,15 @@ table.transactions td.full_text {
     font-family: monospace;
 }
 
+table.transactions.message td.full_text {
+    font-style: italic;
+    font-weight: bold;
+}
+
+table.transactions.message.imports td.full_text {
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
 
 /*
   _____      _                        _           

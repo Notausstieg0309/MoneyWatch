@@ -6,7 +6,7 @@
 
 {% macro transaction_item(transaction, index) %}
 <li class="collection-item{% if transaction['category_id'] and transaction['description'] %} complete{% endif %}">
-<table class="transactions imports">
+<table class="transactions transaction imports">
   <tr>
     <td class="date" rowspan="3">{{ transaction.date | dateformat(_("YYYY-MM-dd")) }}</td>
     <td class="short_description">
@@ -36,7 +36,7 @@
 {% macro message_item(transaction, index) %}
 <li class="collection-item{% if transaction.description %} complete{% endif %}">
 <input type="hidden" name="{{ index }}_message" value="1" />
-<table class="transactions imports">
+<table class="transactions message imports">
   <tr>
     <td class="date" rowspan="2">{{ transaction.date | dateformat(_("YYYY-MM-dd")) }}</td>
     <td colspan="2" class="full_text" colspan="2">{{transaction.full_text}}</td>
