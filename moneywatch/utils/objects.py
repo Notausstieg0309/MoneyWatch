@@ -335,7 +335,19 @@ class Transaction:
     def date(self):
              
         return self._data.get("date", None)
+    
+    
+    @property
+    def is_editable(self):
+        
+        now = datetime.date.today()
+        
+        if (now - datetime.timedelta(days=14) <= self.date <= now) or utils.is_same_month(self.date, now):
+            return True
             
+        return False
+    
+    
     @property
     def rule(self):
     
@@ -358,6 +370,9 @@ class Transaction:
 	
     def save(self):
     
+        if not self.is_editable:
+            return
+            
         rule = self.rule
         
         if rule is not None:

@@ -37,27 +37,32 @@ def edit(id):
     
     current_transaction = Transaction(id)
     
-    if request.method == 'POST':
-        error = None
+    if current_transaction.is_editable:
         
-        description = request.form['description'].strip()
-        category_id = int(request.form['category_id'].strip())
-        clear_rule = request.form.get('clear_rule', None)
+        if request.method == 'POST':
+            error = None
+            
+            description = request.form['description'].strip()
+            category_id = int(request.form['category_id'].strip())
+            clear_rule = request.form.get('clear_rule', None)
 
-        current_transaction.description = description
-        current_transaction.category_id = category_id
-        
-        if clear_rule is not None:
-            current_transaction.rule_id = None
+            current_transaction.description = description
+            current_transaction.category_id = category_id
             
-        current_transaction.save()
-        
-        return redirect(url_for('overview.index'))
+            if clear_rule is not None:
+                current_transaction.rule_id = None
+                
+            current_transaction.save()
             
-    categories = Category.getRootCategories(current_transaction.type)
-    rules = Rule.getRulesByType(current_transaction.type)
-    
-    return render_template('transactions/edit.html', transaction=current_transaction, categories=categories, rules=rules)  
+            return redirect(url_for('overview.month_overview', year=current_transaction.date.year, month=current_transaction.date.month))
+            
+        categories = Category.getRootCategories(current_transaction.type)
+        rules = Rule.getRulesByType(current_transaction.type)
+        
+        return render_template('transactions/edit.html', transaction=current_transaction, categories=categories, rules=rules)  
+    else:
+        flash(gettext("The transaction '%(description)s' cannot be edited anymore.", description=current_transaction.description))
+        return redirect(url_for('overview.month_overview', year=current_transaction.date.year, month=current_transaction.date.month))
     
 
 @bp.route('/transactions/single/<int:transaction_id>/')

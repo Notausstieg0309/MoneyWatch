@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-29 15:39+0100\n"
+"POT-Creation-Date: 2019-12-31 10:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,12 @@ msgid ""
 "for. Please create categories first."
 msgstr ""
 
-#: templates/base.html:20 templates/base.html:33
+#: transactions.py:64
+#, python-format
+msgid "The transaction '%(description)s' cannot be edited anymore."
+msgstr ""
+
+#: templates/base.html:20 templates/base.html:34
 msgid "Import New Transactions"
 msgstr ""
 

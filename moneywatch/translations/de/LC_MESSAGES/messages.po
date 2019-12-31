@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-29 15:39+0100\n"
-"PO-Revision-Date: 2019-12-29 15:41+0100\n"
+"POT-Creation-Date: 2019-12-31 10:10+0100\n"
+"PO-Revision-Date: 2019-12-31 10:12+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -56,7 +56,12 @@ msgstr ""
 "vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien "
 "anlegen."
 
-#: templates/base.html:20 templates/base.html:33
+#: transactions.py:64
+#, python-format
+msgid "The transaction '%(description)s' cannot be edited anymore."
+msgstr "Die Transaktion %(description)s kann nicht mehr bearbeitet werden."
+
+#: templates/base.html:20 templates/base.html:34
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
@@ -290,7 +295,7 @@ msgstr "Der aktuelle Verbrauch des geplanten Budgets von %(budget)s."
 
 #: templates/overview/index.html:111
 msgid "No transactions available"
-msgstr "Keine Transaktionen verfügbar."
+msgstr "Keine Transaktionen verfügbar"
 
 #: templates/overview/index.html:123
 msgid "previous month"

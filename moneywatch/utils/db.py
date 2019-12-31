@@ -496,3 +496,5 @@ def save_transaction(item):
         db.execute("INSERT INTO transactions (days, valuta, full_text, description, category_id, rule_id) VALUES (?, ?, ? ,? , ?, ?)",(item['days'] ,item['valuta'], item['full_text'], item['description'], item['category_id'], item.get('rule_id', None)))
     
     db.commit()
+    
+    convert_days_to_date(item, "days", "date")
