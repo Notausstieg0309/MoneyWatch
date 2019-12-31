@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("YYYY/MM")) }}{% if timing["months"] > 1 %} - {{ timing["end"] | dateformat(_("YYYY/MM")) }} ({{ timing["months"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
+  {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("yyyy/MM")) }}{% if timing["months"] > 1 %} - {{ timing["end"] | dateformat(_("yyyy/MM")) }} ({{ timing["months"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
 {% endblock %}
 
 {% macro item_row(row_class,name,num_planned,text_planned,num_valuta,text_valuta) %}
@@ -39,7 +39,7 @@
 
 {% macro planned_transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("YYYY-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
+        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
     {%- endset -%}
     {%- set row_class -%}
     {{ row_class }}{% if transaction.overdue %} overdue{% endif %}
@@ -50,7 +50,7 @@
 
 {% macro transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("YYYY-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
+        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
     {%- endset -%}
     
     {% if transaction.trend is not none and transaction.trend != 0.0 %}

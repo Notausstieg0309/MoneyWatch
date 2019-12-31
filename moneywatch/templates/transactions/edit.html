@@ -8,7 +8,7 @@
 <li class="collection-item">
 <table class="transactions imports multiple-rule-transaction">
   <tr>
-    <td class="date" rowspan="3">{{ transaction.date | dateformat(_("YYYY-MM-dd")) }}</td>
+    <td class="date" rowspan="3">{{ transaction.date | dateformat(_("yyyy-MM-dd")) }}</td>
     <td class="short_description">
        <label for="description">{% trans %}Description{% endtrans %}</label>
        <input type="text" data-rule-no-replace="1" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>

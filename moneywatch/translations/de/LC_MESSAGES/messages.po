@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-31 12:34+0100\n"
-"PO-Revision-Date: 2019-12-31 12:36+0100\n"
+"POT-Creation-Date: 2019-12-31 18:39+0100\n"
+"PO-Revision-Date: 2019-12-31 18:40+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -18,6 +18,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 "X-Generator: Poedit 2.2.3\n"
+
+#: analysis.py:26 analysis.py:27 templates/overview/index.html:4
+msgid "yyyy/MM"
+msgstr "MM.yyyy"
+
+#: analysis.py:30 analysis.py:31 analysis.py:160 analysis.py:175
+#, python-format
+msgid "Q%(quarter)s/%(year)s"
+msgstr ""
+
+#: analysis.py:94 templates/importer/check.html:11
+#: templates/importer/check.html:41
+#: templates/importer/multiple_rule_match.html:11
+#: templates/overview/index.html:42 templates/overview/index.html:53
+#: templates/transactions/edit.html:11 templates/transactions/index.html:10
+#: templates/transactions/index.html:27
+msgid "yyyy-MM-dd"
+msgstr "dd.MM.yyyy"
 
 #: categories.py:35 categories.py:102 ruleset.py:107
 msgid "Name is required."
@@ -65,27 +83,76 @@ msgstr "Die Transaktion %(description)s kann nicht mehr bearbeitet werden."
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
-#: templates/base.html:21 templates/base.html:34
+#: templates/analysis/index.html:4 templates/base.html:21 templates/base.html:35
+msgid "Analysis"
+msgstr ""
+
+#: templates/base.html:22 templates/base.html:36
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: templates/base.html:22 templates/base.html:35 templates/ruleset/index.html:4
+#: templates/base.html:23 templates/base.html:37 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr "Import-Regeln"
 
-#: templates/base.html:23 templates/base.html:36
+#: templates/base.html:24 templates/base.html:38
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:49
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:24 templates/base.html:37 templates/overview/index.html:4
+#: templates/base.html:25 templates/base.html:39 templates/overview/index.html:4
 msgid "Overview"
 msgstr "Übersicht"
 
+#: templates/analysis/index.html:17 templates/overview/index.html:157
+msgid "Balance"
+msgstr "Bilanz"
+
+#: templates/analysis/index.html:21 templates/categories/change.html:4
+#: templates/categories/index.html:45 templates/overview/index.html:147
+#: templates/overview/index.html:195 templates/ruleset/add.html:4
+msgid "Earnings"
+msgstr "Einnahmen"
+
+#: templates/analysis/index.html:25 templates/categories/change.html:4
+#: templates/categories/index.html:49 templates/overview/index.html:152
+#: templates/overview/index.html:199 templates/ruleset/add.html:4
+msgid "Spendings"
+msgstr "Ausgaben"
+
+#: templates/analysis/index.html:31
+msgid "Overall"
+msgstr ""
+
+#: templates/analysis/index.html:35
+msgid "By Rule"
+msgstr ""
+
+#: templates/analysis/index.html:39
+msgid "By Category"
+msgstr ""
+
+#: templates/analysis/index.html:54 templates/analysis/index.html:64
+#: templates/analysis/index.html:77 templates/ruleset/add.html:33
+msgid "Please select..."
+msgstr "Bitte auswählen..."
+
+#: templates/analysis/index.html:94
+msgid "by Year"
+msgstr ""
+
+#: templates/analysis/index.html:98
+msgid "by Quartal"
+msgstr ""
+
+#: templates/analysis/index.html:102
+msgid "by Month"
+msgstr ""
+
 #: templates/categories/add.html:19 templates/categories/change.html:31
-#: templates/importer/check.html:43 templates/ruleset/add.html:68
+#: templates/importer/check.html:63 templates/ruleset/add.html:68
 #: templates/ruleset/change.html:47 templates/transactions/edit.html:46
 msgid "Save"
 msgstr "Speichern"
@@ -93,18 +160,6 @@ msgstr "Speichern"
 #: templates/categories/change.html:4
 msgid "Edit Category"
 msgstr "Kategorie ändern"
-
-#: templates/categories/change.html:4 templates/categories/index.html:45
-#: templates/overview/index.html:141 templates/overview/index.html:178
-#: templates/ruleset/add.html:4
-msgid "Earnings"
-msgstr "Einnahmen"
-
-#: templates/categories/change.html:4 templates/categories/index.html:49
-#: templates/overview/index.html:146 templates/overview/index.html:182
-#: templates/ruleset/add.html:4
-msgid "Spendings"
-msgstr "Ausgaben"
 
 #: templates/categories/change.html:10
 msgid "Category Name"
@@ -155,13 +210,6 @@ msgstr "Neue Hauptkategorie"
 msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
-#: templates/importer/check.html:11
-#: templates/importer/multiple_rule_match.html:11
-#: templates/overview/index.html:42 templates/overview/index.html:53
-#: templates/transactions/edit.html:11 templates/transactions/index.html:10
-msgid "YYYY-MM-dd"
-msgstr "dd.MM.YYYY"
-
 #: templates/importer/check.html:13
 #: templates/importer/multiple_rule_match.html:13
 #: templates/transactions/edit.html:13
@@ -197,7 +245,7 @@ msgstr "Zur Kenntnis genommen"
 msgid "Check again"
 msgstr "Erneut überprüfen"
 
-#: templates/importer/check.html:51
+#: templates/importer/check.html:75
 msgid "No transactions found."
 msgstr "Keine Transaktionen verfügbar."
 
@@ -245,10 +293,6 @@ msgstr "Korrekte Import-Regel"
 #: templates/importer/multiple_rule_match.html:49
 msgid "None"
 msgstr "Keine"
-
-#: templates/overview/index.html:4
-msgid "YYYY/MM"
-msgstr "MM.YYYY"
 
 #: templates/overview/index.html:4
 msgid "Months"
@@ -301,50 +345,46 @@ msgstr "Der aktuelle Verbrauch des geplanten Budgets von %(budget)s."
 msgid "No transactions available"
 msgstr "Keine Transaktionen verfügbar"
 
-#: templates/overview/index.html:123
+#: templates/overview/index.html:129
 msgid "previous month"
 msgstr "vorheriger Monat"
 
-#: templates/overview/index.html:125 templates/overview/index.html:163
+#: templates/overview/index.html:131 templates/overview/index.html:169
 #, python-format
 msgid "current month in %(year)s"
 msgstr "aktueller Monat in %(year)s"
 
-#: templates/overview/index.html:127
+#: templates/overview/index.html:133
 msgid "previous year"
 msgstr "vorheriges Jahr"
 
-#: templates/overview/index.html:129
+#: templates/overview/index.html:135
 msgid "previous timeperiod"
 msgstr "vorheriger Zeitraum"
 
-#: templates/overview/index.html:137 templates/overview/index.html:178
-#: templates/overview/index.html:182
+#: templates/overview/index.html:143 templates/overview/index.html:195
+#: templates/overview/index.html:199
 msgid "Planned"
 msgstr "Geplant"
 
-#: templates/overview/index.html:138 templates/overview/index.html:178
-#: templates/overview/index.html:182
+#: templates/overview/index.html:144 templates/overview/index.html:195
+#: templates/overview/index.html:199
 msgid "Current"
 msgstr "Aktuell"
 
-#: templates/overview/index.html:151
-msgid "Balance"
-msgstr "Bilanz"
-
-#: templates/overview/index.html:156
+#: templates/overview/index.html:162
 msgid "current values incl. pending regular transactions"
 msgstr "aktuellen Zahlen inkl. noch ausstehenden Transaktionen"
 
-#: templates/overview/index.html:161
+#: templates/overview/index.html:167
 msgid "next month"
 msgstr "nächster Monat"
 
-#: templates/overview/index.html:165
+#: templates/overview/index.html:171
 msgid "next year"
 msgstr "nächstes Jahr"
 
-#: templates/overview/index.html:167
+#: templates/overview/index.html:173
 msgid "next timeperiod"
 msgstr "nächster Zeitraum"
 
@@ -393,10 +433,6 @@ msgstr ""
 #: templates/ruleset/add.html:26 templates/ruleset/change.html:17
 msgid "Short Description"
 msgstr "Buchungsbezeichnung"
-
-#: templates/ruleset/add.html:33
-msgid "Please select..."
-msgstr "Bitte auswählen..."
 
 #: templates/ruleset/add.html:45 templates/ruleset/change.html:30
 msgid "Regularity"
@@ -487,7 +523,7 @@ msgstr ""
 msgid "Clear rule binding (%(rulename)s)"
 msgstr "Regelverknüpfung aufheben (%(rulename)s)"
 
-#: templates/transactions/index.html:35
+#: templates/transactions/index.html:54
 msgid "No transactions available."
 msgstr "Keine Transaktionen verfügbar."
 
@@ -522,3 +558,9 @@ msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert"
 #~ msgid "This category contains overdue planned transactions"
 #~ msgstr ""
 #~ "Diese Kategorie enthält geplante Transaktionen die bereits überfällig sind"
+
+#~ msgid "YYYY/MM"
+#~ msgstr "MM.YYYY"
+
+#~ msgid "YYYY-MM-dd"
+#~ msgstr "dd.MM.yyyy"
