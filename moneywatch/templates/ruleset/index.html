@@ -17,7 +17,7 @@
 
     {% for rule in rules %}
     <tr>
-      <td class="description valign-wrapper">{{ rule['description'] }}{% if rule.regular %}&nbsp;&nbsp;<i class="tooltipped material-icons" data-tooltip="{% trans %}This is a rule identifying regular transactions{% endtrans %}">update</i>{% endif %}</td>
+      <td class="description valign-wrapper">{{ rule['description'] }}{% if rule.regular %}&nbsp;&nbsp;<i class="tooltipped grey-text material-icons" data-tooltip="{% trans %}This is a rule identifying regular transactions{% endtrans %}">update</i>{% endif %}</td>
       <td class="pattern">{{ rule['pattern'] }}</td>
       <td class="category_path">{{ rule.category.getCategoryPath(" > ") }}</td>
       <td class="buttons">
