@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-31 10:10+0100\n"
+"POT-Creation-Date: 2019-12-31 12:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -185,7 +185,11 @@ msgstr ""
 msgid "Please Choose"
 msgstr ""
 
-#: templates/importer/check.html:41
+#: templates/importer/check.html:48
+msgid "I have noted this message"
+msgstr ""
+
+#: templates/importer/check.html:61
 #: templates/importer/multiple_rule_match.html:40
 msgid "Check again"
 msgstr ""
@@ -413,6 +417,10 @@ msgstr ""
 
 #: templates/ruleset/index.html:13
 msgid "Match Pattern"
+msgstr ""
+
+#: templates/ruleset/index.html:20
+msgid "This is a rule identifying regular transactions"
 msgstr ""
 
 #: templates/ruleset/index.html:24

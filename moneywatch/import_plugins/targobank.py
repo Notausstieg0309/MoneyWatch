@@ -25,14 +25,16 @@ def parse_csv(stream, name):
             result_item['full_text'] = full_text
             result_item['valuta'] = float(valuta.replace(",","."))
             
-            if result_item['valuta'] != 0:
-                result.append(result_item)
+            if result_item['valuta'] == 0 and (result_item['full_text'].startswith("RESERV") or result_item['full_text'].startswith("VORAUSDATIERTE")):
+                continue
+                
+            result.append(result_item)
 
     return result
 
     
 def check_csv(stream, name):    
-    if name.startswith("CHK_191"):
+    if name.startswith("CHK_"):
         return True
     return False
     

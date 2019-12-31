@@ -119,23 +119,28 @@ def create_transactions_from_import(items, check_all=False):
     
 def check_if_items_complete(items):
     
-    incomplete = False
     for item in items:
-        if not(item.description) or not(item.category_id):
-            incomplete = True
-            break
-            
-    return not(incomplete)
+        if not item.complete:
+            return False
+        
+    return True
     
     
 def apply_import_edits(import_objects,input_data):
 
     for index, transaction in enumerate(import_objects):
        
-        if str(index)+"_description" in input_data:
-            transaction.description = input_data[str(index)+"_description"]
-        if str(index)+"_category" in input_data:
-            transaction.category_id = input_data[str(index)+"_category"]
+        if transaction.type == "message":
+            current_app.logger.debug("message noted: %s" ,input_data)
+            if input_data.get(str(index)+"_noted", None):
+                transaction.description = True
+        
+        else:
+            if str(index)+"_description" in input_data:
+                transaction.description = input_data[str(index)+"_description"]
+            if str(index)+"_category" in input_data:
+                transaction.category_id = input_data[str(index)+"_category"]
+
 
 def apply_multiple_rule_match_edits(import_objects,input_data):
 

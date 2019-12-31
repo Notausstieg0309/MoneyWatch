@@ -21,13 +21,32 @@
 {% endmacro %}
 
 
+{% macro message_item(transaction) %}
+ <table cellspacing="0" class="transactions message">
+  <tr>
+  <td class="date" >{{transaction.date | dateformat(_("YYYY-MM-dd"))}}</td>
+  <td class="full_text" colspan="2">{{ transaction.full_text }}</td>
+  </tr>
+  </table>
+{% endmacro %}
+
+
+{% macro item(transaction) %}
+{% if transaction.type == "message" %}
+{{ message_item(transaction) }}
+{% else %}
+{{ transaction_item(transaction) }}
+{% endif %}
+{% endmacro %}
+
+
 {% block content %}
 
 {% if transactions %}
 <ul class="collection transactions_overview">
 {% for transaction in transactions %}
 <li class="collection-item">
-{{ transaction_item(transaction) }}
+{{ item(transaction) }}
 </li>
 {% endfor %}
  </ul>

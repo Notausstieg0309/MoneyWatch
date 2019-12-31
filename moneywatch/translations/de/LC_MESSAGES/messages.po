@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-31 10:10+0100\n"
-"PO-Revision-Date: 2019-12-31 10:12+0100\n"
+"POT-Creation-Date: 2019-12-31 12:34+0100\n"
+"PO-Revision-Date: 2019-12-31 12:36+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -188,7 +188,11 @@ msgstr "Kategorie"
 msgid "Please Choose"
 msgstr "Bitte auswählen"
 
-#: templates/importer/check.html:41
+#: templates/importer/check.html:48
+msgid "I have noted this message"
+msgstr "Zur Kenntnis genommen"
+
+#: templates/importer/check.html:61
 #: templates/importer/multiple_rule_match.html:40
 msgid "Check again"
 msgstr "Erneut überprüfen"
@@ -433,6 +437,10 @@ msgstr "Ändere Regel"
 #: templates/ruleset/index.html:13
 msgid "Match Pattern"
 msgstr "Suchausdruck"
+
+#: templates/ruleset/index.html:20
+msgid "This is a rule identifying regular transactions"
+msgstr "Diese Regel identifiziert regelmäßige Transaktionen."
 
 #: templates/ruleset/index.html:24
 msgid "change this rule"

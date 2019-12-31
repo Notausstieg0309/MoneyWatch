@@ -33,6 +33,26 @@
 </li>
 {% endmacro %}
 
+{% macro message_item(transaction, index) %}
+<li class="collection-item{% if transaction.description %} complete{% endif %}">
+<input type="hidden" name="{{ index }}_message" value="1" />
+<table class="transactions imports">
+  <tr>
+    <td class="date" rowspan="2">{{ transaction.date | dateformat(_("YYYY-MM-dd")) }}</td>
+    <td colspan="2" class="full_text" colspan="2">{{transaction.full_text}}</td>
+  </tr>
+  <tr>
+    <td>   
+      <label>
+        <input type="checkbox" name="{{ index }}_noted" {% if transaction.description %} checked{% endif%} />
+        <span>{% trans %}I have noted this message{% endtrans %}</span>
+      </label>
+    </td>
+  </tr>
+</table> 
+</li>
+{% endmacro %}
+
 {% block content %}
 <br>
 
@@ -44,7 +64,11 @@
 
 <ul class="collection">
 {% for transaction in data %}
+{% if transaction.type == "message" %}
+{{ message_item(transaction, loop.index0) }} 
+{% else %}
 {{ transaction_item(transaction, loop.index0) }} 
+{% endif %}
 {% endfor %}
 </ul>
 {% else %}

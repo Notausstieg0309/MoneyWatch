@@ -236,7 +236,7 @@ class Transaction:
         self._cache = {}
         
         # apply ruleset if transaction is new
-        if self._data.get('rule_id', None) is None and self._data.get("id", None) is None:
+        if self.type != "message" and self._data.get('rule_id', None) is None and self._data.get("id", None) is None:
         
             founded_rules = []
             
@@ -296,7 +296,21 @@ class Transaction:
     
     @property
     def type(self):
-        return "in" if self.valuta > 0 else "out"
+        if self.valuta > 0:
+            return "in"
+        elif self.valuta < 0:
+            return "out"
+        else:
+            return "message"
+            
+    @property
+    def complete(self):
+        if self.valuta != 0 and self.description and self.category_id:
+            return True
+        elif self.valuta == 0 and self.description == True:
+            return True
+        return False
+            
     
     @property
     def valuta(self):
@@ -372,6 +386,10 @@ class Transaction:
     
         if not self.is_editable:
             return
+            
+        if self.type == "message":
+            self._data["description"] = None
+            self._data["category_id"] = None
             
         rule = self.rule
         
