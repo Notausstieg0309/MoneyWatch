@@ -218,9 +218,22 @@ div.particular_transactions span.in {
 }
 
 
+/* display message icon on the right side centered. Use own CSS statements as materialize class "valign-wrapper" does not work together with class "right-align" */
+span.message-modal {
+    color: #f79400;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+div.right-centered {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+}
 
 /* budget indicators */
-
 div.budget_perc {
   height: 22px;
   line-height: 22px;

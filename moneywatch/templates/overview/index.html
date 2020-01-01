@@ -176,6 +176,9 @@
 <br><br>
 </div>
 </div>
+{%- if messages > 0 -%}
+<div class="right-centered"><span class="message-modal  tooltipped" data-year="{{ timing["start"].year }}" data-month="{{ timing["start"].month }}" data-month-count={{ timing["months"] }} data-tooltip="{% if timing["months"] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span></div>
+{% endif %}
 {% if timing["months"] == 1 and particular_rules["count"] > 0 %}
 <div class="divider"></div>
 <br>

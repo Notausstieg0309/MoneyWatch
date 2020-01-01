@@ -78,6 +78,18 @@ def transaction_details(transaction_id):
     return  render_template('transactions/single_transaction.html', transaction=transaction)
 
 
+@bp.route('/transactions/messages/<int:year>/<int:month>/<int:month_count>/')
+def transaction_messages(year, month, month_count):
+    try:
+        end_date = utils.add_months(utils.get_last_day_of_month(year,month),(month_count-1))
+        transactions = Transaction.getTransactionsByType("message", start=utils.get_first_day_of_month(year,month), end=end_date)
+    except Exception as e:
+        return jsonify(None), 404
+        
+    return  render_template('transactions/multiple_transaction.html', transactions=transactions)
+
+
+
 @bp.errorhandler(NoSuchItemError)
 def handle_no_such_transaction(error):
     current_app.logger.debug("transaction not found: %s" , error.data)

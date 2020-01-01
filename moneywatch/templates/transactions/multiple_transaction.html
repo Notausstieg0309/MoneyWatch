@@ -1,0 +1,8 @@
+{%- import 'transactions/index.html' as base -%}
+<ul class="collection transactions_overview">
+{% for transaction in transactions %}
+<li class="collection-item">
+{{ base.item(transaction) }}
+{% endfor %}
+</li>
+</ul>

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-31 18:39+0100\n"
-"PO-Revision-Date: 2019-12-31 18:40+0100\n"
+"POT-Creation-Date: 2020-01-01 13:03+0100\n"
+"PO-Revision-Date: 2020-01-01 13:05+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -23,14 +23,13 @@ msgstr ""
 msgid "yyyy/MM"
 msgstr "MM.yyyy"
 
-#: analysis.py:30 analysis.py:31 analysis.py:160 analysis.py:175
+#: analysis.py:30 analysis.py:31 analysis.py:162 analysis.py:177
 #, python-format
 msgid "Q%(quarter)s/%(year)s"
 msgstr ""
 
-#: analysis.py:94 templates/importer/check.html:11
-#: templates/importer/check.html:41
-#: templates/importer/multiple_rule_match.html:11
+#: analysis.py:96 templates/importer/check.html:11
+#: templates/importer/check.html:41 templates/importer/multiple_rule_match.html:11
 #: templates/overview/index.html:42 templates/overview/index.html:53
 #: templates/transactions/edit.html:11 templates/transactions/index.html:10
 #: templates/transactions/index.html:27
@@ -79,30 +78,29 @@ msgstr ""
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr "Die Transaktion %(description)s kann nicht mehr bearbeitet werden."
 
-#: templates/base.html:20 templates/base.html:34
+#: templates/base.html:24 templates/base.html:38
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
-#: templates/analysis/index.html:4 templates/base.html:21 templates/base.html:35
+#: templates/analysis/index.html:4 templates/base.html:25 templates/base.html:39
 msgid "Analysis"
 msgstr ""
 
-#: templates/base.html:22 templates/base.html:36
+#: templates/base.html:26 templates/base.html:40
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: templates/base.html:23 templates/base.html:37 templates/ruleset/index.html:4
+#: templates/base.html:27 templates/base.html:41 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr "Import-Regeln"
 
-#: templates/base.html:24 templates/base.html:38
-#: templates/categories/index.html:4 templates/categories/index.html:45
-#: templates/categories/index.html:49
+#: templates/base.html:28 templates/base.html:42 templates/categories/index.html:4
+#: templates/categories/index.html:45 templates/categories/index.html:49
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:25 templates/base.html:39 templates/overview/index.html:4
+#: templates/base.html:29 templates/base.html:43 templates/overview/index.html:4
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -112,13 +110,13 @@ msgstr "Bilanz"
 
 #: templates/analysis/index.html:21 templates/categories/change.html:4
 #: templates/categories/index.html:45 templates/overview/index.html:147
-#: templates/overview/index.html:195 templates/ruleset/add.html:4
+#: templates/overview/index.html:198 templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr "Einnahmen"
 
 #: templates/analysis/index.html:25 templates/categories/change.html:4
 #: templates/categories/index.html:49 templates/overview/index.html:152
-#: templates/overview/index.html:199 templates/ruleset/add.html:4
+#: templates/overview/index.html:202 templates/ruleset/add.html:4
 msgid "Spendings"
 msgstr "Ausgaben"
 
@@ -210,27 +208,23 @@ msgstr "Neue Hauptkategorie"
 msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
-#: templates/importer/check.html:13
-#: templates/importer/multiple_rule_match.html:13
+#: templates/importer/check.html:13 templates/importer/multiple_rule_match.html:13
 #: templates/transactions/edit.html:13
 msgid "Description"
 msgstr "Beschreibung"
 
-#: templates/importer/check.html:14
-#: templates/importer/multiple_rule_match.html:14
+#: templates/importer/check.html:14 templates/importer/multiple_rule_match.html:14
 #: templates/transactions/edit.html:14
 msgid "Please enter a description"
 msgstr "Bitte eine Beschreibung eingeben"
 
-#: templates/importer/check.html:20
-#: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:31
-#: templates/ruleset/change.html:20 templates/ruleset/index.html:14
-#: templates/transactions/edit.html:20
+#: templates/importer/check.html:20 templates/importer/multiple_rule_match.html:20
+#: templates/ruleset/add.html:31 templates/ruleset/change.html:20
+#: templates/ruleset/index.html:14 templates/transactions/edit.html:20
 msgid "Category"
 msgstr "Kategorie"
 
-#: templates/importer/check.html:22
-#: templates/importer/multiple_rule_match.html:22
+#: templates/importer/check.html:22 templates/importer/multiple_rule_match.html:22
 #: templates/importer/multiple_rule_match.html:48
 #: templates/transactions/edit.html:22
 msgid "Please Choose"
@@ -240,8 +234,7 @@ msgstr "Bitte auswählen"
 msgid "I have noted this message"
 msgstr "Zur Kenntnis genommen"
 
-#: templates/importer/check.html:61
-#: templates/importer/multiple_rule_match.html:40
+#: templates/importer/check.html:61 templates/importer/multiple_rule_match.html:40
 msgid "Check again"
 msgstr "Erneut überprüfen"
 
@@ -272,15 +265,15 @@ msgstr "Laden"
 #: templates/importer/multiple_rule_match.html:42
 msgid ""
 "The following transaction matches multiple rules. This problem can occur when "
-"rules uses a search pattern that is not specific enough for such edge cases. "
-"If this problem happens several times with the same rules involved please "
-"consider to precise the search pattern of these rules."
+"rules uses a search pattern that is not specific enough for such edge cases. If "
+"this problem happens several times with the same rules involved please consider "
+"to precise the search pattern of these rules."
 msgstr ""
 "Die folgende Transaktion passt zu mehreren Import-Regeln. Dieses Problem kann "
 "auftreten, wenn verschiedene Import-Regeln einen Suchausdruck verwenden, der "
 "nicht spezifisch genug in solchen Fällen ist. Wenn dieses Problem mit der "
-"selben Regel wiederholt auftritt, sollte man den Suchausdruck basierend auf "
-"den bereits vorhandenen Transaktionen versuchen zu präzisieren."
+"selben Regel wiederholt auftritt, sollte man den Suchausdruck basierend auf den "
+"bereits vorhandenen Transaktionen versuchen zu präzisieren."
 
 #: templates/importer/multiple_rule_match.html:44
 msgid "Please decide which rule this transaction applies to."
@@ -362,13 +355,13 @@ msgstr "vorheriges Jahr"
 msgid "previous timeperiod"
 msgstr "vorheriger Zeitraum"
 
-#: templates/overview/index.html:143 templates/overview/index.html:195
-#: templates/overview/index.html:199
+#: templates/overview/index.html:143 templates/overview/index.html:198
+#: templates/overview/index.html:202
 msgid "Planned"
 msgstr "Geplant"
 
-#: templates/overview/index.html:144 templates/overview/index.html:195
-#: templates/overview/index.html:199
+#: templates/overview/index.html:144 templates/overview/index.html:198
+#: templates/overview/index.html:202
 msgid "Current"
 msgstr "Aktuell"
 
@@ -388,7 +381,25 @@ msgstr "nächstes Jahr"
 msgid "next timeperiod"
 msgstr "nächster Zeitraum"
 
-#: templates/overview/index.html:184
+#: templates/overview/index.html:180
+#, python-format
+msgid "This month contains %(num)d message. Click here to show them."
+msgid_plural "This month contains %(num)d messages. Click here to show them."
+msgstr[0] ""
+"Dieser Monat enthält %(num)d Nachricht. Hier klicken um diese anzuzeigen."
+msgstr[1] ""
+"Dieser Monat enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
+
+#: templates/overview/index.html:180
+#, python-format
+msgid "This timeframe contains %(num)d message. Click here to show them."
+msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
+msgstr[0] ""
+"Dieser Zeitraum enthält %(num)d Nachricht. Hier klicken um diese anzuzeigen."
+msgstr[1] ""
+"Dieser Zeitraum enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
+
+#: templates/overview/index.html:187
 msgid "particular transactions:"
 msgstr "Besondere Transaktionen:"
 
@@ -410,12 +421,12 @@ msgstr "Regelname"
 
 #: templates/ruleset/add.html:19
 msgid ""
-"The search pattern (phython based regular expression) used to identify "
-"matching transactions during import based on their booking text."
+"The search pattern (phython based regular expression) used to identify matching "
+"transactions during import based on their booking text."
 msgstr ""
 "Der Such-Ausdruck (Python-basierter regulärer Ausdruck), welcher zu "
-"importierende Transaktionen anhand des Buchungstextes erkennt und "
-"entsprechend zuordnet."
+"importierende Transaktionen anhand des Buchungstextes erkennt und entsprechend "
+"zuordnet."
 
 #: templates/ruleset/add.html:20 templates/ruleset/change.html:14
 msgid "Search Pattern"
@@ -427,8 +438,8 @@ msgid ""
 "import. The short description still can be changed during import."
 msgstr ""
 "Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend es "
-"Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des "
-"Imports dennoch geändert werden."
+"Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des Imports "
+"dennoch geändert werden."
 
 #: templates/ruleset/add.html:26 templates/ruleset/change.html:17
 msgid "Short Description"
@@ -510,8 +521,8 @@ msgstr "Transaktion bearbeiten"
 msgid ""
 "This transaction was identified by a rule. You can clear the binding of this "
 "transaction to the matched rule in case this transaction was mistakenly "
-"matched. In this case you should adapt the search pattern of the "
-"corresponding rule."
+"matched. In this case you should adapt the search pattern of the corresponding "
+"rule."
 msgstr ""
 "Diese Transaktion wurde durch eine Import-Regel identifiziert. Die Verbindung "
 "zu dieser Import-Regel kann aufgehoben werden, falls die Transaktion "
@@ -564,3 +575,9 @@ msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert"
 
 #~ msgid "YYYY-MM-dd"
 #~ msgstr "dd.MM.yyyy"
+
+#~ msgid "This month contains messages. Click here to show them."
+#~ msgstr "Dieser Monat enthält Nachrichten. Hier klicken um diese anzuzeigen."
+
+#~ msgid "This timeframe contains messages. Click here to show them."
+#~ msgstr "Dieser Zeitraum enthält Nachrichten. Hier klicken um diese anzuzeigen."

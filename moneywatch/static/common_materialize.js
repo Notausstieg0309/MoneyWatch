@@ -156,6 +156,11 @@ $(function() {
     $("div.overview div.transaction span.description").click(function() {
         modalTransactionDetails("/transactions/single/"+$(this).attr("data-transaction-id")+"/");
     });
+    
+    // overview: show transaction messages for current month
+    $("span.message-modal").click(function() {
+        modalTransactionDetails("/transactions/messages/" + $(this).attr("data-year") + "/" + $(this).attr("data-month") + "/" + $(this).attr("data-month-count") + "/");
+    });
 });
  
  

@@ -437,7 +437,19 @@ class Transaction:
             result.append(Transaction(transaction))
         
         return result       
+    
+    @staticmethod   
+    def getTransactionsByType(type, start=None,end=None):
+
+        result = []
         
+        for transaction in db.get_transactions(start,end):
+            trans_temp = Transaction(transaction)
+            if trans_temp.type == type:
+                result.append(trans_temp)
+        
+        return result  
+    
     @staticmethod   
     def getOldestTransaction():
         result = db.get_oldest_transaction()

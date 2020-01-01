@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2019 ORGANIZATION
+# Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-31 18:39+0100\n"
+"POT-Creation-Date: 2020-01-01 13:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "yyyy/MM"
 msgstr ""
 
-#: analysis.py:30 analysis.py:31 analysis.py:160 analysis.py:175
+#: analysis.py:30 analysis.py:31 analysis.py:162 analysis.py:177
 #, python-format
 msgid "Q%(quarter)s/%(year)s"
 msgstr ""
 
-#: analysis.py:94 templates/importer/check.html:11
+#: analysis.py:96 templates/importer/check.html:11
 #: templates/importer/check.html:41
 #: templates/importer/multiple_rule_match.html:11
 #: templates/overview/index.html:42 templates/overview/index.html:53
@@ -74,31 +74,31 @@ msgstr ""
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr ""
 
-#: templates/base.html:20 templates/base.html:34
+#: templates/base.html:24 templates/base.html:38
 msgid "Import New Transactions"
 msgstr ""
 
-#: templates/analysis/index.html:4 templates/base.html:21
-#: templates/base.html:35
+#: templates/analysis/index.html:4 templates/base.html:25
+#: templates/base.html:39
 msgid "Analysis"
 msgstr ""
 
-#: templates/base.html:22 templates/base.html:36
+#: templates/base.html:26 templates/base.html:40
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr ""
 
-#: templates/base.html:23 templates/base.html:37 templates/ruleset/index.html:4
+#: templates/base.html:27 templates/base.html:41 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr ""
 
-#: templates/base.html:24 templates/base.html:38
+#: templates/base.html:28 templates/base.html:42
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:49
 msgid "Categories"
 msgstr ""
 
-#: templates/base.html:25 templates/base.html:39
+#: templates/base.html:29 templates/base.html:43
 #: templates/overview/index.html:4
 msgid "Overview"
 msgstr ""
@@ -109,13 +109,13 @@ msgstr ""
 
 #: templates/analysis/index.html:21 templates/categories/change.html:4
 #: templates/categories/index.html:45 templates/overview/index.html:147
-#: templates/overview/index.html:195 templates/ruleset/add.html:4
+#: templates/overview/index.html:198 templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr ""
 
 #: templates/analysis/index.html:25 templates/categories/change.html:4
 #: templates/categories/index.html:49 templates/overview/index.html:152
-#: templates/overview/index.html:199 templates/ruleset/add.html:4
+#: templates/overview/index.html:202 templates/ruleset/add.html:4
 msgid "Spendings"
 msgstr ""
 
@@ -351,13 +351,13 @@ msgstr ""
 msgid "previous timeperiod"
 msgstr ""
 
-#: templates/overview/index.html:143 templates/overview/index.html:195
-#: templates/overview/index.html:199
+#: templates/overview/index.html:143 templates/overview/index.html:198
+#: templates/overview/index.html:202
 msgid "Planned"
 msgstr ""
 
-#: templates/overview/index.html:144 templates/overview/index.html:195
-#: templates/overview/index.html:199
+#: templates/overview/index.html:144 templates/overview/index.html:198
+#: templates/overview/index.html:202
 msgid "Current"
 msgstr ""
 
@@ -377,7 +377,21 @@ msgstr ""
 msgid "next timeperiod"
 msgstr ""
 
-#: templates/overview/index.html:184
+#: templates/overview/index.html:180
+#, python-format
+msgid "This month contains %(num)d message. Click here to show them."
+msgid_plural "This month contains %(num)d messages. Click here to show them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/overview/index.html:180
+#, python-format
+msgid "This timeframe contains %(num)d message. Click here to show them."
+msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/overview/index.html:187
 msgid "particular transactions:"
 msgstr ""
 

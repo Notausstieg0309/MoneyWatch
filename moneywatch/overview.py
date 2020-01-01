@@ -101,7 +101,9 @@ def createOverview(start, end):
     particular_rules["out"] = particular_rules_dates_out
     particular_rules["count"] = len(particular_rules_dates_in) + len(particular_rules_dates_out)
     
-    return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules) 
+    messages = len(Transaction.getTransactionsByType("message", start=start, end=end))
+    
+    return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
         
         
 @bp.route('/')
