@@ -137,7 +137,7 @@ class Rule:
     
         if self.regular:
             last_transaction = self.last_transaction()
-            if last_transaction and last_transaction.date < date:
+            if last_transaction is None or (last_transaction is not None and last_transaction.date < date):
             
                 next_due = utils.add_months(date, self.regular)
                 
