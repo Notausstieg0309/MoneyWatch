@@ -2,7 +2,7 @@ import datetime
 import math
 
 from calendar import monthrange
-
+from flask_babel import format_date
 
 
 def get_date_from_string(date, format):
@@ -22,6 +22,9 @@ def get_days_from_date(date):
     date_unix = datetime.date(1970,1,1)
     date_target = date - date_unix
     return date_target.days
+
+def get_quarter_from_date(date):
+    return (date.month-1)//3 + 1
 
     
 def get_first_day_of_month(year=None, month=None):
@@ -189,4 +192,13 @@ def get_cyclic_dates_for_timerange(date, months_interval, start, end):
     return result
     
 
+def get_babel_month_names():
+
+    month_names = []
+    
+    for month in range(1,13):
+        d = datetime.date(2007, month, 1)
+        month_names.append(format_date(d, "MMM"))
         
+    return month_names
+    

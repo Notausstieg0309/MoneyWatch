@@ -760,7 +760,24 @@ class Category:
             self._cache["transactions"] = result
             
             return result
-        
+            
+    @property
+    def transactions_with_childs(self):
+       
+        if "transactions_with_childs" in self._cache:
+            return self._cache["transactions_with_childs"]
+        else:
+            result = []
+            
+            result.extend(self.transactions)
+            
+            for category in self.childs:
+                result.extend( category.transactions_with_childs )
+                
+            self._cache["transactions_with_childs"] = result
+            
+            return result
+    
     def getCategoryPath(self, delimiter):
     
         if "path" in self._cache:

@@ -1,4 +1,6 @@
 <!doctype html>
+<html>
+<head>
 <title>{% block title %}{% endblock %} - Moneywatch</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='materialize.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='materialize.icons.css') }}">
@@ -8,10 +10,12 @@
   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
 <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='materialize.min.js') }}"></script>
 <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='Chart.bundle.min.js') }}"></script>
 <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='common_materialize.js') }}"></script>
 <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='overview_modals.js') }}"></script>
-
+</head>
+<body>
 <nav class="nav-extended">
   <div class="nav-wrapper">
   <a href="#" class="brand-logo">MoneyWatch</a>
@@ -45,4 +49,5 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </div>
-<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='materialize.min.js') }}"></script>
+</body>
+</html>

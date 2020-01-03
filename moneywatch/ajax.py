@@ -9,7 +9,6 @@ from moneywatch.utils.objects import Rule, Transaction
 from moneywatch.utils.exceptions import *
 
 from datetime import timedelta, datetime, date
-from flask_babel import format_date
 
 bp = Blueprint('ajax', __name__)
         
@@ -37,11 +36,7 @@ def transaction_chart_data(transaction_id):
     transactions.extend(transactions_after)
     
     result = []
-    month_names = []
-    
-    for month in range(1,13):
-        d = date(2007, month, 1)
-        month_names.append(format_date(d, "MMM"))
+    month_names = utils.get_babel_month_names()
       
     for transaction in transactions:
         result.append({
