@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}Analysis{% endtrans %}{% endblock %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col s12 m6 input-field">
+        <ul class="collection with-header criteria-container">
+            <li class="collection-header"><h5>Selection Criteria</h5></li>
+            <li class="collection-item" id="type">
+                <label>
+                    <input class="with-gap" name="type" class="type" id="balance" type="radio"  />
+                    <span>{% trans %}Balance{% endtrans %}</span>
+                </label>
+                <label><br>
+                    <input class="with-gap" name="type" class="type" id="in" type="radio"  />
+                    <span>{% trans %}Earnings{% endtrans %}</span>
+                </label><br>
+                <label>
+                    <input class="with-gap" name="type" class="type" id="out" type="radio"  />
+                    <span>{% trans %}Spendings{% endtrans %}</span>
+                </label>
+            </li>
+            <li class="collection-item" id="subtype" style="display:none;">
+                <label>
+                    <input class="with-gap" name="subtype" class="subtype" id="overall" type="radio"  />
+                    <span>{% trans %}Overall{% endtrans %}</span>
+                </label>
+                <label><br>
+                    <input class="with-gap" name="subtype" class="subtype" id="rule" type="radio"  />
+                    <span>{% trans %}By Rule{% endtrans %}</span>
+                </label><br>
+                <label>
+                    <input class="with-gap" name="subtype" class="subtype" id="category" type="radio"  />
+                    <span>{% trans %}By Category{% endtrans %}</span>
+                </label>
+            </li>
+            <li class="collection-item rules" id="rules_in" style="display:none;">
+                <div class="input-field"> 
+                    <select id="type" class="browser-default">
+                    {% for rule in rules["in"] -%}
+                        <option value="{{ rule.id }}">{{ rule.name }}</option>
+                    {% endfor %} 
+                    </select>
+                </div>
+            </li>
+            <li class="collection-item rules" id="rules_out" style="display:none;">
+                <div class="input-field"> 
+                    <select id="out_rules" class="browser-default">
+                        <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
+                    {% for rule in rules["out"] -%}
+                        <option value="{{ rule.id }}">{{ rule.name }}</option>
+                    {% endfor %} 
+                    </select>
+                </div>
+            </li>
+            <li class="collection-item categories" id="categories_in" style="display:none;">
+                <div class="input-field"> 
+                    <select id="in_categories" class="browser-default">
+                        <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
+                    {% for category in categories["in"] recursive -%}
+                        <option value="{{ category.id }}">{{ category.getCategoryPath(" > ") }}</option>
+                         {% if category.childs | length > 0 %}
+                            {{ loop(category.childs)}} 
+                         {% endif %}
+                    {% endfor %} 
+                    </select>
+                </div>
+             </li>
+            <li class="collection-item categories" id="categories_out" style="display:none;">
+                <div class="input-field"> 
+                    <select id="out_categories" class="browser-default">
+                        <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
+                    {% for category in categories["out"] recursive -%}
+                        <option value="{{ category.id }}">{{ category.getCategoryPath(" > ") }}</option>
+                         {% if category.childs | length > 0 %}
+                            {{ loop(category.childs)}} 
+                         {% endif %}
+                    {% endfor %} 
+                    </select>
+                </div>
+             </li>
+             
+             <li class="collection-item" id="timerange" >
+                <div class="input-field"> 
+                  <table>
+                  <tr><th>Gruppiert nach:</th><td>
+                  <label>
+                    <input class="with-gap" name="interval" class="subtype" id="12" type="radio"  />
+                    <span>{% trans %}by Year{% endtrans %}</span>
+                  </label><br>
+                 <label>
+                    <input class="with-gap" name="interval" class="subtype" id="3" type="radio"  />
+                    <span>{% trans %}by Quartal{% endtrans %}</span>
+                  </label><br>
+                   <label>
+                    <input class="with-gap" name="interval" class="subtype" id="1" type="radio"  />
+                    <span>{% trans %}by Month{% endtrans %}</span>
+                  </label>
+                  </td></tr>
+                  <tr>
+                  <td>Von:</td><td><input id="start" data-years-start="{{ years_start }}" data-years-end="{{ years_end }}" data-max-date="{{ max_date }}" data-min-date="{{ min_date }}" type="text" class="datepicker"></td>
+                  </tr>
+                  <tr>
+                  <td>Bis:</td><td><input id="end" data-years-start="{{ years_start }}" data-years-end="{{ years_end }}" data-max-date="{{ max_date }}"  data-min-date="{{ min_date }}" type="text" class="datepicker"></td>
+                  </tr>
+                  </table>
+                </div>
+             </li>
+             <li class="right-align collection-item" id="submit" >
+                <button class="btn waves-effect waves-light" id="submit">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+             </li>
+        </ul>
+    </div>
+</div>
+
+
+ <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#chart">Chart</a></li>
+        <li class="tab col s3"><a href="#table">Table</a></li>
+
+      </ul>
+    </div>
+    <div id="chart" class="col s12"><canvas id="analysis_chart" min-height="300" max-height="500"></canvas></div>
+    <div id="table" class="col s12">Hier is the tabelle</div>
+  </div>
+        
+
+  
+
+
+{% endblock %}

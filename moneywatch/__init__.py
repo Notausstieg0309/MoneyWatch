@@ -55,7 +55,8 @@ def create_app(test_config=None):
     app.register_blueprint(overview.bp)
     app.register_blueprint(importer.bp)
     app.register_blueprint(ajax.bp)
-	
+    app.register_blueprint(analysis.bp)
+    
     return app
 
   
