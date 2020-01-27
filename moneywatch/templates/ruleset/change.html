@@ -38,7 +38,7 @@
     
     <div id="regular_form_fields"{% if selected_regular == 0 %} style="display:none;"{% endif %}>
     <label for="next_due">{% trans %}Next Due{% endtrans %}</label>
-    <input name="next_due" id="next_due" type="date" value="{{ request.form['next_due'] or rule.next_due.strftime('%Y-%m-%d') }}"><br>
+    <input name="next_due" id="next_due" type="date" {% if request.form['next_due'] or rule.next_due %}value="{{ request.form['next_due'] or rule.next_due.strftime('%Y-%m-%d') }}"{% endif %}><br>
     
     <label for="next_valuta">{% trans %}Amount{% endtrans %}</label>
     <input name="next_valuta" type="number" step="0.01" id="next_valuta" value="{{ request.form['next_valuta'] or rule['next_valuta'] }}"><br>

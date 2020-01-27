@@ -4,6 +4,7 @@ import logging
 from flask import Flask, session, request
 from flask_session import Session
 from flask_babel import Babel
+from flask_migrate import Migrate
 from babel import negotiate_locale
 
 
@@ -11,12 +12,14 @@ from babel import negotiate_locale
 def create_app(test_config=None):
     
     from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax
-    from moneywatch.utils import db
+    from moneywatch.utils.objects import db
+    
     app = Flask(__name__, instance_relative_config=True)
     
     app.config.from_mapping(
             SESSION_TYPE="filesystem",
-            DATABASE=os.path.join(app.instance_path,'db.sqlite'),
+            SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db2.sqlite'),
+            SQLALCHEMY_TRACK_MODIFICATIONS=False,
             BABEL_DEFAULT_LOCALE='en',     
             LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             LOGGING_LOCATION = os.path.join(app.instance_path,'moneywatch.log'),
@@ -26,7 +29,17 @@ def create_app(test_config=None):
     
     Session(app)
     babel = Babel(app)
- 
+    
+    db.init_app(app)
+    
+    migrate = Migrate()
+    
+    with app.app_context():
+        if db.engine.url.drivername == 'sqlite':
+            migrate.init_app(app, db, render_as_batch=True)
+        else:
+            migrate.init_app(app, db)
+        
     @babel.localeselector
     def get_current_locale():
         preferred = [x.replace('-', '_') for x in request.accept_languages.values()]

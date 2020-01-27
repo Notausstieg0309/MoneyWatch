@@ -10,5 +10,7 @@ setup(
         'Flask',
         'Flask_Session',
         'Flask-Babel',
+        'Flask-SQLAlchemy',
+        'Flask-Migrate'
     ],
 )

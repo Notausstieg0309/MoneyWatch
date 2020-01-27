@@ -2,7 +2,7 @@ from flask import (Blueprint, flash, g, redirect, render_template, request, url_
 
 from flask_babel import gettext
 
-from moneywatch.utils.objects import Category
+from moneywatch.utils.objects import db, Category
 
 bp = Blueprint('categories', __name__)
 
@@ -38,8 +38,8 @@ def add(type):
             error = gettext('The budget must be given as numeric value.')
             
         if parent:
-            if Category(parent).child_name_exists(name):
-                error = gettext("The name '%{name}s' already exists on this level", name=name)
+            if db.session.query(Category.id).filter_by(name=name, parent_id=parent).scalar() is not None:
+                error = gettext("The name '%(name)s' already exists on this level", name=name)
                     
         if error is not None:
             flash(error)
@@ -56,8 +56,10 @@ def add(type):
             item["parent"] = parent
             item["budget_monthly"] = budget_monthly
             
-            new_category = Category(item)
-            new_category.save()
+            new_category = Category(type=type,name=name,parent_id=parent,budget_monthly=budget_monthly)
+            db.session.add(new_category)
+            db.session.commit()
+            
 
             return redirect(url_for('categories.index'))
   
@@ -66,9 +68,8 @@ def add(type):
 @bp.route('/categories/delete/<int:id>/') 
 def delete(id):
 
-    item = Category(id)
-    
-    item.delete()
+    Category.query.filter_by(id=id).delete()
+    db.session.commit()
    
     return redirect(url_for('categories.index'))
     
@@ -76,7 +77,7 @@ def delete(id):
 @bp.route('/categories/change/<string:type>/<int:id>/', methods=('GET', 'POST')) 
 def change(type, id):
     
-    current_category = Category(id)
+    current_category = Category.query.filter_by(id=id, type=type).one()
     
     if request.method == 'POST':
         error = None
@@ -114,7 +115,7 @@ def change(type, id):
             current_category.budget_monthly = budget_monthly
             current_category.parent_id = parent
             
-            current_category.save()
+            db.session.commit()
             
             return redirect(url_for('categories.index'))
             
