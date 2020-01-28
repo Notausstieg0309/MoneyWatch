@@ -390,6 +390,8 @@ class Rule(db.Model):
     
     transactions = db.relationship("Transaction")
     
+    
+    
     # def __init__(self, data, **kwargs):
         # if isinstance(data, int):
             # item = db.get_rule(data)
@@ -519,11 +521,11 @@ class Rule(db.Model):
         
    
         
-    # def matchTransaction(self, transaction):
-        # if re.search(self.pattern, transaction.full_text, re.IGNORECASE):
-            # return True
-        # else:
-            # return False
+    def matchTransaction(self, transaction):
+        if re.search(self.pattern, transaction.full_text, re.IGNORECASE):
+            return True
+        else:
+            return False
      
     @staticmethod       
     def getRulesByType(type, **kwargs):
@@ -600,7 +602,35 @@ class Transaction(db.Model):
     trend_calculated = db.Column(db.Boolean, unique=False, nullable=True, default=False)
    
     
+    def __init__(self, **kwargs):
 
+        # if multiple match occurs and user selects "None" (value: False)
+        if kwargs.get('rule_id', None) == False:
+            kwargs.pop('rule_id', None)
+            
+        super(Transaction, self).__init__(**kwargs)
+        
+        if self.type != "message" and self.rule_id is None and self.id is None:
+        
+            founded_rules = []
+            
+            for rule in Rule.getRulesByType(self.type):
+                if rule.matchTransaction(self):
+                    founded_rules.append(rule)
+                    
+            if len(founded_rules) == 1:
+                self.rule_id = founded_rules[0].id
+            elif len(founded_rules) > 1:
+                raise MultipleRuleMatchError(self._data,founded_rules)
+            
+            if self.rule_id is not None:
+                
+                if self.description is None:
+                    self.description = founded_rules[0].description
+                
+                if self.category_id is None:
+                    self.category_id = founded_rules[0].category_id
+            
     # def __init__(self, data, **kwargs):
     
         # if isinstance(data, int):
