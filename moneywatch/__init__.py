@@ -10,7 +10,7 @@ from babel import negotiate_locale
 
 def create_app(test_config=None):
     
-    from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax
+    from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax, analysis
     from moneywatch.utils import db
     app = Flask(__name__, instance_relative_config=True)
     
