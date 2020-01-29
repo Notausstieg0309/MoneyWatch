@@ -52,7 +52,7 @@ class Category(db.Model):
                         #collection_class=db.attribute_mapped_collection('name'),
                 )
     
-    transactions = db.relationship("Transaction")
+
     
     rules = db.relationship("Rule")
    
