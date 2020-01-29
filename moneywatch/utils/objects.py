@@ -31,8 +31,6 @@ class Category(db.Model):
     __tablename__ = 'categories'
     
     id = db.Column(db.Integer, primary_key=True)
-   
-    #valuta = db.Column(db.Float, unique=False, nullable=False)
     name = db.Column(db.String(100), unique=False, nullable=False)
     type = db.Column(db.String(3), unique=False, nullable=False)
     budget_monthly = db.Column(db.Integer, unique=False, nullable=True)    
@@ -47,9 +45,6 @@ class Category(db.Model):
                         # column in the join condition.
                         backref=db.backref("parent", remote_side='Category.id'),
 
-                        # children will be represented as a dictionary
-                        # on the "name" attribute.
-                        #collection_class=db.attribute_mapped_collection('name'),
                 )
     
 
@@ -75,14 +70,7 @@ class Category(db.Model):
        
        
         result = []
-        
-        # if self._kwargs.get("planned_transactions", True):
-            # current_app.logger.debug("calculate planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
-        # else: # no planned transactions needed (=> overview shows historical data older than current month)
-            # current_app.logger.debug("skip calculation of planned transactions for category '%s' (start: %s, end: %s)", self.name, self.start, self.end)
-            # self._cache["planned_transactions"] = result
-            # return result
-            
+           
         newest_transaction = Transaction.getNewestTransaction()
 
         latest_transaction_date = datetime.date.today()
@@ -130,18 +118,9 @@ class Category(db.Model):
                                 result.append(PlannedTransaction(date, rule.next_valuta, rule.description, rule.id))
           
         result.sort(key=lambda x: x.date)   
-        #self._cache["planned_transactions"] = result
+
         return result
 
-    # @property
-    # def rules(self):
-        
-        # if "rules" in self._cache:
-            # return self._cache["rules"]  
-        # else:
-            # rules = Rule.getRulesByCategory(self)
-            # self._cache["rules"] = rules
-            # return rules
 
     @property
     def has_regular_rules(self):
@@ -156,53 +135,11 @@ class Category(db.Model):
         
         return result
             
-    # @property
-    # def has_overdued_planned_transactions(self):
-    
-        # if "has_overdued_planned_transactions" in self._cache:
-            # return self._cache["has_overdued_planned_transactions"]
-        # else:
-
-            # result = False
             
-            # for category in self.childs:
-                # if category.has_overdued_planned_transactions:
-                    # result = True
+    
 
-            # for transaction in self.planned_transactions:
-               # if transaction.overdue:
-                    # result = True
-                
-            # self._cache["has_overdued_planned_transactions"] = result
             
-            # return result
-    
-    
-    # def save(self):
-        # db.save_category(self._data)
 
-    
-    # def delete(self):
-    
-        # if self.id:
-            # for category in self.childs:
-                # category.delete()
-             
-            # db.delete_category(self.id)
-            
-   
-    # @property                    
-    # def name(self):
-        # return self._data.get("name",None)
-   
-    # @name.setter                    
-    # def name(self, value):
-        # self._data["name"] = str(value).strip()
-    
-
-
-
-        
     
     
     @property
@@ -248,15 +185,13 @@ class Category(db.Model):
 
     def getCategoryPath(self, delimiter):
     
-
         if self.parent_id is not None:
             parent = self.parent
             return parent.getCategoryPath(delimiter) + delimiter + self.name
         else:
             return self.name
                 
-  
-            
+ 
     def getCategoryIdsAndPaths(self, delimiter):
     
         result = []
@@ -299,7 +234,6 @@ class Category(db.Model):
     @property
     def planned_valuta(self):
         
-
         result = 0
         for transaction in self.transactions or []:
             result += transaction.valuta 
@@ -313,8 +247,6 @@ class Category(db.Model):
         if self.budget != 0 and not result < self.budget:        
             result = self.budget
             
-      
-       
         return result
 
     @property
@@ -677,10 +609,12 @@ class Transaction(db.Model):
             return "out"
         else:
             return "message"
-            
+          
+          
     @type.expression
     def type(cls):
         return fn.case([ (cls.valuta > 0, "in"), (cls.valuta < 0, "out") ], else_="message")
+            
             
     @property
     def complete(self):
@@ -692,7 +626,6 @@ class Transaction(db.Model):
             
     
 
-    
     # @property
     # def trend(self):
        
