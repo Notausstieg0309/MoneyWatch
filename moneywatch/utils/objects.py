@@ -142,8 +142,8 @@ class Category(db.Model):
             # rules = Rule.getRulesByCategory(self)
             # self._cache["rules"] = rules
             # return rules
-            
-    @hybrid_property
+
+    @property
     def has_regular_rules(self):
  
         result = False
@@ -204,7 +204,8 @@ class Category(db.Model):
 
         
     
-    @hybrid_property
+    
+    @property
     def budget(self):
     
         budget = self.budget_monthly
@@ -225,7 +226,7 @@ class Category(db.Model):
     def end(self):
         return self._data.get("end", utils.get_last_day_of_month())
         
-    @hybrid_property
+    @property
     def childs(self):
       
         result = self._childs
@@ -244,7 +245,7 @@ class Category(db.Model):
         return result
             
     
-    @hybrid_method
+
     def getCategoryPath(self, delimiter):
     
 
@@ -267,7 +268,7 @@ class Category(db.Model):
         
         return result
         
-    @hybrid_property
+    @property
     def valuta(self):
     
         result = 0.0
@@ -280,7 +281,7 @@ class Category(db.Model):
         
         return result
         
-    @hybrid_property
+    @property
     def planned_transactions_valuta(self):
     
 
@@ -295,7 +296,7 @@ class Category(db.Model):
        
         return result
     
-    @hybrid_property
+    @property
     def planned_valuta(self):
         
 
