@@ -235,24 +235,14 @@ class Category(db.Model):
                 
         return result
         
-   
-            
-    # @property
-    # def transactions_with_childs(self):
+               
+    @property
+    def transactions(self):
        
-        # if "transactions_with_childs" in self._cache:
-            # return self._cache["transactions_with_childs"]
-        # else:
-            # result = []
+        result = Transaction.query.filter_by(category_id=self.id).filter(Transaction.date.between(self.start, self.end)).all()
+      
+        return result
             
-            # result.extend(self.transactions)
-            
-            # for category in self.childs:
-                # result.extend( category.transactions_with_childs )
-                
-            # self._cache["transactions_with_childs"] = result
-            
-            # return result
     
     @hybrid_method
     def getCategoryPath(self, delimiter):
