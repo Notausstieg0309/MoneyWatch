@@ -136,9 +136,20 @@ class Category(db.Model):
         return result
             
             
+    @property
+    def has_overdued_planned_transactions(self):
     
+        result = False
+        
+        for category in self.childs:
+            if category.has_overdued_planned_transactions:
+                result = True
 
+        for transaction in self.planned_transactions:
+           if transaction.overdue:
+                result = True
             
+        return result
 
     
     
