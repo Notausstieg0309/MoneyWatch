@@ -10,7 +10,7 @@ from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression as fn
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
-from sqlalchemy import orm
+from sqlalchemy import event
 
 db = SQLAlchemy()
 
@@ -750,7 +750,13 @@ class Transaction(db.Model):
           return Transaction.query.order_by(Transaction.date.desc()).first()
         
 
-
+@event.listens_for(Transaction, 'after_insert')
+def handle_before_insert(mapper, connection, item):
+    if item.rule_id is not None and item.rule is not None and item.rule.regular:
+        item.rule.updateNextDue(item.date, item.valuta)
+    
+    
+  
 #    _____  _                            _ _______                             _   _             
 #   |  __ \| |                          | |__   __|                           | | (_)            
 #   | |__) | | __ _ _ __  _ __   ___  __| |  | |_ __ __ _ _ __  ___  __ _  ___| |_ _  ___  _ __  
