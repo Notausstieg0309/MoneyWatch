@@ -11,6 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression as fn
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
 from sqlalchemy import event
+from sqlalchemy.sql import collate, asc
 
 db = SQLAlchemy()
 
@@ -464,7 +465,7 @@ class Rule(db.Model):
     @staticmethod       
     def getRulesByType(type, **kwargs):
     
-        result = Rule.query.filter_by(type=type).all()
+        result = Rule.query.filter_by(type=type).order_by(asc(collate(Rule.name, 'NOCASE'))).all()
             
         return result
         
