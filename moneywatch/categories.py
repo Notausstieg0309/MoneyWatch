@@ -48,7 +48,7 @@ def add(type):
                 budget_monthly = request.form['budget_monthly']
                 
             if not budget_monthly:
-                budget_monthly = 0
+                budget_monthly = None
             
             item = {}
             item["type"] = type
@@ -97,7 +97,7 @@ def change(type, id):
             parent = None
         
         if not budget_monthly:
-            budget_monthly = 0
+            budget_monthly = None
             
         if not name:
             error = gettext('Name is required.')

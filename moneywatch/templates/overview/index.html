@@ -80,7 +80,7 @@
             {%- endif -%}
         {%- endif -%}
         
-        {%- if category.budget_monthly != 0 -%}
+        {%- if category.budget_monthly is not none -%}
         {%- set perc = (category.valuta / category.budget) * 100 -%}
          <div class="budget_perc right tooltipped" data-position="bottom" data-tooltip="{% trans budget=category.budget|abs|currencyformat("EUR") %}The current consumption of the planned budget of {{budget}}.{% endtrans %}" data-label="{{ perc| int}} %">
           <span class="value {% if perc > 90 %}red{% elif perc > 75 %}yellow{% else %}green{% endif %} lighten-4" style="width:{{ perc }}%;"></span>

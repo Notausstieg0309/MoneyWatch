@@ -12,7 +12,7 @@
 
     <div class="col s12">
      {{ category.name }} 
-     {% if category.budget %}
+     {% if category.budget is not none %}
      ({% trans budget=category.budget|currencyformat("EUR") %}mthly. budget: {{budget}}{% endtrans %})
      {% endif %}
      
