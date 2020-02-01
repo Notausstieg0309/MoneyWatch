@@ -450,7 +450,6 @@ class Transaction(db.Model):
     rule = db.relationship("Rule")
     
     trend = db.Column(db.Float, unique=False, nullable=True)
-    trend_calculated = db.Column(db.Boolean, unique=False, nullable=True, default=False)
    
     
     
