@@ -53,7 +53,7 @@
         <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
     {%- endset -%}
     
-    {% if transaction.trend is not none and transaction.trend != 0.0 %}
+    {% if transaction.trend is not none %}
     {%- set planned_text -%}
         {%- if transaction.trend > 0 -%}
           &#8599;

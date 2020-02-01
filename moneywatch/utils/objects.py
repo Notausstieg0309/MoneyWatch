@@ -653,36 +653,6 @@ class Transaction(db.Model):
         if self.rule_id == False:
             self.rule_id = None
 
-    # @property
-    # def trend(self):
-       
-        # if self._data["trend_calculated"]:
-            # return self._data["trend"]
-        # else:
-        
-            # self._data["trend"] = None
-            # if self.rule_id is not None:
-                # rule = None
-                # try:
-                    # rule = self.rule 
-                # except ValueError:
-                    # pass
-               
-                # if rule and rule.regular:
-                    # last_transaction = rule.last_transaction(self.date)
-               
-                    # if last_transaction is not None:
-                    
-                        # self._data["trend"] = self.valuta - last_transaction.valuta 
-                        # current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , self._data["trend"], self.description, self.valuta, self.date)
-                        
-                # self._data["trend_calculated"] = 1
-                # self.save()
-
-            # return self._data["trend"]
-        
-   
-    
     
     @property
     def is_editable(self):
@@ -773,7 +743,15 @@ def handle_before_insert(session, item):
         if item.rule_id is not None:
             rule = Rule.query.filter_by(id=item.rule_id).one_or_none()
             if rule is not None:
+                
+                # update rule next due date/valuta
                 rule.updateNextDue(item.date, item.valuta)
+        
+                # calculate trend compared to the latest transaction in the database
+                last_transaction = rule.last_transaction(item.date)
+                if last_transaction is not None:
+                    item.trend = item.valuta - last_transaction.valuta
+                    current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , self.item, self.description, self.valuta, self.date)
 
         
     
