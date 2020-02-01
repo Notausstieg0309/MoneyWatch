@@ -420,18 +420,27 @@ class Rule(db.Model):
     # def category(self):
         # return Category(self.category_id, transactions=False, subcategories=False)
     
-    # def getTransactions(self, start=None, end=None, limit=None, reversed=False):
+    def getTransactions(self, start=None, end=None, limit=None, reversed=False):
 
         # result = []
         
-        # if reversed:
-            # for transaction in db.get_transactions_by_rule_reversed(self.id, start, end, limit) or []:
-                # result.append(Transaction(transaction))
-        # else:
-            # for transaction in db.get_transactions_by_rule(self.id, start, end, limit) or []:
-                # result.append(Transaction(transaction))
-        # return result
+    
+        if start is not None and end is not None:
+            result = result.filter(Transaction.date.between(start, end))
+        elif start is not None:
+            result = result.filter(Transaction.date >= start)
+        elif end is not None:
+            result = result.filter(Transaction.date <= end)
+       
+        if reversed:
+            result = result.order_by(Transaction.id.desc())
+        else:
+            result = result.order_by(Transaction.id.asc())
 
+        if limit is not None:
+            result = result.limit(limit)
+            
+        return result.all()
 
     # def last_transaction(self, before=None):
         # result = db.get_last_transaction_by_rule(self.id, before)
