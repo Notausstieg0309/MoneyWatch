@@ -16,7 +16,7 @@ bp = Blueprint('ajax', __name__)
 def transaction_chart_data(transaction_id):
 
     try:
-        initial_transaction = Transaction(transaction_id)
+        initial_transaction = Transaction.query.filter_by(id=transaction_id).one()
     except Exception as e:
         return jsonify(None), 404
         
