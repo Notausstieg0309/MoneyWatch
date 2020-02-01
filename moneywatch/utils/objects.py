@@ -436,17 +436,17 @@ class Transaction(db.Model):
 
     __tablename__ = 'transactions'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, index=True)
    
     date = db.Column(db.Date, unique=False, nullable=False)
     valuta = db.Column(db.Float, unique=False, nullable=False)
     description = db.Column(db.String(100), unique=False, nullable=False)
     full_text = db.Column(db.String(100), unique=False, nullable=False)
    
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True, index=True)
     category = db.relationship("Category")
     
-    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id'), nullable=True)
+    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id'), nullable=True, index=True)
     rule = db.relationship("Rule")
     
     trend = db.Column(db.Float, unique=False, nullable=True)
