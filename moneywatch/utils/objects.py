@@ -422,7 +422,7 @@ class Rule(db.Model):
     
     def getTransactions(self, start=None, end=None, limit=None, reversed=False):
 
-        # result = []
+        result = Transaction.query.filter_by(rule_id=self.id)
         
     
         if start is not None and end is not None:
@@ -442,14 +442,14 @@ class Rule(db.Model):
             
         return result.all()
 
-    # def last_transaction(self, before=None):
-        # result = db.get_last_transaction_by_rule(self.id, before)
+    def last_transaction(self, before=None):
+        result = Transaction.query.filter_by(rule_id=self.id)
         
-        # if result is not None:
-            # result = Transaction(result)
-        # return result
-    
-
+        if before is not None:
+            result = result.filter(Transaction.date <= before)
+        
+        return result.order_by(Transaction.id.desc()).first()
+        
     def updateNextDue(self, date, valuta):
                 
         if self.regular:
