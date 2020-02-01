@@ -158,7 +158,10 @@ function modalChart(url)
         $("div.modal canvas").show();
         
         $("div.modal div.progress").hide();
+    }).fail(function () {
+        $('div.modal').modal("close");
     });
+    
 }
 
 function getLang()
