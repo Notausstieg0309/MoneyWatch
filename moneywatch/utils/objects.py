@@ -33,7 +33,7 @@ class Category(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=False, nullable=False)
-    type = db.Column(db.String(3), unique=False, nullable=False)
+    type = db.Column(db.Enum("in", "out"), unique=False, nullable=False)
     budget_monthly = db.Column(db.Integer, unique=False, nullable=True)    
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
     
@@ -314,7 +314,7 @@ class Rule(db.Model):
     description = db.Column(db.String(100), unique=False, nullable=False)
     pattern = db.Column(db.String(100), unique=False, nullable=False)
     regular = db.Column(db.Integer, unique=False, nullable=True)
-    type = db.Column(db.String(3), unique=False, nullable=False)
+    type = db.Column(db.Enum("in", "out"), unique=False, nullable=False)
     
     next_due = db.Column(db.Date, unique=False, nullable=True)
     next_valuta = db.Column(db.Float, unique=False, nullable=True)
