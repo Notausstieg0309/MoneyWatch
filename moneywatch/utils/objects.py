@@ -449,19 +449,21 @@ class Rule(db.Model):
             # result = Transaction(result)
         # return result
     
-    # def updateNextDue(self, date, valuta):
-    
-        # if self.regular:
-            # last_transaction = self.last_transaction()
-            # if last_transaction is None or (last_transaction is not None and last_transaction.date < date):
+
+    def updateNextDue(self, date, valuta):
+                
+        if self.regular:
+            last_transaction = self.last_transaction()
             
-                # next_due = utils.add_months(date, self.regular)
+            if last_transaction is None or (last_transaction is not None and last_transaction.date < date):
+              
+                next_due = utils.add_months(date, self.regular)
                 
-                # current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%s'", self.name, self.id, next_due, valuta)
+                current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%s'", self.name, self.id, next_due, valuta)
                 
-                # self.next_valuta = valuta
-                # self.next_due = next_due
-                # self.save()
+                self.next_valuta = valuta
+                self.next_due = next_due
+               
         
    
         
@@ -763,11 +765,16 @@ class Transaction(db.Model):
           return Transaction.query.order_by(Transaction.date.desc()).first()
         
 
-@event.listens_for(Transaction, 'after_insert')
-def handle_before_insert(mapper, connection, item):
-    if item.rule_id is not None and item.rule is not None and item.rule.regular:
-        item.rule.updateNextDue(item.date, item.valuta)
-    
+@event.listens_for(db.session, 'before_attach')
+def handle_before_insert(session, item):
+
+    if isinstance(item, Transaction):  
+        if item.rule_id is not None:
+            rule = Rule.query.filter_by(id=item.rule_id).one_or_none()
+            if rule is not None:
+                rule.updateNextDue(item.date, item.valuta)
+
+        
     
   
 #    _____  _                            _ _______                             _   _             
