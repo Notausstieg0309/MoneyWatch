@@ -159,7 +159,7 @@ class Category(db.Model):
     
         budget = self.budget_monthly
         
-        if budget > 0 and self.type == "out":
+        if budget is not None and self.type == "out":
         
             # adapt budget to number of months
             budget *=  -1 * utils.get_number_of_months(self.start, self.end)
@@ -256,7 +256,7 @@ class Category(db.Model):
         for category in self.childs or []:
             result += category.planned_valuta
         
-        if self.budget != 0 and not result < self.budget:        
+        if self.budget is not None and not result < self.budget:        
             result = self.budget
             
         return result
