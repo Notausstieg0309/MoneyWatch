@@ -325,101 +325,6 @@ class Rule(db.Model):
     
     transactions = db.relationship("Transaction")
     
-    
-    
-    # def __init__(self, data, **kwargs):
-        # if isinstance(data, int):
-            # item = db.get_rule(data)
-
-            # if item is not None:                
-                # self._data = item.copy()
-            # else:
-                # raise NoSuchItemError("Rule", data)
-                
-        # elif isinstance(data, dict):
-        
-            # if "name" not in data or "pattern" not in data or "description" not in data or "category_id" not in data or "regular" not in data:
-                # raise ValueError
-            
-            # self._data = data.copy()
-            
-        # else:
-            # raise TypeError
-            
-        
-    # @property
-    # def name(self):
-        # return self._data.get("name", None)
-        
-    # @name.setter
-    # def name(self, value):
-        # self._data["name"] = value
-        
-    # @property
-    # def pattern(self):
-        # return self._data.get("pattern", None)
-        
-    # @pattern.setter
-    # def pattern(self, value):
-        # self._data["pattern"] = value        
-
-    # @property
-    # def description(self):
-        # return self._data.get("description", None)
-        
-    # @description.setter
-    # def description(self, value):
-        # self._data["description"] = value        
-        
-    # @property
-    # def category_id(self):
-        # return self._data.get("category_id", None)
-        
-    # @category_id.setter
-    # def category_id(self, value):
-        # self._data["category_id"] = int(value)
-        
-    # @property
-    # def regular(self):
-        # return self._data.get("regular", None)
-        
-    # @regular.setter
-    # def regular(self, value):
-        # self._data["regular"] = int(value)
-        
-    # @property
-    # def next_due(self):
-        # return self._data["next_due"]
-        
-    # @next_due.setter
-    # def next_due(self, value):
-        # self._data["next_due"] = value
-
-    # @property
-    # def next_valuta(self):
-        # return self._data.get("next_valuta", None)
-        
-    # @next_valuta.setter
-    # def next_valuta(self, value):
-        # if value:
-            # self._data["next_valuta"] = abs(float(value))
-        # else:
-            # self._data["next_valuta"] = 0
-        
-
-    # # read only properties   
-    # @property
-    # def id(self):
-        # return self._data.get("id",None)
-    
-    # @property
-    # def type(self):
-        # return self._data.get("type", None)
-     
-    # @property
-    # def category(self):
-        # return Category(self.category_id, transactions=False, subcategories=False)
-    
     def getTransactions(self, start=None, end=None, limit=None, reversed=False):
 
         result = Transaction.query.filter_by(rule_id=self.id)
@@ -548,59 +453,6 @@ class Transaction(db.Model):
     trend_calculated = db.Column(db.Boolean, unique=False, nullable=True, default=False)
    
     
-    def __init__(self, **kwargs):
-
-        super(Transaction, self).__init__(**kwargs)
-        
-       
-            
-            
-    # def __init__(self, data, **kwargs):
-    
-        # if isinstance(data, int):
-            # item = db.get_transaction(data)
-            
-            # if item is not None:
-                # self._data = item.copy()
-            # else:
-                # raise NoSuchItemError("Transaction", data)   
-                
-        # elif isinstance(data, dict):      
-            # if data.get("full_text", None) is None or data.get("valuta") is None or data.get("date", None) is None:
-                # raise ValueError
-                
-            # self._data = data.copy()
-        # else:
-            # raise TypeError
-     
-            
-        # self._cache = {}
-        
-        # # apply ruleset if transaction is new
-        # if self.type != "message" and self._data.get('rule_id', None) is None and self._data.get("id", None) is None:
-        
-            # founded_rules = []
-            
-            # for rule in Rule.getRulesByType(self.type):
-                # if rule.matchTransaction(self):
-                    # founded_rules.append(rule)
-                    
-            # if len(founded_rules) == 1:
-                # self.rule_id = founded_rules[0].id
-            # elif len(founded_rules) > 1:
-                # raise MultipleRuleMatchError(self._data,founded_rules)
-            
-            # if self.description is None and self._data.get('rule_id', None) is not None:
-                # self.description = self.rule.description
-            
-            # if self.category_id is None and self._data.get('rule_id', None) is not None:
-                # self.category_id = self.rule.category_id
-        
-        # # if multiple match occurs and user selects "None" (value: False)
-        # if self._data.get('rule_id', None) == False:
-            # self._data.pop('rule_id', None)
-    
-  
     
     @hybrid_property
     def type(self):
@@ -624,7 +476,7 @@ class Transaction(db.Model):
         elif self.valuta == 0 and self.description == True:
             return True
         return False
-            
+           
     def check_rule_matching(self):
     
         if self.type != "message" and self.rule_id is None and self.id is None:
@@ -664,9 +516,6 @@ class Transaction(db.Model):
             
         return False
     
-  
-           
-            
     
     # def __repr__(self):
         # return self.__class__.__name__+"("+str(self._data)+")"
