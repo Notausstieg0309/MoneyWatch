@@ -81,6 +81,9 @@ def get_number_of_months(start=None, end=None):
 
     diff = _monthdelta(start_date,end_date)
     
+    if start_date == end_date:
+        diff = 1
+    
     return int(math.ceil(diff))
 
 def _monthdelta(d1, d2):

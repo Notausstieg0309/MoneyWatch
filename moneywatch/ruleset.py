@@ -5,7 +5,7 @@ from werkzeug.exceptions import abort
 from flask_babel import gettext
 import re
 
-from moneywatch.utils.objects import Rule, Category
+from moneywatch.utils.objects import db, Rule, Category
 import moneywatch.utils.functions as utils
 
 
@@ -33,7 +33,7 @@ def add(type):
         description = request.form['description'].strip()
         regular = request.form['regular']
         next_valuta = request.form.get('next_valuta', None)
-        next_date = request.form.get('next_date', None)
+        next_due = request.form.get('next_date', None)
         
         category_id = request.form.get('category_id', None)
         if not name:
@@ -58,17 +58,24 @@ def add(type):
             
             if next_valuta.strip() != "":
                 item["next_valuta"] = next_valuta
-            if next_date.strip() != "":
-                item["next_due"] = utils.get_date_from_string(next_date, "%Y-%m-%d")
+            else:
+                next_valuta = None
+            if next_due.strip() != "":
+                next_due = utils.get_date_from_string(next_due, "%Y-%m-%d")
+            else:
+                next_due = None
+            
                 
-            rule = Rule(item)
-            rule.save()
+            new_rule = Rule(type=type, name=name, pattern=pattern, description=description, category_id=category_id, regular=regular, next_valuta=next_valuta, next_due=next_due)
+            
+            db.session.add(new_rule)
+            db.session.commit()
             
 
        
             return redirect(url_for('ruleset.index'))
             
-    categories=Category.getRootCategories(type, transactions=False)
+    categories=Category.getRootCategories(type)
     
     if not categories:
         flash(gettext("Unable to create new rules. No categories are available to create rules for. Please create categories first."))
@@ -79,9 +86,9 @@ def add(type):
     
 @bp.route('/ruleset/delete/<int:id>/')
 def delete(id):
-    item = Rule(id)
     
-    item.delete()
+    Rule.query.filter_by(id=id).delete()
+    db.session.commit()
     
     return redirect(url_for('ruleset.index'))
 
@@ -91,8 +98,8 @@ def delete(id):
 @bp.route('/ruleset/change/<int:id>/', methods=('GET', 'POST'))
 def change(id):
 
-    rule = Rule(id)
-
+    rule = Rule.query.filter_by(id=id).one()
+    
     if request.method == 'POST':
         error = None
         
@@ -121,9 +128,11 @@ def change(id):
             rule.regular = regular
             rule.next_due = utils.get_date_from_string(next_due,"%Y-%m-%d")
             rule.next_valuta = request.form['next_valuta']
-            rule.save()
+            
+            db.session.commit()
+            
             return redirect(url_for('ruleset.index'))
             
-    categories=Category.getRootCategories(rule.type, transactions=False)
+    categories=Category.getRootCategories(rule.type)
     
     return render_template('ruleset/change.html', rule = rule, categories=categories)  

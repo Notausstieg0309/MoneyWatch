@@ -11,7 +11,7 @@ import datetime
 from flask_babel import gettext
 
 
-from moneywatch.utils.objects import Rule,Category,Transaction
+from moneywatch.utils.objects import db,Rule,Category,Transaction
 from moneywatch.utils.exceptions import *
 
 bp = Blueprint('transactions', __name__)
@@ -35,8 +35,8 @@ def index():
 @bp.route('/transactions/edit/<int:id>/', methods=('GET', 'POST')) 
 def edit(id):
     
-    current_transaction = Transaction(id)
-    
+    current_transaction = Transaction.query.filter_by(id=id).one()
+ 
     if current_transaction.is_editable:
         
         if request.method == 'POST':
@@ -52,7 +52,7 @@ def edit(id):
             if clear_rule is not None:
                 current_transaction.rule_id = None
                 
-            current_transaction.save()
+            db.session.commit()
             
             return redirect(url_for('overview.month_overview', year=current_transaction.date.year, month=current_transaction.date.month))
             
@@ -65,11 +65,12 @@ def edit(id):
         return redirect(url_for('overview.month_overview', year=current_transaction.date.year, month=current_transaction.date.month))
     
 
-@bp.route('/transactions/single/<int:transaction_id>/')
-def transaction_details(transaction_id):
-    try:
-        transaction = Transaction(transaction_id)
-    except Exception as e:
+@bp.route('/transactions/single/<int:id>/')
+def transaction_details(id):
+    
+    transaction = Transaction.query.filter_by(id=id).one()
+   
+    if transaction is None:
         return jsonify(None), 404
     
     if transaction.type == "message":

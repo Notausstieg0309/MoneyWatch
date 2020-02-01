@@ -9,7 +9,7 @@ import datetime
 
 from flask_babel import gettext
 
-from moneywatch.utils.objects import Rule,Category, Transaction
+from moneywatch.utils.objects import db, Rule,Category, Transaction
 from moneywatch.utils.plugins import ImportPluginsManager
 from moneywatch.utils.exceptions import *
 
@@ -63,8 +63,10 @@ def index():
             if request.form['action'] == "save":
             
                 for transaction in session['import_objects']:
-                    transaction.save()
+                    db.session.add(transaction)
                     
+                db.session.commit()
+                
                 session.pop("import_objects", None)
                 session.pop("import_items", None)
                 
@@ -88,7 +90,7 @@ def index():
 def handle_multiple_rule_match(error):
     current_app.logger.debug("transaction: %s" , error.transaction)
 
-    if error.transaction["valuta"] < 0:
+    if error.transaction.valuta < 0:
         categories = get_categories()["out"]
     else:
         categories = get_categories()["in"]
@@ -101,7 +103,7 @@ def create_transactions_from_import(items, check_all=False):
     
     for item in items:
         try:
-            trans = Transaction(item)
+            trans = Transaction(**item)
             exist = trans.exist
             
             if exist and not check_all:
@@ -109,7 +111,9 @@ def create_transactions_from_import(items, check_all=False):
                 
             if exist and check_all:
                 continue    
-                
+
+            trans.check_rule_matching()
+            
             result.append(trans)
         except MultipleRuleMatchError as e:
             raise MultipleRuleMatchError(e.transaction, e.rules, items.index(item))
@@ -162,6 +166,6 @@ def get_categories():
 
         categories[type] = []
 
-        for category in Category.getRootCategories(type, transactions=False):
+        for category in Category.getRootCategories(type):
             categories[type].extend(category.getCategoryIdsAndPaths(" > "))
     return categories
