@@ -539,9 +539,7 @@ class Transaction(db.Model):
     
     def __init__(self, **kwargs):
 
-        # if multiple match occurs and user selects "None" (value: False)
-        if kwargs.get('rule_id', None) == False:
-            kwargs.pop('rule_id', None)
+
             
         super(Transaction, self).__init__(**kwargs)
         
@@ -556,7 +554,7 @@ class Transaction(db.Model):
             if len(founded_rules) == 1:
                 self.rule_id = founded_rules[0].id
             elif len(founded_rules) > 1:
-                raise MultipleRuleMatchError(self._data,founded_rules)
+                raise MultipleRuleMatchError(self,founded_rules)
             
             if self.rule_id is not None:
                 
@@ -565,6 +563,11 @@ class Transaction(db.Model):
                 
                 if self.category_id is None:
                     self.category_id = founded_rules[0].category_id
+                    
+        # if multiple match occurs and user selects "None" (value: False)
+        if self.rule_id == False:
+            self.rule_id = None
+            
             
     # def __init__(self, data, **kwargs):
     

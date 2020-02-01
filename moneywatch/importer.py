@@ -90,7 +90,7 @@ def index():
 def handle_multiple_rule_match(error):
     current_app.logger.debug("transaction: %s" , error.transaction)
 
-    if error.transaction["valuta"] < 0:
+    if error.transaction.valuta < 0:
         categories = get_categories()["out"]
     else:
         categories = get_categories()["in"]
