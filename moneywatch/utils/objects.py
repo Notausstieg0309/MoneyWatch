@@ -550,34 +550,9 @@ class Transaction(db.Model):
     
     def __init__(self, **kwargs):
 
-
-            
         super(Transaction, self).__init__(**kwargs)
         
-        if self.type != "message" and self.rule_id is None and self.id is None:
-        
-            founded_rules = []
-            
-            for rule in Rule.getRulesByType(self.type):
-                if rule.matchTransaction(self):
-                    founded_rules.append(rule)
-                    
-            if len(founded_rules) == 1:
-                self.rule_id = founded_rules[0].id
-            elif len(founded_rules) > 1:
-                raise MultipleRuleMatchError(self,founded_rules)
-            
-            if self.rule_id is not None:
-                
-                if self.description is None:
-                    self.description = founded_rules[0].description
-                
-                if self.category_id is None:
-                    self.category_id = founded_rules[0].category_id
-                    
-        # if multiple match occurs and user selects "None" (value: False)
-        if self.rule_id == False:
-            self.rule_id = None
+       
             
             
     # def __init__(self, data, **kwargs):
@@ -650,7 +625,33 @@ class Transaction(db.Model):
             return True
         return False
             
+    def check_rule_matching(self):
     
+        if self.type != "message" and self.rule_id is None and self.id is None:
+        
+            founded_rules = []
+            
+            for rule in Rule.getRulesByType(self.type):
+                if rule.matchTransaction(self):
+                    founded_rules.append(rule)
+                    
+            if len(founded_rules) == 1:
+                self.rule_id = founded_rules[0].id
+                
+            elif len(founded_rules) > 1:
+                raise MultipleRuleMatchError(self,founded_rules)
+            
+            if self.rule_id is not None:
+                
+                if self.description is None:
+                    self.description = founded_rules[0].description
+                
+                if self.category_id is None:
+                    self.category_id = founded_rules[0].category_id
+                    
+        # if multiple match occurs and user selects "None" (value: False)
+        if self.rule_id == False:
+            self.rule_id = None
 
     # @property
     # def trend(self):

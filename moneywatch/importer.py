@@ -111,7 +111,9 @@ def create_transactions_from_import(items, check_all=False):
                 
             if exist and check_all:
                 continue    
-                
+
+            trans.check_rule_matching()
+            
             result.append(trans)
         except MultipleRuleMatchError as e:
             raise MultipleRuleMatchError(e.transaction, e.rules, items.index(item))
