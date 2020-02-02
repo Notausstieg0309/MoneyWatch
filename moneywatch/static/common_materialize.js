@@ -159,7 +159,7 @@ $(function() {
     
     // overview: show transaction messages for current month
     $("span.message-modal").click(function() {
-        modalTransactionDetails("/transactions/messages/" + $(this).attr("data-year") + "/" + $(this).attr("data-month") + "/" + $(this).attr("data-month-count") + "/");
+        modalTransactionDetails("/transactions/messages/" + $(this).attr("data-account-id") + "/" + $(this).attr("data-year") + "/" + $(this).attr("data-month") + "/" + $(this).attr("data-month-count") + "/");
     });
 });
  

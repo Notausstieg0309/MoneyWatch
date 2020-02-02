@@ -1,5 +1,6 @@
 import datetime
 import math
+import re
 
 from calendar import monthrange
 from flask_babel import format_date
@@ -205,3 +206,17 @@ def get_babel_month_names():
         
     return month_names
     
+
+def normalize_iban(value):
+
+    value = value.upper()
+    
+    value = re.sub(r"[^A-Z0-9]+", "", value)
+    
+    return value
+
+def is_valid_iban(value):
+
+    value = normalize_iban(value)
+    
+    return True if re.match(r"[A-Z]{2}\d{20}", value) else False

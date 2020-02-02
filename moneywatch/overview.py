@@ -8,16 +8,18 @@ import re
 
 import moneywatch.utils.functions as utils
 
-from moneywatch.utils.objects import Category, Transaction, Rule
+from moneywatch.utils.objects import Category, Transaction, Rule, Account
 
 
 
 
 bp = Blueprint('overview', __name__)
 
-def createOverview(start, end):
+def createOverview(account_id, start, end):
     
-    oldest_transaction = Transaction.getOldestTransaction()
+    account = Account.query.filter_by(id=account_id).one()
+    
+    oldest_transaction = account.oldest_transaction
    
     if oldest_transaction is not None and start < oldest_transaction.date:
         start = oldest_transaction.date
@@ -27,8 +29,8 @@ def createOverview(start, end):
    
     current_month = start <= datetime.date.today() <= end
     
-    list_in = Category.getRootCategories("in", start=start, end=end)
-    list_out = Category.getRootCategories("out", start=start, end=end)
+    list_in =  account.categories("in", start=start, end=end)
+    list_out = account.categories("out", start=start, end=end)
     
     sum_current_out = 0
     sum_current_in = 0
@@ -58,9 +60,10 @@ def createOverview(start, end):
     for category in list_out:
         sum_current_with_planned_transactions_out += category.valuta + category.planned_transactions_valuta
 
-    particular_rules_dates_in = Rule.getNonMonthlyRegularRulesForTimeframe("in", start=start, end=end)
-    particular_rules_dates_out = Rule.getNonMonthlyRegularRulesForTimeframe("out", start=start, end=end)
+    particular_rules_dates_in = account.getNonMonthlyRegularRulesForTimeframe("in", start=start, end=end)
+    particular_rules_dates_out = account.getNonMonthlyRegularRulesForTimeframe("out", start=start, end=end)
     
+
     months = utils.get_number_of_months(start,end)
 
     balance = {}
@@ -101,24 +104,26 @@ def createOverview(start, end):
     particular_rules["out"] = particular_rules_dates_out
     particular_rules["count"] = len(particular_rules_dates_in) + len(particular_rules_dates_out)
     
-    messages = len(Transaction.getTransactionsByType("message", start=start, end=end))
     
-    return render_template('overview/index.html', list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
-        
-        
-@bp.route('/')
-def index():
-   return  createOverview(utils.get_first_day_of_month(), utils.get_last_day_of_month())
-    
-@bp.route('/<int:year>/')
-def year_overview(year):
-   return  createOverview(utils.get_first_day_of_month(year,1), utils.get_last_day_of_month(year,12))
-    
-@bp.route('/<int:year>/<int:month>/')
-def month_overview(year, month):
-   return  createOverview(utils.get_first_day_of_month(year,month), utils.get_last_day_of_month(year,month))
+    messages = len(account.transactions_by_type("message", start=start, end=end))
 
-@bp.route('/<int:year>/<int:month>/<int:month_count>')
-def custom_overview(year, month, month_count):
-   return  createOverview(utils.get_first_day_of_month(year,month), utils.add_months(utils.get_last_day_of_month(year,month),(month_count-1)))
+
+    return render_template('overview/index.html', account=account, list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
+        
+        
+@bp.route('/<int:account_id>/')
+def index(account_id):
+   return  createOverview(account_id, utils.get_first_day_of_month(), utils.get_last_day_of_month())
+    
+@bp.route('/<int:account_id>/<int:year>/')
+def year_overview(account_id, year):
+   return  createOverview(account_id, utils.get_first_day_of_month(year,1), utils.get_last_day_of_month(year,12))
+    
+@bp.route('/<int:account_id>/<int:year>/<int:month>/')
+def month_overview(account_id, year, month):
+   return  createOverview(account_id, utils.get_first_day_of_month(year,month), utils.get_last_day_of_month(year,month))
+
+@bp.route('/<int:account_id>/<int:year>/<int:month>/<int:month_count>')
+def custom_overview(account_id, year, month, month_count):
+   return  createOverview(account_id, utils.get_first_day_of_month(year,month), utils.add_months(utils.get_last_day_of_month(year,month),(month_count-1)))
    

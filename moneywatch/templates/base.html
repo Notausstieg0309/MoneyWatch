@@ -22,10 +22,10 @@
   <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
   <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li><a class="waves-effect waves-light btn"href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
-      <li><a href="{{ url_for('transactions.index') }}">{% trans %}Transactions{% endtrans %}</a></li>
-      <li><a href="{{ url_for('ruleset.index') }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
-      <li><a href="{{ url_for('categories.index') }}">{% trans %}Categories{% endtrans %}</a></li>
-      <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>
+      <li><a href="{{ url_for('transactions.index', account_id=0) }}">{% trans %}Transactions{% endtrans %}</a></li>
+      <li><a href="{{ url_for('ruleset.index', account_id=0) }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
+      <li><a href="{{ url_for('categories.index', account_id=0) }}">{% trans %}Categories{% endtrans %}</a></li>
+      <li><a href="{{ url_for('overview.index', account_id=0) }}">{% trans %}Overview{% endtrans %}</a></li>
   </ul>
   </div>
   <div class="nav-content">
@@ -35,10 +35,10 @@
 
   <ul class="sidenav" id="mobile-menu">
     <li><a class="btn waves-effect waves-light" href="{{ url_for('import.index') }}">{% trans %}Import New Transactions{% endtrans %}</a></li>
-    <li><a href="{{ url_for('transactions.index') }}">{% trans %}Transactions{% endtrans %}</a></li>
-    <li><a href="{{ url_for('ruleset.index') }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
-    <li><a href="{{ url_for('categories.index') }}">{% trans %}Categories{% endtrans %}</a></li>
-    <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>
+    <li><a href="{{ url_for('transactions.index', account_id=0) }}">{% trans %}Transactions{% endtrans %}</a></li>
+    <li><a href="{{ url_for('ruleset.index', account_id=0) }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
+    <li><a href="{{ url_for('categories.index', account_id=0) }}">{% trans %}Categories{% endtrans %}</a></li>
+    <li><a href="{{ url_for('overview.index', account_id=0) }}">{% trans %}Overview{% endtrans %}</a></li>
   </ul>
 <div class="container">
   <header>

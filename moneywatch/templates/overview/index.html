@@ -1,8 +1,11 @@
+
 {% extends 'base.html' %}
 
 {% block header %}
+
   {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("yyyy/MM")) }}{% if timing["months"] > 1 %} - {{ timing["end"] | dateformat(_("yyyy/MM")) }} ({{ timing["months"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
 {% endblock %}
+
 
 {% macro item_row(row_class,name,num_planned,text_planned,num_valuta,text_valuta) %}
     <div class="row {{row_class}}">
@@ -66,6 +69,7 @@
     {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat("EUR")) }}
 {%- endmacro %}
 
+
 {% macro category_row(row_class, category) -%}
     {%- set name -%}
         {{ category.name }}
@@ -115,24 +119,27 @@
 {% endmacro %}
 
 
+
 {% macro particular_transaction_item(class, rule_list) -%}
 {% for item in rule_list  %}
 <span class="{{ class }}">{{ item[0].name }} ({{ item[0].next_valuta|currencyformat("EUR") }}){% if not loop.last %}, {% endif -%}
 {%- endfor -%}
 {%- endmacro %}
 
+
+
 {% block content %}
 <div class="row  center-align">
 <div class="col m3 left-align hide-on-small-only">
   
 {%- if timing["months"] == 1 -%}
-  <a class="action btn" href="{{ url_for('overview.month_overview',year=timing['previous'].year, month=timing['previous'].month ) }}">&laquo; {% trans %}previous month{% endtrans %}</a>
+  <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['previous'].year, month=timing['previous'].month ) }}">&laquo; {% trans %}previous month{% endtrans %}</a>
   <br><br>
-  <a class="action btn" href="{{ url_for('overview.month_overview',year=timing['current_month_previous_year'].year, month=timing['current_month_previous_year'].month ) }}">&laquo;&laquo; {% trans year=timing['current_month_previous_year'].year %}current month in {{ year }}{% endtrans %}</a>
+  <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['current_month_previous_year'].year, month=timing['current_month_previous_year'].month ) }}">&laquo;&laquo; {% trans year=timing['current_month_previous_year'].year %}current month in {{ year }}{% endtrans %}</a>
 {% elif timing["months"] == 12 and timing["start"].month == 1 -%}
-  <a class="action btn" href="{{ url_for('overview.year_overview',year=timing['previous'].year ) }}">&laquo; {% trans %}previous year{% endtrans %}</a>
+  <a class="action btn" href="{{ url_for('overview.year_overview',account_id=account.id, year=timing['previous'].year ) }}">&laquo; {% trans %}previous year{% endtrans %}</a>
 {% else -%}
-  <a class="action btn" href="{{ url_for('overview.custom_overview',year=timing['previous'].year,month=timing['previous'].month, month_count=timing['months'] ) }}">&laquo; {% trans %}previous timeperiod{% endtrans %}</a>
+  <a class="action btn" href="{{ url_for('overview.custom_overview',account_id=account.id, year=timing['previous'].year,month=timing['previous'].month, month_count=timing['months'] ) }}">&laquo; {% trans %}previous timeperiod{% endtrans %}</a>
 {% endif -%}
 
 </div>
@@ -164,20 +171,20 @@
 <div class="col m3 right-align hide-on-small-only">
 
 {%- if timing["months"] == 1 -%}
-  <a class="btn" href="{{ url_for('overview.month_overview',year=timing['next'].year, month=timing['next'].month ) }}">{% trans %}next month{% endtrans %} &raquo;</a>
+  <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['next'].year, month=timing['next'].month ) }}">{% trans %}next month{% endtrans %} &raquo;</a>
   <br><br>
-  <a class="btn" href="{{ url_for('overview.month_overview',year=timing['current_month_next_year'].year, month=timing['current_month_next_year'].month ) }}">{% trans year=timing["current_month_next_year"].year %}current month in {{ year }}{% endtrans %} &raquo;&raquo;</a>
+  <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['current_month_next_year'].year, month=timing['current_month_next_year'].month ) }}">{% trans year=timing["current_month_next_year"].year %}current month in {{ year }}{% endtrans %} &raquo;&raquo;</a>
 {% elif timing["months"] == 12 and timing["start"].month == 1 -%}
-  <a class="btn" href="{{ url_for('overview.year_overview',year=timing['next'].year ) }}">{% trans %}next year{% endtrans %} &raquo;</a>
+  <a class="btn" href="{{ url_for('overview.year_overview', account_id=account.id, year=timing['next'].year ) }}">{% trans %}next year{% endtrans %} &raquo;</a>
 {% else -%}
-  <a class="btn" href="{{ url_for('overview.custom_overview',year=timing['next'].year,month=timing['next'].month, month_count=timing['months'] ) }}">{% trans %}next timeperiod{% endtrans %} &raquo;</a>
+  <a class="btn" href="{{ url_for('overview.custom_overview', account_id=account.id, year=timing['next'].year,month=timing['next'].month, month_count=timing['months'] ) }}">{% trans %}next timeperiod{% endtrans %} &raquo;</a>
 {% endif -%}
 
 <br><br>
 </div>
 </div>
 {%- if messages > 0 -%}
-<div class="right-centered"><span class="message-modal  tooltipped" data-year="{{ timing["start"].year }}" data-month="{{ timing["start"].month }}" data-month-count={{ timing["months"] }} data-tooltip="{% if timing["months"] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span></div>
+<div class="right-centered"><span class="message-modal  tooltipped" data-year="{{ timing["start"].year }}" data-month="{{ timing["start"].month }}" data-month-count={{ timing["months"] }} data-account-id="{{ account.id }}" data-tooltip="{% if timing["months"] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span></div>
 {% endif %}
 {% if timing["months"] == 1 and particular_rules["count"] > 0 %}
 <div class="divider"></div>

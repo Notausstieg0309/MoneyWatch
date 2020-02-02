@@ -9,7 +9,7 @@ import datetime
 
 from flask_babel import gettext
 
-from moneywatch.utils.objects import db, Rule,Category, Transaction
+from moneywatch.utils.objects import db, Rule,Category, Transaction, Account
 from moneywatch.utils.plugins import ImportPluginsManager
 from moneywatch.utils.exceptions import *
 
@@ -65,8 +65,20 @@ def index():
                 # reverse transaction list to get oldest transaction first instead of newest transaction first
                 session['import_objects'].reverse()
                 
+                valuta = {}
+                
                 for transaction in session['import_objects']:
+                    
+                    if not transaction.account_id in valuta:
+                        valuta[transaction.account_id] = 0
+                        
+                    valuta[transaction.account_id] += transaction.valuta
+                    
                     db.session.add(transaction)
+                 
+                for account_id, valuta in valuta.items():
+                    account = Account.query.filter_by(id=account_id).one()
+                    account.balance += valuta
                     
                 db.session.commit()
                 
@@ -104,8 +116,23 @@ def create_transactions_from_import(items, check_all=False):
     
     result = []
     
+    accounts = {}
+    
     for item in items:
         try:
+            if "account" in item:
+               
+                if not item["account"] in accounts:
+                    iban = utils.normalize_iban(item["account"])
+                    account = Account.query.filter_by(iban=iban).one_or_none()
+                    if account is not None:
+                        accounts[item["account"]] = account.id
+                    else:
+                        raise UnknownAccount(iban)
+                        
+                item["account_id"] = accounts[item["account"]]
+                item.pop("account", None)   
+                    
             trans = Transaction(**item)
             exist = trans.exist
             
@@ -164,11 +191,18 @@ def apply_multiple_rule_match_edits(import_objects,input_data):
         item["category_id"] = int(input_data["category_id"])
              
 def get_categories():
-    categories = {}    
-    for type in ("in", "out"):
+    categories = {}  
 
-        categories[type] = []
+    accounts = Account.query.all()
+    
+    for account in accounts:
+        categories[account.id] = {}
+        
+        for type in ("in", "out"):
 
-        for category in Category.getRootCategories(type):
-            categories[type].extend(category.getCategoryIdsAndPaths(" > "))
+            categories[account.id][type] = []
+
+            for category in account.categories(type):
+                categories[account.id][type].extend(category.getCategoryIdsAndPaths(" > "))
+                
     return categories

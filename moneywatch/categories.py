@@ -2,26 +2,29 @@ from flask import (Blueprint, flash, g, redirect, render_template, request, url_
 
 from flask_babel import gettext
 
-from moneywatch.utils.objects import db, Category
+from moneywatch.utils.objects import db, Category, Account
 
 bp = Blueprint('categories', __name__)
 
 
-@bp.route('/categories/')
-def index():
+@bp.route('/categories/<int:account_id>/')
+def index(account_id):
     """Show all the rules"""
+    
+    account = Account.query.filter_by(id=account_id).one()
+    
+    categories_in = account.categories("in")
+    categories_out = account.categories("out")
 
-    categories_in = Category.getRootCategories("in")
-    categories_out = Category.getRootCategories("out")
-
-    return render_template('categories/index.html', categories_in=categories_in, categories_out=categories_out)
+    return render_template('categories/index.html', account=account, categories_in=categories_in, categories_out=categories_out)
 
 
-@bp.route('/categories/add/<string:type>/', methods=('GET', 'POST'))
-def add(type):
+@bp.route('/categories/<int:account_id>/add/<string:type>/', methods=('GET', 'POST'))
+def add(account_id, type):
 
     parent = None 
     path = None
+    account = Account.query.filter_by(id=account_id).one()
     
     if "parent" in request.args:
         parent = request.args["parent"]
@@ -56,22 +59,24 @@ def add(type):
             item["parent"] = parent
             item["budget_monthly"] = budget_monthly
             
-            new_category = Category(type=type,name=name,parent_id=parent,budget_monthly=budget_monthly)
+            new_category = Category(type=type,account_id=account.id, name=name,parent_id=parent,budget_monthly=budget_monthly)
             db.session.add(new_category)
             db.session.commit()
             
 
-            return redirect(url_for('categories.index'))
+            return redirect(url_for('categories.index', account_id=account.id))
   
     return render_template('categories/add.html', type=type, parent=parent, path = path)  
     
 @bp.route('/categories/delete/<int:id>/') 
 def delete(id):
 
+    account_id = Category.query.filter_by(id=id).one().account_id
+    
     Category.query.filter_by(id=id).delete()
     db.session.commit()
    
-    return redirect(url_for('categories.index'))
+    return redirect(url_for('categories.index', account_id=account_id))
     
     
 @bp.route('/categories/change/<string:type>/<int:id>/', methods=('GET', 'POST')) 
@@ -117,9 +122,9 @@ def change(type, id):
             
             db.session.commit()
             
-            return redirect(url_for('categories.index'))
+            return redirect(url_for('categories.index', account_id=current_category.account_id))
             
-    categories=Category.getRootCategories(type)
+    categories = current_category.account.categories(type)
 
     return render_template('categories/change.html', type=type, category=current_category, categories=categories)  
     
