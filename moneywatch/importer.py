@@ -62,6 +62,9 @@ def index():
 
             if request.form['action'] == "save":
             
+                # reverse transaction list to get oldest transaction first instead of newest transaction first
+                session['import_objects'].reverse()
+                
                 for transaction in session['import_objects']:
                     db.session.add(transaction)
                     
