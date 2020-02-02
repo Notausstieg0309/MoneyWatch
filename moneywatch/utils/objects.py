@@ -76,12 +76,12 @@ class Category(db.Model):
         
             result = []
                
-            newest_transaction = Transaction.getNewestTransaction()
+            latest_transaction = self.account.latest_transaction
 
             latest_transaction_date = datetime.date.today()
 
-            if newest_transaction:
-                latest_transaction_date = newest_transaction.date
+            if latest_transaction:
+                latest_transaction_date = latest_transaction.date
 
             for rule in self.rules:
 
