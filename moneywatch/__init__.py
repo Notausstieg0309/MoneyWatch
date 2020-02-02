@@ -19,7 +19,7 @@ def create_app(test_config=None):
     
     app.config.from_mapping(
             SESSION_TYPE="filesystem",
-            SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db2.sqlite'),
+            SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db.sqlite'),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             BABEL_DEFAULT_LOCALE='en',     
             LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
