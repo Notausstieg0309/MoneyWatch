@@ -195,9 +195,12 @@ class Category(db.Model):
       
         result = self._childs
       
-        for category in result:
-            category.setTimeframe(self.start, self.end)
-                
+        if self.start is not None or self.end is not None:
+          
+            for category in result:
+                category.setTimeframe(self.start, self.end)
+                 print("childs after for:", result)   
+
         return result
         
                
