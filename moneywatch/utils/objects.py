@@ -176,12 +176,20 @@ class Category(db.Model):
     
     @property                    
     def start(self):
-        return self._data.get("start", utils.get_first_day_of_month())
+        
+        if hasattr(self,"_data"):
+            return self._data.get("start", utils.get_first_day_of_month())
+        else:
+            return None
 
     @property                    
     def end(self):
-        return self._data.get("end", utils.get_last_day_of_month())
-        
+    
+        if hasattr(self,"_data"):
+            return self._data.get("end", utils.get_last_day_of_month())
+        else:
+            return None
+            
     @property
     def childs(self):
       
