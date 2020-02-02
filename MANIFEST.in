@@ -3,4 +3,5 @@ graft moneywatch/static
 graft moneywatch/templates
 graft moneywatch/translations
 graft moneywatch/import_plugins
+graft moneywatch/migrations
 global-exclude *.pyc *.sh *.po *.pot
