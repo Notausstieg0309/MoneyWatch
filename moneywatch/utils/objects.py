@@ -357,12 +357,17 @@ class Rule(db.Model):
             result = result.filter(Transaction.date <= end)
        
         if reversed:
-            result = result.order_by(Transaction.id.desc())
+            result = result.order_by(Transaction.date.desc())
         else:
-            result = result.order_by(Transaction.id.asc())
+            result = result.order_by(Transaction.date.asc())
 
         if limit is not None:
             result = result.limit(limit)
+         
+        if reversed:
+            result = result.all()
+            result.reverse()
+            return result
             
         return result.all()
 
