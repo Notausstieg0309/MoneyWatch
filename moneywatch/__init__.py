@@ -33,7 +33,7 @@ def create_app(test_config=None):
     
     db.init_app(app)
     
-    migrate = Migrate()
+    migrate = Migrate(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "migrations"))
     
     with app.app_context():
         if db.engine.url.drivername == 'sqlite':
