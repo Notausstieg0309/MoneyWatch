@@ -644,12 +644,13 @@ def handle_before_insert(session, item):
                 # update rule next due date/valuta
                 rule.updateNextDue(item.date, item.valuta)
         
-                # calculate trend compared to the latest transaction in the database
-                last_transaction = rule.last_transaction(item.date)
-                if last_transaction is not None:
-                    trend = item.valuta - last_transaction.valuta
-                    item.trend = trend if trend != 0 else None
-                    current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , item.trend, item.description, item.valuta, item.date)
+                if rule.regular:
+                    # calculate trend compared to the latest transaction in the database
+                    last_transaction = rule.last_transaction(item.date)
+                    if last_transaction is not None:
+                        trend = item.valuta - last_transaction.valuta
+                        item.trend = trend if trend != 0 else None
+                        current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , item.trend, item.description, item.valuta, item.date)
 
         
     
