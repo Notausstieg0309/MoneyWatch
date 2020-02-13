@@ -76,7 +76,7 @@ class Category(db.Model):
         
             result = []
                
-            latest_transaction = self.account.latest_transaction
+            latest_transaction = Transaction.getNewestTransaction()
 
             latest_transaction_date = datetime.date.today()
 
@@ -199,7 +199,6 @@ class Category(db.Model):
           
             for category in result:
                 category.setTimeframe(self.start, self.end)
-                 print("childs after for:", result)   
 
         return result
         
