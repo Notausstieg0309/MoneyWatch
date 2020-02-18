@@ -400,7 +400,7 @@ class Rule(db.Model):
                 
                 current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%s'", self.name, self.id, next_due, valuta)
                 
-                self.next_valuta = valuta
+                self.next_valuta = abs(valuta)
                 self.next_due = next_due
                
         
