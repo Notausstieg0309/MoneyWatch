@@ -19,8 +19,9 @@ export FLASK_APP=moneywatch
 export FLASK_ENV=development
 
 if [ ! -e "instance/db.sqlite" ]; then
+    mkdir -p $(dirname "$0")/instance 2>/dev/null
     echo "-> initializing SQLite database"
-	flask init-db 
+	flask db upgrade 
 fi
 
 echo "-> starting flask webserver on port 1234"

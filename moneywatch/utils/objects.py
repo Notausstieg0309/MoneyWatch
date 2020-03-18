@@ -10,7 +10,7 @@ from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression as fn
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
-from sqlalchemy import event
+from sqlalchemy import event, orm
 from sqlalchemy.sql import collate, asc
 
 db = SQLAlchemy()
@@ -54,10 +54,13 @@ class Category(db.Model):
    
    
     def __init__(self, start=None, end=None, **kwargs):
-
+        self._cache = {}
         self.setTimeframe(start, end)
         super(Category, self).__init__(**kwargs)
-       
+    
+    @orm.reconstructor
+    def init_on_load(self):
+        self._cache = {}
 
     def setTimeframe(self, start=None, end=None):
         self._data = {}
@@ -69,73 +72,77 @@ class Category(db.Model):
     @property      
     def planned_transactions(self):
        
-       
-        result = []
-           
-        newest_transaction = Transaction.getNewestTransaction()
+        if not "planned_transactions" in self._cache:
+        
+            result = []
+               
+            latest_transaction = Transaction.getNewestTransaction()
 
-        latest_transaction_date = datetime.date.today()
+            latest_transaction_date = datetime.date.today()
 
-        if newest_transaction:
-            latest_transaction_date = newest_transaction.date
+            if latest_transaction:
+                latest_transaction_date = latest_transaction.date
 
-        for rule in self.rules:
+            for rule in self.rules:
 
-                if rule.regular and not rule.next_due > self.end and rule.next_valuta > 0:
+                    if rule.regular and not rule.next_due > self.end and rule.next_valuta > 0:
 
-                    booked_dates = []
-                    planned_dates = []
-                    
-                    # get already existing transaction dates
-                    for transaction in self.transactions:
-                        if transaction.rule_id == rule.id:
-                            booked_dates.append(transaction.date)
-                     
-                    # if already transactions available, just calculate from the date of newest transactions
-                    if len(booked_dates) > 0:
-                        planned_dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, max(booked_dates), self.end)
-                    else:
-                        planned_dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, self.start, self.end)
-                    
-                    current_app.logger.debug("found planned transactions for rule '%s': %s", rule.name, planned_dates)
-                    
-                    for date in planned_dates:
-                        if (
-                                # no transaction for the same year/month exists
-                                (not utils.is_same_month_in_list(date, booked_dates)) and  
-                                
-                                # date is older then latest transaction for this rule
-                                (date.year > latest_transaction_date.year or 
-                                    (date.year == latest_transaction_date.year and 
-                                     date.month >= latest_transaction_date.month)
-                                ) and
-                                
-                                # planned transactions should be listed only for current or future months not
-                                (date >= datetime.date.today() or utils.is_same_month(date, datetime.date.today()))  
-                           ):
-                            if self.type == "out":
-                                result.append(PlannedTransaction(date, rule.next_valuta * -1, rule.description, rule.id))
-                            else:
-                                result.append(PlannedTransaction(date, rule.next_valuta, rule.description, rule.id))
-          
-        result.sort(key=lambda x: x.date)   
-
-        return result
+                        booked_dates = []
+                        planned_dates = []
+                        
+                        # get already existing transaction dates
+                        for transaction in self.transactions:
+                            if transaction.rule_id == rule.id:
+                                booked_dates.append(transaction.date)
+                         
+                        # if already transactions available, just calculate from the date of newest transactions
+                        if len(booked_dates) > 0:
+                            planned_dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, max(booked_dates), self.end)
+                        else:
+                            planned_dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, self.start, self.end)
+                        
+                        current_app.logger.debug("found planned transactions for rule '%s': %s", rule.name, planned_dates)
+                        
+                        for date in planned_dates:
+                            if (
+                                    # no transaction for the same year/month exists
+                                    (not utils.is_same_month_in_list(date, booked_dates)) and  
+                                    
+                                    # date is older then latest transaction for this rule
+                                    (date.year > latest_transaction_date.year or 
+                                        (date.year == latest_transaction_date.year and 
+                                         date.month >= latest_transaction_date.month)
+                                    ) and
+                                    
+                                    # planned transactions should be listed only for current or future months not
+                                    (date >= datetime.date.today() or utils.is_same_month(date, datetime.date.today()))  
+                               ):
+                                if self.type == "out":
+                                    result.append(PlannedTransaction(date, rule.next_valuta * -1, rule.description, rule.id))
+                                else:
+                                    result.append(PlannedTransaction(date, rule.next_valuta, rule.description, rule.id))
+              
+            result.sort(key=lambda x: x.date)   
+            self._cache["planned_transactions"] = result
+            
+        return self._cache["planned_transactions"]
 
 
     @property
     def has_regular_rules(self):
  
-        result = False
-        
-        for rule in self.rules:
-            if rule.regular:
-                result = True
-                break
-        
-        
-        return result
+        if not "has_regular_rules" in self._cache:
             
+            result = False
+            
+            for rule in self.rules:
+                if rule.regular:
+                    result = True
+                    break
+            
+            self._cache["has_regular_rules"] = result
+            
+        return self._cache["has_regular_rules"]      
             
     @property
     def has_overdued_planned_transactions(self):
@@ -169,29 +176,41 @@ class Category(db.Model):
     
     @property                    
     def start(self):
-        return self._data.get("start", utils.get_first_day_of_month())
+        
+        if hasattr(self,"_data"):
+            return self._data.get("start", utils.get_first_day_of_month())
+        else:
+            return None
 
     @property                    
     def end(self):
-        return self._data.get("end", utils.get_last_day_of_month())
-        
+    
+        if hasattr(self,"_data"):
+            return self._data.get("end", utils.get_last_day_of_month())
+        else:
+            return None
+            
     @property
     def childs(self):
       
         result = self._childs
       
-        for category in result:
-            category.setTimeframe(self.start, self.end)
-                
+        if self.start is not None or self.end is not None:
+          
+            for category in result:
+                category.setTimeframe(self.start, self.end)
+
         return result
         
                
     @property
     def transactions(self):
-       
-        result = Transaction.query.filter_by(category_id=self.id).filter(Transaction.date.between(self.start, self.end)).all()
+
+        if not "transactions" in self._cache:
+        
+            self._cache["transactions"] =  Transaction.query.filter_by(category_id=self.id).filter(Transaction.date.between(self.start, self.end)).all()
       
-        return result
+        return self._cache["transactions"]
             
     
 
@@ -218,48 +237,58 @@ class Category(db.Model):
     @property
     def valuta(self):
     
-        result = 0.0
-        
-        for category in self.childs or []:
-            result += category.valuta
+        if not "valuta" in self._cache:
             
-        for transaction in self.transactions or []:
-            result += transaction.valuta
-        
-        return result
+            result = 0.0
+            
+            for category in self.childs or []:
+                result += category.valuta
+                
+            for transaction in self.transactions or []:
+                result += transaction.valuta
+            
+            self._cache["valuta"] =  result
+            
+        return self._cache["valuta"]
         
     @property
     def planned_transactions_valuta(self):
     
-
-        result = 0.0
+        if not "planned_transactions_valuta" in self._cache:
         
-        for category in self.childs or []:
-            result += category.planned_transactions_valuta
-
-        for transaction in self.planned_transactions or []:
-            result += transaction.valuta
+            result = 0.0
             
-       
-        return result
+            for category in self.childs or []:
+                result += category.planned_transactions_valuta
+
+            for transaction in self.planned_transactions or []:
+                result += transaction.valuta
+                
+            self._cache["planned_transactions_valuta"] = result
+            
+        return self._cache["planned_transactions_valuta"]
     
     @property
     def planned_valuta(self):
         
-        result = 0
-        for transaction in self.transactions or []:
-            result += transaction.valuta 
-            
-        for transaction in self.planned_transactions or []:
-            result += transaction.valuta 
+        if not "planned_valuta" in self._cache:
         
-        for category in self.childs or []:
-            result += category.planned_valuta
-        
-        if self.budget is not None and not result < self.budget:        
-            result = self.budget
+            result = 0
+            for transaction in self.transactions or []:
+                result += transaction.valuta 
+                
+            for transaction in self.planned_transactions or []:
+                result += transaction.valuta 
             
-        return result
+            for category in self.childs or []:
+                result += category.planned_valuta
+            
+            if self.budget is not None and not result < self.budget:        
+                result = self.budget
+                
+            self._cache["planned_valuta"] = result
+            
+        return self._cache["planned_valuta"]
 
     @property
     def on_target(self):
@@ -338,12 +367,17 @@ class Rule(db.Model):
             result = result.filter(Transaction.date <= end)
        
         if reversed:
-            result = result.order_by(Transaction.id.desc())
+            result = result.order_by(Transaction.date.desc())
         else:
-            result = result.order_by(Transaction.id.asc())
+            result = result.order_by(Transaction.date.asc())
 
         if limit is not None:
             result = result.limit(limit)
+         
+        if reversed:
+            result = result.all()
+            result.reverse()
+            return result
             
         return result.all()
 
@@ -366,7 +400,7 @@ class Rule(db.Model):
                 
                 current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%s'", self.name, self.id, next_due, valuta)
                 
-                self.next_valuta = valuta
+                self.next_valuta = abs(valuta)
                 self.next_due = next_due
                
         
@@ -595,11 +629,13 @@ def handle_before_insert(session, item):
                 # update rule next due date/valuta
                 rule.updateNextDue(item.date, item.valuta)
         
-                # calculate trend compared to the latest transaction in the database
-                last_transaction = rule.last_transaction(item.date)
-                if last_transaction is not None:
-                    item.trend = item.valuta - last_transaction.valuta
-                    current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , self.item, self.description, self.valuta, self.date)
+                if rule.regular:
+                    # calculate trend compared to the latest transaction in the database
+                    last_transaction = rule.last_transaction(item.date)
+                    if last_transaction is not None:
+                        trend = item.valuta - last_transaction.valuta
+                        item.trend = trend if trend != 0 else None
+                        current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , item.trend, item.description, item.valuta, item.date)
 
         
     

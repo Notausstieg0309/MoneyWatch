@@ -11,15 +11,16 @@ from babel import negotiate_locale
 
 def create_app(test_config=None):
     
+
     from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax, analysis
-    from moneywatch.utils import db
+    from moneywatch.utils.objects import db
 
 
     app = Flask(__name__, instance_relative_config=True)
     
     app.config.from_mapping(
             SESSION_TYPE="filesystem",
-            SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db2.sqlite'),
+            SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db.sqlite'),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
             BABEL_DEFAULT_LOCALE='en',     
             LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -33,7 +34,7 @@ def create_app(test_config=None):
     
     db.init_app(app)
     
-    migrate = Migrate()
+    migrate = Migrate(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "migrations"))
     
     with app.app_context():
         if db.engine.url.drivername == 'sqlite':

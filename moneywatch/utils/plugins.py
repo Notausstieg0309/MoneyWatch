@@ -75,6 +75,7 @@ class ImportPluginsManager(PluginManager):
             
             # check if check function exists and matches
             if check_function is not None and hasattr(check_function, '__call__'):
+                file.stream.seek(0)
                 check_result = check_function(file.stream, file.filename)
                 
                 if check_result:
@@ -107,6 +108,7 @@ class ImportPluginsManager(PluginManager):
             parse_function = self._plugin_info[plugin].get("parse_function", None)
             
             if parse_function is not None and hasattr(parse_function, '__call__'):
+                file.stream.seek(0)
                 result = parse_function(file.stream, file.filename)
             else:
                 raise NoParseFunctionException(gettext("The plugin %s has no parse_function implemented or registered").format(plugin))
