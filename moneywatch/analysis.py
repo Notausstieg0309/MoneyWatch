@@ -62,7 +62,7 @@ def getBalanceByRule(start, end, interval, rule_id):
 
     result = createBaseData(start, end, interval)
     
-    rule = Rule(int(rule_id))
+    rule = Rule.query.filter_by(id=rule_id).one()
     
     transactions = rule.getTransactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
@@ -202,8 +202,8 @@ def index():
     rules["out"] = Rule.getRulesByType("out")
     
     categories = {}
-    categories["in"] = Category.getRootCategories("in", transactions=False)
-    categories["out"] = Category.getRootCategories("out", transactions=False)
+    categories["in"] = Category.getRootCategories("in")
+    categories["out"] = Category.getRootCategories("out")
     
     return render_template('analysis/index.html', years_start = years_start, years_end = years_end, min_date = min_date, max_date = max_date, rules = rules, categories = categories)
 
