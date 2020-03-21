@@ -10,8 +10,9 @@ from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression as fn
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
-from sqlalchemy import event, orm
+from sqlalchemy import event, orm, or_
 from sqlalchemy.sql import collate, asc
+
 
 db = SQLAlchemy()
 
@@ -94,7 +95,12 @@ class Account(db.Model):
      
         return result.all()      
 
-
+    def search_for_transactions(self, term):
+    
+        transactions = Transaction.query.filter(Transaction.account_id == self.id).filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc()).all()
+        
+        return transactions
+        
     def transactions_by_type(self, type, start=None,end=None):
 
         result = Transaction.query.filter_by(account_id=self.id).filter(Transaction.type==type)
