@@ -18,7 +18,7 @@ from moneywatch.utils.exceptions import *
 bp = Blueprint('transactions', __name__)
 
 
-@bp.route('/transactions/<int:account_id>/', methods=["POST", "GET"])
+@bp.route('/<int:account_id>/transactions/', methods=["POST", "GET"])
 def index(account_id):
     """Show all the transaction"""
 
