@@ -10,6 +10,7 @@ import datetime
 
 from flask_babel import gettext
 
+from sqlalchemy import or_
 
 from moneywatch.utils.objects import db,Rule,Category,Transaction
 from moneywatch.utils.exceptions import *
@@ -17,19 +18,30 @@ from moneywatch.utils.exceptions import *
 bp = Blueprint('transactions', __name__)
 
 
-@bp.route('/transactions/')
+@bp.route('/transactions/', methods=["POST", "GET"])
 def index():
     """Show all the transaction"""
 
-    current_month = utils.get_first_day_of_month()
-    last_month = utils.substract_months(current_month, 1)
-    start = utils.get_first_day_of_month(last_month.year, last_month.month)
-    end = datetime.date.today()
+    transactions = []
+    term = None
     
-    transactions = Transaction.getTransactions(start, end)
-    transactions.reverse()
+    if request.method == 'POST' and "search" in request.form and request.form["search"]:
+        term = request.form["search"]
+        transactions = Transaction.query.filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc()).all()
     
-    return render_template('transactions/index.html', transactions=transactions)
+    else:
+    
+        current_month = utils.get_first_day_of_month()
+        last_month = utils.substract_months(current_month, 1)
+        start = utils.get_first_day_of_month(last_month.year, last_month.month)
+        end = datetime.date.today()
+    
+        transactions = Transaction.getTransactions(start, end)
+        transactions.reverse()
+        
+
+    
+    return render_template('transactions/index.html', transactions=transactions, term=term)
 
 
 @bp.route('/transactions/edit/<int:id>/', methods=('GET', 'POST')) 

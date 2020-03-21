@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-21 17:52+0100\n"
+"POT-Creation-Date: 2020-03-21 17:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -478,6 +478,10 @@ msgstr ""
 #: templates/transactions/edit.html:64
 #, python-format
 msgid "Clear rule binding (%(rulename)s)"
+msgstr ""
+
+#: templates/transactions/index.html:52
+msgid "search for transactions..."
 msgstr ""
 
 #: templates/transactions/index.html:67

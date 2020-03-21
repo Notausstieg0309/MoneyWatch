@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-21 17:52+0100\n"
-"PO-Revision-Date: 2020-03-21 17:54+0100\n"
+"POT-Creation-Date: 2020-03-21 17:56+0100\n"
+"PO-Revision-Date: 2020-03-21 17:57+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -490,6 +490,10 @@ msgstr ""
 #, python-format
 msgid "Clear rule binding (%(rulename)s)"
 msgstr "Regelverknüpfung aufheben (%(rulename)s)"
+
+#: templates/transactions/index.html:52
+msgid "search for transactions..."
+msgstr "Suche nach Transaktionen..."
 
 #: templates/transactions/index.html:67
 msgid "No transactions available."

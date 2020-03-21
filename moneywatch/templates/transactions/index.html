@@ -41,7 +41,20 @@
 
 
 {% block content %}
-
+{% if transactions or term %}
+<div class="row">
+  <div class="col m6 l8 hide-on-small-only"></div>
+  <div class="col m6 l4 s12">
+    <form method="post">
+      <div class="input-field col s12 transaction-search">
+        <i class="material-icons prefix">search</i>
+        <input id="search" name="search" type="text"{% if term is not none %} value="{{ term }}"{% endif %} />
+        <label for="search">{% trans %}search for transactions...{% endtrans %}</label>
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
 {% if transactions %}
 <ul class="collection transactions_overview">
 {% for transaction in transactions %}
