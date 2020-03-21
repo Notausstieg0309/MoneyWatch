@@ -80,7 +80,7 @@ def edit(id):
 @bp.route('/transactions/single/<int:id>/')
 def transaction_details(id):
     
-    transaction = Transaction.query.filter_by(id=id).one()
+    transaction = Transaction.query.filter_by(id=id).one_or_none()
    
     if transaction is None:
         return jsonify(None), 404
