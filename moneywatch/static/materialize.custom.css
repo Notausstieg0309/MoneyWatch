@@ -261,6 +261,67 @@ div.budget_perc span.value {
 }
 
 
+/* account overview item */
+div.account_item {
+    margin: 2em 0em 2em 0em ;
+    border: 1px solid #aaaaaa;
+    border-radius: 0.5em;
+}
+
+/* overrule text colur from <a> link */
+div.account_item table.account_detail {
+    color: #000;
+}
+
+
+/* account item details */
+div.account_item table.account_detail td.balance {
+    text-align:right;
+    font-weight: bold;
+    width:12ch;
+    white-space:nowrap;
+    font-size: 1.5em;
+    background-color: rgba(0,0,0,0.06);
+}
+
+div.account_item table.account_detail td.name {
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+div.account_item table.account_detail td.iban {
+    font-style: italic;
+}
+
+div.account_item  table.account_detail td.id {
+    text-align:right;
+    font-weight: bold;
+    font-style: italic;
+    color: grey;
+    width:1%;
+
+    white-space:nowrap;
+    vertical-align:top;
+}
+
+
+/* remove last table border line from materialize style */
+div.account_item table.account_detail tr:last-child {
+    border: unset;
+}
+
+/* make space between divider of account items and add link */
+div.account_overview div.divider {   
+    margin: 1.5em 0em 1.5em 0em;
+}
+
+/* format of "no accounts defined yet" message */
+div.account_overview div#no_accounts_yet {
+    font-size: 1.2em;
+    font-style: italic;
+    color: grey;
+}
+
 /*
  _______                             _   _                 
 |__   __|                           | | (_)                

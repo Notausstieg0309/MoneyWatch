@@ -1,0 +1,45 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}{% trans %}Overview{% endtrans %}{% endblock %}
+{% endblock %}
+
+
+{% macro account_item(account) %}
+    <table class="account_detail">
+    <tr>
+      <td class="id" rowspan="2"># {{ account.id }}</td>
+      <td class="name">{{ account.name }}</td>
+      <td rowspan="2" data-num="{{ account.balance }}"  class="balance num">{{ account.balance | currencyformat("EUR") }}</td>
+    </tr>
+    <tr>
+      <td class="iban">{{ account.iban_formatted }}</td>
+    </tr>
+    </table>
+{% endmacro %}
+
+
+
+{% block content %}
+<div class="row account_overview center-align">
+
+  <div class="col m1 l2 hide-on-small-only"></div>
+  <div class="col m10 l8 s12">
+   {% if accounts %}
+   {% for account in accounts %}
+     <div class="account_item z-depth-3">
+      <a href="{{ url_for('overview.overview', account_id=account.id) }}">
+      {{ account_item(account) }}
+      </a>
+     </div>
+    {% endfor %}
+    {% else %}
+    <div id="no_accounts_yet">There are no accounts defined yet. Please click below on the add button to create a new account.</div>
+    {% endif %}
+    <div class="divider"></div>
+    <a class="btn-floating btn-large {% if not accounts %}pulse{% endif %}"><i class="material-icons">add</i></a>
+  </div>
+  <div class="col m1 l2 hide-on-small-only"></div>
+</div>
+{% endblock %}

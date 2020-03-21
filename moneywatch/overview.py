@@ -110,6 +110,10 @@ def createOverview(account_id, start, end):
 
     return render_template('overview/overview.html', account=account, list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
      
+@bp.route('/')
+def index():
+    accounts = Account.query.all()
+    return render_template('overview/index.html',accounts=accounts)
         
 @bp.route('/<int:account_id>/')
 def overview(account_id):
