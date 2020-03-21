@@ -169,7 +169,7 @@ class Category(db.Model):
         
             result = []
                
-            latest_transaction = Transaction.getNewestTransaction()
+            latest_transaction = self.account.latest_transaction
 
             latest_transaction_date = datetime.date.today()
 
