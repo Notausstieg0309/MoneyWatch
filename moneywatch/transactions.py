@@ -82,7 +82,7 @@ def transaction_details(id):
     return  render_template('transactions/single_transaction.html', transaction=transaction)
 
 
-@bp.route('/transactions/messages/<int:account_id>/<int:year>/<int:month>/<int:month_count>/')
+@bp.route('/<int:account_id>/transactions/messages/<int:year>/<int:month>/<int:month_count>/')
 def transaction_messages(account_id, year, month, month_count):
     try:
         account = Account.query.filter_by(id=account_id).one()
