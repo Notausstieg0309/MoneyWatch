@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-01 13:03+0100\n"
+"POT-Creation-Date: 2020-03-21 17:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,34 +17,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: analysis.py:26 analysis.py:27 templates/overview/index.html:4
-msgid "yyyy/MM"
-msgstr ""
-
-#: analysis.py:30 analysis.py:31 analysis.py:162 analysis.py:177
-#, python-format
-msgid "Q%(quarter)s/%(year)s"
-msgstr ""
-
-#: analysis.py:96 templates/importer/check.html:11
-#: templates/importer/check.html:41
-#: templates/importer/multiple_rule_match.html:11
-#: templates/overview/index.html:42 templates/overview/index.html:53
-#: templates/transactions/edit.html:11 templates/transactions/index.html:10
-#: templates/transactions/index.html:27
-msgid "yyyy-MM-dd"
-msgstr ""
-
-#: categories.py:35 categories.py:102 ruleset.py:107
+#: categories.py:35 categories.py:103 ruleset.py:114
 msgid "Name is required."
 msgstr ""
 
-#: categories.py:38 categories.py:105
+#: categories.py:38 categories.py:106
 msgid "The budget must be given as numeric value."
 msgstr ""
 
-#: categories.py:42 categories.py:108
-msgid "The name '%{name}s' already exists on this level"
+#: categories.py:42 categories.py:109
+#, python-format
+msgid "The name '%(name)s' already exists on this level"
 msgstr ""
 
 #: importer.py:28
@@ -55,97 +38,47 @@ msgstr ""
 msgid "Rule name is required."
 msgstr ""
 
-#: ruleset.py:43 ruleset.py:109
+#: ruleset.py:43 ruleset.py:116
 msgid "Search pattern is required."
 msgstr ""
 
-#: ruleset.py:45 ruleset.py:111
+#: ruleset.py:45 ruleset.py:118
 msgid "Category is required."
 msgstr ""
 
-#: ruleset.py:74
+#: ruleset.py:81
 msgid ""
 "Unable to create new rules. No categories are available to create rules "
 "for. Please create categories first."
 msgstr ""
 
-#: transactions.py:64
+#: transactions.py:76
 #, python-format
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr ""
 
-#: templates/base.html:24 templates/base.html:38
+#: templates/base.html:24 templates/base.html:37
 msgid "Import New Transactions"
 msgstr ""
 
-#: templates/analysis/index.html:4 templates/base.html:25
-#: templates/base.html:39
-msgid "Analysis"
-msgstr ""
-
-#: templates/base.html:26 templates/base.html:40
+#: templates/base.html:25 templates/base.html:38
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr ""
 
-#: templates/base.html:27 templates/base.html:41 templates/ruleset/index.html:4
+#: templates/base.html:26 templates/base.html:39 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr ""
 
-#: templates/base.html:28 templates/base.html:42
+#: templates/base.html:27 templates/base.html:40
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:49
 msgid "Categories"
 msgstr ""
 
-#: templates/base.html:29 templates/base.html:43
+#: templates/base.html:28 templates/base.html:41
 #: templates/overview/index.html:4
 msgid "Overview"
-msgstr ""
-
-#: templates/analysis/index.html:17 templates/overview/index.html:157
-msgid "Balance"
-msgstr ""
-
-#: templates/analysis/index.html:21 templates/categories/change.html:4
-#: templates/categories/index.html:45 templates/overview/index.html:147
-#: templates/overview/index.html:198 templates/ruleset/add.html:4
-msgid "Earnings"
-msgstr ""
-
-#: templates/analysis/index.html:25 templates/categories/change.html:4
-#: templates/categories/index.html:49 templates/overview/index.html:152
-#: templates/overview/index.html:202 templates/ruleset/add.html:4
-msgid "Spendings"
-msgstr ""
-
-#: templates/analysis/index.html:31
-msgid "Overall"
-msgstr ""
-
-#: templates/analysis/index.html:35
-msgid "By Rule"
-msgstr ""
-
-#: templates/analysis/index.html:39
-msgid "By Category"
-msgstr ""
-
-#: templates/analysis/index.html:54 templates/analysis/index.html:64
-#: templates/analysis/index.html:77 templates/ruleset/add.html:33
-msgid "Please select..."
-msgstr ""
-
-#: templates/analysis/index.html:94
-msgid "by Year"
-msgstr ""
-
-#: templates/analysis/index.html:98
-msgid "by Quartal"
-msgstr ""
-
-#: templates/analysis/index.html:102
-msgid "by Month"
 msgstr ""
 
 #: templates/categories/add.html:19 templates/categories/change.html:31
@@ -156,6 +89,18 @@ msgstr ""
 
 #: templates/categories/change.html:4
 msgid "Edit Category"
+msgstr ""
+
+#: templates/categories/change.html:4 templates/categories/index.html:45
+#: templates/overview/index.html:147 templates/overview/index.html:198
+#: templates/ruleset/add.html:4
+msgid "Earnings"
+msgstr ""
+
+#: templates/categories/change.html:4 templates/categories/index.html:49
+#: templates/overview/index.html:152 templates/overview/index.html:202
+#: templates/ruleset/add.html:4
+msgid "Spendings"
 msgstr ""
 
 #: templates/categories/change.html:10
@@ -206,6 +151,14 @@ msgstr ""
 #: templates/importer/check.html:4
 #: templates/importer/multiple_rule_match.html:4
 msgid "Check imported transactions"
+msgstr ""
+
+#: templates/importer/check.html:11 templates/importer/check.html:41
+#: templates/importer/multiple_rule_match.html:11
+#: templates/overview/index.html:42 templates/overview/index.html:53
+#: templates/transactions/edit.html:11 templates/transactions/index.html:10
+#: templates/transactions/index.html:27
+msgid "yyyy-MM-dd"
 msgstr ""
 
 #: templates/importer/check.html:13
@@ -288,6 +241,10 @@ msgid "None"
 msgstr ""
 
 #: templates/overview/index.html:4
+msgid "yyyy/MM"
+msgstr ""
+
+#: templates/overview/index.html:4
 msgid "Months"
 msgstr ""
 
@@ -361,6 +318,10 @@ msgstr ""
 msgid "Current"
 msgstr ""
 
+#: templates/overview/index.html:157
+msgid "Balance"
+msgstr ""
+
 #: templates/overview/index.html:162
 msgid "current values incl. pending regular transactions"
 msgstr ""
@@ -428,6 +389,10 @@ msgstr ""
 
 #: templates/ruleset/add.html:26 templates/ruleset/change.html:17
 msgid "Short Description"
+msgstr ""
+
+#: templates/ruleset/add.html:33
+msgid "Please select..."
 msgstr ""
 
 #: templates/ruleset/add.html:45 templates/ruleset/change.html:30
@@ -515,11 +480,15 @@ msgstr ""
 msgid "Clear rule binding (%(rulename)s)"
 msgstr ""
 
-#: templates/transactions/index.html:54
+#: templates/transactions/index.html:52
+msgid "search for transactions..."
+msgstr ""
+
+#: templates/transactions/index.html:67
 msgid "No transactions available."
 msgstr ""
 
-#: utils/plugins.py:112
+#: utils/plugins.py:114
 #, python-format
 msgid "The plugin %s has no parse_function implemented or registered"
 msgstr ""

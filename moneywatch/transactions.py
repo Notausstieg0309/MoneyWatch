@@ -11,28 +11,37 @@ import datetime
 from flask_babel import gettext
 from sqlalchemy.orm import exc
 
-from moneywatch.utils.objects import db,Rule,Category,Transaction, Account
+from moneywatch.utils.objects import db,Rule,Category,Transaction,Account
+
 from moneywatch.utils.exceptions import *
 
 bp = Blueprint('transactions', __name__)
 
 
-@bp.route('/transactions/<int:account_id>/')
+@bp.route('/transactions/<int:account_id>/', methods=["POST", "GET"])
 def index(account_id):
     """Show all the transaction"""
 
     account = Account.query.filter_by(id=account_id).one()
     
-    current_month = utils.get_first_day_of_month()
-    last_month = utils.substract_months(current_month, 1)
-    start = utils.get_first_day_of_month(last_month.year, last_month.month)
-    end = datetime.date.today()
+    transactions = []
+    term = None
     
-    transactions = account.transactions(start, end)
+    if request.method == 'POST' and "search" in request.form and request.form["search"]:
+        term = request.form["search"]
+        transactions = account.search_for_transactions(term)
     
-    transactions.reverse()
+    else:
     
-    return render_template('transactions/index.html', transactions=transactions)
+        current_month = utils.get_first_day_of_month()
+        last_month = utils.substract_months(current_month, 1)
+        start = utils.get_first_day_of_month(last_month.year, last_month.month)
+        end = datetime.date.today()
+    
+        transactions = account.transactions(start, end)
+        transactions.reverse()
+    
+    return render_template('transactions/index.html', transactions=transactions, term=term)
 
 
 @bp.route('/transactions/edit/<int:id>/', methods=('GET', 'POST')) 
@@ -71,7 +80,7 @@ def edit(id):
 @bp.route('/transactions/single/<int:id>/')
 def transaction_details(id):
     
-    transaction = Transaction.query.filter_by(id=id).one()
+    transaction = Transaction.query.filter_by(id=id).one_or_none()
    
     if transaction is None:
         return jsonify(None), 404
