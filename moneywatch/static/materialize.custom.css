@@ -282,6 +282,7 @@ div.account_item table.account_detail td.balance {
     white-space:nowrap;
     font-size: 1.5em;
     background-color: rgba(0,0,0,0.06);
+    border-left: 1px solid #aaaaaa;
 }
 
 div.account_item table.account_detail td.name {
