@@ -35,6 +35,9 @@ class Account(db.Model):
     def latest_transaction(self):
         return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.desc()).first()
 
+    @property
+    def iban_formatted(self):
+        return utils.format_iban_human(self.iban)
     
           
     def categories(self, type, start=None, end=None):

@@ -220,3 +220,12 @@ def is_valid_iban(value):
     value = normalize_iban(value)
     
     return True if re.match(r"[A-Z]{2}\d{20}", value) else False
+
+def format_iban_human(value):
+
+    value = normalize_iban(value)
+    items = []
+    for index in range(0, len(value), 4):
+        items.append(value[index : index + 4])
+    
+    return " ".join(items)
