@@ -7,7 +7,7 @@ from moneywatch.utils.objects import db, Category, Account
 bp = Blueprint('categories', __name__)
 
 
-@bp.route('/categories/<int:account_id>/')
+@bp.route('/<int:account_id>/categories/')
 def index(account_id):
     """Show all the rules"""
     
@@ -19,7 +19,7 @@ def index(account_id):
     return render_template('categories/index.html', account=account, categories_in=categories_in, categories_out=categories_out)
 
 
-@bp.route('/categories/<int:account_id>/add/<string:type>/', methods=('GET', 'POST'))
+@bp.route('/<int:account_id>/categories/add/<string:type>/', methods=('GET', 'POST'))
 def add(account_id, type):
 
     parent = None 

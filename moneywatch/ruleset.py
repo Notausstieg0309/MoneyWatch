@@ -12,7 +12,7 @@ import moneywatch.utils.functions as utils
 bp = Blueprint('ruleset', __name__)
 
 
-@bp.route('/ruleset/<int:account_id>/')
+@bp.route('/<int:account_id>/ruleset/')
 def index(account_id):
     """Show all the rules"""
     account = Account.query.filter_by(id=account_id).one()
@@ -23,7 +23,7 @@ def index(account_id):
     return render_template('ruleset/index.html', account = account, rules_in=rules_in, rules_out=rules_out)
 
            
-@bp.route('/ruleset/<int:account_id>/add/<string:type>/', methods=('GET', 'POST'))
+@bp.route('/<int:account_id>/ruleset/add/<string:type>/', methods=('GET', 'POST'))
 def add(account_id, type):
 
     account = Account.query.filter_by(id=account_id).one()
