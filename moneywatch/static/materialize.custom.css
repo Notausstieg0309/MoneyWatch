@@ -266,6 +266,7 @@ div.account_item {
     margin: 2em 0em 2em 0em ;
     border: 1px solid #aaaaaa;
     border-radius: 0.5em;
+    overflow: hidden;
 }
 
 /* overrule text colur from <a> link */
@@ -299,8 +300,9 @@ div.account_item  table.account_detail td.id {
     font-weight: bold;
     font-style: italic;
     color: grey;
+    background-color:rgba(0,0,0,0.06);
     width:1%;
-
+    border-right: 1px solid #aaaaaa;
     white-space:nowrap;
     vertical-align:top;
 }
