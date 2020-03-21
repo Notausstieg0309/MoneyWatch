@@ -108,11 +108,11 @@ def createOverview(account_id, start, end):
     messages = len(account.transactions_by_type("message", start=start, end=end))
 
 
-    return render_template('overview/index.html', account=account, list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
-        
+    return render_template('overview/overview.html', account=account, list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
+     
         
 @bp.route('/<int:account_id>/')
-def index(account_id):
+def overview(account_id):
    return  createOverview(account_id, utils.get_first_day_of_month(), utils.get_last_day_of_month())
     
 @bp.route('/<int:account_id>/<int:year>/')
