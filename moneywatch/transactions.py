@@ -9,7 +9,6 @@ import moneywatch.utils.functions as utils
 import datetime
 
 from flask_babel import gettext
-from sqlalchemy.orm import exc
 
 from moneywatch.utils.objects import db,Rule,Category,Transaction,Account
 
