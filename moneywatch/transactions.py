@@ -25,8 +25,8 @@ def index():
     transactions = []
     term = None
     
-    if request.method == 'POST' and "search" in request.form and request.form["search"]:
-        term = request.form["search"]
+    if request.method == 'POST' and "search" in request.form and request.form["search"] and request.form["search"].strip() != "" :
+        term = request.form["search"].strip()
         transactions = Transaction.query.filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc()).all()
     
     else:
