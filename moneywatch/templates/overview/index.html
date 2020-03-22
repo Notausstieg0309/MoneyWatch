@@ -17,7 +17,7 @@
             <li><a href="{{ url_for('accounts.delete', id=account.id) }}">{% trans %}delete{% endtrans %}</a></li>
          </ul>
       </td>
-      <td rowspan="2" {% if account.color %}style="background-color:#{{account.color}};"{% endif %}  data-num="{{ account.balance }}"  class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
+      <td rowspan="2" data-num="{{ account.balance }}" class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
     </tr>
     <tr>
       <td colspan="2" class="iban">{{ account.iban_formatted }}</td>
