@@ -16,15 +16,52 @@
 <script language="javascript" type="text/javascript" src="{{ url_for('static', filename='overview_modals.js') }}"></script>
 </head>
 <body>
+
+<ul id="dd_transactions_mobile" class="dropdown-content">
+{% for account in accounts_list %}
+  <li><a href="{{ url_for('transactions.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
+{% endfor %}
+</ul>
+
+<ul id="dd_transactions_regular" class="dropdown-content">
+{% for account in accounts_list %}
+  <li><a href="{{ url_for('transactions.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
+{% endfor %}
+</ul>
+
+<ul id="dd_ruleset_mobile" class="dropdown-content">
+{% for account in accounts_list %}
+  <li><a href="{{ url_for('ruleset.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
+{% endfor %}
+</ul>
+
+<ul id="dd_ruleset_regular" class="dropdown-content">
+{% for account in accounts_list %}
+  <li><a href="{{ url_for('ruleset.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
+{% endfor %}
+</ul>
+
+<ul id="dd_categories_mobile" class="dropdown-content">
+{% for account in accounts_list %}
+  <li><a href="{{ url_for('categories.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
+{% endfor %}
+</ul>
+
+<ul id="dd_categories_regular" class="dropdown-content">
+{% for account in accounts_list %}
+  <li><a href="{{ url_for('categories.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
+{% endfor %}
+</ul>
+
 <nav class="nav-extended">
   <div class="nav-wrapper">
   <a href="#" class="brand-logo">MoneyWatch</a>
   <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
   <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li><a class="waves-effect waves-light btn"href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
-      <li><a href="{{ url_for('transactions.index', account_id=0) }}">{% trans %}Transactions{% endtrans %}</a></li>
-      <li><a href="{{ url_for('ruleset.index', account_id=0) }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
-      <li><a href="{{ url_for('categories.index', account_id=0) }}">{% trans %}Categories{% endtrans %}</a></li>
+      <li><a class="dropdown-trigger-hover" data-target="dd_transactions_regular">{% trans %}Transactions{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li><a class="dropdown-trigger-hover" data-target="dd_ruleset_regular">{% trans %}Import Ruleset{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li><a class="dropdown-trigger-hover" data-target="dd_categories_regular">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
       <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>
   </ul>
   </div>
@@ -35,9 +72,9 @@
 
   <ul class="sidenav" id="mobile-menu">
     <li><a class="btn waves-effect waves-light" href="{{ url_for('import.index') }}">{% trans %}Import New Transactions{% endtrans %}</a></li>
-    <li><a href="{{ url_for('transactions.index', account_id=0) }}">{% trans %}Transactions{% endtrans %}</a></li>
-    <li><a href="{{ url_for('ruleset.index', account_id=0) }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
-    <li><a href="{{ url_for('categories.index', account_id=0) }}">{% trans %}Categories{% endtrans %}</a></li>
+    <li><a class="dropdown-trigger" data-target="dd_transactions_mobile">{% trans %}Transactions{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li><a class="dropdown-trigger" data-target="dd_ruleset_mobile">{% trans %}Import Ruleset{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+    <li><a class="dropdown-trigger" data-target="dd_categories_mobile">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
     <li><a href="{{ url_for('overview.overview', account_id=0) }}">{% trans %}Overview{% endtrans %}</a></li>
   </ul>
 <div class="container">
