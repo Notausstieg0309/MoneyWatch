@@ -1,0 +1,94 @@
+from flask import (Blueprint, flash, g, redirect, render_template, request, url_for)
+
+from flask_babel import gettext
+
+from moneywatch.utils.objects import db, Account
+
+import moneywatch.utils.functions as utils
+
+bp = Blueprint('accounts', __name__)
+
+
+
+@bp.route('/accounts/add/', methods=('GET', 'POST'))
+def add():
+
+    if request.method == 'POST':
+        error = None
+        name = request.form['name']
+        iban = request.form['iban']
+        balance = request.form['balance']
+        
+        if not name:
+            error = gettext('Name is required.')
+        
+        if not iban:
+            error = gettext('IBAN is required.')
+        
+        if not utils.is_valid_iban(iban):
+            error = gettext('The provided IBAN is not valid')
+            
+    
+        if error is not None:
+            flash(error)
+        else:
+      
+            new_account = Account(name=name ,iban=iban, balance=balance)
+            db.session.add(new_account)
+            db.session.commit()
+
+            return redirect(url_for('overview.index'))
+  
+    return render_template('accounts/add.html')  
+    
+ 
+@bp.route('/accounts/delete/<int:id>/') 
+def delete(id):
+
+    Account.query.filter_by(id=id).delete()
+    db.session.commit()
+   
+    return redirect(url_for('overview.index'))
+    
+    
+@bp.route('/accounts/change/<int:id>/', methods=('GET', 'POST')) 
+def change(id):
+    
+    current_account = Account.query.filter_by(id=id).one()
+    
+    if request.method == 'POST':
+    
+        error = None
+        name = request.form['name']
+        iban = request.form['iban']
+        balance = request.form['balance']
+        
+        if not name:
+            error = gettext('Name is required.')
+        
+        if not iban:
+            error = gettext('IBAN is required.')
+        
+        if not utils.is_valid_iban(iban):
+            error = gettext('The provided IBAN is not valid')
+            
+    
+        if error is not None:
+            flash(error)
+        else:
+
+            current_account.name = name
+            current_account.iban = iban
+            current_account.balance = balance
+            
+            db.session.commit()
+            
+            return redirect(url_for('overview.index'))
+           
+    return render_template('accounts/change.html', account=current_account)  
+    
+    
+
+    
+
+

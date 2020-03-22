@@ -13,8 +13,8 @@
       <td class="name"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.name }}</a></td>
       <td class="settings"><span class="right settings-icon" style="display:none;"><a class="dropdown-trigger" data-target="account_item_{{account.id}}"><i class="material-icons tiny grey-text">settings</i></a></span>
           <ul id='account_item_{{account.id}}' class='dropdown-content'>
-            <li><a href="#!">edit</a></li>
-            <li><a href="#!">delete</a></li>
+            <li><a href="{{ url_for('accounts.change', id=account.id) }}">edit</a></li>
+            <li><a href="{{ url_for('accounts.delete', id=account.id) }}">delete</a></li>
       
          </ul>
       </td>
@@ -43,7 +43,7 @@
     <div id="no_accounts_yet">There are no accounts defined yet. Please click below on the add button to create a new account.</div>
     {% endif %}
     <div class="divider"></div>
-    <a class="btn-floating btn-large {% if not accounts %}pulse{% endif %}"><i class="material-icons">add</i></a>
+    <a class="btn-floating btn-large {% if not accounts %}pulse{% endif %}" href="{{ url_for('accounts.add') }}"><i class="material-icons">add</i></a>
   </div>
   <div class="col m1 l2 hide-on-small-only"></div>
 </div>

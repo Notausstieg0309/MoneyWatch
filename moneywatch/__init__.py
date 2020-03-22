@@ -11,7 +11,7 @@ from babel import negotiate_locale
 
 def create_app(test_config=None):
     
-    from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax
+    from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax, accounts
     from moneywatch.utils.objects import db
 
 
@@ -69,7 +69,8 @@ def create_app(test_config=None):
     app.register_blueprint(overview.bp)
     app.register_blueprint(importer.bp)
     app.register_blueprint(ajax.bp)
-	
+    app.register_blueprint(accounts.bp)
+    
     return app
 
   
