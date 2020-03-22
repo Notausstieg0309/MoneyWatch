@@ -161,6 +161,17 @@ $(function() {
     $("span.message-modal").click(function() {
         modalTransactionDetails("/" + $(this).attr("data-account-id") + "/transactions/messages/" + $(this).attr("data-year") + "/" + $(this).attr("data-month") + "/" + $(this).attr("data-month-count") + "/");
     });
+    
+    // overview: initialize dropdown menus
+    $('.dropdown-trigger').dropdown();
+    
+    // overview: show edit icon when hovering an account item
+    $("div.account_overview table.account_detail").hover(function(e) {
+       $(this).find("span.settings-icon").show();
+    },
+    function(e) {
+       $(this).find("span.settings-icon").hide();
+    });  
 });
  
  

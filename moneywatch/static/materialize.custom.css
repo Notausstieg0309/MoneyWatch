@@ -269,11 +269,10 @@ div.account_item {
     overflow: hidden;
 }
 
-/* overrule text colur from <a> link */
-div.account_item table.account_detail {
-    color: #000;
+/* overrule text color from <a> link */
+div.account_item  table.account_detail a {
+    color:inherit;
 }
-
 
 /* account item details */
 div.account_item table.account_detail td.balance {
@@ -289,6 +288,12 @@ div.account_item table.account_detail td.balance {
 div.account_item table.account_detail td.name {
     font-weight: bold;
     font-size: 1.3em;
+}
+
+div.account_item table.account_detail td.settings {
+    white-space:nowrap;
+    vertical-align:middle;
+    width: 1%;
 }
 
 div.account_item table.account_detail td.iban {

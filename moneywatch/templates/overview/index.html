@@ -7,14 +7,21 @@
 
 
 {% macro account_item(account) %}
-    <table class="account_detail">
+    <table class="account_detail" data-account-id="{{ account.id }}">
     <tr>
-      <td class="id" rowspan="2"># {{ account.id }}</td>
-      <td class="name">{{ account.name }}</td>
-      <td rowspan="2" data-num="{{ account.balance }}"  class="balance num">{{ account.balance | currencyformat("EUR") }}</td>
+     <td class="id" rowspan="2"># {{ account.id }}</td>
+      <td class="name"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.name }}</a></td>
+      <td class="settings"><span class="right settings-icon" style="display:none;"><a class="dropdown-trigger" data-target="account_item_{{account.id}}"><i class="material-icons tiny grey-text">settings</i></a></span>
+          <ul id='account_item_{{account.id}}' class='dropdown-content'>
+            <li><a href="#!">edit</a></li>
+            <li><a href="#!">delete</a></li>
+      
+         </ul>
+      </td>
+      <td rowspan="2" data-num="{{ account.balance }}"  class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
     </tr>
     <tr>
-      <td class="iban">{{ account.iban_formatted }}</td>
+      <td colspan="2" class="iban">{{ account.iban_formatted }}</td>
     </tr>
     </table>
 {% endmacro %}
@@ -29,9 +36,7 @@
    {% if accounts %}
    {% for account in accounts %}
      <div class="account_item z-depth-3">
-      <a href="{{ url_for('overview.overview', account_id=account.id) }}">
       {{ account_item(account) }}
-      </a>
      </div>
     {% endfor %}
     {% else %}
