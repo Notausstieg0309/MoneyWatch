@@ -78,7 +78,7 @@ def index():
                  
                 for account_id, valuta in valuta.items():
                     account = Account.query.filter_by(id=account_id).one()
-                    account.balance += valuta
+                    account.balance = round(account.balance + valuta, 2)
                     
                 db.session.commit()
                 
