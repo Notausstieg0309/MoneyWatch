@@ -30,7 +30,7 @@ def parse_csv(stream, name):
             columns = re.split('"?;"?', item)
             
             date = columns[0]
-            full_text = columns[2] + " " + columns[4]
+            full_text = columns[2] + " " + columns[3] + " " + columns[4]
             valuta = ""
             
             if type == "without_saldo":            
@@ -44,7 +44,7 @@ def parse_csv(stream, name):
             elif re.match(r"^\d\d\/\d\d\/\d\d\d\d$", date): # american format
                 result_item['date'] = get_date_from_string(columns[0], '%m/%d/%Y')
                 
-            result_item['full_text'] = full_text
+            result_item['full_text'] = full_text.strip()
             result_item['valuta'] = float(valuta.replace(",","."))
             result_item['account'] = account
              
