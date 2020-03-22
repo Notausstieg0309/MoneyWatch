@@ -219,7 +219,7 @@ def is_valid_iban(value):
 
     value = normalize_iban(value)
     
-    return True if re.match(r"[A-Z]{2}\d{20}", value) else False
+    return True if re.fullmatch(r"[A-Z]{2}\d{20}", value) else False
 
 def format_iban_human(value):
 
