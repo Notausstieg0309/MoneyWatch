@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-22 13:30+0100\n"
-"PO-Revision-Date: 2020-03-22 13:33+0100\n"
+"POT-Creation-Date: 2020-03-22 19:35+0100\n"
+"PO-Revision-Date: 2020-03-22 19:35+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -283,6 +283,10 @@ msgstr "Bearbeiten"
 #: templates/overview/index.html:17
 msgid "delete"
 msgstr "Löschen"
+
+#: templates/overview/index.html:42
+msgid "total"
+msgstr "Gesamt"
 
 #: templates/overview/overview.html:6
 msgid "yyyy/MM"

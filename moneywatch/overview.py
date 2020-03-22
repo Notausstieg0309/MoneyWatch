@@ -113,7 +113,12 @@ def createOverview(account_id, start, end):
 @bp.route('/')
 def index():
     accounts = Account.query.all()
-    return render_template('overview/index.html',accounts=accounts)
+    
+    sum = 0
+    
+    for account in accounts:
+        sum += account.balance
+    return render_template('overview/index.html',accounts=accounts, sum=sum)
         
 @bp.route('/<int:account_id>/')
 def overview(account_id):

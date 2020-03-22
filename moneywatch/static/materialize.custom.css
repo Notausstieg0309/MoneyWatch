@@ -278,7 +278,7 @@ div.account_item  table.account_detail a {
 div.account_item table.account_detail td.balance {
     text-align:right;
     font-weight: bold;
-    width:12ch;
+    width:150px;
     white-space:nowrap;
     font-size: 1.5em;
     background-color: rgba(0,0,0,0.06);
@@ -328,6 +328,22 @@ div.account_overview div#no_accounts_yet {
     font-size: 1.2em;
     font-style: italic;
     color: grey;
+}
+
+div.account_overview div.sum span.prefix {
+    font-size: 1.5em;
+    border-bottom: 4px double #000;
+    padding: 10px;
+    display: inline-block;
+}
+
+div.account_overview div.sum span.num {
+    width: 150px;
+    display: inline-block;
+    font-size: 1.5em;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 4px double #000;
 }
 
 /*
