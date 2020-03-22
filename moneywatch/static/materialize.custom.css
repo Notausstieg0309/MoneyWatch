@@ -452,7 +452,10 @@ div.categories div.category  i.material-icons {
     font-size: unset; 
 }
 
-
+div.categories_no_content {
+    font-style: italic;
+    font-size: 1.1em;
+}
 
 /*
  _____                            _            

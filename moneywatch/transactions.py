@@ -26,10 +26,10 @@ def index(account_id):
     transactions = []
     term = None
     
-    if request.method == 'POST' and "search" in request.form and request.form["search"]:
+
+    if request.method == 'POST' and "search" in request.form and request.form["search"] and request.form["search"].strip() != "" :
         term = request.form["search"]
         transactions = account.search_for_transactions(term)
-    
     else:
     
         current_month = utils.get_first_day_of_month()
