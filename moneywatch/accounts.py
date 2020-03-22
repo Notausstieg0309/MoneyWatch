@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, g, redirect, render_template, request, url_for)
+from flask import (Blueprint, flash, g, redirect, render_template, request, url_for, current_app)
 
 from flask_babel import gettext
 
@@ -46,7 +46,7 @@ def add():
             flash(error)
         else:
       
-            new_account = Account(name=name ,iban=iban, balance=balance, color=color)
+            new_account = Account(name=name, iban=utils.normalize_iban(iban), balance=balance, color=color)
             db.session.add(new_account)
             db.session.commit()
 
@@ -95,7 +95,7 @@ def change(id):
         else:
 
             current_account.name = name
-            current_account.iban = iban
+            current_account.iban = utils.normalize_iban(iban)
             current_account.balance = balance
             current_account.color = color
             
