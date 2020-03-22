@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-21 17:56+0100\n"
+"POT-Creation-Date: 2020-03-22 13:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.8.0\n"
 
 #: categories.py:35 categories.py:103 ruleset.py:114
 msgid "Name is required."
@@ -71,8 +71,8 @@ msgid "Import Ruleset"
 msgstr ""
 
 #: templates/base.html:27 templates/base.html:40
-#: templates/categories/index.html:4 templates/categories/index.html:45
-#: templates/categories/index.html:49
+#: templates/categories/index.html:4 templates/categories/index.html:42
+#: templates/categories/index.html:46
 msgid "Categories"
 msgstr ""
 
@@ -81,7 +81,39 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: templates/categories/add.html:19 templates/categories/change.html:31
+#: templates/categories/add.html:4
+msgid "New Category"
+msgstr ""
+
+#: templates/categories/add.html:4 templates/categories/change.html:4
+#: templates/categories/index.html:42 templates/overview/index.html:117
+#: templates/overview/index.html:164 templates/ruleset/add.html:4
+msgid "Earnings"
+msgstr ""
+
+#: templates/categories/add.html:4 templates/categories/change.html:4
+#: templates/categories/index.html:46 templates/overview/index.html:122
+#: templates/overview/index.html:168 templates/ruleset/add.html:4
+msgid "Spendings"
+msgstr ""
+
+#: templates/categories/add.html:11 templates/categories/change.html:10
+msgid "Category Name"
+msgstr ""
+
+#: templates/categories/add.html:11
+msgid "below of"
+msgstr ""
+
+#: templates/categories/add.html:17 templates/categories/change.html:14
+msgid "Monthly Budget"
+msgstr ""
+
+#: templates/categories/add.html:17 templates/categories/change.html:14
+msgid "optional"
+msgstr ""
+
+#: templates/categories/add.html:24 templates/categories/change.html:31
 #: templates/importer/check.html:63 templates/ruleset/add.html:68
 #: templates/ruleset/change.html:47 templates/transactions/edit.html:46
 msgid "Save"
@@ -89,30 +121,6 @@ msgstr ""
 
 #: templates/categories/change.html:4
 msgid "Edit Category"
-msgstr ""
-
-#: templates/categories/change.html:4 templates/categories/index.html:45
-#: templates/overview/index.html:147 templates/overview/index.html:198
-#: templates/ruleset/add.html:4
-msgid "Earnings"
-msgstr ""
-
-#: templates/categories/change.html:4 templates/categories/index.html:49
-#: templates/overview/index.html:152 templates/overview/index.html:202
-#: templates/ruleset/add.html:4
-msgid "Spendings"
-msgstr ""
-
-#: templates/categories/change.html:10
-msgid "Category Name"
-msgstr ""
-
-#: templates/categories/change.html:14
-msgid "Monthly Budget"
-msgstr ""
-
-#: templates/categories/change.html:14
-msgid "optional"
 msgstr ""
 
 #: templates/categories/change.html:18
@@ -123,28 +131,28 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: templates/categories/index.html:16
+#: templates/categories/index.html:15
 #, python-format
 msgid "mthly. budget: %(budget)s"
 msgstr ""
 
-#: templates/categories/index.html:21
+#: templates/categories/index.html:20
 msgid "Add new subcategory"
 msgstr ""
 
-#: templates/categories/index.html:22
+#: templates/categories/index.html:21
 msgid "Edit this category"
 msgstr ""
 
-#: templates/categories/index.html:24
+#: templates/categories/index.html:23
 msgid "Delete this category"
 msgstr ""
 
-#: templates/categories/index.html:37
+#: templates/categories/index.html:34
 msgid "No categories for earnings exist."
 msgstr ""
 
-#: templates/categories/index.html:39
+#: templates/categories/index.html:36
 msgid "New Main Category"
 msgstr ""
 
@@ -155,7 +163,7 @@ msgstr ""
 
 #: templates/importer/check.html:11 templates/importer/check.html:41
 #: templates/importer/multiple_rule_match.html:11
-#: templates/overview/index.html:42 templates/overview/index.html:53
+#: templates/overview/index.html:34 templates/overview/index.html:42
 #: templates/transactions/edit.html:11 templates/transactions/index.html:10
 #: templates/transactions/index.html:27
 msgid "yyyy-MM-dd"
@@ -248,111 +256,111 @@ msgstr ""
 msgid "Months"
 msgstr ""
 
-#: templates/overview/index.html:42 templates/overview/index.html:53
+#: templates/overview/index.html:34 templates/overview/index.html:42
 msgid "MM-dd"
 msgstr ""
 
-#: templates/overview/index.html:42
+#: templates/overview/index.html:34
 msgid "Planned transaction is overdue."
 msgstr ""
 
-#: templates/overview/index.html:53
+#: templates/overview/index.html:42
 msgid "Show historical graph"
 msgstr ""
 
-#: templates/overview/index.html:53 templates/transactions/index.html:11
+#: templates/overview/index.html:42 templates/transactions/index.html:11
 msgid "Edit transaction"
 msgstr ""
 
-#: templates/overview/index.html:74
+#: templates/overview/index.html:56
 msgid "This category contains overdue planned transactions."
 msgstr ""
 
-#: templates/overview/index.html:77
+#: templates/overview/index.html:58
 msgid ""
 "The overall amount of pending regular transactions in or underneath this "
 "category."
 msgstr ""
 
-#: templates/overview/index.html:77
+#: templates/overview/index.html:58
 msgid "pending"
 msgstr ""
 
-#: templates/overview/index.html:79
+#: templates/overview/index.html:59
 msgid "All regular transactions for this category are already done."
 msgstr ""
 
-#: templates/overview/index.html:85
+#: templates/overview/index.html:64
 #, python-format
 msgid "The current consumption of the planned budget of %(budget)s."
 msgstr ""
 
-#: templates/overview/index.html:111
+#: templates/overview/index.html:85
 msgid "No transactions available"
 msgstr ""
 
-#: templates/overview/index.html:129
+#: templates/overview/index.html:99
 msgid "previous month"
 msgstr ""
 
-#: templates/overview/index.html:131 templates/overview/index.html:169
+#: templates/overview/index.html:101 templates/overview/index.html:137
 #, python-format
 msgid "current month in %(year)s"
 msgstr ""
 
-#: templates/overview/index.html:133
+#: templates/overview/index.html:103
 msgid "previous year"
 msgstr ""
 
-#: templates/overview/index.html:135
+#: templates/overview/index.html:105
 msgid "previous timeperiod"
 msgstr ""
 
-#: templates/overview/index.html:143 templates/overview/index.html:198
-#: templates/overview/index.html:202
+#: templates/overview/index.html:113 templates/overview/index.html:164
+#: templates/overview/index.html:168
 msgid "Planned"
 msgstr ""
 
-#: templates/overview/index.html:144 templates/overview/index.html:198
-#: templates/overview/index.html:202
+#: templates/overview/index.html:114 templates/overview/index.html:164
+#: templates/overview/index.html:168
 msgid "Current"
 msgstr ""
 
-#: templates/overview/index.html:157
+#: templates/overview/index.html:127
 msgid "Balance"
 msgstr ""
 
-#: templates/overview/index.html:162
+#: templates/overview/index.html:132
 msgid "current values incl. pending regular transactions"
 msgstr ""
 
-#: templates/overview/index.html:167
+#: templates/overview/index.html:135
 msgid "next month"
 msgstr ""
 
-#: templates/overview/index.html:171
+#: templates/overview/index.html:139
 msgid "next year"
 msgstr ""
 
-#: templates/overview/index.html:173
+#: templates/overview/index.html:141
 msgid "next timeperiod"
 msgstr ""
 
-#: templates/overview/index.html:180
+#: templates/overview/index.html:147
 #, python-format
 msgid "This month contains %(num)d message. Click here to show them."
 msgid_plural "This month contains %(num)d messages. Click here to show them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/overview/index.html:180
+#: templates/overview/index.html:147
 #, python-format
 msgid "This timeframe contains %(num)d message. Click here to show them."
 msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/overview/index.html:187
+#: templates/overview/index.html:154
 msgid "particular transactions:"
 msgstr ""
 
