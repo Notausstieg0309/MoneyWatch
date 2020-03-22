@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-22 13:21+0100\n"
-"PO-Revision-Date: 2020-03-22 13:22+0100\n"
+"POT-Creation-Date: 2020-03-22 13:30+0100\n"
+"PO-Revision-Date: 2020-03-22 13:33+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,15 +19,23 @@ msgstr ""
 "Generated-By: Babel 2.8.0\n"
 "X-Generator: Poedit 2.3\n"
 
-#: categories.py:35 categories.py:103 ruleset.py:114
+#: accounts.py:23 accounts.py:67 categories.py:38 categories.py:108 ruleset.py:117
 msgid "Name is required."
 msgstr "Name ist notwendig."
 
-#: categories.py:38 categories.py:106
+#: accounts.py:26 accounts.py:70
+msgid "IBAN is required."
+msgstr "IBAN ist notwendig"
+
+#: accounts.py:29 accounts.py:73
+msgid "The provided IBAN is not valid"
+msgstr "Die eingegebene IBAN ist nicht gültig."
+
+#: categories.py:41 categories.py:111
 msgid "The budget must be given as numeric value."
 msgstr "Das Budget muss als numerischer Wert angegeben werden."
 
-#: categories.py:42 categories.py:109
+#: categories.py:45 categories.py:114
 #, python-format
 msgid "The name '%(name)s' already exists on this level"
 msgstr "Der Name '%(name)s' existiert bereits auf dieser Ebene."
@@ -36,19 +44,19 @@ msgstr "Der Name '%(name)s' existiert bereits auf dieser Ebene."
 msgid "No file uploaded"
 msgstr "Keine Datei hochgeladen"
 
-#: ruleset.py:40
+#: ruleset.py:43
 msgid "Rule name is required."
 msgstr "Regel-Name ist notwendig."
 
-#: ruleset.py:43 ruleset.py:116
+#: ruleset.py:46 ruleset.py:119
 msgid "Search pattern is required."
 msgstr "Suchausdruck ist notwendig."
 
-#: ruleset.py:45 ruleset.py:118
+#: ruleset.py:48 ruleset.py:121
 msgid "Category is required."
 msgstr "Kategorie ist notwendig."
 
-#: ruleset.py:81
+#: ruleset.py:84
 msgid ""
 "Unable to create new rules. No categories are available to create rules for. "
 "Please create categories first."
@@ -56,45 +64,73 @@ msgstr ""
 "Es können keine neuen Regeln angelegt werden. Es sind keine Kategorien vorhanden "
 "für die Regeln anegelegt werden können. Bitte zuerst Kategorien anlegen."
 
-#: transactions.py:76
+#: transactions.py:75
 #, python-format
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr "Die Transaktion %(description)s kann nicht mehr bearbeitet werden."
 
-#: templates/base.html:24 templates/base.html:37
+#: templates/base.html:61 templates/base.html:74
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
-#: templates/base.html:25 templates/base.html:38 templates/transactions/index.html:4
+#: templates/base.html:62 templates/base.html:75 templates/transactions/index.html:4
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: templates/base.html:26 templates/base.html:39 templates/ruleset/index.html:4
+#: templates/base.html:63 templates/base.html:76 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr "Import-Regeln"
 
-#: templates/base.html:27 templates/base.html:40 templates/categories/index.html:4
+#: templates/base.html:64 templates/base.html:77 templates/categories/index.html:4
 #: templates/categories/index.html:42 templates/categories/index.html:46
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:28 templates/base.html:41 templates/overview/index.html:4
+#: templates/base.html:65 templates/base.html:78 templates/overview/index.html:5
+#: templates/overview/overview.html:6
 msgid "Overview"
 msgstr "Übersicht"
+
+#: templates/accounts/add.html:4
+msgid "New Account"
+msgstr "Neues Konto"
+
+#: templates/accounts/add.html:15 templates/accounts/change.html:15
+msgid "Account Name"
+msgstr "Konto Name"
+
+#: templates/accounts/add.html:20 templates/accounts/change.html:20
+msgid "IBAN"
+msgstr "IBAN"
+
+#: templates/accounts/add.html:25 templates/accounts/change.html:25
+msgid "Initial Balance"
+msgstr "Aktueller Kontostand"
+
+#: templates/accounts/add.html:27 templates/accounts/change.html:27
+#: templates/categories/add.html:24 templates/categories/change.html:31
+#: templates/importer/check.html:63 templates/ruleset/add.html:68
+#: templates/ruleset/change.html:47 templates/transactions/edit.html:46
+msgid "Save"
+msgstr "Speichern"
+
+#: templates/accounts/change.html:4
+msgid "Edit Account"
+msgstr "Konto bearbeiten"
 
 #: templates/categories/add.html:4
 msgid "New Category"
 msgstr "Neue Kategorie"
 
 #: templates/categories/add.html:4 templates/categories/change.html:4
-#: templates/categories/index.html:42 templates/overview/index.html:117
-#: templates/overview/index.html:164 templates/ruleset/add.html:4
+#: templates/categories/index.html:42 templates/overview/overview.html:124
+#: templates/overview/overview.html:171 templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr "Einnahmen"
 
 #: templates/categories/add.html:4 templates/categories/change.html:4
-#: templates/categories/index.html:46 templates/overview/index.html:122
-#: templates/overview/index.html:168 templates/ruleset/add.html:4
+#: templates/categories/index.html:46 templates/overview/overview.html:129
+#: templates/overview/overview.html:175 templates/ruleset/add.html:4
 msgid "Spendings"
 msgstr "Ausgaben"
 
@@ -113,12 +149,6 @@ msgstr "monatliches Budget"
 #: templates/categories/add.html:17 templates/categories/change.html:14
 msgid "optional"
 msgstr "optional"
-
-#: templates/categories/add.html:24 templates/categories/change.html:31
-#: templates/importer/check.html:63 templates/ruleset/add.html:68
-#: templates/ruleset/change.html:47 templates/transactions/edit.html:46
-msgid "Save"
-msgstr "Speichern"
 
 #: templates/categories/change.html:4
 msgid "Edit Category"
@@ -162,8 +192,8 @@ msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
 #: templates/importer/check.html:11 templates/importer/check.html:41
-#: templates/importer/multiple_rule_match.html:11 templates/overview/index.html:34
-#: templates/overview/index.html:42 templates/transactions/edit.html:11
+#: templates/importer/multiple_rule_match.html:11 templates/overview/overview.html:37
+#: templates/overview/overview.html:45 templates/transactions/edit.html:11
 #: templates/transactions/index.html:10 templates/transactions/index.html:27
 msgid "yyyy-MM-dd"
 msgstr "dd.MM.yyyy"
@@ -246,107 +276,115 @@ msgstr "Korrekte Import-Regel"
 msgid "None"
 msgstr "Keine"
 
-#: templates/overview/index.html:4
+#: templates/overview/index.html:16
+msgid "edit"
+msgstr "Bearbeiten"
+
+#: templates/overview/index.html:17
+msgid "delete"
+msgstr "Löschen"
+
+#: templates/overview/overview.html:6
 msgid "yyyy/MM"
 msgstr "MM.yyyy"
 
-#: templates/overview/index.html:4
+#: templates/overview/overview.html:6
 msgid "Months"
 msgstr "Monate"
 
-#: templates/overview/index.html:34 templates/overview/index.html:42
+#: templates/overview/overview.html:37 templates/overview/overview.html:45
 msgid "MM-dd"
 msgstr "dd.MM"
 
-#: templates/overview/index.html:34
+#: templates/overview/overview.html:37
 msgid "Planned transaction is overdue."
 msgstr "Diese geplante Transaktion ist überfällig."
 
-#: templates/overview/index.html:42
+#: templates/overview/overview.html:45
 msgid "Show historical graph"
 msgstr "Historischen Verlauf anzeigen"
 
-#: templates/overview/index.html:42 templates/transactions/index.html:11
+#: templates/overview/overview.html:45 templates/transactions/index.html:11
 msgid "Edit transaction"
 msgstr "Transaktion bearbeiten"
 
-#: templates/overview/index.html:56
+#: templates/overview/overview.html:60
 msgid "This category contains overdue planned transactions."
 msgstr "Diese Kategorie enthält geplante Transaktionen die bereits überfällig sind."
 
-#: templates/overview/index.html:58
+#: templates/overview/overview.html:62
 msgid ""
 "The overall amount of pending regular transactions in or underneath this category."
 msgstr ""
 "Der ausstehende Betrag aller noch offenen regelmäßigen Transaktionen in oder "
 "unterhalb dieser Kategorie."
 
-#: templates/overview/index.html:58
+#: templates/overview/overview.html:62
 msgid "pending"
 msgstr "ausstehend"
 
-#: templates/overview/index.html:59
+#: templates/overview/overview.html:63
 msgid "All regular transactions for this category are already done."
 msgstr ""
 "Alle regelmäßigen Transaktionen für diese Kategorie sind bereits durchgeführt."
 
-#: templates/overview/index.html:64
+#: templates/overview/overview.html:68
 #, python-format
 msgid "The current consumption of the planned budget of %(budget)s."
 msgstr "Der aktuelle Verbrauch des geplanten Budgets von %(budget)s."
 
-#: templates/overview/index.html:85
+#: templates/overview/overview.html:89
 msgid "No transactions available"
 msgstr "Keine Transaktionen verfügbar"
 
-#: templates/overview/index.html:99
+#: templates/overview/overview.html:106
 msgid "previous month"
 msgstr "vorheriger Monat"
 
-#: templates/overview/index.html:101 templates/overview/index.html:137
+#: templates/overview/overview.html:108 templates/overview/overview.html:144
 #, python-format
 msgid "current month in %(year)s"
 msgstr "aktueller Monat in %(year)s"
 
-#: templates/overview/index.html:103
+#: templates/overview/overview.html:110
 msgid "previous year"
 msgstr "vorheriges Jahr"
 
-#: templates/overview/index.html:105
+#: templates/overview/overview.html:112
 msgid "previous timeperiod"
 msgstr "vorheriger Zeitraum"
 
-#: templates/overview/index.html:113 templates/overview/index.html:164
-#: templates/overview/index.html:168
+#: templates/overview/overview.html:120 templates/overview/overview.html:171
+#: templates/overview/overview.html:175
 msgid "Planned"
 msgstr "Geplant"
 
-#: templates/overview/index.html:114 templates/overview/index.html:164
-#: templates/overview/index.html:168
+#: templates/overview/overview.html:121 templates/overview/overview.html:171
+#: templates/overview/overview.html:175
 msgid "Current"
 msgstr "Aktuell"
 
-#: templates/overview/index.html:127
+#: templates/overview/overview.html:134
 msgid "Balance"
 msgstr "Bilanz"
 
-#: templates/overview/index.html:132
+#: templates/overview/overview.html:139
 msgid "current values incl. pending regular transactions"
 msgstr "aktuellen Zahlen inkl. noch ausstehenden Transaktionen"
 
-#: templates/overview/index.html:135
+#: templates/overview/overview.html:142
 msgid "next month"
 msgstr "nächster Monat"
 
-#: templates/overview/index.html:139
+#: templates/overview/overview.html:146
 msgid "next year"
 msgstr "nächstes Jahr"
 
-#: templates/overview/index.html:141
+#: templates/overview/overview.html:148
 msgid "next timeperiod"
 msgstr "nächster Zeitraum"
 
-#: templates/overview/index.html:147
+#: templates/overview/overview.html:154
 #, python-format
 msgid "This month contains %(num)d message. Click here to show them."
 msgid_plural "This month contains %(num)d messages. Click here to show them."
@@ -354,7 +392,7 @@ msgstr[0] "Dieser Monat enthält %(num)d Nachricht. Hier klicken um diese anzuze
 msgstr[1] ""
 "Dieser Monat enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
 
-#: templates/overview/index.html:147
+#: templates/overview/overview.html:154
 #, python-format
 msgid "This timeframe contains %(num)d message. Click here to show them."
 msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
@@ -363,7 +401,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Dieser Zeitraum enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
 
-#: templates/overview/index.html:154
+#: templates/overview/overview.html:161
 msgid "particular transactions:"
 msgstr "Besondere Transaktionen:"
 
@@ -507,7 +545,7 @@ msgstr "Suche nach Transaktionen..."
 msgid "No transactions available."
 msgstr "Keine Transaktionen verfügbar."
 
-#: utils/plugins.py:114
+#: utils/plugins.py:117
 #, python-format
 msgid "The plugin %s has no parse_function implemented or registered"
 msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert"

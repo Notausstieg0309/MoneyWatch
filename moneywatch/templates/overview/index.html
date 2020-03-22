@@ -13,9 +13,8 @@
       <td class="name"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.name }}</a></td>
       <td class="settings"><span class="right settings-icon" style="display:none;"><a class="dropdown-trigger" data-target="account_item_{{account.id}}"><i class="material-icons tiny grey-text">settings</i></a></span>
           <ul id='account_item_{{account.id}}' class='dropdown-content'>
-            <li><a href="{{ url_for('accounts.change', id=account.id) }}">edit</a></li>
-            <li><a href="{{ url_for('accounts.delete', id=account.id) }}">delete</a></li>
-      
+            <li><a href="{{ url_for('accounts.change', id=account.id) }}">{% trans %}edit{% endtrans %}</a></li>
+            <li><a href="{{ url_for('accounts.delete', id=account.id) }}">{% trans %}delete{% endtrans %}</a></li>
          </ul>
       </td>
       <td rowspan="2" data-num="{{ account.balance }}"  class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
