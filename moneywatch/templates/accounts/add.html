@@ -15,15 +15,50 @@
       <label for="name">{% trans %}Account Name{% endtrans %}</label>
     </div>
     
+    <div class="row">
+    <div class="col m8 s12">
     <div class="input-field">
       <input name="iban" id="iban" type="text" value="{{ request.form['iban'] }}" required>
-      <label for="iban">{% trans %}IBAN{% endtrans %}</label>
+      <label  for="iban">{% trans %}IBAN{% endtrans %}</label>
+    </div>
+    </div>
+    <div class="col m4 s12">
+    <div class="input-field">
+      <input name="balance" id="balance" type="number" step="0.01" value="{{ request.form['balance'] | default('0.00') }}">
+      <label style="white-space:nowrap;" for="balance">{% trans %}Initial Balance{% endtrans %}</label>
+    </div>
+    </div>
     </div>
     
-    <div class="input-field">
-      <input name="balance" id="balance" type="number" step="0.01" value="{{ request.form['balance'] | default("0.00") }}">
-      <label for="balance">{% trans %}Initial Balance{% endtrans %}</label>
+
+    
+    <div class="row">
+     <div class="col m3 s6">
+         <p>
+       <label>
+        <input class="with-gap" name="color" value="NONE" type="radio" {% if request.form['color'] is none or request.form['color'] == "NONE" %}checked{% endif %}/>
+        <span style="white-space:nowrap;">{% trans %}No Color{% endtrans %}</span>
+       </label>
+    </p>
+    {% for color in colors %}
+    {% if loop.index0 % 2 == 1 %}
+    <div class="col m3 s6">
+    {% endif %}
+    <p>
+     <label>
+        <input class="with-gap" name="color" value="{{ color[1] }}" type="radio" {% if request.form['color'] == color[1] %}checked{% endif %} />
+        <span><span class="account-color circle {{ color[0] }}"></span></span>
+       </label>
+       </p>
+    {% if loop.index0 % 2 == 0 %}
     </div>
+    {% elif loop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
+    
+    </div>
+    
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
  </div>

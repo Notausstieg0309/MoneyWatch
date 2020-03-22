@@ -26,6 +26,7 @@ class Account(db.Model):
     name = db.Column(db.Text(), unique=True, nullable=False)
     iban = db.Column(db.String(22), unique=True, nullable=False)
     balance = db.Column(db.Float, unique=False, nullable=False)    
+    color = db.Column(db.String(6), unique=False, nullable=True)    
     rules = db.relationship("Rule")
     
     @property

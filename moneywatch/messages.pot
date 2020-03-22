@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-22 19:35+0100\n"
+"POT-Creation-Date: 2020-03-22 22:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: accounts.py:23 accounts.py:67 categories.py:38 categories.py:108
+#: accounts.py:33 accounts.py:82 categories.py:38 categories.py:108
 #: ruleset.py:117
 msgid "Name is required."
 msgstr ""
 
-#: accounts.py:26 accounts.py:70
+#: accounts.py:36 accounts.py:85
 msgid "IBAN is required."
 msgstr ""
 
-#: accounts.py:29 accounts.py:73
+#: accounts.py:39 accounts.py:88
 msgid "The provided IBAN is not valid"
 msgstr ""
 
@@ -98,15 +98,19 @@ msgstr ""
 msgid "Account Name"
 msgstr ""
 
-#: templates/accounts/add.html:20 templates/accounts/change.html:20
+#: templates/accounts/add.html:22 templates/accounts/change.html:20
 msgid "IBAN"
 msgstr ""
 
-#: templates/accounts/add.html:25 templates/accounts/change.html:25
+#: templates/accounts/add.html:28 templates/accounts/change.html:25
 msgid "Initial Balance"
 msgstr ""
 
-#: templates/accounts/add.html:27 templates/accounts/change.html:27
+#: templates/accounts/add.html:40 templates/accounts/change.html:36
+msgid "No Color"
+msgstr ""
+
+#: templates/accounts/add.html:62 templates/accounts/change.html:61
 #: templates/categories/add.html:24 templates/categories/change.html:31
 #: templates/importer/check.html:63 templates/ruleset/add.html:68
 #: templates/ruleset/change.html:47 templates/transactions/edit.html:46

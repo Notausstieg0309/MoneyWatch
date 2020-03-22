@@ -274,6 +274,10 @@ div.account_item  table.account_detail a {
     color:inherit;
 }
 
+div.account_item table.account_detail td {
+    border-radius:unset;
+}
+
 /* account item details */
 div.account_item table.account_detail td.balance {
     text-align:right;
@@ -288,12 +292,14 @@ div.account_item table.account_detail td.balance {
 div.account_item table.account_detail td.name {
     font-weight: bold;
     font-size: 1.3em;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
 }
 
 div.account_item table.account_detail td.settings {
     white-space:nowrap;
     vertical-align:middle;
     width: 1%;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
 }
 
 div.account_item table.account_detail td.iban {
@@ -314,7 +320,7 @@ div.account_item  table.account_detail td.id {
 
 
 /* remove last table border line from materialize style */
-div.account_item table.account_detail tr:last-child {
+div.account_item table.account_detail tr {
     border: unset;
 }
 
@@ -346,6 +352,13 @@ div.account_overview div.sum span.num {
     border-bottom: 4px double #000;
 }
 
+span.account-color {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    border: 1px solid grey;
+}
+
 /*
  _______                             _   _                 
 |__   __|                           | | (_)                
@@ -365,6 +378,7 @@ table.transactions tr:first-child {
 table.transactions tr:last-child {
     border: unset;
 }
+
 table.transactions td.short_description{
     font-weight: bold;
     padding-bottom:0px;
