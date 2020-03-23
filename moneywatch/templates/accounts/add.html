@@ -36,7 +36,7 @@
      <div class="col m3 s6">
          <p>
        <label>
-        <input class="with-gap" name="color" value="NONE" type="radio" {% if request.form['color'] is none or request.form['color'] == "NONE" %}checked{% endif %}/>
+        <input class="with-gap" name="color" value="NONE" type="radio" {% if not request.form or request.form['color'] is none or request.form['color'] == "NONE" %}checked{% endif %}/>
         <span style="white-space:nowrap;">{% trans %}No Color{% endtrans %}</span>
        </label>
     </p>
