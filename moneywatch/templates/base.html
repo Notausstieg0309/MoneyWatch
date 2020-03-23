@@ -58,7 +58,7 @@
   <a href="#" class="brand-logo">MoneyWatch</a>
   <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
   <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a class="waves-effect waves-light btn"href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
+      <li><a class="btn waves-effect waves-light {% if not accounts_list %}disabled{% endif %}" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
       <li><a class="dropdown-trigger-hover" data-target="dd_transactions_regular">{% trans %}Transactions{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
       <li><a class="dropdown-trigger-hover" data-target="dd_ruleset_regular">{% trans %}Import Ruleset{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
       <li><a class="dropdown-trigger-hover" data-target="dd_categories_regular">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
