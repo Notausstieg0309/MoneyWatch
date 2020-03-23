@@ -49,7 +49,7 @@ def create_app(test_config=None):
     
     @app.context_processor
     def context_processor():
-        return dict(accounts_list=Account.query.with_entities(Account.id, Account.name).all())
+        return dict(accounts_list=Account.query.with_entities(Account.id, Account.name).order_by(Account.id.asc()).all())
     
     # Configure logging
     handler = logging.FileHandler(app.config['LOGGING_LOCATION'])
