@@ -34,7 +34,7 @@
   {%- endfor %}
 </div>
 {% else %}
-<div class="categories_no_content center-align">{% trans %}No categories for earnings exist.{% endtrans %}</div>
+<div class="no_content center-align">{% trans %}No categories for earnings exist.{% endtrans %}</div>
 {% endif %}
 <a class="btn" href="{{ url_for('categories.add', account_id= account_id, type=type) }}">{% trans %}New Main Category{% endtrans %}</a>
 {% endmacro %}

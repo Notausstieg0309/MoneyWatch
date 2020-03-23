@@ -57,7 +57,11 @@ nav {
     background: #2e4c79;
 }
 
-
+/* message block when no categories/rules/transaction exist */
+div.no_content {
+    font-style: italic;
+    font-size: 1.1em;
+}
 /*
   ____                       _               
  / __ \                     (_)              
@@ -452,10 +456,7 @@ div.categories div.category  i.material-icons {
     font-size: unset; 
 }
 
-div.categories_no_content {
-    font-style: italic;
-    font-size: 1.1em;
-}
+
 
 /*
  _____                            _            
