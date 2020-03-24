@@ -42,7 +42,7 @@
      <span class="prefix">{% trans %}total{% endtrans %} </span><span class="num" data-num="{{ sum }}">{{ sum  | currencyformat("EUR") }}</span>
      </div>
     {% else %}
-    <div id="no_accounts_yet">There are no accounts defined yet. Please click below on the add button to create a new account.</div>
+    <div id="no_accounts_yet">{% trans %}There are no accounts defined yet. Please click below on the add button to create a new account.{% endtrans %}</div>
     {% endif %}
     <div class="divider"></div>
     <a class="btn-floating btn-large {% if not accounts %}pulse{% endif %}" href="{{ url_for('accounts.add') }}"><i class="material-icons">add</i></a>
