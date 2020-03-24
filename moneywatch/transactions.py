@@ -10,26 +10,37 @@ import datetime
 
 from flask_babel import gettext
 
+from moneywatch.utils.objects import db,Rule,Category,Transaction,Account
 
-from moneywatch.utils.objects import db,Rule,Category,Transaction
 from moneywatch.utils.exceptions import *
 
 bp = Blueprint('transactions', __name__)
 
 
-@bp.route('/transactions/')
-def index():
+@bp.route('/<int:account_id>/transactions/', methods=["POST", "GET"])
+def index(account_id):
     """Show all the transaction"""
 
-    current_month = utils.get_first_day_of_month()
-    last_month = utils.substract_months(current_month, 1)
-    start = utils.get_first_day_of_month(last_month.year, last_month.month)
-    end = datetime.date.today()
+    account = Account.query.filter_by(id=account_id).one()
     
-    transactions = Transaction.getTransactions(start, end)
-    transactions.reverse()
+    transactions = []
+    term = None
     
-    return render_template('transactions/index.html', transactions=transactions)
+
+    if request.method == 'POST' and "search" in request.form and request.form["search"] and request.form["search"].strip() != "" :
+        term = request.form["search"]
+        transactions = account.search_for_transactions(term)
+    else:
+    
+        current_month = utils.get_first_day_of_month()
+        last_month = utils.substract_months(current_month, 1)
+        start = utils.get_first_day_of_month(last_month.year, last_month.month)
+        end = datetime.date.today()
+    
+        transactions = account.transactions(start, end)
+        transactions.reverse()
+    
+    return render_template('transactions/index.html', transactions=transactions, term=term)
 
 
 @bp.route('/transactions/edit/<int:id>/', methods=('GET', 'POST')) 
@@ -54,21 +65,21 @@ def edit(id):
                 
             db.session.commit()
             
-            return redirect(url_for('overview.month_overview', year=current_transaction.date.year, month=current_transaction.date.month))
+            return redirect(url_for('overview.month_overview', account_id=current_transaction.account_id, year=current_transaction.date.year, month=current_transaction.date.month))
             
-        categories = Category.getRootCategories(current_transaction.type)
-        rules = Rule.getRulesByType(current_transaction.type)
+        categories = current_transaction.account.categories(current_transaction.type)
+        rules = current_transaction.account.rules_by_type(current_transaction.type)
         
         return render_template('transactions/edit.html', transaction=current_transaction, categories=categories, rules=rules)  
     else:
         flash(gettext("The transaction '%(description)s' cannot be edited anymore.", description=current_transaction.description))
-        return redirect(url_for('overview.month_overview', year=current_transaction.date.year, month=current_transaction.date.month))
+        return redirect(url_for('overview.month_overview', account_id=current_transaction.account_id, year=current_transaction.date.year, month=current_transaction.date.month))
     
 
 @bp.route('/transactions/single/<int:id>/')
 def transaction_details(id):
     
-    transaction = Transaction.query.filter_by(id=id).one()
+    transaction = Transaction.query.filter_by(id=id).one_or_none()
    
     if transaction is None:
         return jsonify(None), 404
@@ -79,14 +90,17 @@ def transaction_details(id):
     return  render_template('transactions/single_transaction.html', transaction=transaction)
 
 
-@bp.route('/transactions/messages/<int:year>/<int:month>/<int:month_count>/')
-def transaction_messages(year, month, month_count):
-    try:
-        end_date = utils.add_months(utils.get_last_day_of_month(year,month),(month_count-1))
-        transactions = Transaction.getTransactionsByType("message", start=utils.get_first_day_of_month(year,month), end=end_date)
-    except Exception as e:
-        return jsonify(None), 404
+@bp.route('/<int:account_id>/transactions/messages/<int:year>/<int:month>/<int:month_count>/')
+def transaction_messages(account_id, year, month, month_count):
+
+    account = Account.query.filter_by(id=account_id).one_or_none()
+    
+    if account is None:
+      return jsonify(None), 404
         
+    end_date = utils.add_months(utils.get_last_day_of_month(year,month),(month_count-1))
+    transactions = account.transactions_by_type("message", start=utils.get_first_day_of_month(year,month), end=end_date)
+   
     return  render_template('transactions/multiple_transaction.html', transactions=transactions)
 
 

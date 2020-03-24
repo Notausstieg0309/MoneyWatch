@@ -11,10 +11,8 @@ from babel import negotiate_locale
 
 def create_app(test_config=None):
     
-
-    from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax, analysis
-    from moneywatch.utils.objects import db
-
+    from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax, accounts, analysis
+    from moneywatch.utils.objects import db,Account
 
     app = Flask(__name__, instance_relative_config=True)
     
@@ -47,6 +45,11 @@ def create_app(test_config=None):
         preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
         return negotiate_locale(preferred, [str(translation) for translation in babel.list_translations()])
     
+    
+    @app.context_processor
+    def context_processor():
+        return dict(accounts_list=Account.query.with_entities(Account.id, Account.name).order_by(Account.id.asc()).all())
+    
     # Configure logging
     handler = logging.FileHandler(app.config['LOGGING_LOCATION'])
     handler.setLevel(app.config['LOGGING_LEVEL'])
@@ -70,6 +73,7 @@ def create_app(test_config=None):
     app.register_blueprint(overview.bp)
     app.register_blueprint(importer.bp)
     app.register_blueprint(ajax.bp)
+    app.register_blueprint(accounts.bp)
     app.register_blueprint(analysis.bp)
     
     return app

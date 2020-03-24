@@ -29,4 +29,9 @@ class NoSuchItemError(Exception):
         self.type = type
         self.data = data
 
-        
+class UnknownAccount(Exception):
+    def __init__(self, iban):
+
+        super().__init__()
+
+        self.iban = iban        

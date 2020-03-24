@@ -1,0 +1,223 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+
+  {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("yyyy/MM")) }}{% if timing["months"] > 1 %} - {{ timing["end"] | dateformat(_("yyyy/MM")) }} ({{ timing["months"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
+{% endblock %}
+
+
+{% macro item_row(row_class,name,num_planned,text_planned,num_valuta,text_valuta) %}
+    <div class="row {{row_class}}">
+        {%- if text_planned is defined -%}
+        <div class="col s12 m7 name truncate">{{ name }}</div>
+        <div class="col s12 m5 right right-align">
+        {%- else %}
+        <div class="col s12 m9 name truncate">{{ name }}</div>
+        <div class="col s12 m3 right right-align">
+        {%- endif -%}
+        
+        {%- if text_planned is defined -%}
+          {%- if num_planned is not none -%}
+            <div class="col num s6 planned" data-num="{{ num_planned }}">{{ text_planned }}</div>
+          {%- else -%}
+            <div class="col s6 planned">{{ text_planned }}</div>  
+          {%- endif -%}
+          
+          {%- if num_valuta is not none -%}
+            <div class="col num s6 current" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
+          {%- else -%}
+            <div class="col s6 current">{{ text_valuta }}</div>
+          {% endif -%}
+		{%- else -%}
+		  {%- if num_valuta is not none -%}
+            <div class="col num s12 current" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
+          {%- else -%}
+            <div class="col s12 current">{{ text_valuta }}</div>
+          {%- endif -%} 
+		{%- endif -%}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro planned_transaction_row(row_class,transaction) -%}
+    {%- set name -%}
+        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
+    {%- endset -%}
+    {%- set row_class -%}
+    {{ row_class }}{% if transaction.overdue %} overdue{% endif %}
+    {%- endset -%}
+    {{ item_row(row_class, name, transaction.valuta, transaction.valuta|currencyformat("EUR"), "0", "0"|currencyformat("EUR")) }}
+{%- endmacro %}
+
+
+{% macro transaction_row(row_class,transaction) -%}
+    {%- set name -%}
+        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
+    {%- endset -%}
+    
+    {% if transaction.trend is not none %}
+    {%- set planned_text -%}
+        {%- if transaction.trend > 0 -%}
+          &#8599;
+        {%- elif transaction.trend < 0 -%}
+          &#8600;
+        {%- endif -%}
+        {{ transaction.trend | currencyformat("EUR") }}
+    {%- endset -%}
+    {%- endif -%}
+    {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat("EUR")) }}
+{%- endmacro %}
+
+
+{% macro category_row(row_class, category) -%}
+    {%- set name -%}
+        {{ category.name }}
+        {%- if current_month -%}
+            {%- if category.has_overdued_planned_transactions %}
+            <i class="red-text tiny overdue material-icons tooltipped" data-tooltip="{% trans %}This category contains overdue planned transactions.{% endtrans %}">warning</i>
+            {% endif %}
+            {%- if category.planned_transactions_valuta != 0 -%}
+            <span class="new badge red lighten-2 tooltipped" data-position="bottom" data-tooltip="{% trans %}The overall amount of pending regular transactions in or underneath this category.{% endtrans %}" data-badge-caption="{% trans %}pending{% endtrans %}">{% if category.planned_transactions_valuta > 0 %}+{% endif %}{{ category.planned_transactions_valuta | currencyformat("EUR") }}</span>
+            {%- elif category.has_regular_rules %}
+            <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
+            {%- endif -%}
+        {%- endif -%}
+        
+        {%- if category.budget_monthly is not none -%}
+        {%- set perc = (category.valuta / category.budget) * 100 -%}
+         <div class="budget_perc right tooltipped" data-position="bottom" data-tooltip="{% trans budget=category.budget|abs|currencyformat("EUR") %}The current consumption of the planned budget of {{budget}}.{% endtrans %}" data-label="{{ perc| int}} %">
+          <span class="value {% if perc > 90 %}red{% elif perc > 75 %}yellow{% else %}green{% endif %} lighten-4" style="width:{{ perc }}%;"></span>
+        </div>
+        {% endif -%}
+    
+    {%- endset -%}
+    {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat("EUR"), category.valuta, category.valuta|currencyformat("EUR") )}}
+{%- endmacro %}
+
+
+{% macro category_item(category_list) -%}
+{% for category in category_list recursive %}
+  <div class="category_container{% if loop.depth == 1 %} root{% endif %}{% if category.transactions|length == 0 %} no_transactions{% endif %}{% if category.childs|length == 0 %} no_subcategories{% endif %}">
+    {{ category_row("category_header", category) }}
+    {%- if category.childs|length > 0 or category.transactions|length > 0 or category.planned_transactions|length > 0 %} 
+    <div class="category_content">
+        {{loop(category.childs) }}
+        {%- for transaction in category.transactions -%}
+          {{ transaction_row("transaction", transaction) }}
+        {%- endfor -%}
+
+        {%- for transaction in category.planned_transactions -%}
+            {{ planned_transaction_row("planned_transaction",transaction) }}
+        {%- endfor %}
+    </div>
+    {% else %}
+    <div class="category_content no_transactions">{% trans %}No transactions available{% endtrans %}</div>
+    {%- endif %}
+  </div>
+{%- endfor -%}
+{% endmacro %}
+
+
+
+{% macro particular_transaction_item(class, rule_list) -%}
+{% for item in rule_list  %}
+<span class="{{ class }}">{{ item[0].name }} ({{ item[0].next_valuta|currencyformat("EUR") }}){% if not loop.last %}, {% endif -%}
+{%- endfor -%}
+{%- endmacro %}
+
+
+
+{% block content %}
+<div class="row  center-align">
+<div class="col m3 left-align hide-on-small-only">
+  
+{%- if timing["months"] == 1 -%}
+  <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['previous'].year, month=timing['previous'].month ) }}">&laquo; {% trans %}previous month{% endtrans %}</a>
+  <br><br>
+  <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['current_month_previous_year'].year, month=timing['current_month_previous_year'].month ) }}">&laquo;&laquo; {% trans year=timing['current_month_previous_year'].year %}current month in {{ year }}{% endtrans %}</a>
+{% elif timing["months"] == 12 and timing["start"].month == 1 -%}
+  <a class="action btn" href="{{ url_for('overview.year_overview',account_id=account.id, year=timing['previous'].year ) }}">&laquo; {% trans %}previous year{% endtrans %}</a>
+{% else -%}
+  <a class="action btn" href="{{ url_for('overview.custom_overview',account_id=account.id, year=timing['previous'].year,month=timing['previous'].month, month_count=timing['months'] ) }}">&laquo; {% trans %}previous timeperiod{% endtrans %}</a>
+{% endif -%}
+
+</div>
+<div class="col s12 m6 center-align">
+<table border="0" cellspacing="0" class="balance z-depth-2">
+<tr>
+<th>&nbsp;</th>
+<th class="planned right-align">{% trans %}Planned{% endtrans %}</th>
+<th class="current right-align" data-enable-switch="{{ current_month | int }}">{% trans %}Current{% endtrans %}</th>
+</tr>
+<tr class="earnings">
+<td>{% trans %}Earnings{% endtrans %}</td>
+<td class="num planned" data-num="{{ balance['planned']['in'] }}">{{ balance['planned']['in'] | currencyformat("EUR") }}</td>
+<td class="num current" data-without-planned-formatted="{{ balance['current']['in'] | currencyformat("EUR") }}" data-with-planned-formatted="{{ balance['current_with_planned_transactions']['in'] | currencyformat("EUR") }}" data-without-planned-num="{{ balance['current']['in'] }}" data-with-planned-num="{{ balance['current_with_planned_transactions']['in'] }}" data-num="{{ balance['current']['in'] }}">{{ balance['current']['in'] | currencyformat("EUR") }}</td>
+</tr>
+<tr class="spendings">
+<td>{% trans %}Spendings{% endtrans %}</td>
+<td class="num planned" data-num="{{ balance['planned']['out'] }}">{{ balance['planned']['out'] | currencyformat("EUR") }}</td>
+<td class="num current" data-without-planned-formatted="{{ balance['current']['out'] | currencyformat("EUR") }}" data-with-planned-formatted="{{ balance['current_with_planned_transactions']['out'] | currencyformat("EUR") }}" data-without-planned-num="{{ balance['current']['out'] }}" data-with-planned-num="{{ balance['current_with_planned_transactions']['out'] }}" data-num="{{ balance['current']['out'] }}">{{ balance['current']['out'] | currencyformat("EUR") }}</td>
+</tr>
+<tr class="final_balance">
+<td>{% trans %}Balance{% endtrans %}</td>
+<td class="num planned" data-num="{{ balance['planned']['balance'] }}">{% if balance['planned']['balance'] > 0 %}+{% endif %}{{ balance['planned']['balance'] | currencyformat("EUR") }}</td>
+<td class="num current" data-without-planned-formatted="{% if balance['current']['balance'] > 0 %}+{% endif %}{{ balance['current']['balance'] | currencyformat("EUR") }}" data-with-planned-formatted="{% if balance['current_with_planned_transactions']['balance'] > 0 %}+{% endif %}{{ balance['current_with_planned_transactions']['balance'] | currencyformat("EUR") }}" data-without-planned-num="{{ balance['current']['balance'] }}" data-with-planned-num="{{ balance['current_with_planned_transactions']['balance'] }}" data-num="{{ balance['current']['balance'] }}">{% if balance['current']['balance'] > 0 %}+{% endif %}{{ balance['current']['balance'] | currencyformat("EUR") }}</td>
+</tr>
+</table>
+<div style="display:none;" class="with_planned_info">* - {% trans %}current values incl. pending regular transactions{% endtrans %}</div>
+</div>
+<div class="col m3 right-align hide-on-small-only">
+
+{%- if timing["months"] == 1 -%}
+  <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['next'].year, month=timing['next'].month ) }}">{% trans %}next month{% endtrans %} &raquo;</a>
+  <br><br>
+  <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['current_month_next_year'].year, month=timing['current_month_next_year'].month ) }}">{% trans year=timing["current_month_next_year"].year %}current month in {{ year }}{% endtrans %} &raquo;&raquo;</a>
+{% elif timing["months"] == 12 and timing["start"].month == 1 -%}
+  <a class="btn" href="{{ url_for('overview.year_overview', account_id=account.id, year=timing['next'].year ) }}">{% trans %}next year{% endtrans %} &raquo;</a>
+{% else -%}
+  <a class="btn" href="{{ url_for('overview.custom_overview', account_id=account.id, year=timing['next'].year,month=timing['next'].month, month_count=timing['months'] ) }}">{% trans %}next timeperiod{% endtrans %} &raquo;</a>
+{% endif -%}
+
+<br><br>
+</div>
+</div>
+{%- if messages > 0 -%}
+<div class="right-centered"><span class="message-modal  tooltipped" data-year="{{ timing["start"].year }}" data-month="{{ timing["start"].month }}" data-month-count={{ timing["months"] }} data-account-id="{{ account.id }}" data-tooltip="{% if timing["months"] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span></div>
+{% endif %}
+{% if timing["months"] == 1 and particular_rules["count"] > 0 %}
+<div class="divider"></div>
+<br>
+<div class="row particular_transactions">
+<div class="col s12 center-align">
+{% trans %}particular transactions:{% endtrans %}
+{{ particular_transaction_item("in", particular_rules["in"]) }}
+{%- if particular_rules["in"]|length > 0 and particular_rules["out"]|length > 0  %}, {% endif -%}
+{{ particular_transaction_item("out", particular_rules["out"]) }}
+</div>
+</div>
+{% endif %}
+<div class="divider"></div>
+<br>
+<div class="row overview">
+<div class="col s12 m6 in">
+{{ item_row("caption",_("Earnings"), None, _("Planned"), None, _("Current")) }}
+{{ category_item(list_in) }}
+</div>
+<div class="col s12 m6 out">
+{{ item_row("caption",_("Spendings"), None, _("Planned"), None, _("Current")) }}
+{{ category_item(list_out) }}
+</div>
+</div>
+
+<div id="transaction_chart" class="modal">
+    <div class="modal-content"> 
+      <h4 id="caption"></h4> 
+        <div class="progress" style="display:hidden;"> 
+            <div class="indeterminate"></div> 
+        </div> 
+        <canvas id="transaction_chart" min-height="300" max-height="500"></canvas>
+    </div> 
+</div>
+{% endblock %}

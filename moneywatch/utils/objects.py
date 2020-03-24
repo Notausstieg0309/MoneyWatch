@@ -10,13 +10,110 @@ from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression as fn
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
-from sqlalchemy import event, orm
+from sqlalchemy import event, orm, or_
 from sqlalchemy.sql import collate, asc
+
 
 db = SQLAlchemy()
 
 
 
+class Account(db.Model):
+
+    __tablename__ = 'accounts'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text(), unique=True, nullable=False)
+    iban = db.Column(db.String(22), unique=True, nullable=False)
+    balance = db.Column(db.Float, unique=False, nullable=False)    
+    color = db.Column(db.String(6), unique=False, nullable=True)    
+    rules = db.relationship("Rule")
+    
+    @property
+    def oldest_transaction(self):
+        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.asc()).first()
+        
+    @property
+    def latest_transaction(self):
+        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.desc()).first()
+
+    @property
+    def iban_formatted(self):
+        return utils.format_iban_human(self.iban)
+    
+          
+    def categories(self, type, start=None, end=None):
+
+        result = Category.query.filter_by(account_id=self.id, type=type, parent_id=None).order_by(asc(collate(Category.name, 'NOCASE'))).all()
+        
+        if start is not None or end is not None:
+            for item in result:
+                item.setTimeframe(start, end)
+                
+        return result
+          
+    def rules_by_type(self, type):
+    
+        result = Rule.query.filter_by(account_id=self.id, type=type).order_by(asc(collate(Rule.name, 'NOCASE'))).all()
+            
+        return result
+
+
+
+    def getNonMonthlyRegularRulesForTimeframe(self, type, start, end):
+    
+        result = []
+        
+        rules = Rule.query.filter_by(account_id=self.id, type=type).filter(Rule.regular > 1).all()
+        
+        for rule in rules:
+            
+            if rule.regular and rule.regular > 1 and rule.next_due <= end and rule.next_valuta > 0:
+                
+                dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, start, end)
+                date_result = []
+                for date in dates:
+                    if date >= start and date >= rule.next_due and (date >= datetime.date.today() or utils.is_same_month(date, datetime.date.today())):
+                        date_result.append(date)
+                
+                if len(date_result) > 0:
+                    result.append( (rule, date_result) )
+                    
+        return result
+
+        
+       
+    def transactions(self, start=None,end=None):
+
+        result = Transaction.query.filter_by(account_id=self.id)
+        
+        if start is not None and end is not None:
+            result = result.filter(Transaction.date.between(start, end))
+        elif start is not None:
+            result = result.filter(Transaction.date >= start)
+        elif end is not None:
+            result = result.filter(Transaction.date <= end)
+     
+        return result.all()      
+
+    def search_for_transactions(self, term):
+    
+        transactions = Transaction.query.filter(Transaction.account_id == self.id).filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc()).all()
+        
+        return transactions
+        
+    def transactions_by_type(self, type, start=None,end=None):
+
+        result = Transaction.query.filter_by(account_id=self.id).filter(Transaction.type==type)
+        
+        if start is not None and end is not None:
+            result = result.filter(Transaction.date.between(start, end))
+        elif start is not None:
+            result = result.filter(Transaction.date >= start)
+        elif end is not None:
+            result = result.filter(Transaction.date <= end)
+      
+        return result.all()     
 
 #     _____      _                              
 #    / ____|    | |                             
@@ -36,6 +133,10 @@ class Category(db.Model):
     type = db.Column(db.Enum("in", "out"), unique=False, nullable=False)
     budget_monthly = db.Column(db.Integer, unique=False, nullable=True)    
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
+   
+        
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_categories_account"),server_default="1", nullable=False)
+    account = db.relationship("Account")
     
     _childs = db.relationship("Category",
                         # cascade deletions
@@ -45,13 +146,12 @@ class Category(db.Model):
                         # is required to reference the 'remote' 
                         # column in the join condition.
                         backref=db.backref("parent", remote_side='Category.id'),
+                        
 
                 )
     
-
-    
     rules = db.relationship("Rule")
-   
+
    
     def __init__(self, start=None, end=None, **kwargs):
         self._cache = {}
@@ -61,7 +161,7 @@ class Category(db.Model):
     @orm.reconstructor
     def init_on_load(self):
         self._cache = {}
-
+        
     def setTimeframe(self, start=None, end=None):
         self._data = {}
         self._data["start"] = start
@@ -76,7 +176,7 @@ class Category(db.Model):
         
             result = []
                
-            latest_transaction = Transaction.getNewestTransaction()
+            latest_transaction = self.account.latest_transaction
 
             latest_transaction_date = datetime.date.today()
 
@@ -312,15 +412,7 @@ class Category(db.Model):
     # def __repr__(self):
         # return self.__class__.__name__+"("+str(self._data)+"|"+str(self._kwargs)+")"
         
-    @staticmethod       
-    def getRootCategories(type, start=None, end=None):
 
-        result = Category.query.filter_by(type=type, parent_id=None).all()
-        
-        for item in result:
-            item.setTimeframe(start, end)
-            
-        return result
     
 
 #    _____       _      
@@ -354,9 +446,12 @@ class Rule(db.Model):
     
     transactions = db.relationship("Transaction")
     
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_rules_account"), server_default="1", nullable=False)
+    account = db.relationship("Account")
+     
     def getTransactions(self, start=None, end=None, limit=None, reversed=False):
 
-        result = Transaction.query.filter_by(rule_id=self.id)
+        result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
         
     
         if start is not None and end is not None:
@@ -382,7 +477,7 @@ class Rule(db.Model):
         return result.all()
 
     def last_transaction(self, before=None):
-        result = Transaction.query.filter_by(rule_id=self.id)
+        result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
         
         if before is not None:
             result = result.filter(Transaction.date <= before)
@@ -412,44 +507,9 @@ class Rule(db.Model):
         else:
             return False
      
-    @staticmethod       
-    def getRulesByType(type, **kwargs):
-    
-        result = Rule.query.filter_by(type=type).order_by(asc(collate(Rule.name, 'NOCASE'))).all()
-            
-        return result
-        
-    # @staticmethod    
-    # def getRulesByCategory(category, **kwargs):
-        # result = []
-        # for rule in db.get_rules_for_category(category.id):
-            # try:
-                # result.append(Rule(rule, **kwargs))
-            # except NoSuchItemError(type, id):
-                # pass
 
-        # return result
+ 
     
-    @staticmethod
-    def getNonMonthlyRegularRulesForTimeframe(type, start, end, **kwargs):
-        result = []
-        
-        rules = Rule.query.filter_by(type=type).filter(Rule.regular > 1).all()
-        
-        for rule in rules:
-            
-            if rule.regular and rule.regular > 1 and rule.next_due <= end and rule.next_valuta > 0:
-                
-                dates = utils.get_cyclic_dates_for_timerange(rule.next_due, rule.regular, start, end)
-                date_result = []
-                for date in dates:
-                    if date >= start and date >= rule.next_due and (date >= datetime.date.today() or utils.is_same_month(date, datetime.date.today())):
-                        date_result.append(date)
-                
-                if len(date_result) > 0:
-                    result.append( (rule, date_result) )
-                    
-        return result
     
         
     # def __repr__(self):
@@ -485,7 +545,8 @@ class Transaction(db.Model):
     
     trend = db.Column(db.Float, unique=False, nullable=True)
    
-    
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_transactions_account"), server_default="1", nullable=False)
+    account = db.relationship("Account")
     
     @hybrid_property
     def type(self):
@@ -516,7 +577,9 @@ class Transaction(db.Model):
         
             founded_rules = []
             
-            for rule in Rule.getRulesByType(self.type):
+            account = Account.query.filter_by(id=self.account_id).one()
+            
+            for rule in account.rules_by_type(self.type):
                 if rule.matchTransaction(self):
                     founded_rules.append(rule)
                     
@@ -575,48 +638,10 @@ class Transaction(db.Model):
                     return True
                     
         return False
-        
-    @staticmethod   
-    def getTransactions(start=None,end=None):
-
-        result = []
-        
-        if start is not None and end is not None:
-            result = Transaction.query.filter(Transaction.date.between(start, end)).all()
-        elif start is not None:
-            result = Transaction.query.filter(Transaction.date >= start).all()
-        elif end is not None:
-            result = Transaction.query.filter(Transaction.date <= end).all()  
-        else:
-            result = Transaction.query.all()
-     
-        return result       
-    
-    @staticmethod   
-    def getTransactionsByType(type, start=None,end=None):
-
-        result = []
-        
-        if start is not None and end is not None:
-            result = Transaction.query.filter(Transaction.type==type).filter(Transaction.date.between(start, end)).all()
-        elif start is not None:
-            result = Transaction.query.filter(Transaction.type==type).filter(Transaction.date >= start).all()
-        elif end is not None:
-            result = Transaction.query.filter(Transaction.type==type).filter(Transaction.date <= end).all()  
-        else:
-            result = Transaction.query.filter(Transaction.type==type).all()
-     
-        return result       
-    
-    @staticmethod   
-    def getOldestTransaction():
-        return Transaction.query.order_by(Transaction.date.asc()).first()
-        
+  
+            
  
-    @staticmethod   
-    def getNewestTransaction():
-          return Transaction.query.order_by(Transaction.date.desc()).first()
-        
+
 
 @event.listens_for(db.session, 'before_attach')
 def handle_before_insert(session, item):

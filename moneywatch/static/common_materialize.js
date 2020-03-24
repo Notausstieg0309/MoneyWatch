@@ -25,6 +25,18 @@ function formatNumberEl(el) {
   
 $(function() {
     
+    // general: initialize dropdown menus
+    $('.dropdown-trigger').dropdown({
+        coverTrigger: false
+    });
+    
+    // general: initialize dropdown menus with special for nav menu dropdown
+    $('.dropdown-trigger-hover').dropdown({
+        coverTrigger: false,
+        hover: true,
+        alignment: 'right',
+    });
+    
     // ruleset: hide/show additional inputs at ruleset add/change views
     $("select[name='regular']").on("change", function() {
 
@@ -159,8 +171,17 @@ $(function() {
     
     // overview: show transaction messages for current month
     $("span.message-modal").click(function() {
-        modalTransactionDetails("/transactions/messages/" + $(this).attr("data-year") + "/" + $(this).attr("data-month") + "/" + $(this).attr("data-month-count") + "/");
+        modalTransactionDetails("/" + $(this).attr("data-account-id") + "/transactions/messages/" + $(this).attr("data-year") + "/" + $(this).attr("data-month") + "/" + $(this).attr("data-month-count") + "/");
     });
+    
+    
+    // overview: show edit icon when hovering an account item
+    $("div.account_overview table.account_detail").hover(function(e) {
+       $(this).find("span.settings-icon").show();
+    },
+    function(e) {
+       $(this).find("span.settings-icon").hide();
+    });  
 });
  
  

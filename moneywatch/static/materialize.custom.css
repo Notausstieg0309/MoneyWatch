@@ -57,7 +57,11 @@ nav {
     background: #2e4c79;
 }
 
-
+/* message block when no categories/rules/transaction exist */
+div.no_content {
+    font-style: italic;
+    font-size: 1.1em;
+}
 /*
   ____                       _               
  / __ \                     (_)              
@@ -261,6 +265,104 @@ div.budget_perc span.value {
 }
 
 
+/* account overview item */
+div.account_item {
+    margin: 2em 0em 2em 0em ;
+    border: 1px solid #aaaaaa;
+    border-radius: 0.5em;
+    overflow: hidden;
+}
+
+/* overrule text color from <a> link */
+div.account_item  table.account_detail a {
+    color:inherit;
+}
+
+div.account_item table.account_detail td {
+    border-radius:unset;
+}
+
+/* account item details */
+div.account_item table.account_detail td.balance {
+    text-align:right;
+    font-weight: bold;
+    width:150px;
+    white-space:nowrap;
+    font-size: 1.5em;
+    background-color: rgba(0,0,0,0.06);
+    border-left: 1px solid #aaaaaa;
+}
+
+div.account_item table.account_detail td.name {
+    font-weight: bold;
+    font-size: 1.3em;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
+div.account_item table.account_detail td.settings {
+    white-space:nowrap;
+    vertical-align:middle;
+    width: 1%;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
+div.account_item table.account_detail td.iban {
+    font-style: italic;
+}
+
+div.account_item  table.account_detail td.id {
+    text-align:right;
+    font-weight: bold;
+    font-style: italic;
+    color: grey;
+    background-color:rgba(0,0,0,0.06);
+    width:1%;
+    border-right: 1px solid #aaaaaa;
+    white-space:nowrap;
+    vertical-align:top;
+}
+
+
+/* remove last table border line from materialize style */
+div.account_item table.account_detail tr {
+    border: unset;
+}
+
+/* make space between divider of account items and add link */
+div.account_overview div.divider {   
+    margin: 1.5em 0em 1.5em 0em;
+}
+
+/* format of "no accounts defined yet" message */
+div.account_overview div#no_accounts_yet {
+    font-size: 1.2em;
+    font-style: italic;
+    color: grey;
+}
+
+div.account_overview div.sum span.prefix {
+    font-size: 1.5em;
+    border-bottom: 4px double #000;
+    padding: 10px;
+    display: inline-block;
+}
+
+div.account_overview div.sum span.num {
+    width: 150px;
+    display: inline-block;
+    font-size: 1.5em;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 4px double #000;
+}
+
+span.account-color {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    border: 1px solid grey;
+}
+
 /*
  _______                             _   _                 
 |__   __|                           | | (_)                
@@ -280,6 +382,7 @@ table.transactions tr:first-child {
 table.transactions tr:last-child {
     border: unset;
 }
+
 table.transactions td.short_description{
     font-weight: bold;
     padding-bottom:0px;

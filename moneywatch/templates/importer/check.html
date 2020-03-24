@@ -20,8 +20,8 @@
         <label>{% trans %}Category{% endtrans %}</label>
         <select class="browser-default" name="{{ index }}_category" required>
             <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
-            {% for category in categories[transaction.type] %}
-            <option value="{{category[0]}}"{% if transaction.category_id and transaction.category_id |int == category[0] %} selected{% endif %}>{{ category[1] }}</option>
+            {% for category in categories[transaction.account_id][transaction.type] %}
+            <option value="{{category[0]}}"{% if loop.length == 1 or (transaction.category_id and transaction.category_id |int == category[0]) %} selected{% endif %}>{{ category[1] }}</option>
             {% endfor %}
         </select>
     </td>

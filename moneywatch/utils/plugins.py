@@ -41,7 +41,10 @@ class PluginManager:
             plugin_info = {}
             
             plugin_context = { "plugin_info": plugin_info,
-                               "get_date_from_string" : functions.get_date_from_string 
+                               "get_date_from_string" : functions.get_date_from_string ,
+                               "is_valid_iban" : functions.is_valid_iban,
+                               "normalize_iban" : functions.normalize_iban
+                               
                              }
             try:
                 exec (open(f, "r").read(), plugin_context)

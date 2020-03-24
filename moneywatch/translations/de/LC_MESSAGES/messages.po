@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-01 13:03+0100\n"
-"PO-Revision-Date: 2020-01-01 13:05+0100\n"
+"POT-Creation-Date: 2020-03-24 09:49+0100\n"
+"PO-Revision-Date: 2020-03-24 09:50+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,159 +17,146 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 
-#: analysis.py:26 analysis.py:27 templates/overview/index.html:4
-msgid "yyyy/MM"
-msgstr "MM.yyyy"
-
-#: analysis.py:30 analysis.py:31 analysis.py:162 analysis.py:177
-#, python-format
-msgid "Q%(quarter)s/%(year)s"
-msgstr ""
-
-#: analysis.py:96 templates/importer/check.html:11
-#: templates/importer/check.html:41 templates/importer/multiple_rule_match.html:11
-#: templates/overview/index.html:42 templates/overview/index.html:53
-#: templates/transactions/edit.html:11 templates/transactions/index.html:10
-#: templates/transactions/index.html:27
-msgid "yyyy-MM-dd"
-msgstr "dd.MM.yyyy"
-
-#: categories.py:35 categories.py:102 ruleset.py:107
+#: accounts.py:33 accounts.py:82 categories.py:38 categories.py:108 ruleset.py:117
 msgid "Name is required."
 msgstr "Name ist notwendig."
 
-#: categories.py:38 categories.py:105
+#: accounts.py:36 accounts.py:85
+msgid "IBAN is required."
+msgstr "IBAN ist notwendig"
+
+#: accounts.py:39 accounts.py:88
+msgid "The provided IBAN is not valid"
+msgstr "Die eingegebene IBAN ist nicht gültig."
+
+#: categories.py:41 categories.py:111
 msgid "The budget must be given as numeric value."
 msgstr "Das Budget muss als numerischer Wert angegeben werden."
 
-#: categories.py:42 categories.py:108
-msgid "The name '%{name}s' already exists on this level"
-msgstr "Der Name '%{name}s' existiert bereits auf dieser Ebene."
+#: categories.py:45 categories.py:114
+#, python-format
+msgid "The name '%(name)s' already exists on this level"
+msgstr "Der Name '%(name)s' existiert bereits auf dieser Ebene."
 
 #: importer.py:28
 msgid "No file uploaded"
 msgstr "Keine Datei hochgeladen"
 
-#: ruleset.py:40
+#: ruleset.py:43
 msgid "Rule name is required."
 msgstr "Regel-Name ist notwendig."
 
-#: ruleset.py:43 ruleset.py:109
+#: ruleset.py:46 ruleset.py:119
 msgid "Search pattern is required."
 msgstr "Suchausdruck ist notwendig."
 
-#: ruleset.py:45 ruleset.py:111
+#: ruleset.py:48 ruleset.py:121
 msgid "Category is required."
 msgstr "Kategorie ist notwendig."
 
-#: ruleset.py:74
+#: ruleset.py:84
 msgid ""
 "Unable to create new rules. No categories are available to create rules for. "
 "Please create categories first."
 msgstr ""
-"Es können keine neuen Regeln angelegt werden. Es sind keine Kategorien "
-"vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien "
-"anlegen."
+"Es können keine neuen Regeln angelegt werden. Es sind keine Kategorien vorhanden "
+"für die Regeln anegelegt werden können. Bitte zuerst Kategorien anlegen."
 
-#: transactions.py:64
+#: transactions.py:75
 #, python-format
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr "Die Transaktion %(description)s kann nicht mehr bearbeitet werden."
 
-#: templates/base.html:24 templates/base.html:38
+#: templates/base.html:61 templates/base.html:74
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
 
-#: templates/analysis/index.html:4 templates/base.html:25 templates/base.html:39
-msgid "Analysis"
-msgstr ""
-
-#: templates/base.html:26 templates/base.html:40
-#: templates/transactions/index.html:4
+#: templates/base.html:62 templates/base.html:75 templates/transactions/index.html:4
 msgid "Transactions"
 msgstr "Transaktionen"
 
-#: templates/base.html:27 templates/base.html:41 templates/ruleset/index.html:4
+#: templates/base.html:63 templates/base.html:76 templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr "Import-Regeln"
 
-#: templates/base.html:28 templates/base.html:42 templates/categories/index.html:4
+#: templates/base.html:64 templates/base.html:77 templates/categories/index.html:4
 #: templates/categories/index.html:45 templates/categories/index.html:49
 msgid "Categories"
 msgstr "Kategorien"
 
-#: templates/base.html:29 templates/base.html:43 templates/overview/index.html:4
+#: templates/base.html:65 templates/base.html:78 templates/overview/index.html:5
+#: templates/overview/overview.html:6
 msgid "Overview"
 msgstr "Übersicht"
 
-#: templates/analysis/index.html:17 templates/overview/index.html:157
-msgid "Balance"
-msgstr "Bilanz"
+#: templates/accounts/add.html:4
+msgid "New Account"
+msgstr "Neues Konto"
 
-#: templates/analysis/index.html:21 templates/categories/change.html:4
-#: templates/categories/index.html:45 templates/overview/index.html:147
-#: templates/overview/index.html:198 templates/ruleset/add.html:4
-msgid "Earnings"
-msgstr "Einnahmen"
+#: templates/accounts/add.html:15 templates/accounts/change.html:15
+msgid "Account Name"
+msgstr "Konto Name"
 
-#: templates/analysis/index.html:25 templates/categories/change.html:4
-#: templates/categories/index.html:49 templates/overview/index.html:152
-#: templates/overview/index.html:202 templates/ruleset/add.html:4
-msgid "Spendings"
-msgstr "Ausgaben"
+#: templates/accounts/add.html:22 templates/accounts/change.html:20
+msgid "IBAN"
+msgstr "IBAN"
 
-#: templates/analysis/index.html:31
-msgid "Overall"
-msgstr ""
+#: templates/accounts/add.html:28 templates/accounts/change.html:25
+msgid "Initial Balance"
+msgstr "Aktueller Kontostand"
 
-#: templates/analysis/index.html:35
-msgid "By Rule"
-msgstr ""
+#: templates/accounts/add.html:40 templates/accounts/change.html:36
+msgid "No Color"
+msgstr "Keine Farbe"
 
-#: templates/analysis/index.html:39
-msgid "By Category"
-msgstr ""
-
-#: templates/analysis/index.html:54 templates/analysis/index.html:64
-#: templates/analysis/index.html:77 templates/ruleset/add.html:33
-msgid "Please select..."
-msgstr "Bitte auswählen..."
-
-#: templates/analysis/index.html:94
-msgid "by Year"
-msgstr ""
-
-#: templates/analysis/index.html:98
-msgid "by Quartal"
-msgstr ""
-
-#: templates/analysis/index.html:102
-msgid "by Month"
-msgstr ""
-
-#: templates/categories/add.html:19 templates/categories/change.html:31
+#: templates/accounts/add.html:62 templates/accounts/change.html:61
+#: templates/categories/add.html:24 templates/categories/change.html:31
 #: templates/importer/check.html:63 templates/ruleset/add.html:68
 #: templates/ruleset/change.html:47 templates/transactions/edit.html:46
 msgid "Save"
 msgstr "Speichern"
 
-#: templates/categories/change.html:4
-msgid "Edit Category"
-msgstr "Kategorie ändern"
+#: templates/accounts/change.html:4
+msgid "Edit Account"
+msgstr "Konto bearbeiten"
 
-#: templates/categories/change.html:10
+#: templates/categories/add.html:4
+msgid "New Category"
+msgstr "Neue Kategorie"
+
+#: templates/categories/add.html:4 templates/categories/change.html:4
+#: templates/categories/index.html:45 templates/overview/overview.html:154
+#: templates/overview/overview.html:205 templates/ruleset/add.html:4
+msgid "Earnings"
+msgstr "Einnahmen"
+
+#: templates/categories/add.html:4 templates/categories/change.html:4
+#: templates/categories/index.html:49 templates/overview/overview.html:159
+#: templates/overview/overview.html:209 templates/ruleset/add.html:4
+msgid "Spendings"
+msgstr "Ausgaben"
+
+#: templates/categories/add.html:11 templates/categories/change.html:10
 msgid "Category Name"
 msgstr "Kategoriename"
 
-#: templates/categories/change.html:14
+#: templates/categories/add.html:11
+msgid "below of"
+msgstr "unterhalb von"
+
+#: templates/categories/add.html:17 templates/categories/change.html:14
 msgid "Monthly Budget"
 msgstr "monatliches Budget"
 
-#: templates/categories/change.html:14
+#: templates/categories/add.html:17 templates/categories/change.html:14
 msgid "optional"
 msgstr "optional"
+
+#: templates/categories/change.html:4
+msgid "Edit Category"
+msgstr "Kategorie ändern"
 
 #: templates/categories/change.html:18
 msgid "Superior Category"
@@ -208,6 +195,13 @@ msgstr "Neue Hauptkategorie"
 msgid "Check imported transactions"
 msgstr "Überprüfe Transaktionen"
 
+#: templates/importer/check.html:11 templates/importer/check.html:41
+#: templates/importer/multiple_rule_match.html:11 templates/overview/overview.html:45
+#: templates/overview/overview.html:56 templates/transactions/edit.html:11
+#: templates/transactions/index.html:10 templates/transactions/index.html:27
+msgid "yyyy-MM-dd"
+msgstr "dd.MM.yyyy"
+
 #: templates/importer/check.html:13 templates/importer/multiple_rule_match.html:13
 #: templates/transactions/edit.html:13
 msgid "Description"
@@ -225,8 +219,7 @@ msgid "Category"
 msgstr "Kategorie"
 
 #: templates/importer/check.html:22 templates/importer/multiple_rule_match.html:22
-#: templates/importer/multiple_rule_match.html:48
-#: templates/transactions/edit.html:22
+#: templates/importer/multiple_rule_match.html:48 templates/transactions/edit.html:22
 msgid "Please Choose"
 msgstr "Bitte auswählen"
 
@@ -266,14 +259,14 @@ msgstr "Laden"
 msgid ""
 "The following transaction matches multiple rules. This problem can occur when "
 "rules uses a search pattern that is not specific enough for such edge cases. If "
-"this problem happens several times with the same rules involved please consider "
-"to precise the search pattern of these rules."
+"this problem happens several times with the same rules involved please consider to "
+"precise the search pattern of these rules."
 msgstr ""
 "Die folgende Transaktion passt zu mehreren Import-Regeln. Dieses Problem kann "
-"auftreten, wenn verschiedene Import-Regeln einen Suchausdruck verwenden, der "
-"nicht spezifisch genug in solchen Fällen ist. Wenn dieses Problem mit der "
-"selben Regel wiederholt auftritt, sollte man den Suchausdruck basierend auf den "
-"bereits vorhandenen Transaktionen versuchen zu präzisieren."
+"auftreten, wenn verschiedene Import-Regeln einen Suchausdruck verwenden, der nicht "
+"spezifisch genug in solchen Fällen ist. Wenn dieses Problem mit der selben Regel "
+"wiederholt auftritt, sollte man den Suchausdruck basierend auf den bereits "
+"vorhandenen Transaktionen versuchen zu präzisieren."
 
 #: templates/importer/multiple_rule_match.html:44
 msgid "Please decide which rule this transaction applies to."
@@ -287,110 +280,135 @@ msgstr "Korrekte Import-Regel"
 msgid "None"
 msgstr "Keine"
 
-#: templates/overview/index.html:4
+#: templates/overview/index.html:16
+msgid "edit"
+msgstr "Bearbeiten"
+
+#: templates/overview/index.html:17
+msgid "delete"
+msgstr "Löschen"
+
+#: templates/overview/index.html:42
+msgid "total"
+msgstr "Gesamt"
+
+#: templates/overview/index.html:45
+msgid ""
+"There are no accounts defined yet. Please click below on the add button to create "
+"a new account."
+msgstr ""
+"Aktuell sind keine Konten definiert. Klick unten auf den Hinzufügen-Button um ein "
+"neues Konto anzulegen."
+
+#: templates/overview/overview.html:6
+msgid "yyyy/MM"
+msgstr "MM.yyyy"
+
+#: templates/overview/overview.html:6
 msgid "Months"
 msgstr "Monate"
 
-#: templates/overview/index.html:42 templates/overview/index.html:53
+#: templates/overview/overview.html:45 templates/overview/overview.html:56
 msgid "MM-dd"
 msgstr "dd.MM"
 
-#: templates/overview/index.html:42
+#: templates/overview/overview.html:45
 msgid "Planned transaction is overdue."
 msgstr "Diese geplante Transaktion ist überfällig."
 
-#: templates/overview/index.html:53
+#: templates/overview/overview.html:56
 msgid "Show historical graph"
 msgstr "Historischen Verlauf anzeigen"
 
-#: templates/overview/index.html:53 templates/transactions/index.html:11
+#: templates/overview/overview.html:56 templates/transactions/index.html:11
 msgid "Edit transaction"
 msgstr "Transaktion bearbeiten"
 
-#: templates/overview/index.html:74
+#: templates/overview/overview.html:78
 msgid "This category contains overdue planned transactions."
-msgstr ""
-"Diese Kategorie enthält geplante Transaktionen die bereits überfällig sind."
+msgstr "Diese Kategorie enthält geplante Transaktionen die bereits überfällig sind."
 
-#: templates/overview/index.html:77
+#: templates/overview/overview.html:81
 msgid ""
-"The overall amount of pending regular transactions in or underneath this "
-"category."
+"The overall amount of pending regular transactions in or underneath this category."
 msgstr ""
 "Der ausstehende Betrag aller noch offenen regelmäßigen Transaktionen in oder "
 "unterhalb dieser Kategorie."
 
-#: templates/overview/index.html:77
+#: templates/overview/overview.html:81
 msgid "pending"
 msgstr "ausstehend"
 
-#: templates/overview/index.html:79
+#: templates/overview/overview.html:83
 msgid "All regular transactions for this category are already done."
 msgstr ""
 "Alle regelmäßigen Transaktionen für diese Kategorie sind bereits durchgeführt."
 
-#: templates/overview/index.html:85
+#: templates/overview/overview.html:89
 #, python-format
 msgid "The current consumption of the planned budget of %(budget)s."
 msgstr "Der aktuelle Verbrauch des geplanten Budgets von %(budget)s."
 
-#: templates/overview/index.html:111
+#: templates/overview/overview.html:115
 msgid "No transactions available"
 msgstr "Keine Transaktionen verfügbar"
 
-#: templates/overview/index.html:129
+#: templates/overview/overview.html:136
 msgid "previous month"
 msgstr "vorheriger Monat"
 
-#: templates/overview/index.html:131 templates/overview/index.html:169
+#: templates/overview/overview.html:138 templates/overview/overview.html:176
 #, python-format
 msgid "current month in %(year)s"
 msgstr "aktueller Monat in %(year)s"
 
-#: templates/overview/index.html:133
+#: templates/overview/overview.html:140
 msgid "previous year"
 msgstr "vorheriges Jahr"
 
-#: templates/overview/index.html:135
+#: templates/overview/overview.html:142
 msgid "previous timeperiod"
 msgstr "vorheriger Zeitraum"
 
-#: templates/overview/index.html:143 templates/overview/index.html:198
-#: templates/overview/index.html:202
+#: templates/overview/overview.html:150 templates/overview/overview.html:205
+#: templates/overview/overview.html:209
 msgid "Planned"
 msgstr "Geplant"
 
-#: templates/overview/index.html:144 templates/overview/index.html:198
-#: templates/overview/index.html:202
+#: templates/overview/overview.html:151 templates/overview/overview.html:205
+#: templates/overview/overview.html:209
 msgid "Current"
 msgstr "Aktuell"
 
-#: templates/overview/index.html:162
+#: templates/overview/overview.html:164
+msgid "Balance"
+msgstr "Bilanz"
+
+#: templates/overview/overview.html:169
 msgid "current values incl. pending regular transactions"
 msgstr "aktuellen Zahlen inkl. noch ausstehenden Transaktionen"
 
-#: templates/overview/index.html:167
+#: templates/overview/overview.html:174
 msgid "next month"
 msgstr "nächster Monat"
 
-#: templates/overview/index.html:171
+#: templates/overview/overview.html:178
 msgid "next year"
 msgstr "nächstes Jahr"
 
-#: templates/overview/index.html:173
+#: templates/overview/overview.html:180
 msgid "next timeperiod"
 msgstr "nächster Zeitraum"
 
-#: templates/overview/index.html:180
+#: templates/overview/overview.html:187
 #, python-format
 msgid "This month contains %(num)d message. Click here to show them."
 msgid_plural "This month contains %(num)d messages. Click here to show them."
-msgstr[0] ""
-"Dieser Monat enthält %(num)d Nachricht. Hier klicken um diese anzuzeigen."
+msgstr[0] "Dieser Monat enthält %(num)d Nachricht. Hier klicken um diese anzuzeigen."
 msgstr[1] ""
 "Dieser Monat enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
 
-#: templates/overview/index.html:180
+#: templates/overview/overview.html:187
 #, python-format
 msgid "This timeframe contains %(num)d message. Click here to show them."
 msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
@@ -399,7 +417,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Dieser Zeitraum enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
 
-#: templates/overview/index.html:187
+#: templates/overview/overview.html:194
 msgid "particular transactions:"
 msgstr "Besondere Transaktionen:"
 
@@ -408,8 +426,7 @@ msgid "New Rule"
 msgstr "Neue Regel"
 
 #: templates/ruleset/add.html:13
-msgid ""
-"The name of the rule. This value is only displayed in the ruleset overview."
+msgid "The name of the rule. This value is only displayed in the ruleset overview."
 msgstr ""
 "Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-Regeln "
 "benutzt."
@@ -424,9 +441,8 @@ msgid ""
 "The search pattern (phython based regular expression) used to identify matching "
 "transactions during import based on their booking text."
 msgstr ""
-"Der Such-Ausdruck (Python-basierter regulärer Ausdruck), welcher zu "
-"importierende Transaktionen anhand des Buchungstextes erkennt und entsprechend "
-"zuordnet."
+"Der Such-Ausdruck (Python-basierter regulärer Ausdruck), welcher zu importierende "
+"Transaktionen anhand des Buchungstextes erkennt und entsprechend zuordnet."
 
 #: templates/ruleset/add.html:20 templates/ruleset/change.html:14
 msgid "Search Pattern"
@@ -444,6 +460,10 @@ msgstr ""
 #: templates/ruleset/add.html:26 templates/ruleset/change.html:17
 msgid "Short Description"
 msgstr "Buchungsbezeichnung"
+
+#: templates/ruleset/add.html:33
+msgid "Please select..."
+msgstr "Bitte auswählen..."
 
 #: templates/ruleset/add.html:45 templates/ruleset/change.html:30
 msgid "Regularity"
@@ -520,12 +540,11 @@ msgstr "Transaktion bearbeiten"
 #: templates/transactions/edit.html:59
 msgid ""
 "This transaction was identified by a rule. You can clear the binding of this "
-"transaction to the matched rule in case this transaction was mistakenly "
-"matched. In this case you should adapt the search pattern of the corresponding "
-"rule."
+"transaction to the matched rule in case this transaction was mistakenly matched. "
+"In this case you should adapt the search pattern of the corresponding rule."
 msgstr ""
-"Diese Transaktion wurde durch eine Import-Regel identifiziert. Die Verbindung "
-"zu dieser Import-Regel kann aufgehoben werden, falls die Transaktion "
+"Diese Transaktion wurde durch eine Import-Regel identifiziert. Die Verbindung zu "
+"dieser Import-Regel kann aufgehoben werden, falls die Transaktion "
 "fälschlicherweise durch diese Regel erkannt wurde. In diesem Fall sollte der "
 "Suchausdruck dieser Regel angepasst werden."
 
@@ -534,50 +553,15 @@ msgstr ""
 msgid "Clear rule binding (%(rulename)s)"
 msgstr "Regelverknüpfung aufheben (%(rulename)s)"
 
-#: templates/transactions/index.html:54
+#: templates/transactions/index.html:52
+msgid "search for transactions..."
+msgstr "Suche nach Transaktionen..."
+
+#: templates/transactions/index.html:67
 msgid "No transactions available."
 msgstr "Keine Transaktionen verfügbar."
 
-#: utils/plugins.py:112
+#: utils/plugins.py:117
 #, python-format
 msgid "The plugin %s has no parse_function implemented or registered"
 msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert"
-
-#~ msgid "YYYY/MM/dd"
-#~ msgstr "dd.MM.YYYY"
-
-#~ msgid "MM/dd"
-#~ msgstr "dd.MM"
-
-#~ msgid "Multiple plugins match file content"
-#~ msgstr "Mehrere Plugins passen zur hochgeladenen Datei."
-
-#~ msgid "No import plugin available that can handle this file."
-#~ msgstr ""
-#~ "Kein Import-Plugin vorhanden, welches die hochgeladene Datei verarbeiten "
-#~ "kann."
-
-#~ msgid "transaction id %(id)d does not exist."
-#~ msgstr "Eine Transaktion mit der ID %(id)d existiert nicht."
-
-#~ msgid "transactions for category id %(id)d does not exist."
-#~ msgstr "Transaktionen für Kategorie %(id)d existieren nicht."
-
-#~ msgid "Planned transaction is overdue"
-#~ msgstr "Diese geplante Transaktion ist bereits überfällig."
-
-#~ msgid "This category contains overdue planned transactions"
-#~ msgstr ""
-#~ "Diese Kategorie enthält geplante Transaktionen die bereits überfällig sind"
-
-#~ msgid "YYYY/MM"
-#~ msgstr "MM.YYYY"
-
-#~ msgid "YYYY-MM-dd"
-#~ msgstr "dd.MM.yyyy"
-
-#~ msgid "This month contains messages. Click here to show them."
-#~ msgstr "Dieser Monat enthält Nachrichten. Hier klicken um diese anzuzeigen."
-
-#~ msgid "This timeframe contains messages. Click here to show them."
-#~ msgstr "Dieser Zeitraum enthält Nachrichten. Hier klicken um diese anzuzeigen."

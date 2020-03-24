@@ -11,6 +11,9 @@ def parse_csv(stream, name):
 
     items = []
     
+    # extract IBAN from 4th row second column
+    account = normalize_iban(re.split('"?;"?', lines[3])[1])
+    
     if type == "without_saldo":
         items = lines[14:]
     elif type == "with_saldo":
@@ -27,7 +30,7 @@ def parse_csv(stream, name):
             columns = re.split('"?;"?', item)
             
             date = columns[0]
-            full_text = columns[2] + " " + columns[4]
+            full_text = columns[2] + " " + columns[3] + " " + columns[4]
             valuta = ""
             
             if type == "without_saldo":            
@@ -41,8 +44,9 @@ def parse_csv(stream, name):
             elif re.match(r"^\d\d\/\d\d\/\d\d\d\d$", date): # american format
                 result_item['date'] = get_date_from_string(columns[0], '%m/%d/%Y')
                 
-            result_item['full_text'] = full_text
+            result_item['full_text'] = full_text.strip()
             result_item['valuta'] = float(valuta.replace(",","."))
+            result_item['account'] = account
              
             result.append(result_item)
 
@@ -50,17 +54,27 @@ def parse_csv(stream, name):
 
 def get_csv_type(stream):
     
+    
     content = stream.read().decode("latin-1")
     
     items = content.split("\n")
     
-    if items[13].startswith("Buchung;Valuta;Auftraggeber"):
-        return "without_saldo"
-    elif items[14].startswith("Buchung;Valuta;Auftraggeber"):
-        return "with_saldo"
-    else: 
-        return None
+    try:
+        if items[3].startswith("IBAN;"): 
+            
+            if not is_valid_iban(re.split('"?;"?', items[3])[1]):
+                return None
+            
+            if items[13].startswith("Buchung;Valuta;Auftraggeber"):
+                return "without_saldo"
+            elif items[14].startswith("Buchung;Valuta;Auftraggeber"):
+                return "with_saldo"
     
+    except IndexError as e:
+        pass
+    
+    return None
+        
 def check_csv(stream, name):    
     if get_csv_type(stream) is not None:
         return True
