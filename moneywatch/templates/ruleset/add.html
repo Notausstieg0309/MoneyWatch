@@ -32,7 +32,7 @@
       <select name="category_id" required>
         <option disabled{% if selected_category == 0 %} selected{% endif %} value>{% trans %}Please select...{% endtrans %}</option>
         {% for category in categories recursive %}
-        <option value="{{ category['id'] }}"{% if selected_category == category['id'] %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
+        <option value="{{ category['id'] }}"{% if (loop.length == 1 and category.childs | length == 0) or (selected_category == category['id']) %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
         {% if category.childs | length > 0 %}
             {{ loop(category.childs)}} 
         {% endif %}
