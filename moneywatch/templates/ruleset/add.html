@@ -16,7 +16,7 @@
   </div>
   <div class="row">
     <div class="input-field col s12">
-      <input name="pattern" id="pattern" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The search pattern (phython based regular expression) used to identify matching transactions during import based on their booking text.{% endtrans %}"type="text" value="{{ request.form['pattern'] }}" required>
+      <input name="pattern" id="pattern" class="pattern" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The search pattern (phython based regular expression) used to identify matching transactions during import based on their booking text.{% endtrans %}"type="text" value="{{ request.form['pattern'] }}" required>
       <label for="pattern">{% trans %}Search Pattern{% endtrans %}</label>
     </div>
   </div>
