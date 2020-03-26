@@ -7,6 +7,9 @@
 {% block content %}
 {% set selected_category = request.form['category_id'] | default(rule.category_id) | int -%}
 {% set selected_regular = request.form['regular'] | default(rule.regular) | int -%}
+<div class="row">
+<div class="col l3 hide-on-small-only"></div>
+<div class="col l6 s12">
   <form method="post">
     <label for="name">{% trans %}Rule Name{% endtrans %}</label>
     <input name="name" id="name" value="{{ request.form['name'] or rule['name'] }}" required><br>
@@ -46,4 +49,7 @@
     </div>
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
+ </div>
+ <div class="col l3 hide-on-small-only"></div>
+ </div>
 {% endblock %}
