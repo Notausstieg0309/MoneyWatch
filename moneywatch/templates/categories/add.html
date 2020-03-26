@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block content %}
+<div class="row">
+ <div class="col l3 hide-on-small-only"></div>
+ <div class="col l6 s12">
   <form method="post">
      <div class="input-field">
        <input name="name" type="text" id="name" value="{{ request.form['name'] }}" required>
@@ -23,4 +26,7 @@
     {% endif %}
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
+ </div>
+ <div class="col l3 hide-on-small-only"></div>
+</div>
 {% endblock %}

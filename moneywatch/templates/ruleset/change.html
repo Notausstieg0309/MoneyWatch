@@ -7,12 +7,15 @@
 {% block content %}
 {% set selected_category = request.form['category_id'] | default(rule.category_id) | int -%}
 {% set selected_regular = request.form['regular'] | default(rule.regular) | int -%}
+<div class="row">
+<div class="col l3 hide-on-small-only"></div>
+<div class="col l6 s12">
   <form method="post">
     <label for="name">{% trans %}Rule Name{% endtrans %}</label>
     <input name="name" id="name" value="{{ request.form['name'] or rule['name'] }}" required><br>
     
     <label for="pattern">{% trans %}Search Pattern{% endtrans %}</label>
-    <input name="pattern" id="pattern" value="{{ request.form['pattern'] or rule['pattern']  }}" required><br>
+    <input name="pattern" class="pattern" id="pattern" value="{{ request.form['pattern'] or rule['pattern']  }}" required><br>
     
     <label for="description">{% trans %}Short Description{% endtrans %}</label>
     <input name="description" id="description" value="{{ request.form['description'] or rule['description'] }}" required><br>
@@ -46,4 +49,7 @@
     </div>
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
+ </div>
+ <div class="col l3 hide-on-small-only"></div>
+ </div>
 {% endblock %}

@@ -7,6 +7,9 @@
 {% block content %}
 {% set selected_category = request.form['category_id'] | default(0) | int -%}
 {% set selected_regular = request.form['regular'] | default(0) | int -%}
+<div class="row">
+ <div class="col l3 hide-on-small-only"></div>
+ <div class="col l6 s12">
   <form class="row" method="post">
   <div class="row">
     <div class="input-field col s12">
@@ -16,7 +19,7 @@
   </div>
   <div class="row">
     <div class="input-field col s12">
-      <input name="pattern" id="pattern" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The search pattern (phython based regular expression) used to identify matching transactions during import based on their booking text.{% endtrans %}"type="text" value="{{ request.form['pattern'] }}" required>
+      <input name="pattern" id="pattern" class="pattern" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The search pattern (phython based regular expression) used to identify matching transactions during import based on their booking text.{% endtrans %}"type="text" value="{{ request.form['pattern'] }}" required>
       <label for="pattern">{% trans %}Search Pattern{% endtrans %}</label>
     </div>
   </div>
@@ -32,7 +35,7 @@
       <select name="category_id" required>
         <option disabled{% if selected_category == 0 %} selected{% endif %} value>{% trans %}Please select...{% endtrans %}</option>
         {% for category in categories recursive %}
-        <option value="{{ category['id'] }}"{% if selected_category == category['id'] %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
+        <option value="{{ category['id'] }}"{% if (loop.length == 1 and category.childs | length == 0) or (selected_category == category['id']) %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
         {% if category.childs | length > 0 %}
             {{ loop(category.childs)}} 
         {% endif %}
@@ -67,4 +70,7 @@
     <br>
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
+ </div>
+ <div class="col l3 hide-on-small-only"></div>
+</div>
 {% endblock %}
