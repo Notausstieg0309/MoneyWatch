@@ -8,7 +8,7 @@ import re
 
 import moneywatch.utils.functions as utils
 
-from moneywatch.utils.objects import Transaction, Rule, Category
+from moneywatch.utils.objects import Transaction, Rule, Category, Account
 from flask_babel import format_date, gettext
 
 
@@ -183,27 +183,27 @@ def createResultForTransactions(transactions, interval):
     return (round(sum, 2), result)
            
 
-@bp.route('/analysis/')
+@bp.route('/<int:account_id>/analysis/')
+def index(account_id):
 
-def index():
-
-
-    oldest_transaction = Transaction.getOldestTransaction()
-    newest_transaction = Transaction.getNewestTransaction()
+    account = Account.query.filter_by(id=account_id).one()
+    
+    oldest_transaction = account.oldest_transaction
+    latest_transaction = account.latest_transaction
 
     min_date = oldest_transaction.date.strftime("%Y-%m-%d")
-    max_date = newest_transaction.date.strftime("%Y-%m-%d")
+    max_date = latest_transaction.date.strftime("%Y-%m-%d")
 
     years_start = oldest_transaction.date.year
-    years_end = newest_transaction.date.year
+    years_end = latest_transaction.date.year
     
     rules = {}    
-    rules["in"] = Rule.getRulesByType("in")
-    rules["out"] = Rule.getRulesByType("out")
+    rules["in"] = account.rules_by_type("in")
+    rules["out"] = account.rules_by_type("out")
     
     categories = {}
-    categories["in"] = Category.getRootCategories("in")
-    categories["out"] = Category.getRootCategories("out")
+    categories["in"] = account.categories("in")
+    categories["out"] = account.categories("out")
     
     return render_template('analysis/index.html', years_start = years_start, years_end = years_end, min_date = min_date, max_date = max_date, rules = rules, categories = categories)
 
