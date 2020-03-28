@@ -44,7 +44,7 @@ class Account(db.Model):
           
     def categories(self, type, start=None, end=None):
 
-        result = Category.query.filter_by(account_id=self.id, type=type, parent_id=None).order_by(asc(collate(Category.name, 'NOCASE'))).all()
+        result = Category.query.filter_by(account_id=self.id, type=type, parent_id=None).order_by(Category.id.asc()).all()
         
         if start is not None or end is not None:
             for item in result:
