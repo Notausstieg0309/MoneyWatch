@@ -5,6 +5,7 @@ from flask_babel import gettext
 from moneywatch.utils.objects import db, Account
 
 import moneywatch.utils.functions as utils
+import re
 
 bp = Blueprint('accounts', __name__)
 
@@ -26,7 +27,7 @@ def add():
         error = None
         name = request.form['name']
         iban = request.form['iban']
-        balance = request.form['balance']
+        balance = request.form['balance'].replace(",",".")
         color = request.form['color']
         
         if not name:
@@ -37,6 +38,9 @@ def add():
         
         if not utils.is_valid_iban(iban):
             error = gettext('The provided IBAN is not valid')
+        
+        if re.match(r'^-?\d+(?:\.\d{1,2})?$', balance) is None:      
+            error = gettext('The provided balance is not a valid numeric value.')
         
         if color and color == "NONE":
             color = None
