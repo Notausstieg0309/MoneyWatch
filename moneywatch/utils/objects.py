@@ -217,10 +217,13 @@ class Category(db.Model):
                                     # planned transactions should be listed only for current or future months not
                                     (date >= datetime.date.today() or utils.is_same_month(date, datetime.date.today()))  
                                ):
+                               
+                                overdue = (date <= latest_transaction_date and date < datetime.date.today())
+                                
                                 if self.type == "out":
-                                    result.append(PlannedTransaction(date, rule.next_valuta * -1, rule.description, rule.id))
+                                    result.append(PlannedTransaction(date, rule.next_valuta * -1, rule.description, rule.id, overdue))
                                 else:
-                                    result.append(PlannedTransaction(date, rule.next_valuta, rule.description, rule.id))
+                                    result.append(PlannedTransaction(date, rule.next_valuta, rule.description, rule.id, overdue))
               
             result.sort(key=lambda x: x.date)   
             self._cache["planned_transactions"] = result
@@ -436,6 +439,7 @@ class Rule(db.Model):
     pattern = db.Column(db.String(100), unique=False, nullable=False)
     regular = db.Column(db.Integer, unique=False, nullable=True)
     type = db.Column(db.Enum("in", "out"), unique=False, nullable=False)
+   # active = db.Column(db.Boolean, server_default=True, nullable=False)
     
     next_due = db.Column(db.Date, unique=False, nullable=True)
     next_valuta = db.Column(db.Float, unique=False, nullable=True)
@@ -677,15 +681,12 @@ def handle_before_insert(session, item):
 class PlannedTransaction:
 
 
-    def __init__(self, date, valuta, description, rule_id):
+    def __init__(self, date, valuta, description, rule_id, overdue):
         self.date = date
         self.valuta = valuta
         self.description = description
         self.rule_id = rule_id
-    
-    @property
-    def overdue(self):
-        return (self.date <= Transaction.getNewestTransaction().date and self.date < datetime.date.today())
+        self.overdue = overdue
     
     def __repr__(self):
         return self.description+" ("+str(self.valuta)+" €)"
