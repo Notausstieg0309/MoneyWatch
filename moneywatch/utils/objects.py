@@ -662,7 +662,7 @@ def handle_before_insert(session, item):
                     # calculate trend compared to the latest transaction in the database
                     last_transaction = rule.last_transaction(item.date)
                     if last_transaction is not None:
-                        trend = item.valuta - last_transaction.valuta
+                        trend = round(item.valuta - last_transaction.valuta,2)
                         item.trend = trend if trend != 0 else None
                         current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , item.trend, item.description, item.valuta, item.date)
 
