@@ -4,6 +4,7 @@ MoneyWatch is a lightweight web application helps you to monitor your bank accou
 
 You can import your transactions via file import. Currently supported file formats are:
 * Targobank CSV
+* ING.de CSV
 
 The supported file formats can be easily extended by implementing an own [import plugin](/moneywatch/import_plugins).
 
@@ -15,9 +16,13 @@ It is written in [Python 3](https://www.python.org/) and based on [Flask](http:/
 
 ## Overview
 
-MoneyWatch gives you a quick overview about your planned and already performed transactions.
+MoneyWatch gives you a quick overview about your overall financial status.
 
-![Screenshot of main overview](screenshots/overview.png?raw=true "Screenshot of main overview")
+![Screenshot of main overview](screenshots/index.png?raw=true "Screenshot of main overview")
+
+It tracks for each account the planned and already performed transactions.
+
+![Screenshot of account overview](screenshots/overview.png?raw=true "Screenshot of account overview")
 
 The overview shows you what are the maximum planned earnings and spendings (using all your planned budgets) and shows what is your current status.
 
@@ -27,9 +32,25 @@ It indicates planned transactions (formatted as gray italic transaction) based o
 
 ![](screenshots/planned_transaction.png?raw=true "Planned transactions")
 
-Regular transactions can be identified by import rules. For regular transaction, that have always (or sometimes) a varying booking value, the trend indicator shows the difference compared to the original planned value.
+Regular transactions can be identified by import rules. For regular transaction, that have always (or sometimes) a varying booking value, the trend indicator (little arrow) shows the difference compared to the original planned value.
 
 ![](screenshots/trend_indicator.png?raw=true "Planned transactions")
+
+You can examine the overall history of a regular transaction by showing a historical chart, which shows all values since the last 12 months.
+
+![](screenshots/historical_link.png?raw=true "Link to the historical transaction data")
+
+![](screenshots/historical_chart.png?raw=true "The historical chart of transaction data over the last 12 months")
+
+Regular transactions are expected to be booked on a specific date (based on the last transaction date). When an expected transaction is not booked on that day, you see an overdue indicator (warning sign) for the transaction and all contained categories.
+
+![](screenshots/overdue.png?raw=true "The overdue indicator.")
+
+## Transactions
+
+You can list all transactions and search for particular transactions.
+
+![](screenshots/transactions.png?raw=true "List of all transactions.")
 
 ## Categories
 
@@ -135,7 +156,7 @@ The function will be called before the actual import takes place. It is used to 
 
 ```python
 def check_csv(stream, name):    
-    if name.startswith("CHK_191"):
+    if name.startswith("CHK_"):
         return True
     return False
 ```
@@ -168,6 +189,7 @@ def parse_csv(stream, name):
             date = columns[0]
             full_text = columns[1]
             valuta = columns[2]
+            account = normalize_iban(columns[5])
             
             if re.match(r"^\d\d\.\d\d\.\d\d\d\d$", date): # german format
                 result_item['date'] = get_date_from_string(columns[0], '%d.%m.%Y')
@@ -176,6 +198,7 @@ def parse_csv(stream, name):
                 
             result_item['full_text'] = full_text
             result_item['valuta'] = float(valuta)
+            result_item['account'] = account
             
             if result_item['valuta'] != 0:
                 result.append(result_item)
@@ -187,9 +210,9 @@ The parse function must return a list of dicts ordered by the date ascending (ol
 
 ```python
 [
-    {'date': datetime.date(2018, 12, 21), 'valuta': -37.99, 'full_text': 'SEPA DIRECT DEBIT PayPal SHOES24 ONLINE SHOP'},
-    {'date': datetime.date(2018, 12, 21), 'valuta': 150.0, 'full_text': 'CASH DEPOSIT VIA COUNTER 150 EUR'},
-    {'date': datetime.date(2019, 01, 01), 'valuta': -37.89, 'full_text': 'SEPA DIRECT DEBIT YourInsurance LLC. contract 3483-39432 JON DOE 2018/12/01 BOOKING REFERENCE NO. 123-2345-678'},
+    {'date': datetime.date(2018, 12, 21), 'valuta': -37.99, 'account': 'DE99123456781000987654', 'full_text': 'SEPA DIRECT DEBIT PayPal SHOES24 ONLINE SHOP'},
+    {'date': datetime.date(2018, 12, 21), 'valuta': 150.0, 'account': 'DE99123456781000987654', 'full_text': 'CASH DEPOSIT VIA COUNTER 150 EUR'},
+    {'date': datetime.date(2019, 1, 1), 'valuta': -37.89, 'account': 'DE99123456781000987654', 'full_text': 'SEPA DIRECT DEBIT YourInsurance LLC. contract 3483-39432 JON DOE 2018/12/01 BOOKING REFERENCE NO. 123-2345-678'},
     
     ...
 ]
