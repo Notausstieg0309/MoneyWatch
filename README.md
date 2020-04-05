@@ -32,6 +32,10 @@ It indicates planned transactions (formatted as gray italic transaction) based o
 
 ![](screenshots/planned_transaction.png?raw=true "Planned transactions")
 
+Categories, which have assigned a maximum planned budget, display and budget indicator in the title bar indicating the percentual amount of already used budget for all underlying transactions.
+
+![](screenshots/budget_indicator.png?raw=true "Budget indicator for categories with a maximum planned amount for spendings.")
+
 Regular transactions can be identified by import rules. For regular transaction, that have always (or sometimes) a varying booking value, the trend indicator (little arrow) shows the difference compared to the original planned value.
 
 ![](screenshots/trend_indicator.png?raw=true "Planned transactions")
