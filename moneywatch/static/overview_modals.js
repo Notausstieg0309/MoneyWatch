@@ -7,7 +7,7 @@ $(function() {
 var chart;
 
 
-function generateChartData(res, regular, month_names)
+function generateChartData(res, regular, month_names, account_id)
 {
     var labels = []
     var data = []
@@ -32,7 +32,7 @@ function generateChartData(res, regular, month_names)
             labels.push(label);
             data.push(item.valuta);
             
-            links.push("/"+item.year+"/"+item.month+"/");
+            links.push("/" + account_id + "/" + item.year + "/" + item.month + "/");
             
             if(item.reference)
             {
@@ -80,7 +80,7 @@ function modalChart(url)
 
         var backgroundColor = (res.type == "in" ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)");
         
-        var items = generateChartData(res.data, res.regular, res.month_names)
+        var items = generateChartData(res.data, res.regular, res.month_names, res.account_id)
         var ctx = $("div.modal canvas")[0].getContext('2d');
        
         $("div.modal h4#caption").html(res.description);
