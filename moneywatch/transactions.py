@@ -62,6 +62,7 @@ def edit(id):
             
             if clear_rule is not None:
                 current_transaction.rule_id = None
+                current_transaction.trend = None
                 
             db.session.commit()
             

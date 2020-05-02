@@ -42,7 +42,7 @@
 
 {% macro planned_transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
+        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
     {%- endset -%}
     {%- set row_class -%}
     {{ row_class }}{% if transaction.overdue %} overdue{% endif %}
@@ -53,7 +53,7 @@
 
 {% macro transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} - {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} - {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
+        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
     {%- endset -%}
     
     {% if transaction.trend is not none %}
@@ -166,7 +166,7 @@
 <td class="num current" data-without-planned-formatted="{% if balance['current']['balance'] > 0 %}+{% endif %}{{ balance['current']['balance'] | currencyformat("EUR") }}" data-with-planned-formatted="{% if balance['current_with_planned_transactions']['balance'] > 0 %}+{% endif %}{{ balance['current_with_planned_transactions']['balance'] | currencyformat("EUR") }}" data-without-planned-num="{{ balance['current']['balance'] }}" data-with-planned-num="{{ balance['current_with_planned_transactions']['balance'] }}" data-num="{{ balance['current']['balance'] }}">{% if balance['current']['balance'] > 0 %}+{% endif %}{{ balance['current']['balance'] | currencyformat("EUR") }}</td>
 </tr>
 </table>
-<div style="display:none;" class="with_planned_info">* - {% trans %}current values incl. pending regular transactions{% endtrans %}</div>
+<div style="display:none;" class="with_planned_info">* &ndash; {% trans %}current values incl. pending regular transactions{% endtrans %}</div>
 </div>
 <div class="col m3 right-align hide-on-small-only">
 

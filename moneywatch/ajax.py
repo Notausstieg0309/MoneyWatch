@@ -48,5 +48,5 @@ def transaction_chart_data(transaction_id):
                       })
     
         
-    return jsonify({"type": initial_transaction.type, "regular": rule.regular, "description": rule.description, "data": result, "month_names": month_names})
+    return jsonify({"type": initial_transaction.type,"account_id":initial_transaction.account_id, "regular": rule.regular, "description": rule.description, "data": result, "month_names": month_names})
 
