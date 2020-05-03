@@ -21,7 +21,7 @@
         <select class="browser-default" name="category_id">
             <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
             {% for category in categories %}
-            <option value="{{category[0]}}">{{ category[1] }}</option>
+            <option value="{{category['id'] }}">{{ category["path"] }}</option>
             {% endfor %}
         </select>
     </td>
