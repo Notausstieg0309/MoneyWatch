@@ -1,9 +1,8 @@
 from flask import (
             Blueprint, flash, g, current_app, redirect, render_template, request, url_for
             )
-from werkzeug.exceptions import abort
+
 from flask_babel import gettext
-import re
 
 from moneywatch.utils.objects import db, Rule, Category, Account
 import moneywatch.utils.functions as utils
@@ -129,8 +128,13 @@ def change(id):
             rule.description = description
             rule.category_id = category_id
             rule.regular = regular
-            rule.next_due = utils.get_date_from_string(next_due,"%Y-%m-%d")
-            rule.next_valuta = request.form['next_valuta']
+
+            if regular == "1" or regular == "2":
+                rule.next_due = utils.get_date_from_string(next_due,"%Y-%m-%d")
+                rule.next_valuta = next_valuta
+            else:
+                rule.next_due = None
+                rule.next_valuta = None
             
             db.session.commit()
             
