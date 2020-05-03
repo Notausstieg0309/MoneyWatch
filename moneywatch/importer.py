@@ -106,9 +106,9 @@ def handle_multiple_rule_match(error):
     current_app.logger.debug("transaction: %s" , error.transaction)
 
     if error.transaction.valuta < 0:
-        categories = get_categories()["out"]
+        categories = get_categories()[error.transaction.account_id]["out"]
     else:
-        categories = get_categories()["in"]
+        categories = get_categories()[error.transaction.account_id]["in"]
         
     return render_template('importer/multiple_rule_match.html', transaction = error.transaction, rules = error.rules, index = error.index, categories = categories)  
 

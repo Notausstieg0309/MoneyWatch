@@ -330,7 +330,7 @@ class Category(db.Model):
     
         result = []
         
-        result.append( (self.id, self.getCategoryPath(delimiter)) )
+        result.append( { "id": self.id, "path": self.getCategoryPath(delimiter) }) 
         
         for category in self.childs:
             result.extend( category.getCategoryIdsAndPaths(delimiter) )
