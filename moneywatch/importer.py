@@ -53,9 +53,17 @@ def index():
                
                 
             if "import_items" in session and "import_objects" not in session:
-                apply_multiple_rule_match_edits(session['import_items'], request.form)
+                
+                if "multiple_rule_match" in session:
+                    apply_multiple_rule_match_edits(session['import_items'], request.form)
+                    session.pop("multiple_rule_match", None)
+                    
+                elif "missing_account" in session:
+                    pass
+                
                 session['import_objects'] = create_transactions_from_import(session['import_items'])
                 session.modified = True
+                
             elif "import_objects" in session:
                 apply_import_edits(session['import_objects'], request.form)
                 session.modified = True
@@ -105,6 +113,8 @@ def index():
 def handle_multiple_rule_match(error):
     current_app.logger.debug("transaction: %s" , error.transaction)
 
+    session["multiple_rule_match"] = error.transaction.id
+    
     if error.transaction.valuta < 0:
         categories = get_categories()[error.transaction.account_id]["out"]
     else:
@@ -112,11 +122,20 @@ def handle_multiple_rule_match(error):
         
     return render_template('importer/multiple_rule_match.html', transaction = error.transaction, rules = error.rules, index = error.index, categories = categories)  
 
+
 def create_transactions_from_import(items, check_all=False):
+   
     
     result = []
     
     accounts = {}
+    
+    # the account id of the latest already imported transaction of the given file
+    latest_transaction_account_id = None
+    
+    # list of items which have no account iban
+    transactions_iban_missing = []
+    
     
     for item in items:
         try:
@@ -128,26 +147,46 @@ def create_transactions_from_import(items, check_all=False):
                     if account is not None:
                         accounts[item["account"]] = account.id
                     else:
-                        raise UnknownAccount(iban)
+                        raise UnknownAccountError(iban)
                         
                 item["account_id"] = accounts[item["account"]]
                 item.pop("account", None)   
-                    
+            else:
+                account_missing = True
+   
+               
             trans = Transaction(**item)
             exist = trans.exist
+            
+            # if a transaction of the given file already exists, save the account_id to use it for items, that don't have a account iban provided by the import plugin.
+            if latest_transaction_account_id is None and not "account" in item and exist:
+                latest_transaction_account_id = trans.account_id
             
             if exist and not check_all:
                 break
                 
             if exist and check_all:
                 continue    
-
-            trans.check_rule_matching()
+                
+            if trans.account_id:
+                trans.check_rule_matching()
+            else:
+                transactions_iban_missing.append(item)
             
             result.append(trans)
         except MultipleRuleMatchError as e:
             raise MultipleRuleMatchError(e.transaction, e.rules, items.index(item))
+    
+    if latest_transaction_account_id is not None:
+        for item in result:
+            if item.account_id is None:
+                item.account_id = latest_transaction_account_id
+                item.check_rule_matching()
+                
+    elif len(transactions_iban_missing) > 0:       
+        raise NoAccountGivenError(transactions_iban_missing)
         
+                
     return result
 
     
