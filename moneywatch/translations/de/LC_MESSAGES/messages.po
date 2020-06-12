@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-12 18:40+0200\n"
-"PO-Revision-Date: 2020-06-12 18:41+0200\n"
+"POT-Creation-Date: 2020-06-12 19:03+0200\n"
+"PO-Revision-Date: 2020-06-12 19:07+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -47,6 +47,22 @@ msgstr "Der Name '%(name)s' existiert bereits auf dieser Ebene."
 #: importer.py:28
 msgid "No file uploaded"
 msgstr "Keine Datei hochgeladen"
+
+#: importer.py:144
+#, python-format
+msgid ""
+"The file contains transactions that cannot be clearly assigned to an account based "
+"on the IBAN. Since only one account is currently created, these transactions were "
+"automatically assigned to the account \"%(account_name)s\". In case this is wrong, "
+"please create an appropriate account first and then assign the transactions "
+"manually to the new account during import."
+msgstr ""
+"Die Datei enthält Transaktionen die nicht eindeutig einem Konto basierend auf der "
+"IBAN zugeordnet werden können. Da aktuell nur ein einziges Konto angelegt ist, "
+"wurden alle Transaktionen automatisch dem Konto \"%(account_name)s\" zugeordnet. "
+"Sollte dies nicht korrekt sein, bitte zuerst das neue Konto anlegen und "
+"anschließend die Transaktionen im Rahmen des Import-Vorgangs manuell dem neuen "
+"Konto zuordnen."
 
 #: ruleset.py:42
 msgid "Rule name is required."

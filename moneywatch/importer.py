@@ -63,9 +63,8 @@ def index():
                 elif "no_account_given" in session and "account_id" in request.form:
                     item_ids = session["no_account_given"]
                     
-                    for item_id in item_ids:
-                        session['import_items'][item_id]["account_id"] = int(request.form["account_id"])
-                        
+                    apply_account_id_changes(session["no_account_given"], request.form["account_id"])
+              
                     session.pop("no_account_given", None)
                     
                 
@@ -135,10 +134,28 @@ def handle_multiple_rule_match(error):
 def handle_no_account_given(error):
     current_app.logger.debug("index list: %s" , error.index_list)
     
-    session["no_account_given"] = error.index_list
+    
     
     accounts = Account.query.all()
+    
+    if len(accounts) == 1:
+        apply_account_id_changes(session["no_account_given"], accounts[0].id)
         
+        flash(gettext("The file contains transactions that cannot be clearly assigned to an account based on the IBAN. Since only one account is currently created, these transactions were automatically assigned to the account \"%(account_name)s\". In case this is wrong, please create an appropriate account first and then assign the transactions manually to the new account during import.", account_name=accounts[0].name))
+         
+        session['import_objects'] = create_transactions_from_import(session['import_items'])
+        session.modified = True
+        
+        categories = {}
+    
+        if len(session.get("import_objects",[] )) > 0:
+            categories = get_categories()
+                
+        return render_template('importer/check.html', data=(session.get("import_objects",[] )), complete=check_if_items_complete(session.get("import_objects",[] )), categories = categories)  
+    
+    else:
+        session["no_account_given"] = error.index_list
+    
     return render_template('importer/no_account_given.html', accounts = accounts, count_items = len(error.index_list))  
 
 
@@ -232,6 +249,11 @@ def apply_import_edits(import_objects,input_data):
             if str(index)+"_category" in input_data:
                 transaction.category_id = input_data[str(index)+"_category"]
 
+def apply_account_id_changes(item_ids, account_id):
+                    
+    for item_id in item_ids:
+        session['import_items'][item_id]["account_id"] = int(account_id)
+   
 
 def apply_multiple_rule_match_edits(import_objects,input_data):
 

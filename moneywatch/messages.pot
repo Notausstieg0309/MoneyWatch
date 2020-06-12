@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-12 18:40+0200\n"
+"POT-Creation-Date: 2020-06-12 19:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,6 +45,17 @@ msgstr ""
 
 #: importer.py:28
 msgid "No file uploaded"
+msgstr ""
+
+#: importer.py:144
+#, python-format
+msgid ""
+"The file contains transactions that cannot be clearly assigned to an "
+"account based on the IBAN. Since only one account is currently created, "
+"these transactions were automatically assigned to the account "
+"\"%(account_name)s\". In case this is wrong, please create an appropriate"
+" account first and then assign the transactions manually to the new "
+"account during import."
 msgstr ""
 
 #: ruleset.py:42
