@@ -54,12 +54,20 @@ def index():
                 
             if "import_items" in session and "import_objects" not in session:
                 
+                # apply rule id for transactions that raised an MultipleRuleMatchError exception
                 if "multiple_rule_match" in session:
                     apply_multiple_rule_match_edits(session['import_items'], request.form)
                     session.pop("multiple_rule_match", None)
+                
+                # apply account id for transactions that raised an ItemsWithoutAccountError exception
+                elif "no_account_given" in session and "account_id" in request.form:
+                    item_ids = session["no_account_given"]
                     
-                elif "missing_account" in session:
-                    pass
+                    for item_id in item_ids:
+                        session['import_items'][item_id]["account_id"] = int(request.form["account_id"])
+                        
+                    session.pop("no_account_given", None)
+                    
                 
                 session['import_objects'] = create_transactions_from_import(session['import_items'])
                 session.modified = True
@@ -123,6 +131,17 @@ def handle_multiple_rule_match(error):
     return render_template('importer/multiple_rule_match.html', transaction = error.transaction, rules = error.rules, index = error.index, categories = categories)  
 
 
+@bp.errorhandler(ItemsWithoutAccountError)
+def handle_no_account_given(error):
+    current_app.logger.debug("index list: %s" , error.index_list)
+    
+    session["no_account_given"] = error.index_list
+    
+    accounts = Account.query.all()
+        
+    return render_template('importer/no_account_given.html', accounts = accounts, count_items = len(error.index_list))  
+
+
 def create_transactions_from_import(items, check_all=False):
    
     
@@ -133,9 +152,8 @@ def create_transactions_from_import(items, check_all=False):
     # the account id of the latest already imported transaction of the given file
     latest_transaction_account_id = None
     
-    # list of items which have no account iban
-    transactions_iban_missing = []
-    
+    # list of item ids which have no account iban
+    item_ids_iban_missing = []
     
     for item in items:
         try:
@@ -171,7 +189,7 @@ def create_transactions_from_import(items, check_all=False):
             if trans.account_id:
                 trans.check_rule_matching()
             else:
-                transactions_iban_missing.append(item)
+                item_ids_iban_missing.append(items.index(item))
             
             result.append(trans)
         except MultipleRuleMatchError as e:
@@ -183,8 +201,8 @@ def create_transactions_from_import(items, check_all=False):
                 item.account_id = latest_transaction_account_id
                 item.check_rule_matching()
                 
-    elif len(transactions_iban_missing) > 0:       
-        raise NoAccountGivenError(transactions_iban_missing)
+    elif len(item_ids_iban_missing) > 0:       
+        raise ItemsWithoutAccountError(item_ids_iban_missing)
         
                 
     return result
@@ -245,3 +263,4 @@ def get_categories():
                 categories[account.id][type].extend(category.getCategoryIdsAndPaths(" > "))
                 
     return categories
+

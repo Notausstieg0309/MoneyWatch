@@ -36,8 +36,8 @@ class UnknownAccountError(Exception):
 
         self.iban = iban        
         
-class TransactionsWithoutAccountError(Exception):
-    def __init__(self, transactions):
+class ItemsWithoutAccountError(Exception):
+    def __init__(self, index_list):
 
         super().__init__()
-        self.transactions = transactions
+        self.index_list = index_list
