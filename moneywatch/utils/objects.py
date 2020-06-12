@@ -639,7 +639,8 @@ class Transaction(db.Model):
         for transaction in transactions:
             if transaction:
                 if Transaction._normalizeText(transaction.full_text) == Transaction._normalizeText(self.full_text):
-                    return True
+                    self.account_id = transaction.account_id
+                    return True 
                     
         return False
   
