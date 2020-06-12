@@ -15,6 +15,9 @@
 .num.positive {color: #006d14;}
 .num {white-space: nowrap; }
 
+/* additional helper class for inline block display */
+.inline-block {display: inline-block;}
+
 /* change mouse icon for tooltipped icons, disable selection */
 i.material-icons.tooltipped {
     cursor: default;
