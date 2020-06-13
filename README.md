@@ -173,7 +173,7 @@ If the given file can be handled by the plugin, the check function should return
 
 The parse function will be called, if your plugin is selected to import the file. So now we must parse the file and return all transactions, that are available in the file.
 
-The parse function is called with the same arguments as the parse function.
+The parse function is called with the same arguments as the parse function. The only difference is the return value of the function. Instead of a boolean True/False, we now must return a list of dicts containing all transactions of the file.
 
 
 ```python
@@ -193,11 +193,11 @@ def parse_csv(stream, name):
             date = columns[0]
             full_text = columns[1]
             valuta = columns[2]
-            account = normalize_iban(columns[5])
+            account = columns[5]
             
-            if re.match(r"^\d\d\.\d\d\.\d\d\d\d$", date): # german format
+            if re.match(r"^\d\d\.\d\d\.\d\d\d\d$", date): # european format (dd.mm.yyyy)
                 result_item['date'] = get_date_from_string(columns[0], '%d.%m.%Y')
-            elif re.match(r"^\d\d\/\d\d\/\d\d\d\d$", date): # american format
+            elif re.match(r"^\d\d\/\d\d\/\d\d\d\d$", date): # american format (mm/dd/yyyy)
                 result_item['date'] = get_date_from_string(columns[0], '%m/%d/%Y')
                 
             result_item['full_text'] = full_text
@@ -221,6 +221,14 @@ The parse function must return a list of dicts ordered by the date ascending (ol
     ...
 ]
 ```
+The dict for one transaction item must use the following keys with their corresponding values:
+
+| Key             | Necessary    |  Example                          | Description
+| :--------------:|:------------:|-----------------------------------|------------------
+| `date`          | mandatory    | `datetime.date(2018, 12, 21)`     | A `dateime.date()` object representing the date of the transaction. |
+| `valuta`        | mandatory    | `-37.99` / `150.0`                | The amount of money for this particular transaction as a numeric float value, that was moved.<br/><br/>For incoming transactions, the value must be positive (>0). For outgoing transaction, the value must be negative (<0).<br/><br/> However, if the transaction is more like a message rather than a transaction, the valuta `0` should be used. In this case, it will be displayed as a notification and the user must take note of.
+| `full_text`     | mandatory    | `"SEPA DIRECT DEBIT PayPal SHOES24 ONLINE SHOP"` | The complete booking text of the transaction as string. 
+| `account`       | *optional*   | `"DE99123456781000987654"`        | The IBAN (in formatted or normalized form) of the related account for which the import should be done. If the account IBAN is available, the transaction will be straight mapped to the corresponding account (incl. ruleset/categories) in MoneyWatch. This ensures a smooth processing.<br/><br/>If the IBAN is not available, MoneyWatch tries to autodetect the account in case a transaction from the file already exists in the database. If not, the user will be prompted to decide to which account these transactions should  be imported.
 
 ### register the plugin
 

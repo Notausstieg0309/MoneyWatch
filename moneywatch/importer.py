@@ -53,9 +53,24 @@ def index():
                
                 
             if "import_items" in session and "import_objects" not in session:
-                apply_multiple_rule_match_edits(session['import_items'], request.form)
+                
+                # apply rule id for transactions that raised an MultipleRuleMatchError exception
+                if "multiple_rule_match" in session:
+                    apply_multiple_rule_match_edits(session['import_items'], request.form)
+                    session.pop("multiple_rule_match", None)
+                
+                # apply account id for transactions that raised an ItemsWithoutAccountError exception
+                elif "no_account_given" in session and "account_id" in request.form:
+                    item_ids = session["no_account_given"]
+                    
+                    apply_account_id_changes(session["no_account_given"], request.form["account_id"])
+              
+                    session.pop("no_account_given", None)
+                    
+                
                 session['import_objects'] = create_transactions_from_import(session['import_items'])
                 session.modified = True
+                
             elif "import_objects" in session:
                 apply_import_edits(session['import_objects'], request.form)
                 session.modified = True
@@ -105,6 +120,8 @@ def index():
 def handle_multiple_rule_match(error):
     current_app.logger.debug("transaction: %s" , error.transaction)
 
+    session["multiple_rule_match"] = error.transaction.id
+    
     if error.transaction.valuta < 0:
         categories = get_categories()[error.transaction.account_id]["out"]
     else:
@@ -112,11 +129,48 @@ def handle_multiple_rule_match(error):
         
     return render_template('importer/multiple_rule_match.html', transaction = error.transaction, rules = error.rules, index = error.index, categories = categories)  
 
+
+@bp.errorhandler(ItemsWithoutAccountError)
+def handle_no_account_given(error):
+    current_app.logger.debug("index list: %s" , error.index_list)
+    
+    
+    
+    accounts = Account.query.all()
+    
+    if len(accounts) == 1:
+        apply_account_id_changes(session["no_account_given"], accounts[0].id)
+        
+        flash(gettext("The file contains transactions that cannot be clearly assigned to an account based on the IBAN. Since only one account is currently created, these transactions were automatically assigned to the account \"%(account_name)s\". In case this is wrong, please create an appropriate account first and then assign the transactions manually to the new account during import.", account_name=accounts[0].name))
+         
+        session['import_objects'] = create_transactions_from_import(session['import_items'])
+        session.modified = True
+        
+        categories = {}
+    
+        if len(session.get("import_objects",[] )) > 0:
+            categories = get_categories()
+                
+        return render_template('importer/check.html', data=(session.get("import_objects",[] )), complete=check_if_items_complete(session.get("import_objects",[] )), categories = categories)  
+    
+    else:
+        session["no_account_given"] = error.index_list
+    
+    return render_template('importer/no_account_given.html', accounts = accounts, count_items = len(error.index_list))  
+
+
 def create_transactions_from_import(items, check_all=False):
+   
     
     result = []
     
     accounts = {}
+    
+    # the account id of the latest already imported transaction of the given file
+    latest_transaction_account_id = None
+    
+    # list of item ids which have no account iban
+    item_ids_iban_missing = []
     
     for item in items:
         try:
@@ -128,26 +182,46 @@ def create_transactions_from_import(items, check_all=False):
                     if account is not None:
                         accounts[item["account"]] = account.id
                     else:
-                        raise UnknownAccount(iban)
+                        raise UnknownAccountError(iban)
                         
                 item["account_id"] = accounts[item["account"]]
                 item.pop("account", None)   
-                    
+            else:
+                account_missing = True
+   
+               
             trans = Transaction(**item)
             exist = trans.exist
+            
+            # if a transaction of the given file already exists, save the account_id to use it for items, that don't have a account iban provided by the import plugin.
+            if latest_transaction_account_id is None and not "account" in item and exist:
+                latest_transaction_account_id = trans.account_id
             
             if exist and not check_all:
                 break
                 
             if exist and check_all:
                 continue    
-
-            trans.check_rule_matching()
+                
+            if trans.account_id:
+                trans.check_rule_matching()
+            else:
+                item_ids_iban_missing.append(items.index(item))
             
             result.append(trans)
         except MultipleRuleMatchError as e:
             raise MultipleRuleMatchError(e.transaction, e.rules, items.index(item))
+    
+    if latest_transaction_account_id is not None:
+        for item in result:
+            if item.account_id is None:
+                item.account_id = latest_transaction_account_id
+                item.check_rule_matching()
+                
+    elif len(item_ids_iban_missing) > 0:       
+        raise ItemsWithoutAccountError(item_ids_iban_missing)
         
+                
     return result
 
     
@@ -175,6 +249,11 @@ def apply_import_edits(import_objects,input_data):
             if str(index)+"_category" in input_data:
                 transaction.category_id = input_data[str(index)+"_category"]
 
+def apply_account_id_changes(item_ids, account_id):
+                    
+    for item_id in item_ids:
+        session['import_items'][item_id]["account_id"] = int(account_id)
+   
 
 def apply_multiple_rule_match_edits(import_objects,input_data):
 
@@ -206,3 +285,4 @@ def get_categories():
                 categories[account.id][type].extend(category.getCategoryIdsAndPaths(" > "))
                 
     return categories
+

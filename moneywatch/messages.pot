@@ -8,29 +8,29 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-29 12:07+0200\n"
+"POT-Creation-Date: 2020-06-12 19:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.6.0\n"
 
-#: accounts.py:34 accounts.py:87 categories.py:38 categories.py:108
-#: ruleset.py:117
+#: accounts.py:34 accounts.py:86 categories.py:38 categories.py:108
+#: ruleset.py:116
 msgid "Name is required."
 msgstr ""
 
-#: accounts.py:37 accounts.py:90
+#: accounts.py:37 accounts.py:89
 msgid "IBAN is required."
 msgstr ""
 
-#: accounts.py:40 accounts.py:93
+#: accounts.py:40 accounts.py:92
 msgid "The provided IBAN is not valid"
 msgstr ""
 
-#: accounts.py:44
+#: accounts.py:43
 msgid "The provided balance is not a valid numeric value."
 msgstr ""
 
@@ -47,25 +47,36 @@ msgstr ""
 msgid "No file uploaded"
 msgstr ""
 
-#: ruleset.py:43
+#: importer.py:144
+#, python-format
+msgid ""
+"The file contains transactions that cannot be clearly assigned to an "
+"account based on the IBAN. Since only one account is currently created, "
+"these transactions were automatically assigned to the account "
+"\"%(account_name)s\". In case this is wrong, please create an appropriate"
+" account first and then assign the transactions manually to the new "
+"account during import."
+msgstr ""
+
+#: ruleset.py:42
 msgid "Rule name is required."
 msgstr ""
 
-#: ruleset.py:46 ruleset.py:119
+#: ruleset.py:45 ruleset.py:118
 msgid "Search pattern is required."
 msgstr ""
 
-#: ruleset.py:48 ruleset.py:121
+#: ruleset.py:47 ruleset.py:120
 msgid "Category is required."
 msgstr ""
 
-#: ruleset.py:84
+#: ruleset.py:83
 msgid ""
 "Unable to create new rules. No categories are available to create rules "
 "for. Please create categories first."
 msgstr ""
 
-#: transactions.py:75
+#: transactions.py:76
 #, python-format
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr ""
@@ -84,8 +95,8 @@ msgid "Import Ruleset"
 msgstr ""
 
 #: templates/base.html:64 templates/base.html:77
-#: templates/categories/index.html:4 templates/categories/index.html:42
-#: templates/categories/index.html:46
+#: templates/categories/index.html:4 templates/categories/index.html:45
+#: templates/categories/index.html:49
 msgid "Categories"
 msgstr ""
 
@@ -130,14 +141,14 @@ msgid "New Category"
 msgstr ""
 
 #: templates/categories/add.html:4 templates/categories/change.html:4
-#: templates/categories/index.html:42 templates/overview/overview.html:124
-#: templates/overview/overview.html:171 templates/ruleset/add.html:4
+#: templates/categories/index.html:45 templates/overview/overview.html:154
+#: templates/overview/overview.html:205 templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr ""
 
 #: templates/categories/add.html:4 templates/categories/change.html:4
-#: templates/categories/index.html:46 templates/overview/overview.html:129
-#: templates/overview/overview.html:175 templates/ruleset/add.html:4
+#: templates/categories/index.html:49 templates/overview/overview.html:159
+#: templates/overview/overview.html:209 templates/ruleset/add.html:4
 msgid "Spendings"
 msgstr ""
 
@@ -169,39 +180,40 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: templates/categories/index.html:15
+#: templates/categories/index.html:16
 #, python-format
 msgid "mthly. budget: %(budget)s"
 msgstr ""
 
-#: templates/categories/index.html:20
+#: templates/categories/index.html:21
 msgid "Add new subcategory"
 msgstr ""
 
-#: templates/categories/index.html:21
+#: templates/categories/index.html:22
 msgid "Edit this category"
 msgstr ""
 
-#: templates/categories/index.html:23
+#: templates/categories/index.html:24
 msgid "Delete this category"
 msgstr ""
 
-#: templates/categories/index.html:34
+#: templates/categories/index.html:37
 msgid "No categories for earnings exist."
 msgstr ""
 
-#: templates/categories/index.html:36
+#: templates/categories/index.html:39
 msgid "New Main Category"
 msgstr ""
 
 #: templates/importer/check.html:4
 #: templates/importer/multiple_rule_match.html:4
+#: templates/importer/no_account_given.html:4
 msgid "Check imported transactions"
 msgstr ""
 
 #: templates/importer/check.html:11 templates/importer/check.html:41
 #: templates/importer/multiple_rule_match.html:11
-#: templates/overview/overview.html:37 templates/overview/overview.html:45
+#: templates/overview/overview.html:45 templates/overview/overview.html:56
 #: templates/transactions/edit.html:11 templates/transactions/index.html:10
 #: templates/transactions/index.html:27
 msgid "yyyy-MM-dd"
@@ -229,6 +241,7 @@ msgstr ""
 #: templates/importer/check.html:22
 #: templates/importer/multiple_rule_match.html:22
 #: templates/importer/multiple_rule_match.html:48
+#: templates/importer/no_account_given.html:19
 #: templates/transactions/edit.html:22
 msgid "Please Choose"
 msgstr ""
@@ -239,6 +252,7 @@ msgstr ""
 
 #: templates/importer/check.html:61
 #: templates/importer/multiple_rule_match.html:40
+#: templates/importer/no_account_given.html:12
 msgid "Check again"
 msgstr ""
 
@@ -286,6 +300,25 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+#: templates/importer/no_account_given.html:14
+#, python-format
+msgid ""
+"The file contains %(num)s transaction which cannot be assigned to the "
+"correct account automatically."
+msgid_plural ""
+"The file contains %(num)s transactions which cannot be assigned to the "
+"correct account automatically."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/importer/no_account_given.html:16
+msgid "Please decide for which account these transactions should be imported."
+msgstr ""
+
+#: templates/importer/no_account_given.html:17
+msgid "Account"
+msgstr ""
+
 #: templates/overview/index.html:16
 msgid "edit"
 msgstr ""
@@ -312,111 +345,111 @@ msgstr ""
 msgid "Months"
 msgstr ""
 
-#: templates/overview/overview.html:37 templates/overview/overview.html:45
+#: templates/overview/overview.html:45 templates/overview/overview.html:56
 msgid "MM-dd"
 msgstr ""
 
-#: templates/overview/overview.html:37
+#: templates/overview/overview.html:45
 msgid "Planned transaction is overdue."
 msgstr ""
 
-#: templates/overview/overview.html:45
+#: templates/overview/overview.html:56
 msgid "Show historical graph"
 msgstr ""
 
-#: templates/overview/overview.html:45 templates/transactions/index.html:11
+#: templates/overview/overview.html:56 templates/transactions/index.html:11
 msgid "Edit transaction"
 msgstr ""
 
-#: templates/overview/overview.html:60
+#: templates/overview/overview.html:78
 msgid "This category contains overdue planned transactions."
 msgstr ""
 
-#: templates/overview/overview.html:62
+#: templates/overview/overview.html:81
 msgid ""
 "The overall amount of pending regular transactions in or underneath this "
 "category."
 msgstr ""
 
-#: templates/overview/overview.html:62
+#: templates/overview/overview.html:81
 msgid "pending"
 msgstr ""
 
-#: templates/overview/overview.html:63
+#: templates/overview/overview.html:83
 msgid "All regular transactions for this category are already done."
 msgstr ""
 
-#: templates/overview/overview.html:68
+#: templates/overview/overview.html:89
 #, python-format
 msgid "The current consumption of the planned budget of %(budget)s."
 msgstr ""
 
-#: templates/overview/overview.html:89
+#: templates/overview/overview.html:115
 msgid "No transactions available"
 msgstr ""
 
-#: templates/overview/overview.html:106
+#: templates/overview/overview.html:136
 msgid "previous month"
 msgstr ""
 
-#: templates/overview/overview.html:108 templates/overview/overview.html:144
+#: templates/overview/overview.html:138 templates/overview/overview.html:176
 #, python-format
 msgid "current month in %(year)s"
 msgstr ""
 
-#: templates/overview/overview.html:110
+#: templates/overview/overview.html:140
 msgid "previous year"
 msgstr ""
 
-#: templates/overview/overview.html:112
+#: templates/overview/overview.html:142
 msgid "previous timeperiod"
 msgstr ""
 
-#: templates/overview/overview.html:120 templates/overview/overview.html:171
-#: templates/overview/overview.html:175
+#: templates/overview/overview.html:150 templates/overview/overview.html:205
+#: templates/overview/overview.html:209
 msgid "Planned"
 msgstr ""
 
-#: templates/overview/overview.html:121 templates/overview/overview.html:171
-#: templates/overview/overview.html:175
+#: templates/overview/overview.html:151 templates/overview/overview.html:205
+#: templates/overview/overview.html:209
 msgid "Current"
 msgstr ""
 
-#: templates/overview/overview.html:134
+#: templates/overview/overview.html:164
 msgid "Balance"
 msgstr ""
 
-#: templates/overview/overview.html:139
+#: templates/overview/overview.html:169
 msgid "current values incl. pending regular transactions"
 msgstr ""
 
-#: templates/overview/overview.html:142
+#: templates/overview/overview.html:174
 msgid "next month"
 msgstr ""
 
-#: templates/overview/overview.html:146
+#: templates/overview/overview.html:178
 msgid "next year"
 msgstr ""
 
-#: templates/overview/overview.html:148
+#: templates/overview/overview.html:180
 msgid "next timeperiod"
 msgstr ""
 
-#: templates/overview/overview.html:154
+#: templates/overview/overview.html:187
 #, python-format
 msgid "This month contains %(num)d message. Click here to show them."
 msgid_plural "This month contains %(num)d messages. Click here to show them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/overview/overview.html:154
+#: templates/overview/overview.html:187
 #, python-format
 msgid "This timeframe contains %(num)d message. Click here to show them."
 msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/overview/overview.html:161
+#: templates/overview/overview.html:194
 msgid "particular transactions:"
 msgstr ""
 
