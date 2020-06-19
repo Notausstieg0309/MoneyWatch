@@ -71,6 +71,11 @@
 {% endif %}
 {% endfor %}
 </ul>
+{% if data|length > 3 %}
+<button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
+<button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
+{% endif %}
+</form>
 {% else %}
 <div class="no_content">{% trans %}No transactions found.{% endtrans %}</div>
 {% endif %}
