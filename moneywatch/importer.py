@@ -141,8 +141,8 @@ def handle_no_account_given(error):
     accounts = Account.query.all()
     
     if len(accounts) == 1:
-        apply_account_id_changes(session["no_account_given"], accounts[0].id)
-        
+        apply_account_id_changes(error.index_list, accounts[0].id)
+         
         flash(gettext("The file contains transactions that cannot be clearly assigned to an account based on the IBAN. Since only one account is currently created, these transactions were automatically assigned to the account \"%(account_name)s\". In case this is wrong, please create an appropriate account first and then assign the transactions manually to the new account during import.", account_name=accounts[0].name))
          
         session['import_objects'] = create_transactions_from_import(session['import_items'])
