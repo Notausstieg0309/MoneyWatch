@@ -120,7 +120,6 @@ def index():
     
 @bp.errorhandler(MultipleRuleMatchError)
 def handle_multiple_rule_match(error):
-    current_app.logger.debug("transaction: %s" , error.transaction)
 
     session["multiple_rule_match"] = error.transaction.id
     
@@ -134,10 +133,7 @@ def handle_multiple_rule_match(error):
 
 @bp.errorhandler(ItemsWithoutAccountError)
 def handle_no_account_given(error):
-    current_app.logger.debug("index list: %s" , error.index_list)
-    
-    
-    
+   
     accounts = Account.query.all()
     
     if len(accounts) == 1:
