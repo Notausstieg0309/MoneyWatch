@@ -40,8 +40,10 @@ def index():
                 if len(available_plugins) > 0:
                     
                     if len(available_plugins) == 1:
-                        items = plugins.parse_file(request.files['file'], available_plugins[0][0])
+                        items = plugins.parse_file(request.files['file'], available_plugins[0]["name"])
+                        
                         session['import_items'] = items
+                        session['import_plugin_description'] = available_plugins[0]["description"] or gettext("Import plugin \"%(name)s\" (no description available)", name=available_plugins[0]["name"])
                         session['import_objects'] = create_transactions_from_import(items)
 
                     else:
