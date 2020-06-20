@@ -2,7 +2,6 @@ from flask import (
             Blueprint, flash, current_app, g, redirect, render_template, request, url_for,session
             )
 from werkzeug.exceptions import abort
-
 import datetime
 import re
 
@@ -11,9 +10,8 @@ import moneywatch.utils.functions as utils
 from moneywatch.utils.objects import Category, Transaction, Rule, Account
 
 
-
-
 bp = Blueprint('overview', __name__)
+
 
 def createOverview(account_id, start, end):
     
