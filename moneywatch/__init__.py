@@ -19,11 +19,10 @@ def create_app(test_config=None):
     
     app.config.from_mapping(
             SESSION_TYPE="filesystem",
-            FLASKY_SLOW_DB_QUERY_TIME=0.5,
             SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db.sqlite'),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
-            SQLALCHEMY_ECHO=False,
-            SQLALCHEMY_RECORD_QUERIES=True, 
+            #SQLALCHEMY_ECHO=True,
+            #SQLALCHEMY_RECORD_QUERIES=True, 
             BABEL_DEFAULT_LOCALE='en',     
             LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             LOGGING_LOCATION = os.path.join(app.instance_path,'moneywatch.log'),
