@@ -32,11 +32,11 @@ def index(account_id):
         transactions = account.search_for_transactions(term)
     else:
     
-        current_month = utils.get_first_day_of_month()
-        last_month = utils.substract_months(current_month, 1)
-        start = utils.get_first_day_of_month(last_month.year, last_month.month)
-        end = datetime.date.today()
-    
+        latest_transaction = account.latest_transaction
+        
+        end = latest_transaction.date
+        start = utils.substract_months(end, 2)
+        
         transactions = account.transactions(start, end)
         transactions.reverse()
     
