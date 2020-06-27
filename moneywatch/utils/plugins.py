@@ -82,11 +82,11 @@ class ImportPluginsManager(PluginManager):
                 check_result = check_function(file.stream, file.filename)
                 
                 if check_result:
-                    result.append( (name, info.get("description", "no plugin description for '"+name+"' available")) )
+                    result.append( {"name": name, "description": info.get("description", None) } )
             
             # if no check function available always select the plugin so the user can decide
             else:
-                result.append( (name, info.get("description", "no plugin description for '"+name+"' available")) )
+                result.append( {"name": name, "description": info.get("description", None) } )
                 
         return result
      

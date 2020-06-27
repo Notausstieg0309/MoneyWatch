@@ -104,7 +104,14 @@ class Account(db.Model):
         
     def transactions_by_type(self, type, start=None,end=None):
 
-        result = Transaction.query.filter_by(account_id=self.id).filter(Transaction.type==type)
+        result = Transaction.query.filter_by(account_id=self.id)
+        
+        if type== "in":
+            result = result.filter(Transaction.valuta > 0)
+        elif type == "out":
+            result = result.filter(Transaction.valuta < 0)
+        else:
+            result = result.filter(Transaction.valuta == 0)
         
         if start is not None and end is not None:
             result = result.filter(Transaction.date.between(start, end))

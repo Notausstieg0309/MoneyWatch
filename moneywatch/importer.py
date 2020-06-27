@@ -40,8 +40,10 @@ def index():
                 if len(available_plugins) > 0:
                     
                     if len(available_plugins) == 1:
-                        items = plugins.parse_file(request.files['file'], available_plugins[0][0])
+                        items = plugins.parse_file(request.files['file'], available_plugins[0]["name"])
+                        
                         session['import_items'] = items
+                        session['import_plugin_description'] = available_plugins[0]["description"] or gettext("Import plugin \"%(name)s\" (no description available)", name=available_plugins[0]["name"])
                         session['import_objects'] = create_transactions_from_import(items)
 
                     else:
@@ -118,7 +120,6 @@ def index():
     
 @bp.errorhandler(MultipleRuleMatchError)
 def handle_multiple_rule_match(error):
-    current_app.logger.debug("transaction: %s" , error.transaction)
 
     session["multiple_rule_match"] = error.transaction.id
     
@@ -132,15 +133,12 @@ def handle_multiple_rule_match(error):
 
 @bp.errorhandler(ItemsWithoutAccountError)
 def handle_no_account_given(error):
-    current_app.logger.debug("index list: %s" , error.index_list)
-    
-    
-    
+   
     accounts = Account.query.all()
     
     if len(accounts) == 1:
-        apply_account_id_changes(session["no_account_given"], accounts[0].id)
-        
+        apply_account_id_changes(error.index_list, accounts[0].id)
+         
         flash(gettext("The file contains transactions that cannot be clearly assigned to an account based on the IBAN. Since only one account is currently created, these transactions were automatically assigned to the account \"%(account_name)s\". In case this is wrong, please create an appropriate account first and then assign the transactions manually to the new account during import.", account_name=accounts[0].name))
          
         session['import_objects'] = create_transactions_from_import(session['import_items'])
