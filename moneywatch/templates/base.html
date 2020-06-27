@@ -1,3 +1,26 @@
+{%- macro nav_links(dropdown_trigger) -%}
+      <li><a class="btn waves-effect waves-light {% if not accounts_list %}disabled{% endif %}" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
+     {%- if accounts_list|length == 1 -%}
+      {%- set account_id=accounts_list[0].id -%}
+      <li><a href="{{ url_for('transactions.index', account_id = account_id) }}">{% trans %}Transactions{% endtrans %}</a></li>
+      <li><a href="{{ url_for('ruleset.index', account_id = account_id) }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
+      <li><a href="{{ url_for('categories.index', account_id = account_id) }}">{% trans %}Categories{% endtrans %}</a></li>
+     {% else -%}
+      <li><a class="dropdown-trigger-hover" data-target="dd_transactions_{{ dropdown_trigger }}">{% trans %}Transactions{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li><a class="dropdown-trigger-hover" data-target="dd_ruleset_{{ dropdown_trigger }}">{% trans %}Import Ruleset{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li><a class="dropdown-trigger-hover" data-target="dd_categories_{{ dropdown_trigger }}">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+     {% endif -%}
+      <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>    
+{%- endmacro -%}
+
+{%- macro dropdown_menu(id_value, url_target) -%}
+<ul id="{{ id_value }}" class="dropdown-content">
+{%- for account in accounts_list %}
+  <li><a href="{{ url_for(url_target, account_id=account[0]) }}">{{ account[1] }}</a></li>
+{% endfor -%}
+</ul>
+{%- endmacro -%}
+
 <!doctype html>
 <html>
 <head>
@@ -17,65 +40,29 @@
 </head>
 <body>
 
-<ul id="dd_transactions_mobile" class="dropdown-content">
-{% for account in accounts_list %}
-  <li><a href="{{ url_for('transactions.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
-{% endfor %}
-</ul>
+{{ dropdown_menu("dd_transactions_mobile", "transactions.index") }}
+{{ dropdown_menu("dd_transactions_regular", "transactions.index") }}
 
-<ul id="dd_transactions_regular" class="dropdown-content">
-{% for account in accounts_list %}
-  <li><a href="{{ url_for('transactions.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
-{% endfor %}
-</ul>
+{{ dropdown_menu("dd_ruleset_mobile", "ruleset.index") }}
+{{ dropdown_menu("dd_ruleset_regular", "ruleset.index") }}
 
-<ul id="dd_ruleset_mobile" class="dropdown-content">
-{% for account in accounts_list %}
-  <li><a href="{{ url_for('ruleset.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
-{% endfor %}
-</ul>
-
-<ul id="dd_ruleset_regular" class="dropdown-content">
-{% for account in accounts_list %}
-  <li><a href="{{ url_for('ruleset.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
-{% endfor %}
-</ul>
-
-<ul id="dd_categories_mobile" class="dropdown-content">
-{% for account in accounts_list %}
-  <li><a href="{{ url_for('categories.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
-{% endfor %}
-</ul>
-
-<ul id="dd_categories_regular" class="dropdown-content">
-{% for account in accounts_list %}
-  <li><a href="{{ url_for('categories.index', account_id=account[0]) }}">{{ account[1] }}</a></li>
-{% endfor %}
-</ul>
+{{ dropdown_menu("dd_categories_mobile", "categories.index") }}
+{{ dropdown_menu("dd_categories_regular", "categories.index") }}
 
 <nav class="nav-extended">
   <div class="nav-wrapper">
-  <a href="#" class="brand-logo">MoneyWatch</a>
-  <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-  <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a class="btn waves-effect waves-light {% if not accounts_list %}disabled{% endif %}" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
-      <li><a class="dropdown-trigger-hover" data-target="dd_transactions_regular">{% trans %}Transactions{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a class="dropdown-trigger-hover" data-target="dd_ruleset_regular">{% trans %}Import Ruleset{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a class="dropdown-trigger-hover" data-target="dd_categories_regular">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>
-  </ul>
+    <a href="#" class="brand-logo">MoneyWatch</a>
+    <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      {{ nav_links("regular") }}
+    </ul>
   </div>
   <div class="nav-content">
-  {% block nav_extended %}{% endblock %}
+    {%- block nav_extended %}{% endblock %}
   </div>
 </nav>
-
   <ul class="sidenav" id="mobile-menu">
-    <li><a class="btn waves-effect waves-light" href="{{ url_for('import.index') }}">{% trans %}Import New Transactions{% endtrans %}</a></li>
-    <li><a class="dropdown-trigger" data-target="dd_transactions_mobile">{% trans %}Transactions{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
-    <li><a class="dropdown-trigger" data-target="dd_ruleset_mobile">{% trans %}Import Ruleset{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
-    <li><a class="dropdown-trigger" data-target="dd_categories_mobile">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
-    <li><a href="{{ url_for('overview.overview', account_id=0) }}">{% trans %}Overview{% endtrans %}</a></li>
+    {{ nav_links("mobile") }}
   </ul>
 <div class="container">
   <header>
