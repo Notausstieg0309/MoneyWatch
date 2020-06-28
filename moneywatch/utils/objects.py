@@ -330,6 +330,23 @@ class Category(db.Model):
         return self._cache["transactions"]
             
     
+    @property
+    def transactions_with_childs(self):
+
+        if not "transactions_with_childs" in self._cache:
+        
+            result = []
+            
+            result.extend(self.transactions)
+            
+            for category in self.childs:
+                result.extend(category.transactions_with_childs)
+
+            self._cache["transactions_with_childs"] = result
+            
+        # resulting transactions are not in the correct sorted order. 
+        # ordering should be made by the calling function to avoid recursive sorting
+        return self._cache["transactions_with_childs"]
 
     def getCategoryPath(self, delimiter):
     
