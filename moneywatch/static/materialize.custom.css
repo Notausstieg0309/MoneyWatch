@@ -18,6 +18,12 @@
 /* additional helper class for inline block display */
 .inline-block {display: inline-block;}
 
+/* helper class for disabled navbar items */
+nav ul a.disabled {
+    color: #c5c5c5;
+    pointer-events: none !important;
+}
+
 /* change mouse icon for tooltipped icons, disable selection */
 i.material-icons.tooltipped {
     cursor: default;
