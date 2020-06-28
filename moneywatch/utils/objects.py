@@ -93,7 +93,9 @@ class Account(db.Model):
             result = result.filter(Transaction.date >= start)
         elif end is not None:
             result = result.filter(Transaction.date <= end)
-     
+            
+        result = result.order_by(Transaction.date.asc())
+        
         return result.all()      
 
     def search_for_transactions(self, term):
@@ -119,7 +121,9 @@ class Account(db.Model):
             result = result.filter(Transaction.date >= start)
         elif end is not None:
             result = result.filter(Transaction.date <= end)
-      
+        
+        result = result.order_by(Transaction.date.asc())
+        
         return result.all()     
 
 #     _____      _                              
@@ -318,7 +322,10 @@ class Category(db.Model):
 
         if not "transactions" in self._cache:
         
-            self._cache["transactions"] =  Transaction.query.filter_by(category_id=self.id).filter(Transaction.date.between(self.start, self.end)).all()
+            result = Transaction.query.filter_by(category_id=self.id)
+            result = result.filter(Transaction.date.between(self.start, self.end))
+
+            self._cache["transactions"] =  result.all()
       
         return self._cache["transactions"]
             
