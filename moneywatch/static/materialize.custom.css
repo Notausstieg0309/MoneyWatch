@@ -15,6 +15,12 @@
 .num.positive {color: #006d14;}
 .num {white-space: nowrap; }
 
+/* helper class for disabled navbar items */
+nav ul a.disabled {
+    color: #c5c5c5;
+    pointer-events: none !important;
+}
+
 /* change mouse icon for tooltipped icons, disable selection */
 i.material-icons.tooltipped {
     cursor: default;

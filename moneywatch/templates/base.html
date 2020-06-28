@@ -1,14 +1,21 @@
 {%- macro nav_links(dropdown_trigger) -%}
-      <li><a class="btn waves-effect waves-light {% if not accounts_list %}disabled{% endif %}" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
-     {%- if accounts_list|length == 1 -%}
-      {%- set account_id=accounts_list[0].id -%}
+      {%- if not accounts_list -%}
+      <li><a class="btn waves-effect waves-light disabled" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
+      <li><a class="disabled" href="#">{% trans %}Transactions{% endtrans %}</a></li>
+      <li><a class="disabled" href="#">{% trans %}Import Ruleset{% endtrans %}</a></li>
+      <li><a class="disabled" href="#">{% trans %}Categories{% endtrans %}</a></li>
+     {%- else -%}
+      <li><a class="btn waves-effect waves-light" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
+     {% if accounts_list|length == 1 %}
+        {%- set account_id=accounts_list[0].id -%}
       <li><a href="{{ url_for('transactions.index', account_id = account_id) }}">{% trans %}Transactions{% endtrans %}</a></li>
       <li><a href="{{ url_for('ruleset.index', account_id = account_id) }}">{% trans %}Import Ruleset{% endtrans %}</a></li>
       <li><a href="{{ url_for('categories.index', account_id = account_id) }}">{% trans %}Categories{% endtrans %}</a></li>
-     {% else -%}
+       {% else -%}
       <li><a class="dropdown-trigger-hover" data-target="dd_transactions_{{ dropdown_trigger }}">{% trans %}Transactions{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
       <li><a class="dropdown-trigger-hover" data-target="dd_ruleset_{{ dropdown_trigger }}">{% trans %}Import Ruleset{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
       <li><a class="dropdown-trigger-hover" data-target="dd_categories_{{ dropdown_trigger }}">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
+       {% endif -%}
      {% endif -%}
       <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>    
 {%- endmacro -%}
