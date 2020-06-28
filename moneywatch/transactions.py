@@ -34,10 +34,13 @@ def index(account_id):
     
         latest_transaction = account.latest_transaction
         
-        end = latest_transaction.date
-        start = utils.substract_months(end, 2)
+        if latest_transaction:
         
-        transactions = account.transactions(start, end)
+            end = latest_transaction.date
+            start = utils.substract_months(end, 2)
+        
+            transactions = account.transactions(start, end)
+            
         transactions.reverse()
     
     return render_template('transactions/index.html', transactions=transactions, term=term)
