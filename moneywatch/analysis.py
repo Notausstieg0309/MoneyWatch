@@ -16,6 +16,27 @@ from flask_babel import format_date, gettext
 bp = Blueprint('analysis', __name__)
 
 
+def calcAbsAccountBalanceFor(account_id, date):
+
+    account = Account.query.filter_by(id=account_id).one()
+    
+    balance = account.balance
+
+    last_transaction = account.latest_transaction
+    
+    if last_transaction:
+    
+        start = date + datetime.timedelta(days=1)
+ 
+        transactions = account.transactions(start, last_transaction.date)
+        
+        for transaction in transactions:
+            balance = round(balance - transaction.valuta, 2)
+    current_app.logger.error("calculated account balance for '%s': %s", date, balance)  
+    
+    return balance
+          
+    
 def createBaseData(start, end, interval):
 
     result = {}
@@ -35,27 +56,60 @@ def createBaseData(start, end, interval):
         
     return result
     
-def getBalance(start, end, interval):
+def getRelativeBalance(account_id, start, end, interval):
 
     result = createBaseData(start, end, interval)
-    
-    transactions = Transaction.getTransactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
+    account = Account.query.filter_by(id=account_id).one()
+
+    transactions = account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
     
     transactions = filter(lambda x: x.type != "message", transactions)
     
     (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
    
     return result
-    
 
-def getBalanceByType(start, end, interval, type):
+def getAbsoluteBalance(account_id, start, end, interval):
+
+    result = getRelativeBalance(account_id, start, end, interval)
+    
+    if "data" in result:
+    
+        if len(result["data"]) > 0:
+            balance = calcAbsAccountBalanceFor(account_id, end)
+            
+        new_data = []
+        old_data = result["data"]
+        
+        old_data.reverse()
+        
+        for item in result["data"]:
+        
+            orig_valuta = item["valuta"]
+            item["valuta"] = balance
+            balance = round(balance - orig_valuta, 2)
+            
+            
+            new_data.append(item)
+    
+        new_data.reverse()
+        result["data"] = new_data
+    
+   
+    return result
+
+def getBalanceByType(account_id, start, end, interval, type_val):
 
     result = createBaseData(start, end, interval)
 
-    transactions = Transaction.getTransactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
+    account = Account.query.filter_by(id=account_id).one_or_none()
+    
+    if account:
+    
+        transactions = account.transactions_by_type(type_val, utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
-    (result["sum"], result["data"]) = createResultForTransactions(filter(lambda x: x.type == type, transactions), interval)
-   
+        (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
+     
     return result
     
 def getBalanceByRule(start, end, interval, rule_id):
@@ -74,9 +128,14 @@ def getBalanceByCategory(start, end, interval, category_id):
 
     result = createBaseData(start, end, interval)
     
-    category = Category(int(category_id), start=utils.get_first_day_of_month(start.year, start.month), end=utils.get_last_day_of_month(end.year, end.month))
+    category = Category.query.filter_by(id=category_id).one_or_none();
+    
+    if category is not None:
+        category.setTimeframe(start, end)
     
     transactions = category.transactions_with_childs
+    
+    # transactions are not in the correct date order, sort here only once instead of multiple recursive sorting runs in Category.transactions_with_childs()
     transactions.sort(key=lambda x: x.date)
     
     (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
@@ -100,7 +159,6 @@ def transToDict(transaction):
 
 def createResultForTransactions(transactions, interval):
     
-    current_app.logger.debug("returned transactions: %s", transactions)
     tmp = {"valuta": 0, "count": 0, "transactions": []}
     
     result = []
@@ -183,29 +241,11 @@ def createResultForTransactions(transactions, interval):
     return (round(sum, 2), result)
            
 
-@bp.route('/<int:account_id>/analysis/')
-def index(account_id):
-
-    account = Account.query.filter_by(id=account_id).one()
+@bp.route('/analysis/')
+def index():
+    accounts = Account.query.all()
     
-    oldest_transaction = account.oldest_transaction
-    latest_transaction = account.latest_transaction
-
-    min_date = oldest_transaction.date.strftime("%Y-%m-%d")
-    max_date = latest_transaction.date.strftime("%Y-%m-%d")
-
-    years_start = oldest_transaction.date.year
-    years_end = latest_transaction.date.year
-    
-    rules = {}    
-    rules["in"] = account.rules_by_type("in")
-    rules["out"] = account.rules_by_type("out")
-    
-    categories = {}
-    categories["in"] = account.categories("in")
-    categories["out"] = account.categories("out")
-    
-    return render_template('analysis/index.html', years_start = years_start, years_end = years_end, min_date = min_date, max_date = max_date, rules = rules, categories = categories)
+    return render_template('analysis/index.html', accounts=accounts)
 
 
 @bp.route('/analysis/data/', methods=["POST"])
@@ -215,25 +255,104 @@ def data():
     
     current_app.logger.debug("analysis data request with params: %s", data)
     
-    start_date = utils.get_date_from_string(data["start"], "%Y-%m-%d")
-    end_date = utils.get_date_from_string(data["end"], "%Y-%m-%d")
+    start_date = utils.get_date_from_string(data["start"], "%Y-%m")
+    end_date = utils.get_date_from_string(data["end"], "%Y-%m")
+    
+    end_date = utils.get_last_day_of_month(year=end_date.year, month=end_date.month)
+    
+    if start_date > end_date:
+        
+        tmp = end_date
+        end_date = start_date
+        start_date = tmp
+        
+    
+
+    
+    
     
     if "type" in data:
-        if data["type"] == "balance":
-            return jsonify(getBalance(start_date, end_date, data["interval"]))
+    
+        if data["type"] == "balance_relative":
+            return jsonify(getRelativeBalance(data["account_id"], start_date, end_date, data["interval"]))
             
-        if "subtype" in data:
-            if data["subtype"] == "overall":
-                return jsonify(getBalanceByType(start_date, end_date, data["interval"], data["type"]))
-            elif data["subtype"] == "rule":
-                return jsonify(getBalanceByRule(start_date, end_date, data["interval"], data["rule"]))
-            elif data["subtype"] == "category":
-                return jsonify(getBalanceByCategory(start_date, end_date, data["interval"], data["category"]))
-            
+        elif  data["type"] == "balance_absolute":
+           return jsonify(getAbsoluteBalance(data["account_id"], start_date, end_date, data["interval"]))
             
         
+        elif data["type"] == "in" or data["type"] == "out":
+        
+            if "subtype" in data:
+                if data["subtype"] == "overall":
+                    return jsonify(getBalanceByType(data["account_id"], start_date, end_date, data["interval"], data["type"]))
+                elif data["subtype"] == "rule":
+                    return jsonify(getBalanceByRule(start_date, end_date, data["interval"], data["rule"]))
+                elif data["subtype"] == "category":
+                    return jsonify(getBalanceByCategory(start_date, end_date, data["interval"], data["category"]))
+            else:
+                abort("400", "no subtype specified")
+            
+        else:
+            abort("400", "unknown type specified")
     else:
         abort("400", "no type specified")
     
     return jsonify(data)
     
+
+
+
+@bp.route('/analysis/accounts/')
+def json_accounts():
+
+    accounts = Account.query.all()
+    
+    result = []
+
+    for account in accounts:
+        item = {}
+        item["id"] = account.id        
+        item["name"] = account.name
+
+        oldest_transaction = account.oldest_transaction
+        latest_transaction = account.latest_transaction
+
+        if oldest_transaction is None and latest_transaction is None:   # no transactions yet imported
+            item["disabled"] = 1
+        else:
+            item["min_date"] = oldest_transaction.date.strftime("%Y-%m-%d")
+            item["max_date"] = latest_transaction.date.strftime("%Y-%m-%d") 
+            
+
+        result.append(item)
+            
+    return jsonify(result)
+
+@bp.route('/analysis/rules/<int:account_id>/<string:type>/')
+def json_rules(account_id, type):
+
+    account = Account.query.filter_by(id=account_id).one()
+    
+    result = []
+
+    for rule in account.rules_by_type(type):
+        item = {}
+        item["id"] = rule.id        
+        item["name"] = rule.name
+
+        result.append(item)
+            
+    return jsonify(result)
+
+
+@bp.route('/analysis/categories/<int:account_id>/<string:type>/')
+def json_categories(account_id, type):
+
+    account = Account.query.filter_by(id=account_id).one()
+    
+    result = []
+
+    for category in account.categories(type):
+        result.extend(category.getCategoryIdsAndPaths(" > "))
+            
+    return jsonify(result)

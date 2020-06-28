@@ -131,117 +131,385 @@ function createAnalysisChart(res)
         });
 }
 
+
+function showAllAccountOption()
+{
+     var select_el = $("ul.criteria-container select#account");
+     var allaccounts_el = select_el.children("option.all_accounts");
+     allaccounts_el.removeAttr("disabled");
+     allaccounts_el.show();
+     
+     select_el.formSelect();
+}
+
+function hideAllAccountOption()
+{
+    var select_el = $("ul.criteria-container select#account");
+    var allaccounts_el = select_el.children("option.all_accounts");
+    
+    if( allaccounts_el.is(':checked') ) {
+        allaccounts_el.attr("disabled", true);
+        select_el.children("option:first").prop("selected", "selected");
+    }
+    allaccounts_el.hide();
+    
+    select_el.formSelect();
+    
+
+    
+    
+}
+
+function createRequestDataObject() {
+    
+    var selected_type_el = $('ul.criteria-container input:radio[name="type"]:checked');
+    
+    var selected_type_value = selected_type_el.attr("value");
+    
+    var selected_subtype_el = $('ul.criteria-container input:radio[name="subtype_'+selected_type_value+'"]:checked');
+    var selected_subtype_value = selected_subtype_el.attr("value");
+    
+    var selected_account_el = $("ul.criteria-container select#account option:checked:not([disabled])");
+    
+    var selected_rule_el = $("ul.criteria-container select#rule option:checked:not([disabled])");
+    
+    var selected_category_el = $("ul.criteria-container select#category option:checked:not([disabled])");
+    
+    var timing_start_el = $("ul.criteria-container input#start:visible");
+    var timing_end_el = $("ul.criteria-container input#end:visible");
+    
+    var timing_interval_el = $('ul.criteria-container input:radio[name="interval"]:checked');
+    
+
+    
+    var result = {};
+    var complete = true;
+    
+    result["type"] = selected_type_value;
+    
+    
+    if(selected_subtype_el.length && (selected_type_value == "in" || selected_type_value == "out")) {
+        
+        result["subtype"] = selected_subtype_value;
+        
+         if(selected_subtype_value == "rule") {
+            if( selected_rule_el.length) {
+                result["rule"]= selected_rule_el.attr("value");
+            } else {
+                complete = false;
+            }
+         }
+         
+         
+        if(selected_subtype_value == "category") {
+            
+            if(selected_category_el.length) {
+                result["category"]= selected_category_el.attr("value");
+            } else {
+                complete = false;
+            }
+        }
+    
+    }
+    
+    if(selected_account_el.length) {
+       result["account_id"] =  selected_account_el.attr("value");
+    } else {
+        complete = false;
+    }
+          
+
+    if(timing_start_el.length && timing_start_el.val() != "") {
+      result["start"] = timing_start_el.val();
+    } else {
+       complete = false;
+    }
+    
+    if(timing_end_el.length && timing_end_el.val() != "") {
+      result["end"] = timing_end_el.val();
+    } else {
+       complete = false;
+    }
+    
+    
+    if(timing_interval_el.length) {
+       result["interval"] =  timing_interval_el.attr("value");
+    } else {
+        complete = false;
+    }    
+
+
+    if(complete) {
+        return result;
+    }
+    
+    return undefined;
+    
+}
+
+
+
+function subtypeChangeHandler() {
+    
+    var selected_type_el = $('ul.criteria-container input:radio[name="type"]:checked');
+    var selected_type_value = selected_type_el.attr("value");
+    
+    var selected_subtype_el = $('ul.criteria-container input:radio[name="subtype_'+selected_type_value+'"]:checked');
+    var selected_subtype_value = selected_subtype_el.attr("value");
+    
+    var selected_account_el = $("ul.criteria-container select#account option:checked:not([disabled])");
+    
+    var selected_rule_el = $("ul.criteria-container select#rule option:checked:not([disabled])");
+    
+    var selected_category_el = $("ul.criteria-container select#category option:checked:not([disabled])");
+    
+    
+    if(selected_type_el.length) {
+        
+        $("ul.criteria-container > li#account").slideDown();
+    
+        if(selected_type_el.is('#balance_absolute') || selected_type_el.is('#balance_relative')) {
+                
+            $("ul.criteria-container > li#subtype").slideUp();
+            
+            $("ul.criteria-container > li#rule").slideUp();
+            $("ul.criteria-container > li#category").slideUp();
+            $("ul.criteria-container  ul#subtype-menu-in").slideUp();
+            $("ul.criteria-container  ul#subtype-menu-out").slideUp();
+            
+            showAllAccountOption();
+        }
+        else if(selected_type_el.is('#in')) {
+            $("ul.criteria-container  ul#subtype-menu-in").slideDown();
+            $("ul.criteria-container  ul#subtype-menu-out").slideUp();
+            $("ul.criteria-container > li#account option.all_accounts").hide();
+            hideAllAccountOption();
+        }
+        else if(selected_type_el.is('#out')) {
+            $("ul.criteria-container  ul#subtype-menu-in").slideUp();
+            $("ul.criteria-container  ul#subtype-menu-out").slideDown();
+            $("ul.criteria-container > li#account option.all_accounts").hide();
+            hideAllAccountOption();
+
+        }
+    }       
+            
+    
+    if(selected_account_el.length && (selected_type_el.is("#in") || selected_type_el.is("#out") ) ) {
+      
+        if(selected_subtype_el.length) {
+            
+            if(selected_subtype_el.is("#rule")) {
+                // hide category selection and show the rule selection
+                $("ul.criteria-container > li#category").slideUp();  
+                showRuleSelect(selected_account_el.attr("value"), selected_type_el.attr("value"));
+                
+                if(selected_rule_el.length) {
+                    $("ul.criteria-container > li#timing").slideDown();
+                }
+                
+                
+            } else if(selected_subtype_el.is("#category")) {
+                // hide rule selection and show the category selection
+                $("ul.criteria-container > li#rule").slideUp();  
+                showCategorySelect(selected_account_el.attr("value"), selected_type_el.attr("value"));
+                
+                if(selected_category_el.length) {
+                    $("ul.criteria-container > li#timing").slideDown();
+                }
+                
+            } else {
+              $("ul.criteria-container > li#rule").slideUp();  
+              $("ul.criteria-container > li#category").slideUp();  
+            }
+        } else {
+          $("ul.criteria-container > li#rule").slideUp();  
+          $("ul.criteria-container > li#category").slideUp();  
+        }
+        
+    } else {
+         $("ul.criteria-container > li#rule").slideUp();  
+         $("ul.criteria-container > li#category").slideUp();  
+    }
+    
+    
+    if(selected_account_el.length && (selected_type_el.is("#balance_absolute") || selected_type_el.is("#balance_relative") ) ) {
+        $("ul.criteria-container > li#timing").slideDown();
+    }
+    
+    
+    // check for completeness and enable the submit button
+    if(createRequestDataObject() !== undefined) {
+        $("ul.criteria-container button#submit").removeClass("disabled");
+    } else {
+       $("ul.criteria-container button#submit").addClass("disabled"); 
+    } 
+    
+}
+
+// generate the rule select dropdown menu by request the data via AJAX
+function showRuleSelect(account_id, type) {
+
+    var select_el = $("ul.criteria-container > li#rule select#rule");
+    var select_container = select_el.parents(".input-field");
+      
+    var spinner_el = $("ul.criteria-container > li#rule div.circle-spinner");
+    
+    
+    var current_account_id = select_el.data("account_id");
+    var current_type = select_el.data("type");
+    
+    
+    if(current_account_id != account_id || current_type != type) {
+        
+        spinner_el.show()
+        select_container.hide();
+        
+        $("ul.criteria-container > li#rule").slideDown();
+        
+        $.getJSON($SCRIPT_ROOT + "/analysis/rules/" + account_id + "/" + type + "/", function (data, textStatus) {
+           
+           if(Array.isArray(data)) {           
+                 select_el.children("option:not([disabled])").remove();
+                 
+               $.each(data, function(index, item) {
+                  var new_el = $("<option></option>");
+
+                  new_el.attr("value", item.id);
+                  new_el.html(item.name);
+                  
+                  select_el.append(new_el);
+               });
+               
+               select_el.data("account_id", account_id);
+               select_el.data("type", type);
+               
+               select_el.formSelect();   
+               spinner_el.hide();
+               select_container.show();
+           
+           }
+        });
+    
+    } else {
+        $("ul.criteria-container > li#rule").slideDown();
+    }
+}
+
+
+// generate the category select dropdown menu by request the data via AJAX
+function showCategorySelect(account_id, type) {
+
+    var select_el = $("ul.criteria-container > li#category select#category");
+    var select_container = select_el.parents(".input-field");
+      
+    var spinner_el = $("ul.criteria-container > li#category div.circle-spinner");
+    
+    var current_account_id = select_el.data("account_id");
+    var current_type = select_el.data("type");
+    
+    
+    if(current_account_id != account_id || current_type != type) {
+        
+        spinner_el.show()
+        select_container.hide();
+        
+        $("ul.criteria-container > li#category").slideDown();
+        
+        $.getJSON($SCRIPT_ROOT + "/analysis/categories/" + account_id + "/" + type + "/", function (data, textStatus) {
+           
+           if(Array.isArray(data)) {           
+                select_el.children("option:not([disabled])").remove();
+                 
+               $.each(data, function(index, item) {
+                  var new_el = $("<option></option>");
+
+                  new_el.attr("value", item.id);
+                  new_el.html(item.path);
+                  
+                  select_el.append(new_el);
+               });
+               
+               select_el.data("account_id", account_id);
+               select_el.data("type", type);
+               
+               select_el.formSelect();   
+               spinner_el.hide();
+               select_container.show();
+           
+           }
+        });
+ 
+    } else {
+        $("ul.criteria-container > li#category").slideDown();
+    }
+    
+
+}
+
+
 $(function () {
 
-    $('ul.criteria-container input.datepicker').each(function () {
-        var date_options = {
-            firstDay: 1,
-            autoClose: true,
-            yearRange: [ $(this).data("years-start"), $(this).data("years-end")],
-            onSelect: function(date) { sel_dates[$(this.el).attr("id")] = dateToString(date) },
-        };
-
-        if($(this).data("min-date")) {
-            date_options["minDate"] =  new Date($(this).data("min-date"))
-        }
-        
-         if($(this).data("format")) {
-            date_options["format"] = $(this).data("format");
-        }
-
-        if($(this).data("max-date")) {
-            date_options["maxDate"] =  new Date($(this).data("max-date"))
-        }
-        
-        console.log(date_options);
-        
-        var instances = M.Datepicker.init(this, date_options);
-    });
 
     $('ul.criteria-container input:radio[name="type"]').change(function(){
 
-        var el = $(this);
-        
-        if(el.is(':checked')){
-            if(el.is('#balance')) {
-            
-                $("ul.criteria-container > li#subtype").fadeOut();
-                $("ul.criteria-container > li#rule").fadeOut();
-                $("ul.criteria-container > li#category").fadeOut();
-            }
-            else if(el.is('#in') || el.is('#out')) {
-            
-                $("ul.criteria-container > li#subtype").fadeIn();
-                $("ul.criteria-container > li.rules").fadeOut();
-                $("ul.criteria-container > li.categories").fadeOut();
-            }
-        }
+        subtypeChangeHandler();
 
     });
 
-    $('ul.criteria-container input:radio[name="subtype"]').change(function(){
-        var el = $(this);
-       
-        if(el.is(':checked')){
-            
-            var type_val = $('ul.criteria-container input:radio[name="type"]:checked').attr("id");
-            var opposite_val = (type_val == "in" ? "out" : "in");
-            
-            if(el.is('#overall')) {
-            
-                $("ul.criteria-container > li.rules").fadeOut();
-                $("ul.criteria-container > li.categories").fadeOut();
-            }
-            else if(el.is('#rule')) {
-                $("ul.criteria-container > li#rules_" + type_val).show();
-                $("ul.criteria-container > li#rules_" + opposite_val).hide();
-                $("ul.criteria-container > li.categories").hide();
-            }
-            else if(el.is('#category')) {
-                $("ul.criteria-container > li#categories_" + type_val).show();
-                $("ul.criteria-container > li#categories_" + opposite_val).hide();
-                $("ul.criteria-container > li.rules").hide();
-            }
-        }
+   
+    $('ul.criteria-container select#account').change(function(){
+       subtypeChangeHandler(); 
+    });
+    
+    $('ul.criteria-container select#rule').change(function(){
+       subtypeChangeHandler(); 
+    });
+    
+    $('ul.criteria-container select#category').change(function(){
+       subtypeChangeHandler(); 
+    });
+    
+    $('ul.criteria-container input.subtype:radio').change(function(){
+       subtypeChangeHandler(); 
+    });
+    
+    $('ul.criteria-container input.interval').change(function(){
+       subtypeChangeHandler(); 
+    });
+    
+    $('ul.criteria-container input#start').change(function(){
+       subtypeChangeHandler(); 
+    });
+    
+    $('ul.criteria-container input#end').change(function(){
+       subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container button#submit').click(function () {
         
-        var params = {}
-        params["type"] = $('ul.criteria-container input:radio[name="type"]:checked').attr("id");
+        var params = createRequestDataObject();
         
-        $("ul.criteria-container > li#subtype:visible").each(function () {
-            params["subtype"] = $('ul.criteria-container input:radio[name="subtype"]:checked').attr("id");
-        });
+        if(params !== undefined) {            
+            
+            var canvas = $("canvas#analysis_chart")[0]
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            $.ajax({
+                url: $SCRIPT_ROOT + "/analysis/data/",
+                async: true,
+                dataType: 'json',
+                type: "post",
+                data: params
+            }).done(function (res) {
+                console.log("chart data response", res);
+                var data = generateAnalysisChartData(res);
+                console.log("generated chart data", data);
+                createAnalysisChart(res);
+            });
         
-        $("ul.criteria-container > li.rules:visible").each(function () {
-            params["rule"] = $(this).find("select option:selected").val()
-        });
-        
-        $("ul.criteria-container > li.categories:visible").each(function () {
-            params["category"] = $(this).find("select option:selected").val()
-        });
-                
-        params["start"] = sel_dates["start"];
-        params["end"] = sel_dates["end"];
-        params["interval"] = $('ul.criteria-container input:radio[name="interval"]:checked').attr("id");
-        
-        var canvas = $("canvas#analysis_chart")[0]
-        var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        $.ajax({
-            url: $SCRIPT_ROOT + "/analysis/data/",
-            async: true,
-            dataType: 'json',
-            type: "post",
-            data: params
-        }).done(function (res) {
-            console.log("res", res);
-            var data = generateAnalysisChartData(res);
-            console.log("chart data", data);
-            createAnalysisChart(res);
-        });
+        }
     });    
 });
 
