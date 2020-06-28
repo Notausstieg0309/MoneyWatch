@@ -93,7 +93,9 @@ class Account(db.Model):
             result = result.filter(Transaction.date >= start)
         elif end is not None:
             result = result.filter(Transaction.date <= end)
-     
+            
+        result = result.order_by(Transaction.date.asc())
+        
         return result.all()      
 
     def search_for_transactions(self, term):
@@ -119,7 +121,9 @@ class Account(db.Model):
             result = result.filter(Transaction.date >= start)
         elif end is not None:
             result = result.filter(Transaction.date <= end)
-      
+        
+        result = result.order_by(Transaction.date.asc())
+        
         return result.all()     
 
 #     _____      _                              
