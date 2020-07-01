@@ -519,6 +519,13 @@ class Rule(db.Model):
         
         return result.order_by(Transaction.id.desc()).first()
         
+    @property
+    def oldest_transaction(self):
+        result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
+        
+        return result.order_by(Transaction.id.asc()).first()
+
+        
     def updateNextDue(self, date, valuta):
                 
         if self.regular:

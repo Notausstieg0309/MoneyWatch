@@ -2,6 +2,9 @@ var sel_dates = {}
 var analysis_chart = null;
 
 
+function formatYearMonth(date) {
+    return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2)
+}
 
 function generateAnalysisChartLabel(item, res)
 {
@@ -296,7 +299,10 @@ function subtypeChangeHandler() {
             
     
     if(selected_account_el.length && (selected_type_el.is("#in") || selected_type_el.is("#out") ) ) {
-      
+        
+        var account_start = selected_account_el.data("start");
+        var account_end = selected_account_el.data("end");
+                    
         if(selected_subtype_el.length) {
             
             if(selected_subtype_el.is("#rule")) {
@@ -305,6 +311,32 @@ function subtypeChangeHandler() {
                 showRuleSelect(selected_account_el.attr("value"), selected_type_el.attr("value"));
                 
                 if(selected_rule_el.length) {
+                    var start = new Date(account_start);
+                    var end = new Date(account_end);
+                    
+                    var rule_start = selected_rule_el.data("start");
+                    var rule_end = selected_rule_el.data("end");
+                    
+                    if(rule_start != undefined) {
+                        rule_start = new Date(rule_start);
+                        
+                        if(rule_start > start) {
+                            start = rule_start
+                        }
+                    }
+                    
+                    if(rule_end != undefined) {
+                        rule_end = new Date(rule_end);
+                        if(rule_end < end) {
+                            end = rule_end
+                        }
+                    }
+                    
+                    $("ul.criteria-container > li#timing input#start").attr("min", formatYearMonth(start));
+                    $("ul.criteria-container > li#timing input#start").attr("max", formatYearMonth(end));
+                    $("ul.criteria-container > li#timing input#end").attr("min", formatYearMonth(start));
+                    $("ul.criteria-container > li#timing input#end").attr("max", formatYearMonth(end));
+                    
                     $("ul.criteria-container > li#timing").slideDown();
                 }
                 
@@ -315,6 +347,14 @@ function subtypeChangeHandler() {
                 showCategorySelect(selected_account_el.attr("value"), selected_type_el.attr("value"));
                 
                 if(selected_category_el.length) {
+                    var start = account_start;
+                    var end = account_end;
+                    
+                    $("ul.criteria-container > li#timing input#start").attr("min", start);
+                    $("ul.criteria-container > li#timing input#start").attr("max", end);
+                    $("ul.criteria-container > li#timing input#end").attr("min", start);
+                    $("ul.criteria-container > li#timing input#end").attr("max", end);
+                    
                     $("ul.criteria-container > li#timing").slideDown();
                 }
                 
@@ -334,6 +374,15 @@ function subtypeChangeHandler() {
     
     
     if(selected_account_el.length && (selected_type_el.is("#balance_absolute") || selected_type_el.is("#balance_relative") ) ) {
+        
+        var start = selected_account_el.data("start");
+        var end = selected_account_el.data("end");
+        
+        $("ul.criteria-container > li#timing input#start").attr("min", start);
+        $("ul.criteria-container > li#timing input#start").attr("max", end);
+        $("ul.criteria-container > li#timing input#end").attr("min", start);
+        $("ul.criteria-container > li#timing input#end").attr("max", end);
+        
         $("ul.criteria-container > li#timing").slideDown();
     }
     
@@ -376,6 +425,14 @@ function showRuleSelect(account_id, type) {
                   var new_el = $("<option></option>");
 
                   new_el.attr("value", item.id);
+                  
+                  if(item.disabled) {
+                    new_el.prop("disabled", true);
+                  }
+                  else {
+                    new_el.data("start", item.start);
+                    new_el.data("end", item.end);
+                  }
                   new_el.html(item.name);
                   
                   select_el.append(new_el);

@@ -332,6 +332,16 @@ def json_rules(account_id, type):
         item["id"] = rule.id        
         item["name"] = rule.name
 
+        last_transaction = rule.last_transaction()
+        oldest_transaction = rule.oldest_transaction
+        
+        if last_transaction is None and oldest_transaction is None:
+            item["disabled"] = 1
+        else:
+            item["start"] = oldest_transaction.date.strftime("%Y-%m")
+            item["end"] = last_transaction.date.strftime("%Y-%m")
+            
+
         result.append(item)
             
     return jsonify(result)
