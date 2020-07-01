@@ -320,33 +320,6 @@ def data():
     
 
 
-
-@bp.route('/analysis/accounts/')
-def json_accounts():
-
-    accounts = Account.query.all()
-    
-    result = []
-
-    for account in accounts:
-        item = {}
-        item["id"] = account.id        
-        item["name"] = account.name
-
-        oldest_transaction = account.oldest_transaction
-        latest_transaction = account.latest_transaction
-
-        if oldest_transaction is None and latest_transaction is None:   # no transactions yet imported
-            item["disabled"] = 1
-        else:
-            item["min_date"] = oldest_transaction.date.strftime("%Y-%m-%d")
-            item["max_date"] = latest_transaction.date.strftime("%Y-%m-%d") 
-            
-
-        result.append(item)
-            
-    return jsonify(result)
-
 @bp.route('/analysis/rules/<int:account_id>/<string:type>/')
 def json_rules(account_id, type):
 
