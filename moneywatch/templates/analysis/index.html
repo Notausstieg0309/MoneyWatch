@@ -83,8 +83,8 @@
                     <select id="account" class="browser-default">
                         <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
                         <option class="all_accounts" value="ALL" >{% trans %}[All Accounts]{% endtrans %}</option>
-                         {% for account in accounts %}
-                         <option value="{{ account.id }}" >{{ account.name }}</option>
+                         {% for account in account_list %}
+                         <option value="{{ account["id"] }}" data-start="{{ account["start"] }}" data-end="{{ account["end"] }}">{{ account["name"] }}</option>
                          {% endfor %}
                     </select>
                     

@@ -245,7 +245,26 @@ def createResultForTransactions(transactions, interval):
 def index():
     accounts = Account.query.all()
     
-    return render_template('analysis/index.html', accounts=accounts)
+    account_list = []
+    
+    for account in accounts:
+    
+        item = {}
+        latest_transaction = account.latest_transaction
+        oldest_transaction = account.oldest_transaction
+        
+        item["id"] = account.id
+        item["name"] = account.name
+        
+        if oldest_transaction and latest_transaction is None:
+            item["disabled"] = 1
+        else:
+            item["end"] = latest_transaction.date.strftime("%Y-%m")
+            item["start"] = oldest_transaction.date.strftime("%Y-%m")
+                
+        account_list.append(item)
+        
+    return render_template('analysis/index.html', account_list=account_list)
 
 
 @bp.route('/analysis/data/', methods=["POST"])
