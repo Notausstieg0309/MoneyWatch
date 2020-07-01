@@ -274,7 +274,6 @@ function subtypeChangeHandler() {
         if(selected_type_el.is('#balance_absolute') || selected_type_el.is('#balance_relative')) {
                 
             $("ul.criteria-container > li#subtype").slideUp();
-            
             $("ul.criteria-container > li#rule").slideUp();
             $("ul.criteria-container > li#category").slideUp();
             $("ul.criteria-container  ul#subtype-menu-in").slideUp();
@@ -509,9 +508,7 @@ $(function () {
 
 
     $('ul.criteria-container input:radio[name="type"]').change(function(){
-
         subtypeChangeHandler();
-
     });
 
    
@@ -569,20 +566,3 @@ $(function () {
         }
     });    
 });
-
-function dateToString(date)
-{
-        
-    var year = date.getFullYear();
-    var month = date.getMonth()+1;
-    var day = date.getDate();
-
-    if (day < 10) {
-      day = '0' + day;
-    }
-    if (month < 10) {
-      month = '0' + month;
-    }
-
-    return  year + '-' + month + '-' + day;
-}

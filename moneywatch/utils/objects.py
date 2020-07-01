@@ -328,8 +328,7 @@ class Category(db.Model):
             self._cache["transactions"] =  result.all()
       
         return self._cache["transactions"]
-            
-    
+        
     @property
     def transactions_with_childs(self):
 
@@ -355,8 +354,7 @@ class Category(db.Model):
             return parent.getCategoryPath(delimiter) + delimiter + self.name
         else:
             return self.name
-                
- 
+        
     def getCategoryIdsAndPaths(self, delimiter):
     
         result = []
