@@ -1,5 +1,5 @@
 from flask import (
-            Blueprint, flash, g, current_app, redirect, render_template, request, url_for
+            Blueprint, flash, g, current_app, redirect, render_template, request, url_for, abort
             )
 
 from flask_babel import gettext
@@ -89,12 +89,21 @@ def add(account_id, type):
 @bp.route('/ruleset/delete/<int:id>/')
 def delete(id):
     
-    Rule.query.filter_by(id=id).delete()
-    db.session.commit()
+    rule = Rule.query.filter_by(id=id).one_or_none()
     
-    return redirect(url_for('ruleset.index'))
+    if rule is not None:
+        
+        # preserve account ID for redirection back to the ruleset overview
+        account_id = rule.account_id
+        
+        # delete the rule
+        db.session.delete(rule)    
+        db.session.commit()
+        
+        return redirect(url_for('ruleset.index', account_id = account_id))
 
-    
+    else:
+       abort(404, "rule not found")
     
     
 @bp.route('/ruleset/change/<int:id>/', methods=('GET', 'POST'))
