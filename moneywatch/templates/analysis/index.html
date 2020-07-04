@@ -7,181 +7,10 @@
 
 {% block content %}
 
+
 <div class="row">
     <div class="col hide-on-small-only m3"></div>
-    <div class="col s12 m6 ">
-        <ul class="collection with-header criteria-container">
-            <li class="collection-header"><h5>Selection Criteria</h5></li>
-            <li class="collection-item  criteria" id="type">
-                <h6>What do you want to see?</h6>
-                <hr>
-                <div class="center">
-                <span class="inline-block left-align">
-                    <label>
-                        <input class="with-gap" class="analysis-input-type" name="type" value="balance_absolute" id="balance_absolute" type="radio" />
-                        <span>{% trans %}Absolute Account Balance (end of month){% endtrans %}</span>
-                    </label><br>
-                    <label>
-                        <input class="with-gap" class="analysis-input-type" name="type" value="balance_relative" id="balance_relative" type="radio" />
-                        <span>{% trans %}Relative Account Balance (end of month){% endtrans %}</span>
-                    </label>
-                    <label><br>
-                        <input class="with-gap" class="analysis-input-type" name="type" value="in" id="in" type="radio"  />
-                        <span>{% trans %}Earnings{% endtrans %}</span>
-                    </label><br>
-                    <ul id="subtype-menu-in" class="browser-default" style="display:none;">
-                   
-                    <label>
-                    <input class="with-gap subtype" name="subtype_in" id="overall" value="overall" type="radio"  />
-                    <span>{% trans %}Overall{% endtrans %}</span>
-                </label>
-                <label><br>
-                    <input class="with-gap subtype" name="subtype_in" id="rule" value="rule"  type="radio"  />
-                    <span>{% trans %}By Rule{% endtrans %}</span>
-                </label><br>
-                <label>
-                    <input class="with-gap subtype" name="subtype_in" id="category" value="category"  type="radio"  />
-                    <span>{% trans %}By Category{% endtrans %}</span>
-                </label>
-                
-                    </ul>
-                    <label>
-                        <input class="with-gap" class="analysis-input-type" name="type" value="out" id="out" type="radio"  />
-                        <span>{% trans %}Spendings{% endtrans %}</span>
-                    </label>
-                    
-                    <ul id="subtype-menu-out" class="browser-default" style="display:none;">
-                   
-                    <label>
-                    <input class="with-gap subtype" name="subtype_out" id="overall" value="overall" type="radio"  />
-                    <span>{% trans %}Overall{% endtrans %}</span>
-                </label>
-                <label><br>
-                    <input class="with-gap subtype" name="subtype_out" id="rule" value="rule" type="radio"  />
-                    <span>{% trans %}By Rule{% endtrans %}</span>
-                </label><br>
-                <label>
-                    <input class="with-gap subtype" name="subtype_out" id="category" value="category" type="radio"  />
-                    <span>{% trans %}By Category{% endtrans %}</span>
-                </label>
-                
-                    </ul>
-                </span>
-                </div>
-            </li>
-            <li class="collection-item criteria" id="subtype" style="display:none;">
-            <div class="center">
-                <span class="inline-block left-align">
-                
-                  </span>
-                </div>
-            </li>
-            <li class="collection-item criteria" id="account"  style="display:none;">
-               <h6>For which account?</h6>
-                <hr>
-                 <div class="input-field"> 
-                    <select id="account" class="browser-default">
-                        <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
-                        <option class="all_accounts" value="ALL" >{% trans %}[All Accounts]{% endtrans %}</option>
-                         {% for account in account_list %}
-                         <option value="{{ account["id"] }}" data-start="{{ account["start"] }}" data-end="{{ account["end"] }}">{{ account["name"] }}</option>
-                         {% endfor %}
-                    </select>
-                    
-                </div>
-            </li>
-            <li class="collection-item criteria" id="rule" style="display:none;">
-            <div class="center circle-spinner">
-            
-              <div class="preloader-wrapper small active">
-                <div class="spinner-layer spinner-blue-only">
-                  <div class="circle-clipper left">
-                    <div class="circle"></div>
-                  </div><div class="gap-patch">
-                    <div class="circle"></div>
-                  </div><div class="circle-clipper right">
-                    <div class="circle"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div class="input-field"> 
-                <select id="rule" name="rule">
-                    <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
-                </select>
-                <label>{% trans %}Rule{% endtrans %}</label>
-            </div>
-            </li>
-            <li class="collection-item criteria" id="category" style="display:none;">
-            
-            <div class="center circle-spinner">
-                <div class="preloader-wrapper  small active">
-                <div class="spinner-layer spinner-teal-only">
-                  <div class="circle-clipper left">
-                    <div class="circle"></div>
-                  </div><div class="gap-patch">
-                    <div class="circle"></div>
-                  </div><div class="circle-clipper right">
-                    <div class="circle"></div>
-                  </div>
-                </div>
-              </div>
-              
-              </div>
-                <div class="input-field"> 
-                    <select id="category" name="category_id">
-                        <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
-                    
-                    </select>
-                    <label>{% trans %}Category{% endtrans %}</label>
-                </div>
-             </li>
-
-             <li class="collection-item criteria" id="timing"  style="display:none;">
-             <h6>Timing?</h6>
-             <hr>
-                <div class="row">
-                    <div class="col l12 xl6">
-                   <table> 
-                    <tr>
-                         <td>Von:</td>
-                         <td><input id="start" name="start" type="month" ></td>
-                    </tr>
-                    <tr>
-                     <td>Bis:</td>
-                     <td><input id="end" name="end" data-years-start="{{ years_start }}" data-years-end="{{ years_end }}" data-max-date="{{ max_date }}"  data-min-date="{{ min_date }}" type="month" ></td>
-                  </tr>
-                  </table>
-                   </div>
-                    <div class="col s5 m6">Gruppiert nach:</div>
-                    <div class="col s7 m6">
-                        <label>
-                            <input class="interval" name="interval"  value="12" type="radio"  />
-                            <span>{% trans %}by Year{% endtrans %}</span>
-                        </label><br>
-                        <label>
-                            <input class="interval" name="interval"  value="3" type="radio"  />
-                            <span>{% trans %}by Quartal{% endtrans %}</span>
-                        </label><br>
-                        <label>
-                            <input class="interval" name="interval"  value="1" type="radio"  />
-                            <span>{% trans %}by Month{% endtrans %}</span>
-                        </label>
-                   </div>
-         
-                   
-                           
-                       
-                </div>
-             </li>
-             <li class="right-align collection-item" id="submit" >
-                <button class="btn waves-effect disabled waves-light" id="submit">Submit
-                    <i class="material-icons right">send</i>
-                </button>
-             </li>
-        </ul>
-    </div>
     <div class="col hide-on-small-only m3"></div>
 </div>
 
@@ -189,17 +18,181 @@
  <div class="row">
     <div class="col s12">
       <ul class="tabs">
-        <li class="tab col s3"><a class="active" href="#chart">Chart</a></li>
-        <li class="tab col s3"><a href="#table">Table</a></li>
+        <li class="tab col s4"><a class="active" href="#settings">Settings</a></li>
+        <li class="tab col s4"><a href="#chart">Chart</a></li>
+        <li class="tab col s4"><a href="#table">Table</a></li>
 
       </ul>
     </div>
-    <div id="chart" class="col s12"><canvas id="analysis_chart" min-height="300" max-height="500"></canvas></div>
-    <div id="table" class="col s12">Hier is the tabelle</div>
-  </div>
+    <div id="settings" class="col s12 m6 offset-m3">
+      <br><br>
+      <ul class="collection with-header criteria-container">
+        <li class="collection-header"><h5>Selection Criteria</h5></li>
+        <li class="collection-item  criteria" id="type">
+          <h6>What do you want to see?</h6>
+          <hr>
+          <div class="center">
+            <span class="inline-block left-align">
+              <label>
+                <input class="with-gap" class="analysis-input-type" name="type" value="balance_absolute" id="balance_absolute" type="radio" />
+                <span>{% trans %}Absolute Account Balance (end of month){% endtrans %}</span>
+              </label><br>
+              <label>
+                <input class="with-gap" class="analysis-input-type" name="type" value="balance_relative" id="balance_relative" type="radio" />
+                <span>{% trans %}Relative Account Balance (end of month){% endtrans %}</span>
+              </label><br>
+
+              <label>
+                <input class="with-gap" class="analysis-input-type" name="type" value="in" id="in" type="radio"  />
+                <span>{% trans %}Earnings{% endtrans %}</span>
+              </label><br>
+              <ul id="subtype-menu-in" class="browser-default" style="display:none;">      
+                <label>
+                  <input class="with-gap subtype" name="subtype_in" id="overall" value="overall" type="radio"  />
+                  <span>{% trans %}Overall{% endtrans %}</span>
+                </label>
+                <label><br>
+                  <input class="with-gap subtype" name="subtype_in" id="rule" value="rule"  type="radio"  />
+                  <span>{% trans %}By Rule{% endtrans %}</span>
+                </label>
+                <label><br>
+                  <input class="with-gap subtype" name="subtype_in" id="category" value="category"  type="radio"  />
+                  <span>{% trans %}By Category{% endtrans %}</span>
+                </label>
+              </ul>
+
+              <label>
+                <input class="with-gap" class="analysis-input-type" name="type" value="out" id="out" type="radio"  />
+                <span>{% trans %}Spendings{% endtrans %}</span>
+              </label>  
+              <ul id="subtype-menu-out" class="browser-default" style="display:none;">  
+                <label>
+                  <input class="with-gap subtype" name="subtype_out" id="overall" value="overall" type="radio"  />
+                  <span>{% trans %}Overall{% endtrans %}</span>
+                </label>
+                <label><br>
+                  <input class="with-gap subtype" name="subtype_out" id="rule" value="rule" type="radio"  />
+                  <span>{% trans %}By Rule{% endtrans %}</span>
+                </label><br>
+                <label>
+                  <input class="with-gap subtype" name="subtype_out" id="category" value="category" type="radio"  />
+                  <span>{% trans %}By Category{% endtrans %}</span>
+                </label>
+            
+              </ul>
+            </span>
+          </div>
+        </li>
+        <li class="collection-item criteria" id="subtype" style="display:none;">
+          <div class="center">
+            <span class="inline-block left-align">
+              
+            </span>
+          </div>
+        </li>
+        <li class="collection-item criteria" id="account"  style="display:none;">
+          <h6>For which account?</h6>
+          <hr>
+          <div class="input-field"> 
+            <select id="account" class="browser-default">
+              <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
+              <option class="all_accounts" value="ALL" >{% trans %}[All Accounts]{% endtrans %}</option>
+              {% for account in account_list %}
+              <option value="{{ account["id"] }}" data-start="{{ account["start"] }}" data-end="{{ account["end"] }}">{{ account["name"] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </li>
+        <li class="collection-item criteria" id="rule" style="display:none;">
+          <div class="center circle-spinner">
+            <div class="preloader-wrapper small active">
+              <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="input-field"> 
+            <select id="rule" name="rule">
+              <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
+            </select>
+            <label>{% trans %}Rule{% endtrans %}</label>
+          </div>
+        </li>
+        <li class="collection-item criteria" id="category" style="display:none;">
+          <div class="center circle-spinner">
+            <div class="preloader-wrapper  small active">
+              <div class="spinner-layer spinner-teal-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                  <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="input-field"> 
+            <select id="category" name="category_id">
+              <option disabled selected>{% trans %}Please select...{% endtrans %}</option>   
+            </select>
+            <label>{% trans %}Category{% endtrans %}</label>
+          </div>
+        </li>
+        <li class="collection-item criteria" id="timing"  style="display:none;">
+          <h6>Timing?</h6>
+          <hr>
+          <div class="row">
+            <div class="col l12 xl6">
+              <table> 
+                <tr>
+                  <td>Von:</td>
+                  <td><input id="start" name="start" type="month" ></td>
+                </tr>
+              <tr>
+                <td>Bis:</td>
+                <td><input id="end" name="end" data-years-start="{{ years_start }}" data-years-end="{{ years_end }}" data-max-date="{{ max_date }}"  data-min-date="{{ min_date }}" type="month" ></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col s5 m6">Gruppiert nach:</div>
+          <div class="col s7 m6">
+            <label>
+              <input class="interval" name="interval"  value="12" type="radio"  />
+              <span>{% trans %}by Year{% endtrans %}</span>
+            </label><br>
+            <label>
+              <input class="interval" name="interval"  value="3" type="radio"  />
+              <span>{% trans %}by Quartal{% endtrans %}</span>
+            </label><br>
+            <label>
+              <input class="interval" name="interval"  value="1" type="radio"  />
+              <span>{% trans %}by Month{% endtrans %}</span>
+            </label>
+          </div>
         
-
+                  
+                          
+                      
+        </div>
+      </li>
+      <li class="right-align collection-item" id="submit" >
+        <button class="btn waves-effect disabled waves-light" id="submit">Submit <i class="material-icons right">send</i></button>
+      </li>
+    </ul>
+  </div>
   
-
-
+  <div id="chart" class="col s12"><canvas id="analysis_chart" min-height="300" max-height="500"></canvas></div>
+  
+  <div id="table" class="col s12">Hier is the tabelle</div>
+</div>
 {% endblock %}
