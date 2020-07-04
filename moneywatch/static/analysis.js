@@ -103,8 +103,7 @@ function createAnalysisChart(res)
                             beginAtZero : true,
                             callback: function(value, index, values) {
                                         return value + ' €';
-                                      },
-                            //fontColor: (res.type == "in" ? "#006d14" : "#ff0000")
+                                      }
                         }   
                     }],
                     xAxes: [{ 
@@ -131,14 +130,7 @@ function createAnalysisChart(res)
                         if (point.length) e.target.style.cursor = 'pointer';
                         else e.target.style.cursor = 'default';
                     }
-                },
-				color: function(context) {
-				    var index = context.dataIndex;
-					    var value = context.dataset.data[index];
-						    return value < 0 ? 'red' :  // draw negative values in red
-							        index % 2 ? 'blue' :    // else, alternate values in blue and green
-									        'green';
-				}
+                }
             }
         });
 }
@@ -166,10 +158,6 @@ function hideAllAccountOption()
     allaccounts_el.hide();
     
     select_el.formSelect();
-    
-
-    
-    
 }
 
 function createRequestDataObject() {
@@ -192,13 +180,10 @@ function createRequestDataObject() {
     
     var timing_interval_el = $('ul.criteria-container input:radio[name="interval"]:checked');
     
-
-    
     var result = {};
     var complete = true;
     
     result["type"] = selected_type_value;
-    
     
     if(selected_type_value == "in" || selected_type_value == "out") {
 
@@ -214,7 +199,6 @@ function createRequestDataObject() {
                 }
             }
             
-            
             if(selected_subtype_value == "category") {
                 
                 if(selected_category_el.length) {
@@ -223,12 +207,9 @@ function createRequestDataObject() {
                     complete = false;
                 }
             }
-        
-        }
-        else {
+        } else {
             complete = false;
         }
-    
     }
     
     if(selected_account_el.length) {
@@ -262,10 +243,8 @@ function createRequestDataObject() {
         return result;
     }
     
-    return undefined;
-    
+    return undefined; 
 }
-
 
 
 function subtypeChangeHandler() {
@@ -274,7 +253,6 @@ function subtypeChangeHandler() {
     var selected_type_value = selected_type_el.attr("value");
     
     var selected_subtype_el = $('ul.criteria-container input:radio[name="subtype_'+selected_type_value+'"]:checked');
-    var selected_subtype_value = selected_subtype_el.attr("value");
     
     var selected_account_el = $("ul.criteria-container select#account option:checked:not([disabled])");
     
@@ -308,7 +286,6 @@ function subtypeChangeHandler() {
             $("ul.criteria-container  ul#subtype-menu-out").slideDown();
             $("ul.criteria-container > li#account option.all_accounts").hide();
             hideAllAccountOption();
-
         }
     }       
             
@@ -353,9 +330,7 @@ function subtypeChangeHandler() {
                     $("ul.criteria-container > li#timing input#end").attr("max", formatYearMonth(end));
                     
                     $("ul.criteria-container > li#timing").slideDown();
-                }
-                
-                
+                } 
             } else if(selected_subtype_el.is("#category")) {
                 // hide rule selection and show the category selection
                 $("ul.criteria-container > li#rule").slideUp();  
@@ -371,8 +346,7 @@ function subtypeChangeHandler() {
                     $("ul.criteria-container > li#timing input#end").attr("max", end);
                     
                     $("ul.criteria-container > li#timing").slideDown();
-                }
-                
+                }   
             } else {
               $("ul.criteria-container > li#rule").slideUp();  
               $("ul.criteria-container > li#category").slideUp();  
@@ -381,7 +355,6 @@ function subtypeChangeHandler() {
           $("ul.criteria-container > li#rule").slideUp();  
           $("ul.criteria-container > li#category").slideUp();  
         }
-        
     } else {
          $("ul.criteria-container > li#rule").slideUp();  
          $("ul.criteria-container > li#category").slideUp();  
@@ -419,10 +392,8 @@ function showRuleSelect(account_id, type) {
       
     var spinner_el = $("ul.criteria-container > li#rule div.circle-spinner");
     
-    
     var current_account_id = select_el.data("account_id");
     var current_type = select_el.data("type");
-    
     
     if(current_account_id != account_id || current_type != type) {
         
@@ -459,7 +430,6 @@ function showRuleSelect(account_id, type) {
                select_el.formSelect();   
                spinner_el.hide();
                select_container.show();
-           
            }
         });
     
@@ -479,7 +449,6 @@ function showCategorySelect(account_id, type) {
     
     var current_account_id = select_el.data("account_id");
     var current_type = select_el.data("type");
-    
     
     if(current_account_id != account_id || current_type != type) {
         
@@ -508,52 +477,47 @@ function showCategorySelect(account_id, type) {
                select_el.formSelect();   
                spinner_el.hide();
                select_container.show();
-           
            }
         });
  
     } else {
         $("ul.criteria-container > li#category").slideDown();
     }
-    
-
 }
 
 
 $(function () {
 
-
     $('ul.criteria-container input:radio[name="type"]').change(function(){
         subtypeChangeHandler();
     });
 
-   
     $('ul.criteria-container select#account').change(function(){
-       subtypeChangeHandler(); 
+        subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container select#rule').change(function(){
-       subtypeChangeHandler(); 
+        subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container select#category').change(function(){
-       subtypeChangeHandler(); 
+        subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container input.subtype:radio').change(function(){
-       subtypeChangeHandler(); 
+        subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container input.interval').change(function(){
-       subtypeChangeHandler(); 
+        subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container input#start').change(function(){
-       subtypeChangeHandler(); 
+        subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container input#end').change(function(){
-       subtypeChangeHandler(); 
+        subtypeChangeHandler(); 
     });
     
     $('ul.criteria-container button#submit').click(function () {
@@ -578,7 +542,6 @@ $(function () {
                 console.log("generated chart data", data);
                 createAnalysisChart(res);
             });
-        
         }
     });    
 });
