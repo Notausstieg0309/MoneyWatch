@@ -200,26 +200,33 @@ function createRequestDataObject() {
     result["type"] = selected_type_value;
     
     
-    if(selected_subtype_el.length && (selected_type_value == "in" || selected_type_value == "out")) {
-        
-        result["subtype"] = selected_subtype_value;
-        
-         if(selected_subtype_value == "rule") {
-            if( selected_rule_el.length) {
-                result["rule"]= selected_rule_el.attr("value");
-            } else {
-                complete = false;
-            }
-         }
-         
-         
-        if(selected_subtype_value == "category") {
+    if(selected_type_value == "in" || selected_type_value == "out") {
+
+        if(selected_subtype_el.length) {
             
-            if(selected_category_el.length) {
-                result["category"]= selected_category_el.attr("value");
-            } else {
-                complete = false;
+            result["subtype"] = selected_subtype_value;
+            
+            if(selected_subtype_value == "rule") {
+                if( selected_rule_el.length) {
+                    result["rule"]= selected_rule_el.attr("value");
+                } else {
+                    complete = false;
+                }
             }
+            
+            
+            if(selected_subtype_value == "category") {
+                
+                if(selected_category_el.length) {
+                    result["category"]= selected_category_el.attr("value");
+                } else {
+                    complete = false;
+                }
+            }
+        
+        }
+        else {
+            complete = false;
         }
     
     }
