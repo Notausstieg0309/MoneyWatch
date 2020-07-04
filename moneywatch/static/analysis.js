@@ -23,19 +23,27 @@ function generateAnalysisChartData(res)
 {
     var labels = []
     var data = []
-    var links = [];
+    var pointColors = [];
     
-    
+    var red = "#a82727";
+    var green = "#045904";
+
     $.each(res.data, function(index, item) 
     {
         var label = generateAnalysisChartLabel(item, res);
         
         labels.push(label);
         data.push(item.valuta);
+
+        if(item.valuta < 0) {
+            pointColors.push(red);
+        } else {
+            pointColors.push(green); 
+        }
             
     });
     
-    return {labels: labels, data: data};
+    return {labels: labels, data: data, pointColors: pointColors};
 }
 
 
@@ -81,6 +89,7 @@ function createAnalysisChart(res)
                                 //links: items.links,
                                 //pointBackgroundColor: items.pointBackgroundColors,
                                 //backgroundColor: backgroundColor,
+                                pointBackgroundColor: items.pointColors,
                                 pointRadius: 5,
                                 pointHoverRadius: 10,
 								cubicInterpolationMode: 'monotone',
