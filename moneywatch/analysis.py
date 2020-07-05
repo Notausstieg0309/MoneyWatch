@@ -183,7 +183,7 @@ def createResultForTransactions(transactions, interval):
     result = []
     sum = 0
     
-    if interval == "1":
+    if interval == "1": # month based
             
         for transaction in transactions:
             
@@ -209,7 +209,7 @@ def createResultForTransactions(transactions, interval):
             sum += tmp["valuta"]
             result.append(tmp)
 
-    elif interval == "12":
+    elif interval == "12": # year based
         for transaction in transactions:
             
             if tmp.get("year", transaction.date.year) != transaction.date.year:
@@ -230,7 +230,7 @@ def createResultForTransactions(transactions, interval):
             sum += tmp["valuta"]
             result.append(tmp.copy())
             
-    elif interval == "3":
+    elif interval == "3": # quarter based
         for transaction in transactions:
             quarter = utils.get_quarter_from_date(transaction.date)
            
@@ -256,6 +256,31 @@ def createResultForTransactions(transactions, interval):
             sum += tmp["valuta"]
             result.append(tmp.copy())
 
+    elif interval == "6": # half year based
+        for transaction in transactions:
+            half_year = utils.get_half_year_from_date(transaction.date)
+           
+            if tmp.get("half_year",half_year) != half_year:
+                tmp["valuta"] = round(tmp["valuta"],2)
+                tmp["half_year_formatted"] = gettext(u'%(half_year)sH %(year)s', half_year = tmp["half_year"], year = tmp["year"])
+                sum += tmp["valuta"]
+                result.append(tmp.copy())
+                
+                tmp["valuta"] = 0
+                tmp["count"] = 0
+                tmp["transactions"] = []
+                
+            tmp["valuta"] += transaction.valuta
+            tmp["count"] += 1
+            tmp["half_year"] = half_year
+            tmp["year"] = transaction.date.year
+            tmp["transactions"].append(transToDict(transaction))
+        
+        if tmp["count"] > 0:
+            tmp["half_year_formatted"] = gettext(u'%(half_year)sH %(year)s', half_year = tmp["half_year"], year = tmp["year"])
+            tmp["valuta"] = round(tmp["valuta"],2)
+            sum += tmp["valuta"]
+            result.append(tmp.copy())
 
     return (round(sum, 2), result)
            

@@ -27,6 +27,8 @@ def get_days_from_date(date):
 def get_quarter_from_date(date):
     return (date.month-1)//3 + 1
 
+def get_half_year_from_date(date):
+    return (date.month-1)//6 + 1
     
 def get_first_day_of_month(year=None, month=None):
 

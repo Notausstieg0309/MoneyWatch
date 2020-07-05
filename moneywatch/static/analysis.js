@@ -14,6 +14,8 @@ function generateAnalysisChartLabel(item, res)
             return res.month_names[item.month - 1] + " " + item.year;        
         case "3":
             return item.quarter_formatted;
+        case "6":
+            return item.half_year_formatted;
         case "12":
             return item.year;
     }
