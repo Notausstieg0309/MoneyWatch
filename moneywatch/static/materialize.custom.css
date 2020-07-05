@@ -617,6 +617,10 @@ table.analysis-table tr.sum span.prefix {
     padding-right: 10px;
 }
 
+table.analysis-table tr:first-child {
+    border-top:1px solid #e0e0e0;
+}
+
 /* unset the border by materialize */
 table.analysis-table tr.sum {
     border-bottom: unset;
