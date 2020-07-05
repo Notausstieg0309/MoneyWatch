@@ -91,6 +91,11 @@ def getAbsoluteBalance(account_id, start, end, interval):
         if len(result["data"]) > 0:
             balance = calcAbsAccountBalanceFor(account_id, end)
             
+            # substract the first item from the sum as 
+            # otherwise the difference between the first and last item will not match
+            result["sum"] = round(result["sum"]  - result["data"][0]["valuta"], 2)
+            result["sum_formatted"] = format_currency(result["sum"], "EUR")
+            
         new_data = []
         old_data = result["data"]
         
