@@ -138,11 +138,12 @@ function createAnalysisChart(res)
                     display: false
                 },
                 hover: {
-                    onHover: function(e) {
+                   /* onHover: function(e) {
                         var point = this.getElementAtEvent(e);
                         if (point.length) e.target.style.cursor = 'pointer';
                         else e.target.style.cursor = 'default';
                     }
+                    */
                 }
             }
         });
