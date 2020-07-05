@@ -76,7 +76,7 @@ def getRelativeBalance(account_id, start, end, interval):
     
     transactions = filter(lambda x: x.type != "message", transactions)
     
-    (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
+    result = createResultForTransactions(result, transactions)
    
     return result
 
@@ -97,9 +97,10 @@ def getAbsoluteBalance(account_id, start, end, interval):
         for item in result["data"]:
         
             orig_valuta = item["valuta"]
-            item["valuta"] = balance
-            balance = round(balance - orig_valuta, 2)
             
+            item["valuta"] = balance
+
+            balance = round(balance - orig_valuta, 2)
             
             new_data.append(item)
     
@@ -119,7 +120,7 @@ def getBalanceByType(account_id, start, end, interval, type_val):
     
         transactions = account.transactions_by_type(type_val, utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
-        (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
+        result = createResultForTransactions(result, transactions)
      
     return result
     
@@ -131,7 +132,7 @@ def getBalanceByRule(start, end, interval, rule_id):
     
     transactions = rule.getTransactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
-    (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
+    result = createResultForTransactions(result, transactions)
 
     return result
 
@@ -149,7 +150,7 @@ def getBalanceByCategory(start, end, interval, category_id):
     # transactions are not in the correct date order, sort here only once instead of multiple recursive sorting runs in Category.transactions_with_childs()
     transactions.sort(key=lambda x: x.date)
     
-    (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
+    result = createResultForTransactions(result, transactions)
      
     return result  
 
@@ -180,20 +181,22 @@ def getLabelForDate(date, interval):
         return gettext("%(month_name)s %(year)s", month_name = month_names[date.month-1], year = date.year)    
 
 
-def createResultForTransactions(transactions, interval):
+def createResultForTransactions(result, transactions):
     
     tmp = {"valuta": 0, "count": 0, "transactions": []}
     
-    result = []
+    data = []
     sum = 0
     
+    interval = result["interval"]
+
     for transaction in transactions:
         transaction_label = getLabelForDate(transaction.date, interval)
 
         if tmp.get("label", transaction_label) != transaction_label:
             sum = round(sum + tmp["valuta"], 2)
             
-            result.append(tmp.copy())
+            data.append(tmp.copy())
             
             tmp["valuta"] = 0
             tmp["count"] = 0
@@ -208,9 +211,12 @@ def createResultForTransactions(transactions, interval):
     # add remaining items of the last interval
     if tmp["count"] > 0:
         sum = round(sum + tmp["valuta"], 2)
-        result.append(tmp)
+        data.append(tmp)
 
-    return (sum, result)
+    result["data"] = data
+    result["sum"] = sum 
+
+    return result
            
 
 @bp.route('/analysis/')
