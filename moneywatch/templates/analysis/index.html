@@ -29,8 +29,10 @@
       <ul class="collection with-header criteria-container">
         <li class="collection-header"><h5>Selection Criteria</h5></li>
         <li class="collection-item  criteria" id="type">
-          <h6>What do you want to see?</h6>
-          <hr>
+          <span class="inline-block">
+            <h6 class="inline-block">What do you want to see?</h6>
+            <hr>
+          </span>
           <div class="center">
             <span class="inline-block left-align">
               <label>
@@ -83,16 +85,11 @@
             </span>
           </div>
         </li>
-        <li class="collection-item criteria" id="subtype" style="display:none;">
-          <div class="center">
-            <span class="inline-block left-align">
-              
-            </span>
-          </div>
-        </li>
         <li class="collection-item criteria" id="account"  style="display:none;">
-          <h6>For which account?</h6>
-          <hr>
+          <span class="inline-block">
+            <h6 class="inline-block">For which account?</h6>
+            <hr>
+          </span>
           <div class="input-field"> 
             <select id="account">
               <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
@@ -101,6 +98,7 @@
               <option value="{{ account["id"] }}" data-start="{{ account["start"] }}" data-end="{{ account["end"] }}">{{ account["name"] }}</option>
               {% endfor %}
             </select>
+            <label>{% trans %}Account{% endtrans %}</label>
           </div>
         </li>
         <li class="collection-item criteria" id="rule" style="display:none;">
@@ -149,8 +147,10 @@
           </div>
         </li>
         <li class="collection-item criteria" id="timing"  style="display:none;">
-          <h6>Timing?</h6>
-          <hr>
+          <span class="inline-block">
+            <h6 class="inline-block">Timing?</h6>
+            <hr>
+          </span>
           <div class="row">
             <div class="col l12 xl6">
               <table> 
