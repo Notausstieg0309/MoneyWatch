@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-12 19:03+0200\n"
+"POT-Creation-Date: 2020-07-05 16:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Generated-By: Babel 2.6.0\n"
 
 #: accounts.py:34 accounts.py:86 categories.py:38 categories.py:108
-#: ruleset.py:116
+#: ruleset.py:125
 msgid "Name is required."
 msgstr ""
 
@@ -34,6 +34,30 @@ msgstr ""
 msgid "The provided balance is not a valid numeric value."
 msgstr ""
 
+#: analysis.py:169 templates/importer/check.html:11
+#: templates/importer/check.html:41
+#: templates/importer/multiple_rule_match.html:11
+#: templates/overview/overview.html:45 templates/overview/overview.html:56
+#: templates/transactions/edit.html:11 templates/transactions/index.html:10
+#: templates/transactions/index.html:27
+msgid "yyyy-MM-dd"
+msgstr ""
+
+#: analysis.py:182
+#, python-format
+msgid "%(half_year)sH %(year)s"
+msgstr ""
+
+#: analysis.py:184
+#, python-format
+msgid "Q%(quarter)s/%(year)s"
+msgstr ""
+
+#: analysis.py:186
+#, python-format
+msgid "%(month_name)s %(year)s"
+msgstr ""
+
 #: categories.py:41 categories.py:111
 msgid "The budget must be given as numeric value."
 msgstr ""
@@ -47,7 +71,12 @@ msgstr ""
 msgid "No file uploaded"
 msgstr ""
 
-#: importer.py:144
+#: importer.py:46
+#, python-format
+msgid "Import plugin \"%(name)s\" (no description available)"
+msgstr ""
+
+#: importer.py:142
 #, python-format
 msgid ""
 "The file contains transactions that cannot be clearly assigned to an "
@@ -62,11 +91,11 @@ msgstr ""
 msgid "Rule name is required."
 msgstr ""
 
-#: ruleset.py:45 ruleset.py:118
+#: ruleset.py:45 ruleset.py:127
 msgid "Search pattern is required."
 msgstr ""
 
-#: ruleset.py:47 ruleset.py:120
+#: ruleset.py:47 ruleset.py:129
 msgid "Category is required."
 msgstr ""
 
@@ -76,32 +105,37 @@ msgid ""
 "for. Please create categories first."
 msgstr ""
 
-#: transactions.py:76
+#: transactions.py:79
 #, python-format
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr ""
 
-#: templates/base.html:61 templates/base.html:74
+#: templates/base.html:3 templates/base.html:9
 msgid "Import New Transactions"
 msgstr ""
 
-#: templates/base.html:62 templates/base.html:75
+#: templates/analysis/index.html:4 templates/base.html:4 templates/base.html:10
+msgid "Analysis"
+msgstr ""
+
+#: templates/base.html:5 templates/base.html:13 templates/base.html:17
 #: templates/transactions/index.html:4
 msgid "Transactions"
 msgstr ""
 
-#: templates/base.html:63 templates/base.html:76 templates/ruleset/index.html:4
+#: templates/base.html:6 templates/base.html:14 templates/base.html:18
+#: templates/ruleset/index.html:4
 msgid "Import Ruleset"
 msgstr ""
 
-#: templates/base.html:64 templates/base.html:77
+#: templates/base.html:7 templates/base.html:15 templates/base.html:19
 #: templates/categories/index.html:4 templates/categories/index.html:45
 #: templates/categories/index.html:49
 msgid "Categories"
 msgstr ""
 
-#: templates/base.html:65 templates/base.html:78
-#: templates/overview/index.html:5 templates/overview/overview.html:6
+#: templates/base.html:22 templates/overview/index.html:5
+#: templates/overview/overview.html:6
 msgid "Overview"
 msgstr ""
 
@@ -127,8 +161,9 @@ msgstr ""
 
 #: templates/accounts/add.html:62 templates/accounts/change.html:61
 #: templates/categories/add.html:27 templates/categories/change.html:34
-#: templates/importer/check.html:63 templates/ruleset/add.html:71
-#: templates/ruleset/change.html:50 templates/transactions/edit.html:46
+#: templates/importer/check.html:63 templates/importer/check.html:76
+#: templates/ruleset/add.html:71 templates/ruleset/change.html:50
+#: templates/transactions/edit.html:46
 msgid "Save"
 msgstr ""
 
@@ -136,20 +171,133 @@ msgstr ""
 msgid "Edit Account"
 msgstr ""
 
-#: templates/categories/add.html:4
-msgid "New Category"
+#: templates/analysis/index.html:21
+msgid "Parameters"
 msgstr ""
 
-#: templates/categories/add.html:4 templates/categories/change.html:4
-#: templates/categories/index.html:45 templates/overview/overview.html:154
-#: templates/overview/overview.html:205 templates/ruleset/add.html:4
+#: templates/analysis/index.html:22
+msgid "Chart"
+msgstr ""
+
+#: templates/analysis/index.html:23
+msgid "Table"
+msgstr ""
+
+#: templates/analysis/index.html:30
+msgid "Selection Parameters"
+msgstr ""
+
+#: templates/analysis/index.html:33
+msgid "What do you want to see?"
+msgstr ""
+
+#: templates/analysis/index.html:40
+msgid "Absolute Account Balance (end of month)"
+msgstr ""
+
+#: templates/analysis/index.html:44
+msgid "Relative Account Balance (end of month)"
+msgstr ""
+
+#: templates/analysis/index.html:49 templates/categories/add.html:4
+#: templates/categories/change.html:4 templates/categories/index.html:45
+#: templates/overview/overview.html:154 templates/overview/overview.html:205
+#: templates/ruleset/add.html:4
 msgid "Earnings"
 msgstr ""
 
-#: templates/categories/add.html:4 templates/categories/change.html:4
-#: templates/categories/index.html:49 templates/overview/overview.html:159
-#: templates/overview/overview.html:209 templates/ruleset/add.html:4
+#: templates/analysis/index.html:54 templates/analysis/index.html:73
+msgid "Overall"
+msgstr ""
+
+#: templates/analysis/index.html:58 templates/analysis/index.html:77
+msgid "By Rule"
+msgstr ""
+
+#: templates/analysis/index.html:62 templates/analysis/index.html:81
+msgid "By Category"
+msgstr ""
+
+#: templates/analysis/index.html:68 templates/categories/add.html:4
+#: templates/categories/change.html:4 templates/categories/index.html:49
+#: templates/overview/overview.html:159 templates/overview/overview.html:209
+#: templates/ruleset/add.html:4
 msgid "Spendings"
+msgstr ""
+
+#: templates/analysis/index.html:90
+msgid "For which account?"
+msgstr ""
+
+#: templates/analysis/index.html:95 templates/analysis/index.html:120
+#: templates/analysis/index.html:144 templates/ruleset/add.html:36
+msgid "Please select..."
+msgstr ""
+
+#: templates/analysis/index.html:96
+msgid "[All Accounts]"
+msgstr ""
+
+#: templates/analysis/index.html:101
+#: templates/importer/no_account_given.html:17
+msgid "Account"
+msgstr ""
+
+#: templates/analysis/index.html:122
+msgid "Rule"
+msgstr ""
+
+#: templates/analysis/index.html:146 templates/importer/check.html:20
+#: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:34
+#: templates/ruleset/change.html:23 templates/ruleset/index.html:14
+#: templates/transactions/edit.html:20
+msgid "Category"
+msgstr ""
+
+#: templates/analysis/index.html:151
+msgid "Timing?"
+msgstr ""
+
+#: templates/analysis/index.html:158
+msgid "From"
+msgstr ""
+
+#: templates/analysis/index.html:162
+msgid "To"
+msgstr ""
+
+#: templates/analysis/index.html:167
+msgid "Grouping"
+msgstr ""
+
+#: templates/analysis/index.html:171 templates/ruleset/add.html:51
+#: templates/ruleset/change.html:36
+msgid "monthly"
+msgstr ""
+
+#: templates/analysis/index.html:175 templates/ruleset/add.html:52
+#: templates/ruleset/change.html:37
+msgid "quarterly"
+msgstr ""
+
+#: templates/analysis/index.html:179
+msgid "half-yearly"
+msgstr ""
+
+#: templates/analysis/index.html:183
+msgid "yearly"
+msgstr ""
+
+#: templates/analysis/index.html:189
+msgid "Submit"
+msgstr ""
+
+#: templates/analysis/index.html:239 templates/overview/index.html:42
+msgid "total"
+msgstr ""
+
+#: templates/categories/add.html:4
+msgid "New Category"
 msgstr ""
 
 #: templates/categories/add.html:14 templates/categories/change.html:13
@@ -211,14 +359,6 @@ msgstr ""
 msgid "Check imported transactions"
 msgstr ""
 
-#: templates/importer/check.html:11 templates/importer/check.html:41
-#: templates/importer/multiple_rule_match.html:11
-#: templates/overview/overview.html:45 templates/overview/overview.html:56
-#: templates/transactions/edit.html:11 templates/transactions/index.html:10
-#: templates/transactions/index.html:27
-msgid "yyyy-MM-dd"
-msgstr ""
-
 #: templates/importer/check.html:13
 #: templates/importer/multiple_rule_match.html:13
 #: templates/transactions/edit.html:13
@@ -229,13 +369,6 @@ msgstr ""
 #: templates/importer/multiple_rule_match.html:14
 #: templates/transactions/edit.html:14
 msgid "Please enter a description"
-msgstr ""
-
-#: templates/importer/check.html:20
-#: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:34
-#: templates/ruleset/change.html:23 templates/ruleset/index.html:14
-#: templates/transactions/edit.html:20
-msgid "Category"
 msgstr ""
 
 #: templates/importer/check.html:22
@@ -250,13 +383,13 @@ msgstr ""
 msgid "I have noted this message"
 msgstr ""
 
-#: templates/importer/check.html:61
+#: templates/importer/check.html:61 templates/importer/check.html:75
 #: templates/importer/multiple_rule_match.html:40
 #: templates/importer/no_account_given.html:12
 msgid "Check again"
 msgstr ""
 
-#: templates/importer/check.html:75
+#: templates/importer/check.html:80
 msgid "No transactions found."
 msgstr ""
 
@@ -315,20 +448,12 @@ msgstr[1] ""
 msgid "Please decide for which account these transactions should be imported."
 msgstr ""
 
-#: templates/importer/no_account_given.html:17
-msgid "Account"
-msgstr ""
-
 #: templates/overview/index.html:16
 msgid "edit"
 msgstr ""
 
 #: templates/overview/index.html:17
 msgid "delete"
-msgstr ""
-
-#: templates/overview/index.html:42
-msgid "total"
 msgstr ""
 
 #: templates/overview/index.html:45
@@ -488,24 +613,12 @@ msgstr ""
 msgid "Short Description"
 msgstr ""
 
-#: templates/ruleset/add.html:36
-msgid "Please select..."
-msgstr ""
-
 #: templates/ruleset/add.html:48 templates/ruleset/change.html:33
 msgid "Regularity"
 msgstr ""
 
 #: templates/ruleset/add.html:50 templates/ruleset/change.html:35
 msgid "no regularity"
-msgstr ""
-
-#: templates/ruleset/add.html:51 templates/ruleset/change.html:36
-msgid "monthly"
-msgstr ""
-
-#: templates/ruleset/add.html:52 templates/ruleset/change.html:37
-msgid "quarterly"
 msgstr ""
 
 #: templates/ruleset/add.html:53 templates/ruleset/change.html:38
