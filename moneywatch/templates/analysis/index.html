@@ -210,7 +210,7 @@
     <canvas id="analysis_chart" class="chart-container" min-height="300" max-height="500" style="display:none;"></canvas>
   </div>
   
-  <div id="table" class="col s12">
+  <div id="table" class="col s12 m8 offset-m2 l6 offset-l3 xl4 offset-xl4">
   <br><br>
      <div class="center table-spinner circle-spinner">
         <div class="preloader-wrapper small active">
@@ -226,7 +226,19 @@
         </div>
       </div>
       <div class="table-container" style="display:none;">
-        Hier is die Tabelle
+        <table class="analysis-table" border="1">
+        <template>
+          <tr class="item">
+            <td class="center-align label-value"></td>
+          
+            <td class="right-align count-value"></td>
+            <td class="right-align valuta-value num"></td>
+          </tr>
+        </template>
+        <tr class="sum">
+          <td colspan="3" class="right-align"><span class="prefix">{% trans %}total{% endtrans %} </span><span class="num sum-value"></span></td>
+        </tr>
+        </table>
       </div>
     </div>
 </div>

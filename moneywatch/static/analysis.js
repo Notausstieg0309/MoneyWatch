@@ -31,6 +31,34 @@ function generateAnalysisChartData(res)
     return {labels: labels, data: data, pointColors: pointColors};
 }
 
+function createTable(res) {
+
+    var table_el = $("table.analysis-table").first();
+
+    table_el.find("tr.item").remove();
+    var tr_template = table_el.children("template").html();
+
+    $.each(res.data, function (index, item) {
+        
+        var new_tr_el = $(tr_template);
+        
+        new_tr_el.find(".label-value").html(item.label);
+        new_tr_el.find(".valuta-value").html(item.valuta_formatted);
+        new_tr_el.find(".valuta-value.num").data("num", item.valuta);
+        new_tr_el.find(".count-value").html(item.count);
+      
+        new_tr_el.insertBefore("table.analysis-table tr.sum");
+    });
+
+    var sum_tr_el = table_el.find("tr.sum");
+
+    sum_tr_el.find(".sum-value").html(res.sum_formatted);
+    sum_tr_el.find(".sum-value.num").data("num", res.sum);
+
+    // reformat the inserted numeric values
+    table_el.find('.num').each(function () { formatNumberEl(this); });
+}
+
 // draw the chart based on the response data
 function createAnalysisChart(res) 
 {   
@@ -509,9 +537,11 @@ $(function () {
                 var data = generateAnalysisChartData(res);
                 console.log("generated chart data", data);
                 createAnalysisChart(res);
+                createTable(res);
                 $("div.chart-spinner").hide()
+                $("div.table-spinner").hide()
                 $("canvas.chart-container").slideDown()
-                $("div.table-spinner").show()
+                $("div.table-container").show()
             });
         }
 
