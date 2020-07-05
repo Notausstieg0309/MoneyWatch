@@ -166,9 +166,10 @@ function hideAllAccountOption()
     var allaccounts_el = select_el.children("option.all_accounts");
     
     if( allaccounts_el.is(':checked') ) {
-        allaccounts_el.attr("disabled", true);
         select_el.children("option:first").prop("selected", "selected");
     }
+
+    allaccounts_el.attr("disabled", true);
     allaccounts_el.hide();
     
     select_el.formSelect();
