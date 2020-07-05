@@ -182,7 +182,7 @@ def getLabelForDate(date, interval):
     elif interval == "3":
         return gettext(u'Q%(quarter)s/%(year)s', quarter = utils.get_quarter_from_date(date), year = date.year)
     else:
-        return gettext("%(month_name)s %(year)s", month_name = month_names[date.month-1], year = date.year)    
+        return gettext("%(month_name)s %(year)s", month = date.month, month_name = month_names[date.month-1], year = date.year)    
 
 
 def createResultForTransactions(result, transactions):
