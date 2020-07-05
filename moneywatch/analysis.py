@@ -9,8 +9,7 @@ import re
 import moneywatch.utils.functions as utils
 
 from moneywatch.utils.objects import Transaction, Rule, Category, Account
-from flask_babel import format_date, gettext
-
+from flask_babel import format_date, gettext, format_currency
 
 
 bp = Blueprint('analysis', __name__)
@@ -99,6 +98,7 @@ def getAbsoluteBalance(account_id, start, end, interval):
             orig_valuta = item["valuta"]
             
             item["valuta"] = balance
+            item["valuta_formatted"] = format_currency(item["valuta"], "EUR")
 
             balance = round(balance - orig_valuta, 2)
             
@@ -159,6 +159,7 @@ def transToDict(transaction):
     result = {}
 
     result["valuta"] = transaction.valuta
+    result["valuta_formatted"] = format_currency(transaction.valuta, "EUR")
     result["description"] = transaction.description
     result["full_text"] = transaction.full_text
     result["date"] = format_date(transaction.date,gettext("yyyy-MM-dd"))
@@ -195,7 +196,7 @@ def createResultForTransactions(result, transactions):
 
         if tmp.get("label", transaction_label) != transaction_label:
             sum = round(sum + tmp["valuta"], 2)
-            
+            tmp["valuta_formatted"] = format_currency(tmp["valuta"], "EUR")
             data.append(tmp.copy())
             
             tmp["valuta"] = 0
@@ -211,10 +212,12 @@ def createResultForTransactions(result, transactions):
     # add remaining items of the last interval
     if tmp["count"] > 0:
         sum = round(sum + tmp["valuta"], 2)
+        tmp["valuta_formatted"] = format_currency(tmp["valuta"], "EUR")
         data.append(tmp)
 
     result["data"] = data
     result["sum"] = sum 
+    result["sum_formatted"] = format_currency(result["sum"], "EUR")
 
     return result
            
