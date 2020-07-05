@@ -103,6 +103,10 @@ div.no_content {
     border-right: 1px solid #26a69a; 
     border-bottom: 1px solid #26a69a;
 }
+/* move dropdown label according to the padding 5px to the right */
+.select-wrapper+label {
+    left:5px;
+}
 
 /*
   ____                       _               
