@@ -600,8 +600,8 @@ ul.criteria-container {
     border-radius: 5px;
 }
 
+/* format the sum row */
 table.analysis-table tr.sum span.prefix,span.num {
-    /*font-size: 1.3em;*/
     font-weight: bold;
     border-bottom: 4px double #000;
     padding: 5px 0px 0px 5px;
@@ -611,6 +611,7 @@ table.analysis-table tr.sum span.prefix {
     padding-right: 10px;
 }
 
+/* unset the border by materialize */
 table.analysis-table tr.sum {
     border-bottom: unset;
 }
