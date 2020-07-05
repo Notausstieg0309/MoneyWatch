@@ -375,6 +375,10 @@ function criteriaChangedHandler() {
                     setTimerangeControlsAndShow(account_start, account_end);
                 }   
 
+            } else if(selected_subtype_el.is("#overall")) {
+                setTimerangeControlsAndShow(account_start, account_end);
+                $("ul.criteria-container > li#rule").slideUp();  
+                $("ul.criteria-container > li#category").slideUp();  
             } else {
               $("ul.criteria-container > li#rule").slideUp();  
               $("ul.criteria-container > li#category").slideUp();  
