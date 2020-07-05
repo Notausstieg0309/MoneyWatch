@@ -160,6 +160,29 @@ function hideAllAccountOption()
     select_el.formSelect();
 }
 
+
+function setTimerangeControlsAndShow(start, end) {
+
+    var start_el = $("ul.criteria-container > li#timing input#start");
+    var end_el = $("ul.criteria-container > li#timing input#end");
+
+    start_el.attr("min", start);
+    start_el.attr("max", end);
+    end_el.attr("min", start);
+    end_el.attr("max", end);
+    
+    if(start_el.val() == "") {
+        start_el.val(start);
+    }
+
+    if(end_el.val() == "") {
+        end_el.val(end);
+    }
+
+    $("ul.criteria-container > li#timing").slideDown();
+}
+
+
 function createRequestDataObject() {
     
     var selected_type_el = $('ul.criteria-container input:radio[name="type"]:checked');
@@ -324,12 +347,8 @@ function subtypeChangeHandler() {
                         }
                     }
                     
-                    $("ul.criteria-container > li#timing input#start").attr("min", formatYearMonth(start));
-                    $("ul.criteria-container > li#timing input#start").attr("max", formatYearMonth(end));
-                    $("ul.criteria-container > li#timing input#end").attr("min", formatYearMonth(start));
-                    $("ul.criteria-container > li#timing input#end").attr("max", formatYearMonth(end));
+                    setTimerangeControlsAndShow(formatYearMonth(start),formatYearMonth(end));
                     
-                    $("ul.criteria-container > li#timing").slideDown();
                 } 
             } else if(selected_subtype_el.is("#category")) {
                 // hide rule selection and show the category selection
@@ -337,16 +356,9 @@ function subtypeChangeHandler() {
                 showCategorySelect(selected_account_el.attr("value"), selected_type_el.attr("value"));
                 
                 if(selected_category_el.length) {
-                    var start = account_start;
-                    var end = account_end;
-                    
-                    $("ul.criteria-container > li#timing input#start").attr("min", start);
-                    $("ul.criteria-container > li#timing input#start").attr("max", end);
-                    $("ul.criteria-container > li#timing input#end").attr("min", start);
-                    $("ul.criteria-container > li#timing input#end").attr("max", end);
-                    
-                    $("ul.criteria-container > li#timing").slideDown();
+                    setTimerangeControlsAndShow(account_start, account_end);
                 }   
+
             } else {
               $("ul.criteria-container > li#rule").slideUp();  
               $("ul.criteria-container > li#category").slideUp();  
@@ -366,12 +378,7 @@ function subtypeChangeHandler() {
         var start = selected_account_el.data("start");
         var end = selected_account_el.data("end");
         
-        $("ul.criteria-container > li#timing input#start").attr("min", start);
-        $("ul.criteria-container > li#timing input#start").attr("max", end);
-        $("ul.criteria-container > li#timing input#end").attr("min", start);
-        $("ul.criteria-container > li#timing input#end").attr("max", end);
-        
-        $("ul.criteria-container > li#timing").slideDown();
+        setTimerangeControlsAndShow(start, end);
     }
     
     
