@@ -69,6 +69,9 @@ def getRelativeBalance(account_id, start, end, interval):
         accounts = Account.query.all()
         for account in accounts:
             transactions.extend(account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month)))
+
+        # transactions are not in the correct date order as the transaction list is extended per account with the given timerange, we need to sort everything correctly
+        transactions.sort(key=lambda x: x.date)
     else:
         account = Account.query.filter_by(id=account_id).one()
         transactions = account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
