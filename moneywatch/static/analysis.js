@@ -82,14 +82,14 @@ function createAnalysisChart(res)
 										var yPos = yScale.getPixelForValue(0);
 
 									    var gradientFill = c.ctx.createLinearGradient(0, 0, 0, c.height);
-									    gradientFill.addColorStop(0, '#88f29d');
-									    gradientFill.addColorStop(yPos / c.height - 0.00001, '#8cffa4');
-									    gradientFill.addColorStop(yPos / c.height + 0.00001, '#edb9b2');
-									    gradientFill.addColorStop(1, '#eb7d6e');
+									    gradientFill.addColorStop(0, '#9dfcb0');
+									    gradientFill.addColorStop(yPos / c.height - 0.00001, '#52de6e');
+									    gradientFill.addColorStop(yPos / c.height + 0.00001, '#ed8f82');
+									    gradientFill.addColorStop(1, '#f56b58');
 
-					                    var model = c.data.datasets[0]._meta[Object.keys(dataset._meta)[0]].$filler.el._model;
-									    model.backgroundColor = gradientFill;
-																																				        }
+                                        var model = c.data.datasets[0]._meta[Object.keys(dataset._meta)[0]].$filler.el._model;
+                                        model.backgroundColor = gradientFill;
+                                    }
 				    }],
 
 			type: 'line',
