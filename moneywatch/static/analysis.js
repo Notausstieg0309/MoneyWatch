@@ -52,7 +52,7 @@ function createTable(res) {
 
     var sum_tr_el = table_el.find("tr.sum");
 
-    sum_tr_el.find(".sum-value").html(res.sum_formatted);
+    sum_tr_el.find(".sum-value").html(res.sum > 0 ? "+" + res.sum_formatted : res.sum_formatted);
     sum_tr_el.find(".sum-value.num").data("num", res.sum);
 
     // reformat the inserted numeric values
