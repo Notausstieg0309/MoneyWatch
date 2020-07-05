@@ -24,6 +24,11 @@ nav ul a.disabled {
     pointer-events: none !important;
 }
 
+/* active and hovered tabs link should appear bold */
+ul.tabs li.tab a.active, ul.tabs li.tab:not(.disabled) a:hover {
+    font-weight: bold;
+}
+
 /* change mouse icon for tooltipped icons, disable selection */
 i.material-icons.tooltipped {
     cursor: default;
