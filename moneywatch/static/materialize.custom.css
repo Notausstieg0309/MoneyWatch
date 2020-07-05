@@ -617,6 +617,6 @@ table.analysis-table tr.sum {
 }
 
 /* disable hidden overflow on criteria container, so that a big dropdown menu can be seen even if it is bigger than the container */
-ul.criteria-container {
+ul.collection {
     overflow: unset;
 }

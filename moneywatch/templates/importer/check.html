@@ -17,13 +17,15 @@
   </tr>
   <tr>
     <td>
-        <label>{% trans %}Category{% endtrans %}</label>
-        <select class="browser-default" name="{{ index }}_category" required>
+      <div class="input-field">
+        <select name="{{ index }}_category" required>
             <option disabled {% if transaction.category_id is none %}selected {% endif %}value>{% trans %}Please Choose{% endtrans %}...</option>
             {% for category in categories[transaction.account_id][transaction.type] %}
             <option value="{{category["id"] }}"{% if loop.length == 1 or (transaction.category_id and transaction.category_id |int == category["id"]) %} selected{% endif %}>{{ category["path"] }}</option>
             {% endfor %}
         </select>
+        <label>{% trans %}Category{% endtrans %}</label>
+      </div>
     </td>
   </tr>
   <tr>

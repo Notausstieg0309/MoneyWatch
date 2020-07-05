@@ -17,8 +17,8 @@
   </tr>
   <tr>
     <td>
-        <label>{% trans %}Category{% endtrans %}</label>
-        <select class="browser-default" data-rule-no-empty="1" name="category_id" required>
+      <div class="input-field">
+        <select data-rule-no-empty="1" name="category_id" required>
         <option disabled value>{% trans %}Please Choose{% endtrans %}...</option>
         {% for cat in categories recursive %}
             <option value="{{ cat['id'] }}"{% if transaction.category_id == cat['id'] %} selected{% endif %}>{{ cat.getCategoryPath(" > ") }}</option>
@@ -28,6 +28,8 @@
 
         {% endfor %}
         </select>
+        <label>{% trans %}Category{% endtrans %}</label>
+      </div>
     </td>
   </tr>
   <tr>

@@ -31,29 +31,32 @@
   </div>
   <div class="row">
     <div class="col s12">
-      <label>{% trans %}Category{% endtrans %}</label>
-      <select name="category_id" required>
-        <option disabled{% if selected_category == 0 %} selected{% endif %} value>{% trans %}Please select...{% endtrans %}</option>
-        {% for category in categories recursive %}
-        <option value="{{ category['id'] }}"{% if (loop.length == 1 and loop.depth == 1 and category.childs | length == 0) or (selected_category == category['id']) %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
-        {% if category.childs | length > 0 %}
-            {{ loop(category.childs)}} 
-        {% endif %}
-        {% endfor %}
-      </select>
+      <div class="input-field">
+        <select name="category_id" required>
+          <option disabled{% if selected_category == 0 %} selected{% endif %} value>{% trans %}Please select...{% endtrans %}</option>
+          {% for category in categories recursive %}
+          <option value="{{ category['id'] }}"{% if (loop.length == 1 and loop.depth == 1 and category.childs | length == 0) or (selected_category == category['id']) %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
+          {% if category.childs | length > 0 %}
+              {{ loop(category.childs)}} 
+          {% endif %}
+          {% endfor %}
+        </select>
+        <label>{% trans %}Category{% endtrans %}</label>
+      </div>
     </div>
   </div>
   <div class="row">
     <div class="col s6">
-    <label>{% trans %}Regularity{% endtrans %}</label>
-    <select class="browser-default" name="regular">
-       <option value="0"{% if 0 == selected_regular %} selected{% endif %}>{% trans %}no regularity{% endtrans %}</option>
-       <option value="1"{% if 1 == selected_regular %} selected{% endif %}>{% trans %}monthly{% endtrans %}</option>
-       <option value="3"{% if 3 == selected_regular %} selected{% endif %}>{% trans %}quarterly{% endtrans %}</option>
-       <option value="6"{% if 6 == selected_regular %} selected{% endif %}>{% trans %}every half year{% endtrans %}</option>
-       <option value="12"{% if 12 == selected_regular %} selected{% endif %}>{% trans %}every year{% endtrans %}</option>
-    </select>
-
+      <div class="input-field">  
+        <select name="regular">
+          <option value="0"{% if 0 == selected_regular %} selected{% endif %}>{% trans %}no regularity{% endtrans %}</option>
+          <option value="1"{% if 1 == selected_regular %} selected{% endif %}>{% trans %}monthly{% endtrans %}</option>
+          <option value="3"{% if 3 == selected_regular %} selected{% endif %}>{% trans %}quarterly{% endtrans %}</option>
+          <option value="6"{% if 6 == selected_regular %} selected{% endif %}>{% trans %}every half year{% endtrans %}</option>
+          <option value="12"{% if 12 == selected_regular %} selected{% endif %}>{% trans %}every year{% endtrans %}</option>
+        </select>
+        <label>{% trans %}Regularity{% endtrans %}</label>
+      </div>
     </div>
     </div>
     <div id="regular_form_fields" class="row" style="display:none;">

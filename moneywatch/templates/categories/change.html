@@ -18,8 +18,8 @@
     <input name="budget_monthly" min="0" type="number" id="budget_monthly" value="{{ request.form['budget_monthly'] or category.budget_monthly }}"><br>
     {% endif %}
     
-    <label for="parent">{% trans %}Superior Category{% endtrans %}</label>
-    <select name="parent">
+    <div class="input-field">
+      <select name="parent">
         <option {% if selected_parent == 0 %} selected{% endif %} value="0">[{% trans %}none{% endtrans %}]</option>
         {% for cat in categories recursive %}
             {% if cat.id != category.id %}
@@ -30,7 +30,11 @@
             {% endif %}
 
         {% endfor %}
-    </select><br>
+      </select>
+      <label for="parent">{% trans %}Superior Category{% endtrans %}</label>
+    </div>
+    
+    <br>
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
  </div>
