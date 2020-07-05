@@ -509,7 +509,7 @@ class Rule(db.Model):
             
         return result.all()
 
-    def last_transaction(self, before=None):
+    def latest_transaction(self, before=None):
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
         
         if before is not None:
@@ -527,9 +527,9 @@ class Rule(db.Model):
     def updateNextDue(self, date, valuta):
                 
         if self.regular:
-            last_transaction = self.last_transaction()
+            latest_transaction = self.latest_transaction()
             
-            if last_transaction is None or (last_transaction is not None and last_transaction.date < date):
+            if latest_transaction is None or (latest_transaction is not None and latest_transaction.date < date):
               
                 next_due = utils.add_months(date, self.regular)
                 
@@ -697,9 +697,9 @@ def handle_before_insert(session, item):
         
                 if rule.regular:
                     # calculate trend compared to the latest transaction in the database
-                    last_transaction = rule.last_transaction(item.date)
-                    if last_transaction is not None:
-                        trend = round(item.valuta - last_transaction.valuta,2)
+                    latest_transaction = rule.latest_transaction(item.date)
+                    if latest_transaction is not None:
+                        trend = round(item.valuta - latest_transaction.valuta,2)
                         item.trend = trend if trend != 0 else None
                         current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s" , item.trend, item.description, item.valuta, item.date)
 
