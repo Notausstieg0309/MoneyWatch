@@ -104,6 +104,12 @@ div.no_content {
     border-bottom: 1px solid #26a69a;
 }
 
+
+/* disable hidden overflow on collection container, so that a big dropdown menu can be seen even if it is bigger than the container */
+ul.collection {
+    overflow: unset;
+}
+
 /* move dropdown label according to the padding 5px to the right */
 .select-wrapper+label {
     left:5px;
@@ -616,7 +622,3 @@ table.analysis-table tr.sum {
     border-bottom: unset;
 }
 
-/* disable hidden overflow on criteria container, so that a big dropdown menu can be seen even if it is bigger than the container */
-ul.collection {
-    overflow: unset;
-}
