@@ -31,11 +31,11 @@ class Account(db.Model):
     
     @property
     def oldest_transaction(self):
-        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.asc()).first()
+        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.asc(), Transaction.id.asc()).first()
         
     @property
     def latest_transaction(self):
-        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.desc()).first()
+        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.desc(), Transaction.id.desc()).first()
 
     @property
     def iban_formatted(self):
@@ -515,13 +515,13 @@ class Rule(db.Model):
         if before is not None:
             result = result.filter(Transaction.date <= before)
         
-        return result.order_by(Transaction.id.desc()).first()
+        return result.order_by(Transaction.date.desc(), Transaction.id.desc()).first()
         
     @property
     def oldest_transaction(self):
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
         
-        return result.order_by(Transaction.id.asc()).first()
+        return result.order_by(Transaction.date.asc(), Transaction.id.asc()).first()
 
         
     def updateNextDue(self, date, valuta):
