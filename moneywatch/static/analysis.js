@@ -534,8 +534,15 @@ $(function () {
                 createAnalysisChart(res);
                 $("div.chart-spinner").hide()
                 $("canvas.chart-container").slideDown()
+                $("div.table-spinner").show()
             });
         }
+
+        $("div.chart-spinner").show()
+        $("div.table-spinner").show()
+
+        $("canvas.chart-container").hide()
+        $("div.table-container").hide()
 
         $("ul.analysis-tabs li.disabled").removeClass("disabled");
 
