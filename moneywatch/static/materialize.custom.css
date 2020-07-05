@@ -626,3 +626,7 @@ table.analysis-table tr.sum {
     border-bottom: unset;
 }
 
+/* remove the materialize border between the timerange controls */
+li.criteria#timing tr {
+    border-bottom: unset;
+}
