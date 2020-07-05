@@ -99,9 +99,6 @@ function createAnalysisChart(res)
                             { 
                                 label: res.description,
                                 data: items.data,
-                                //links: items.links,
-                                //pointBackgroundColor: items.pointBackgroundColors,
-                                //backgroundColor: backgroundColor,
                                 pointBackgroundColor: items.pointColors,
                                 pointRadius: 5,
                                 pointHoverRadius: 10,
