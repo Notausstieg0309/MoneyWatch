@@ -67,6 +67,7 @@ div.flash {
   }
 }
 
+/* navbar background color */
 nav {
     background: #2e4c79;
 }
@@ -76,6 +77,33 @@ div.no_content {
     font-style: italic;
     font-size: 1.1em;
 }
+
+/* arrange materialize dropdown menu items a bit tighter */
+.dropdown-content li {
+    min-height: unset;
+}
+.dropdown-content li>a, .dropdown-content li>span {
+    font-size: 16px;
+    padding: 6px 16px;
+}
+
+
+/* border settings for dropdown boxes */
+.select-wrapper input.select-dropdown {
+    border-radius: 0px 0px 5px 5px; 
+    border-left: 1px solid #9e9e9e;
+    border-right: 1px solid #9e9e9e; 
+    border-bottom: 1px solid #9e9e9e;
+    
+    padding:0px 5px;
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-left: 1px solid #26a69a;
+    border-right: 1px solid #26a69a; 
+    border-bottom: 1px solid #26a69a;
+}
+
 /*
   ____                       _               
  / __ \                     (_)              

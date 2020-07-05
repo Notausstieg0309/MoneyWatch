@@ -94,7 +94,7 @@
           <h6>For which account?</h6>
           <hr>
           <div class="input-field"> 
-            <select id="account" class="browser-default">
+            <select id="account">
               <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
               <option class="all_accounts" data-start="{{ oldest }}" data-end="{{ newest }}" value="ALL" >{% trans %}[All Accounts]{% endtrans %}</option>
               {% for account in account_list %}
