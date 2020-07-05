@@ -85,6 +85,7 @@
             </span>
           </div>
         </li>
+        {% if account_list|length > 1 %} 
         <li class="collection-item criteria" id="account"  style="display:none;">
           <span class="inline-block">
             <h6 class="inline-block">{% trans %}For which account?{% endtrans %}</h6>
@@ -92,15 +93,22 @@
           </span>
           <div class="input-field"> 
             <select id="account">
-              <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
-              <option class="all_accounts" data-start="{{ oldest }}" data-end="{{ newest }}" value="ALL" >{% trans %}[All Accounts]{% endtrans %}</option>
+              <option disabled{% if account_list|length > 1 %} selected{% endif %}>{% trans %}Please select...{% endtrans %}</option>
+              <option class="all_accounts" data-start="{{ oldest }}" data-end="{{ newest }}" value="ALL">{% trans %}[All Accounts]{% endtrans %}</option>
               {% for account in account_list %}
-              <option value="{{ account["id"] }}" data-start="{{ account["start"] }}" data-end="{{ account["end"] }}">{{ account["name"] }}</option>
+              <option value="{{ account['id'] }}" data-start="{{ account['start'] }}" data-end="{{ account['end'] }}"{% if account_list|length == 1 %} selected{% endif %}>{{ account['name'] }}</option>
               {% endfor %}
             </select>
             <label>{% trans %}Account{% endtrans %}</label>
           </div>
         </li>
+        {% elif account_list|length == 1 %}
+        <li class="collection-item" style="display:none;">
+          <select id="account">
+            <option data-start="{{ account_list[0]['start'] }}" data-end="{{ account_list[0]['end'] }}" value="{{ account_list[0]['id'] }}" selected></option>
+          </select>
+        </li>
+        {% endif %}
         <li class="collection-item criteria" id="rule" style="display:none;">
           <div class="center circle-spinner">
             <div class="preloader-wrapper small active">
