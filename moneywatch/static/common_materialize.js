@@ -13,7 +13,7 @@ $(document).ready(function(){
 function formatNumberEl(el) {
     item = $(el);
     
-    if (Number(item.attr("data-num")) < 0)
+    if (Number(item.data("num")) < 0)
     {
         item.addClass('negative').removeClass("positive");
     } 
