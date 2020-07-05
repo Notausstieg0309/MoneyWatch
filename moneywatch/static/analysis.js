@@ -1,11 +1,12 @@
 var sel_dates = {}
 var analysis_chart = null;
 
-
+// helper function to generate <input type="month"> compatible strings from JS Date() object
 function formatYearMonth(date) {
     return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2)
 }
 
+// generate data items for charting based on the response data
 function generateAnalysisChartData(res)
 {
     var labels = []
@@ -30,7 +31,7 @@ function generateAnalysisChartData(res)
     return {labels: labels, data: data, pointColors: pointColors};
 }
 
-
+// draw the chart based on the response data
 function createAnalysisChart(res) 
 {   
         var canvas = $("canvas#analysis_chart")[0]
@@ -119,7 +120,7 @@ function createAnalysisChart(res)
         });
 }
 
-
+// show the "[All Accounts"] option from account dropdown
 function showAllAccountOption()
 {
      var select_el = $("ul.criteria-container select#account");
@@ -130,6 +131,7 @@ function showAllAccountOption()
      select_el.formSelect();
 }
 
+// hide the "[All Accounts"] option from account dropdown
 function hideAllAccountOption()
 {
     var select_el = $("ul.criteria-container select#account");
@@ -144,7 +146,7 @@ function hideAllAccountOption()
     select_el.formSelect();
 }
 
-
+// configure the timerange controls to the given valid timerange and show them
 function setTimerangeControlsAndShow(start, end) {
 
     var start_el = $("ul.criteria-container > li#timing input#start");
@@ -166,7 +168,8 @@ function setTimerangeControlsAndShow(start, end) {
     $("ul.criteria-container > li#timing").slideDown();
 }
 
-
+// create a javascript object with all query parameters based on the selected inputs.
+// only if the inputs are all valid, the object will be returned
 function createRequestDataObject() {
     
     var selected_type_el = $('ul.criteria-container input:radio[name="type"]:checked');
@@ -253,8 +256,8 @@ function createRequestDataObject() {
     return undefined; 
 }
 
-
-function subtypeChangeHandler() {
+// handler for criteria inputs 
+function criteriaChangedHandler() {
     
     var selected_type_el = $('ul.criteria-container input:radio[name="type"]:checked');
     var selected_type_value = selected_type_el.attr("value");
@@ -267,7 +270,7 @@ function subtypeChangeHandler() {
     
     var selected_category_el = $("ul.criteria-container select#category option:checked:not([disabled])");
     
-    
+    // when type is selected, show account dropdown and subtype radio buttons (for type "in" / "out")
     if(selected_type_el.length) {
         
         $("ul.criteria-container > li#account").slideDown();
@@ -296,7 +299,7 @@ function subtypeChangeHandler() {
         }
     }       
             
-    
+    // when a account is selected for type "in" / "out", show the optional category/rule selection
     if(selected_account_el.length && (selected_type_el.is("#in") || selected_type_el.is("#out") ) ) {
         
         var account_start = selected_account_el.data("start");
@@ -316,6 +319,7 @@ function subtypeChangeHandler() {
                     var rule_start = selected_rule_el.data("start");
                     var rule_end = selected_rule_el.data("end");
                     
+                    // adapt the maximum timerange (start/end) to the rule timerange if it's smaller
                     if(rule_start != undefined) {
                         rule_start = new Date(rule_start);
                         
@@ -332,7 +336,6 @@ function subtypeChangeHandler() {
                     }
                     
                     setTimerangeControlsAndShow(formatYearMonth(start),formatYearMonth(end));
-                    
                 } 
             } else if(selected_subtype_el.is("#category")) {
                 // hide rule selection and show the category selection
@@ -479,37 +482,11 @@ function showCategorySelect(account_id, type) {
 
 $(function () {
 
-    $('ul.criteria-container input:radio[name="type"]').change(function(){
-        subtypeChangeHandler();
+    // if a criteria input changes, adapt the UI flow
+    $('ul.criteria-container input,select').change(function(){
+        criteriaChangedHandler();
     });
 
-    $('ul.criteria-container select#account').change(function(){
-        subtypeChangeHandler(); 
-    });
-    
-    $('ul.criteria-container select#rule').change(function(){
-        subtypeChangeHandler(); 
-    });
-    
-    $('ul.criteria-container select#category').change(function(){
-        subtypeChangeHandler(); 
-    });
-    
-    $('ul.criteria-container input.subtype:radio').change(function(){
-        subtypeChangeHandler(); 
-    });
-    
-    $('ul.criteria-container input.interval').change(function(){
-        subtypeChangeHandler(); 
-    });
-    
-    $('ul.criteria-container input#start').change(function(){
-        subtypeChangeHandler(); 
-    });
-    
-    $('ul.criteria-container input#end').change(function(){
-        subtypeChangeHandler(); 
-    });
     
     $('ul.criteria-container button#submit').click(function () {
         
