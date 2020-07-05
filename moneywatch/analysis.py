@@ -18,22 +18,35 @@ bp = Blueprint('analysis', __name__)
 
 def calcAbsAccountBalanceFor(account_id, date):
 
-    account = Account.query.filter_by(id=account_id).one()
-    
-    balance = account.balance
 
-    last_transaction = account.latest_transaction
-    
-    if last_transaction:
-    
-        start = date + datetime.timedelta(days=1)
- 
-        transactions = account.transactions(start, last_transaction.date)
+    balance = None
+
+    if account_id == "ALL":
+
+        accounts = Account.query.all()
+        balance = 0
+
+        for account in accounts:
+            balance += round(calcAbsAccountBalanceFor(account.id, date), 2)
+
+    else:
+
+        account = Account.query.filter_by(id=account_id).one()
         
-        for transaction in transactions:
-            balance = round(balance - transaction.valuta, 2)
-    current_app.logger.error("calculated account balance for '%s': %s", date, balance)  
+        balance = account.balance
+
+        last_transaction = account.latest_transaction
+        
+        if last_transaction:
+        
+            start = date + datetime.timedelta(days=1)
     
+            transactions = account.transactions(start, last_transaction.date)
+            
+            for transaction in transactions:
+                balance = round(balance - transaction.valuta, 2)
+        current_app.logger.error("calculated account balance for '%s': %s", date, balance)  
+        
     return balance
           
     
@@ -59,9 +72,16 @@ def createBaseData(start, end, interval):
 def getRelativeBalance(account_id, start, end, interval):
 
     result = createBaseData(start, end, interval)
-    account = Account.query.filter_by(id=account_id).one()
 
-    transactions = account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
+    transactions = []
+
+    if account_id == "ALL":
+        accounts = Account.query.all()
+        for account in accounts:
+            transactions.extend(account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month)))
+    else:
+        account = Account.query.filter_by(id=account_id).one()
+        transactions = account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
     
     transactions = filter(lambda x: x.type != "message", transactions)
     
@@ -246,7 +266,9 @@ def index():
     accounts = Account.query.all()
     
     account_list = []
-    
+    oldest = None
+    newest = None
+
     for account in accounts:
     
         item = {}
@@ -261,10 +283,26 @@ def index():
         else:
             item["end"] = latest_transaction.date.strftime("%Y-%m")
             item["start"] = oldest_transaction.date.strftime("%Y-%m")
-                
+
+        if oldest is None:
+            oldest = oldest_transaction.date   
+        elif oldest > oldest_transaction.date:
+            oldest = oldest_transaction.date
+
+        if newest is None:
+            newest = latest_transaction.date   
+        elif newest < latest_transaction.date:
+            newest = latest_transaction.date
+
         account_list.append(item)
         
-    return render_template('analysis/index.html', account_list=account_list)
+    if oldest is not None:
+        oldest = oldest.strftime("%Y-%m")
+
+    if newest is not None:
+        newest = newest.strftime("%Y-%m")
+        
+    return render_template('analysis/index.html', account_list=account_list, oldest=oldest, newest=newest)
 
 
 @bp.route('/analysis/data/', methods=["POST"])
