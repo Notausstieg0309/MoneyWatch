@@ -45,8 +45,7 @@ def calcAbsAccountBalanceFor(account_id, date):
             
             for transaction in transactions:
                 balance = round(balance - transaction.valuta, 2)
-        current_app.logger.error("calculated account balance for '%s': %s", date, balance)  
-        
+
     return balance
           
     
