@@ -99,8 +99,11 @@ def getAbsoluteBalance(account_id, start, end, interval):
         new_data = []
         old_data = result["data"]
         
+        # reverse the list to get the latest item first, 
+        # from here we start to calculate the absolute balance
+        # back to the oldest item
         old_data.reverse()
-        
+
         for item in result["data"]:
         
             orig_valuta = item["valuta"]
@@ -111,8 +114,11 @@ def getAbsoluteBalance(account_id, start, end, interval):
             balance = round(balance - orig_valuta, 2)
             
             new_data.append(item)
-    
+
+        # now reverse again, to get the oldest item
+        # first which is the order to display the data
         new_data.reverse()
+
         result["data"] = new_data
     
    
