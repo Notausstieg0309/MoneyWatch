@@ -541,7 +541,13 @@ $(function () {
                 var data = generateAnalysisChartData(res);
                 console.log("generated chart data", data);
                 createAnalysisChart(res);
+                $("div.chart-spinner").hide()
+                $("canvas.chart-container").slideDown()
             });
         }
+
+        $("ul.analysis-tabs li.disabled").removeClass("disabled");
+
+        $("ul.analysis-tabs").tabs("select", "chart");
     });    
 });

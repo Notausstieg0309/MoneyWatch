@@ -17,10 +17,10 @@
 
  <div class="row">
     <div class="col s12">
-      <ul class="tabs">
+      <ul class="tabs analysis-tabs">
         <li class="tab col s4"><a class="active" href="#settings">Settings</a></li>
-        <li class="tab col s4"><a href="#chart">Chart</a></li>
-        <li class="tab col s4"><a href="#table">Table</a></li>
+        <li class="tab disabled col s4"><a href="#chart">Chart</a></li>
+        <li class="tab disabled col s4"><a href="#table">Table</a></li>
 
       </ul>
     </div>
@@ -191,8 +191,43 @@
     </ul>
   </div>
   
-  <div id="chart" class="col s12"><canvas id="analysis_chart" min-height="300" max-height="500"></canvas></div>
+  <div id="chart" class="col s12">
+  <br><br>
+   <div class="center chart-spinner circle-spinner">
+
+            <div class="preloader-wrapper small active">
+              <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+    <canvas id="analysis_chart" class="chart-container" min-height="300" max-height="500" style="display:none;"></canvas>
+  </div>
   
-  <div id="table" class="col s12">Hier is the tabelle</div>
+  <div id="table" class="col s12">
+  <br><br>
+     <div class="center table-spinner circle-spinner">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-container" style="display:none;">
+        Hier is die Tabelle
+      </div>
+    </div>
 </div>
 {% endblock %}
