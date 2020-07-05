@@ -54,17 +54,9 @@ def createBaseData(start, end, interval):
     result = {}
     
     result["interval"] = interval
-    
-    if interval == "1":#
-        result["start"] = format_date(start,gettext("yyyy/MM"))
-        result["end"] = format_date(end,gettext("yyyy/MM"))
-        result["month_names"] = utils.get_babel_month_names()
-    elif interval == "3":
-        result["start"] = gettext(u'Q%(quarter)s/%(year)s', quarter = utils.get_quarter_from_date(start), year = start.year)
-        result["end"] = gettext(u'Q%(quarter)s/%(year)s', quarter = utils.get_quarter_from_date(end), year = end.year)
-    elif interval == "12":
-        result["start"] = str(start.year)
-        result["end"] = str(end.year)
+
+    result["start"] = getLabelForDate(start, interval)
+    result["end"] =  getLabelForDate(end, interval)
         
     return result
     
@@ -158,9 +150,6 @@ def getBalanceByCategory(start, end, interval, category_id):
     transactions.sort(key=lambda x: x.date)
     
     (result["sum"], result["data"]) = createResultForTransactions(transactions, interval)
-    
-    if interval == "1":
-        result["month_names"] = utils.get_babel_month_names()
      
     return result  
 
@@ -176,6 +165,21 @@ def transToDict(transaction):
 
     return result
 
+
+def getLabelForDate(date, interval):
+
+    month_names = utils.get_babel_month_names()
+
+    if interval == "12":
+        return date.year
+    elif interval == "6":
+        return gettext(u'%(half_year)sH %(year)s', half_year = utils.get_half_year_from_date(date), year = date.year)
+    elif interval == "3":
+        return gettext(u'Q%(quarter)s/%(year)s', quarter = utils.get_quarter_from_date(date), year = date.year)
+    else:
+        return gettext("%(month_name)s %(year)s", month_name = month_names[date.month-1], year = date.year)    
+
+
 def createResultForTransactions(transactions, interval):
     
     tmp = {"valuta": 0, "count": 0, "transactions": []}
@@ -183,106 +187,30 @@ def createResultForTransactions(transactions, interval):
     result = []
     sum = 0
     
-    if interval == "1": # month based
-            
-        for transaction in transactions:
-            
-            if tmp.get("month", transaction.date.month) != transaction.date.month:
-                tmp["valuta"] = round(tmp["valuta"],2)
-                
-                sum += tmp["valuta"]
-                
-                result.append(tmp.copy())
-                
-                tmp["valuta"] = 0
-                tmp["count"] = 0
-                tmp["transactions"] = []
+    for transaction in transactions:
+        transaction_label = getLabelForDate(transaction.date, interval)
 
-            tmp["count"] += 1
-            tmp["valuta"] += transaction.valuta
-            tmp["month"] = transaction.date.month
-            tmp["year"] = transaction.date.year
-            tmp["transactions"].append(transToDict(transaction))
-
-        if tmp["count"] > 0:
-            tmp["valuta"] = round(tmp["valuta"],2)
-            sum += tmp["valuta"]
-            result.append(tmp)
-
-    elif interval == "12": # year based
-        for transaction in transactions:
+        if tmp.get("label", transaction_label) != transaction_label:
+            sum = round(sum + tmp["valuta"], 2)
             
-            if tmp.get("year", transaction.date.year) != transaction.date.year:
-                tmp["valuta"] = round(tmp["valuta"],2)
-                sum += tmp["valuta"]
-                result.append(tmp.copy())
-                tmp["valuta"] = 0
-                tmp["count"] = 0
-                tmp["transactions"] = []
-                
-            tmp["valuta"] += transaction.valuta
-            tmp["count"] += 1
-            tmp["year"] = transaction.date.year
-            tmp["transactions"].append(transToDict(transaction))
-        
-        if tmp["count"] > 0:
-            tmp["valuta"] = round(tmp["valuta"],2)
-            sum += tmp["valuta"]
             result.append(tmp.copy())
             
-    elif interval == "3": # quarter based
-        for transaction in transactions:
-            quarter = utils.get_quarter_from_date(transaction.date)
-           
-            if tmp.get("quarter",quarter) != quarter:
-                tmp["valuta"] = round(tmp["valuta"],2)
-                tmp["quarter_formatted"] = gettext(u'Q%(quarter)s/%(year)s', quarter = tmp["quarter"], year = tmp["year"])
-                sum += tmp["valuta"]
-                result.append(tmp.copy())
-                
-                tmp["valuta"] = 0
-                tmp["count"] = 0
-                tmp["transactions"] = []
-                
-            tmp["valuta"] += transaction.valuta
-            tmp["count"] += 1
-            tmp["quarter"] = quarter
-            tmp["year"] = transaction.date.year
-            tmp["transactions"].append(transToDict(transaction))
-        
-        if tmp["count"] > 0:
-            tmp["quarter_formatted"] = gettext(u'Q%(quarter)s/%(year)s', quarter = tmp["quarter"], year = tmp["year"])
-            tmp["valuta"] = round(tmp["valuta"],2)
-            sum += tmp["valuta"]
-            result.append(tmp.copy())
+            tmp["valuta"] = 0
+            tmp["count"] = 0
+            tmp["transactions"] = []
 
-    elif interval == "6": # half year based
-        for transaction in transactions:
-            half_year = utils.get_half_year_from_date(transaction.date)
-           
-            if tmp.get("half_year",half_year) != half_year:
-                tmp["valuta"] = round(tmp["valuta"],2)
-                tmp["half_year_formatted"] = gettext(u'%(half_year)sH %(year)s', half_year = tmp["half_year"], year = tmp["year"])
-                sum += tmp["valuta"]
-                result.append(tmp.copy())
-                
-                tmp["valuta"] = 0
-                tmp["count"] = 0
-                tmp["transactions"] = []
-                
-            tmp["valuta"] += transaction.valuta
-            tmp["count"] += 1
-            tmp["half_year"] = half_year
-            tmp["year"] = transaction.date.year
-            tmp["transactions"].append(transToDict(transaction))
+        tmp["count"] += 1
+        tmp["valuta"] = round(tmp["valuta"] + transaction.valuta, 2)
+        tmp["label"] = transaction_label
         
-        if tmp["count"] > 0:
-            tmp["half_year_formatted"] = gettext(u'%(half_year)sH %(year)s', half_year = tmp["half_year"], year = tmp["year"])
-            tmp["valuta"] = round(tmp["valuta"],2)
-            sum += tmp["valuta"]
-            result.append(tmp.copy())
+        tmp["transactions"].append(transToDict(transaction))
 
-    return (round(sum, 2), result)
+    # add remaining items of the last interval
+    if tmp["count"] > 0:
+        sum = round(sum + tmp["valuta"], 2)
+        result.append(tmp)
+
+    return (sum, result)
            
 
 @bp.route('/analysis/')

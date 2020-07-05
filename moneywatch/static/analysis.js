@@ -6,21 +6,6 @@ function formatYearMonth(date) {
     return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2)
 }
 
-function generateAnalysisChartLabel(item, res)
-{
-    switch(res.interval)
-    {
-        case "1":
-            return res.month_names[item.month - 1] + " " + item.year;        
-        case "3":
-            return item.quarter_formatted;
-        case "6":
-            return item.half_year_formatted;
-        case "12":
-            return item.year;
-    }
-}
-
 function generateAnalysisChartData(res)
 {
     var labels = []
@@ -31,18 +16,15 @@ function generateAnalysisChartData(res)
     var green = "#045904";
 
     $.each(res.data, function(index, item) 
-    {
-        var label = generateAnalysisChartLabel(item, res);
-        
-        labels.push(label);
+    { 
+        labels.push(item.label);
         data.push(item.valuta);
 
         if(item.valuta < 0) {
             pointColors.push(red);
         } else {
             pointColors.push(green); 
-        }
-            
+        }   
     });
     
     return {labels: labels, data: data, pointColors: pointColors};
