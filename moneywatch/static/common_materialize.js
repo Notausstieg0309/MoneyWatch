@@ -65,8 +65,8 @@ $(function() {
                 $('table.balance td.current').hide(100, function() {
                    
                     $('table.balance td.current').each(function () {
-                        $(this).attr("data-num", $(this).attr("data-without-planned-num"));
-                        $(this).html($(this).attr("data-without-planned-formatted"));
+                        $(this).data("num", $(this).data("without-planned-num"));
+                        $(this).html($(this).data("without-planned-formatted"));
                         formatNumberEl(this);
                     }).show(100);
                     
@@ -78,8 +78,8 @@ $(function() {
            {
                 $('table.balance td.current').hide(100, function() {
                     $('table.balance td.current').each(function () {
-                        $(this).attr("data-num", $(this).attr("data-with-planned-num"));
-                        $(this).html($(this).attr("data-with-planned-formatted"));
+                        $(this).data("num", $(this).data("with-planned-num"));
+                        $(this).html($(this).data("with-planned-formatted"));
                         formatNumberEl(this);
                     }).show(100);
                     
