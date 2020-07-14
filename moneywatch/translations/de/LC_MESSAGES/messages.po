@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-05 16:41+0200\n"
-"PO-Revision-Date: 2020-07-05 17:19+0200\n"
+"POT-Creation-Date: 2020-07-14 22:53+0200\n"
+"PO-Revision-Date: 2020-07-14 22:54+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -35,24 +35,25 @@ msgstr "Die eingegebene IBAN ist nicht gültig."
 msgid "The provided balance is not a valid numeric value."
 msgstr "Der eingegebene Kontostand ist kein gültiger numerischer Wert."
 
-#: analysis.py:169 templates/importer/check.html:11 templates/importer/check.html:41
-#: templates/importer/multiple_rule_match.html:11 templates/overview/overview.html:45
-#: templates/overview/overview.html:56 templates/transactions/edit.html:11
-#: templates/transactions/index.html:10 templates/transactions/index.html:27
+#: analysis.py:179 templates/importer/check.html:11 templates/importer/check.html:43
+#: templates/importer/multiple_rule_match.html:11 templates/overview/index.html:23
+#: templates/overview/overview.html:45 templates/overview/overview.html:56
+#: templates/transactions/edit.html:11 templates/transactions/index.html:10
+#: templates/transactions/index.html:27
 msgid "yyyy-MM-dd"
 msgstr "dd.MM.yyyy"
 
-#: analysis.py:182
+#: analysis.py:192
 #, python-format
 msgid "%(half_year)sH %(year)s"
 msgstr "%(half_year)s. Hj. %(year)s"
 
-#: analysis.py:184
+#: analysis.py:194
 #, python-format
 msgid "Q%(quarter)s/%(year)s"
 msgstr "Q%(quarter)s/%(year)s"
 
-#: analysis.py:186
+#: analysis.py:196
 #, python-format
 msgid "%(month_name)s %(year)s"
 msgstr "%(month_name)s %(year)s"
@@ -116,6 +117,11 @@ msgstr ""
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr "Die Transaktion %(description)s kann nicht mehr bearbeitet werden."
 
+#: templates/base.html:3 templates/base.html:5 templates/base.html:9
+#: templates/base.html:13 templates/base.html:17 templates/transactions/index.html:4
+msgid "Transactions"
+msgstr "Transaktionen"
+
 #: templates/base.html:3 templates/base.html:9
 msgid "Import New Transactions"
 msgstr "Neue Transaktionen importieren"
@@ -123,11 +129,6 @@ msgstr "Neue Transaktionen importieren"
 #: templates/analysis/index.html:4 templates/base.html:4 templates/base.html:10
 msgid "Analysis"
 msgstr "Analyse"
-
-#: templates/base.html:5 templates/base.html:13 templates/base.html:17
-#: templates/transactions/index.html:4
-msgid "Transactions"
-msgstr "Transaktionen"
 
 #: templates/base.html:6 templates/base.html:14 templates/base.html:18
 #: templates/ruleset/index.html:4
@@ -166,10 +167,10 @@ msgid "No Color"
 msgstr "Keine Farbe"
 
 #: templates/accounts/add.html:62 templates/accounts/change.html:61
-#: templates/categories/add.html:27 templates/categories/change.html:34
-#: templates/importer/check.html:63 templates/importer/check.html:76
-#: templates/ruleset/add.html:71 templates/ruleset/change.html:50
-#: templates/transactions/edit.html:46
+#: templates/categories/add.html:27 templates/categories/change.html:38
+#: templates/importer/check.html:65 templates/importer/check.html:78
+#: templates/ruleset/add.html:74 templates/ruleset/change.html:54
+#: templates/transactions/edit.html:48
 msgid "Save"
 msgstr "Speichern"
 
@@ -231,73 +232,73 @@ msgstr "nach Kategorie"
 msgid "Spendings"
 msgstr "Ausgaben"
 
-#: templates/analysis/index.html:90
+#: templates/analysis/index.html:91
 msgid "For which account?"
 msgstr "Für welches Konto?"
 
-#: templates/analysis/index.html:95 templates/analysis/index.html:120
-#: templates/analysis/index.html:144 templates/ruleset/add.html:36
+#: templates/analysis/index.html:96 templates/analysis/index.html:128
+#: templates/analysis/index.html:152 templates/ruleset/add.html:36
 msgid "Please select..."
 msgstr "Bitte auswählen..."
 
-#: templates/analysis/index.html:96
+#: templates/analysis/index.html:97
 msgid "[All Accounts]"
 msgstr "[alle Konten]"
 
-#: templates/analysis/index.html:101 templates/importer/no_account_given.html:17
+#: templates/analysis/index.html:102 templates/importer/no_account_given.html:17
 msgid "Account"
 msgstr "Konto"
 
-#: templates/analysis/index.html:122
+#: templates/analysis/index.html:130
 msgid "Rule"
 msgstr "Import-Regel"
 
-#: templates/analysis/index.html:146 templates/importer/check.html:20
-#: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:34
-#: templates/ruleset/change.html:23 templates/ruleset/index.html:14
-#: templates/transactions/edit.html:20
+#: templates/analysis/index.html:154 templates/importer/check.html:27
+#: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:44
+#: templates/ruleset/change.html:31 templates/ruleset/index.html:14
+#: templates/transactions/edit.html:31
 msgid "Category"
 msgstr "Kategorie"
 
-#: templates/analysis/index.html:151
+#: templates/analysis/index.html:159
 msgid "Timing?"
 msgstr "Zeitraum?"
 
-#: templates/analysis/index.html:158
+#: templates/analysis/index.html:166
 msgid "From"
 msgstr "Von"
 
-#: templates/analysis/index.html:162
+#: templates/analysis/index.html:170
 msgid "To"
 msgstr "Bis"
 
-#: templates/analysis/index.html:167
+#: templates/analysis/index.html:175
 msgid "Grouping"
 msgstr "Gruppierung"
 
-#: templates/analysis/index.html:171 templates/ruleset/add.html:51
-#: templates/ruleset/change.html:36
+#: templates/analysis/index.html:179 templates/ruleset/add.html:53
+#: templates/ruleset/change.html:38
 msgid "monthly"
 msgstr "monatlich"
 
-#: templates/analysis/index.html:175 templates/ruleset/add.html:52
-#: templates/ruleset/change.html:37
+#: templates/analysis/index.html:183 templates/ruleset/add.html:54
+#: templates/ruleset/change.html:39
 msgid "quarterly"
 msgstr "quartalsweise"
 
-#: templates/analysis/index.html:179
+#: templates/analysis/index.html:187
 msgid "half-yearly"
 msgstr "halbjährlich"
 
-#: templates/analysis/index.html:183
+#: templates/analysis/index.html:191
 msgid "yearly"
 msgstr "jährlich"
 
-#: templates/analysis/index.html:189
+#: templates/analysis/index.html:197
 msgid "Submit"
 msgstr "Abfragen"
 
-#: templates/analysis/index.html:239 templates/overview/index.html:42
+#: templates/analysis/index.html:247 templates/overview/index.html:42
 msgid "total"
 msgstr "Gesamt"
 
@@ -325,13 +326,13 @@ msgstr "optional"
 msgid "Edit Category"
 msgstr "Kategorie ändern"
 
-#: templates/categories/change.html:21
-msgid "Superior Category"
-msgstr "übergeordnete Kategorie"
-
 #: templates/categories/change.html:23
 msgid "none"
 msgstr "keine"
+
+#: templates/categories/change.html:34
+msgid "Superior Category"
+msgstr "übergeordnete Kategorie"
 
 #: templates/categories/index.html:16
 #, python-format
@@ -379,17 +380,17 @@ msgstr "Bitte eine Beschreibung eingeben"
 msgid "Please Choose"
 msgstr "Bitte auswählen"
 
-#: templates/importer/check.html:48
+#: templates/importer/check.html:50
 msgid "I have noted this message"
 msgstr "Zur Kenntnis genommen"
 
-#: templates/importer/check.html:61 templates/importer/check.html:75
+#: templates/importer/check.html:63 templates/importer/check.html:77
 #: templates/importer/multiple_rule_match.html:40
 #: templates/importer/no_account_given.html:12
 msgid "Check again"
 msgstr "Erneut überprüfen"
 
-#: templates/importer/check.html:80
+#: templates/importer/check.html:82
 msgid "No transactions found."
 msgstr "Keine Transaktionen verfügbar."
 
@@ -465,6 +466,10 @@ msgstr "Bearbeiten"
 #: templates/overview/index.html:17
 msgid "delete"
 msgstr "Löschen"
+
+#: templates/overview/index.html:23
+msgid "last transaction"
+msgstr "letzte Transaktion"
 
 #: templates/overview/index.html:45
 msgid ""
@@ -605,7 +610,7 @@ msgstr ""
 "Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-Regeln "
 "benutzt."
 
-#: templates/ruleset/add.html:17 templates/ruleset/change.html:14
+#: templates/ruleset/add.html:17 templates/ruleset/change.html:13
 #: templates/ruleset/index.html:12
 msgid "Rule Name"
 msgstr "Regelname"
@@ -618,7 +623,7 @@ msgstr ""
 "Der Such-Ausdruck (Python-basierter regulärer Ausdruck), welcher zu importierende "
 "Transaktionen anhand des Buchungstextes erkennt und entsprechend zuordnet."
 
-#: templates/ruleset/add.html:23 templates/ruleset/change.html:17
+#: templates/ruleset/add.html:23 templates/ruleset/change.html:16
 msgid "Search Pattern"
 msgstr "Suchausdruck"
 
@@ -631,31 +636,31 @@ msgstr ""
 "Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des Imports "
 "dennoch geändert werden."
 
-#: templates/ruleset/add.html:29 templates/ruleset/change.html:20
+#: templates/ruleset/add.html:29 templates/ruleset/change.html:19
 msgid "Short Description"
 msgstr "Buchungsbezeichnung"
 
-#: templates/ruleset/add.html:48 templates/ruleset/change.html:33
-msgid "Regularity"
-msgstr "Regelmäßigkeit"
-
-#: templates/ruleset/add.html:50 templates/ruleset/change.html:35
+#: templates/ruleset/add.html:52 templates/ruleset/change.html:37
 msgid "no regularity"
 msgstr "keine Regelmäßigkeit"
 
-#: templates/ruleset/add.html:53 templates/ruleset/change.html:38
+#: templates/ruleset/add.html:55 templates/ruleset/change.html:40
 msgid "every half year"
 msgstr "halbjährlich"
 
-#: templates/ruleset/add.html:54 templates/ruleset/change.html:39
+#: templates/ruleset/add.html:56 templates/ruleset/change.html:41
 msgid "every year"
 msgstr "jährlich"
 
-#: templates/ruleset/add.html:62 templates/ruleset/change.html:43
+#: templates/ruleset/add.html:58 templates/ruleset/change.html:43
+msgid "Regularity"
+msgstr "Regelmäßigkeit"
+
+#: templates/ruleset/add.html:65 templates/ruleset/change.html:48
 msgid "Next Due"
 msgstr "Nächste Fälligkeit"
 
-#: templates/ruleset/add.html:66 templates/ruleset/change.html:46
+#: templates/ruleset/add.html:69 templates/ruleset/change.html:51
 msgid "Amount"
 msgstr "Betrag"
 
@@ -699,7 +704,7 @@ msgstr "Regeln für Ausgaben"
 msgid "Edit Transaction"
 msgstr "Transaktion bearbeiten"
 
-#: templates/transactions/edit.html:59
+#: templates/transactions/edit.html:61
 msgid ""
 "This transaction was identified by a rule. You can clear the binding of this "
 "transaction to the matched rule in case this transaction was mistakenly matched. "
@@ -710,7 +715,7 @@ msgstr ""
 "fälschlicherweise durch diese Regel erkannt wurde. In diesem Fall sollte der "
 "Suchausdruck dieser Regel angepasst werden."
 
-#: templates/transactions/edit.html:64
+#: templates/transactions/edit.html:66
 #, python-format
 msgid "Clear rule binding (%(rulename)s)"
 msgstr "Regelverknüpfung aufheben (%(rulename)s)"
