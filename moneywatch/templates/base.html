@@ -1,12 +1,12 @@
 {%- macro nav_links(dropdown_trigger) -%}
       {%- if not accounts_list -%}
-      <li><a class="btn waves-effect waves-light disabled" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
+      <li><a class="btn waves-effect waves-light disabled" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> <span class="hide-on-large-only">{% trans %}Transactions{% endtrans %}</span><span class="hide-on-med-and-down">{% trans %}Import New Transactions{% endtrans %}</span></a></li>
       <li><a class="disabled" href="#">{% trans %}Analysis{% endtrans %}</a></li>
       <li><a class="disabled" href="#">{% trans %}Transactions{% endtrans %}</a></li>
       <li><a class="disabled" href="#">{% trans %}Import Ruleset{% endtrans %}</a></li>
       <li><a class="disabled" href="#">{% trans %}Categories{% endtrans %}</a></li>
      {%- else -%}
-      <li><a class="btn waves-effect waves-light" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> {% trans %}Import New Transactions{% endtrans %}</a></li>
+      <li><a class="btn waves-effect waves-light" href="{{ url_for('import.index') }}"><i class="material-icons left">add</i> <span class="hide-on-large-only">{% trans %}Transactions{% endtrans %}</span><span class="hide-on-med-and-down">{% trans %}Import New Transactions{% endtrans %}</span></a></li>
       <li><a  href="{{ url_for('analysis.index') }}">{% trans %}Analysis{% endtrans %}</a></li>
      {% if accounts_list|length == 1 %}
         {%- set account_id=accounts_list[0].id -%}
