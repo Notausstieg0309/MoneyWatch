@@ -5,6 +5,15 @@
   {% block title %}{% trans %}Overview{% endtrans %}{% endblock %}
 {% endblock %}
 
+{% macro time_delta(delta) %}
+{% if delta.days == 0 -%}
+{% trans %}today{% endtrans -%}
+{% elif delta.days == -1 -%}
+{% trans %}yesterday{% endtrans -%}
+{% else -%}
+{{ delta | timedeltaformat(granularity='day', add_direction=True) }}
+{%- endif -%}
+{% endmacro %}
 
 {% macro account_item(account) %}
     <table class="account_detail" data-account-id="{{ account.id }}">
@@ -20,7 +29,7 @@
       <td rowspan="2" data-num="{{ account.balance }}" class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
     </tr>
     <tr>
-      <td colspan="2" class="iban">{{ account.iban_formatted }}{% if account.latest_transaction %} <span class="right hide-on-med-and-down grey-text">({% trans %}last transaction{% endtrans %}: {{ account.latest_transaction.date | dateformat(_("yyyy-MM-dd")) }})</span>{% endif %}</td>
+      <td colspan="2" class="iban">{{ account.iban_formatted }}{% if account.last_update is not none %} <span class="right hide-on-med-and-down grey-text">({% trans %}last transaction{% endtrans %}: {{ time_delta(account.last_update) }})</span>{% endif %}</td>
     </tr>
     </table>
 {% endmacro %}

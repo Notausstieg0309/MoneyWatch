@@ -40,7 +40,18 @@ class Account(db.Model):
     @property
     def iban_formatted(self):
         return utils.format_iban_human(self.iban)
-    
+
+    @property
+    def last_update(self):
+        latest_transaction = self.latest_transaction
+
+        if latest_transaction is not None:
+            date = latest_transaction.date
+            now = datetime.date.today()
+            delta = date - now
+            return delta
+
+        return None
           
     def categories(self, type, start=None, end=None):
 

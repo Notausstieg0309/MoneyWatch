@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-14 22:53+0200\n"
+"POT-Creation-Date: 2020-07-18 10:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,9 +37,9 @@ msgstr ""
 #: analysis.py:179 templates/importer/check.html:11
 #: templates/importer/check.html:43
 #: templates/importer/multiple_rule_match.html:11
-#: templates/overview/index.html:23 templates/overview/overview.html:45
-#: templates/overview/overview.html:56 templates/transactions/edit.html:11
-#: templates/transactions/index.html:10 templates/transactions/index.html:27
+#: templates/overview/overview.html:45 templates/overview/overview.html:56
+#: templates/transactions/edit.html:11 templates/transactions/index.html:10
+#: templates/transactions/index.html:27
 msgid "yyyy-MM-dd"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: templates/analysis/index.html:247 templates/overview/index.html:42
+#: templates/analysis/index.html:247 templates/overview/index.html:51
 msgid "total"
 msgstr ""
 
@@ -449,19 +449,27 @@ msgstr[1] ""
 msgid "Please decide for which account these transactions should be imported."
 msgstr ""
 
-#: templates/overview/index.html:16
+#: templates/overview/index.html:10
+msgid "today"
+msgstr ""
+
+#: templates/overview/index.html:12
+msgid "yesterday"
+msgstr ""
+
+#: templates/overview/index.html:25
 msgid "edit"
 msgstr ""
 
-#: templates/overview/index.html:17
+#: templates/overview/index.html:26
 msgid "delete"
 msgstr ""
 
-#: templates/overview/index.html:23
+#: templates/overview/index.html:32
 msgid "last transaction"
 msgstr ""
 
-#: templates/overview/index.html:45
+#: templates/overview/index.html:54
 msgid ""
 "There are no accounts defined yet. Please click below on the add button "
 "to create a new account."
