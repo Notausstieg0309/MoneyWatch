@@ -436,24 +436,15 @@ class Category(db.Model):
     @property
     def on_target(self):
 
-        result = True
-               
         for category in self.childs or []:
             if not category.on_target:
-                result = False
-                
-        if not result:
-            return False
+                return False  
         
         if self.budget != 0 and self.planned_valuta < self.budget:        
-            result = False
+            return False
             
-        return result
+        return True
     
-   
-    
-    # def __repr__(self):
-        # return self.__class__.__name__+"("+str(self._data)+"|"+str(self._kwargs)+")"
         
 
     
