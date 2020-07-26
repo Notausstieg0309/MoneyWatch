@@ -64,23 +64,23 @@ def createOverview(account_id, start, end):
 
     months = utils.get_number_of_months(start,end)
 
-    balance = {}
+    profit = {}
     
-    balance['planned'] = {}
-    balance['planned']['in'] = sum_planned_in
-    balance['planned']['out'] = sum_planned_out
+    profit['planned'] = {}
+    profit['planned']['in'] = sum_planned_in
+    profit['planned']['out'] = sum_planned_out
     
-    balance['current'] = {}
-    balance['current']['in'] = sum_current_in
-    balance['current']['out'] = sum_current_out
+    profit['current'] = {}
+    profit['current']['in'] = sum_current_in
+    profit['current']['out'] = sum_current_out
     
-    balance['current_with_planned_transactions'] = {}
-    balance['current_with_planned_transactions']['in'] = sum_current_with_planned_transactions_in
-    balance['current_with_planned_transactions']['out'] = sum_current_with_planned_transactions_out
+    profit['current_with_planned_transactions'] = {}
+    profit['current_with_planned_transactions']['in'] = sum_current_with_planned_transactions_in
+    profit['current_with_planned_transactions']['out'] = sum_current_with_planned_transactions_out
     
-    balance['current']['balance'] = sum_current_in + sum_current_out
-    balance['planned']['balance'] = sum_planned_in + sum_planned_out
-    balance['current_with_planned_transactions']['balance'] = sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out
+    profit['current']['profit'] = sum_current_in + sum_current_out
+    profit['planned']['profit'] = sum_planned_in + sum_planned_out
+    profit['current_with_planned_transactions']['profit'] = sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out
 
 
     timing = {}
@@ -106,7 +106,7 @@ def createOverview(account_id, start, end):
     messages = len(account.transactions_by_type("message", start=start, end=end))
 
 
-    return render_template('overview/overview.html', account=account, list_in=list_in, list_out=list_out, balance=balance, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
+    return render_template('overview/overview.html', account=account, list_in=list_in, list_out=list_out, profit=profit, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages) 
      
 @bp.route('/')
 def index():
@@ -115,7 +115,7 @@ def index():
     sum = 0
     
     for account in accounts:
-        sum += account.balance
+        sum += account.profit
     return render_template('overview/index.html',accounts=accounts, sum=sum)
         
 @bp.route('/<int:account_id>/')

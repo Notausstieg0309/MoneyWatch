@@ -302,7 +302,7 @@ function criteriaChangedHandler() {
         
         $("ul.criteria-container > li#account").slideDown();
     
-        if(selected_type_el.is('#balance_absolute') || selected_type_el.is('#balance_relative')) {
+        if(selected_type_el.is('#balance') || selected_type_el.is('#profit')) {
                 
             $("ul.criteria-container > li#subtype").slideUp();
             $("ul.criteria-container > li#rule").slideUp();
@@ -391,7 +391,7 @@ function criteriaChangedHandler() {
     }
     
     
-    if(selected_account_el.length && (selected_type_el.is("#balance_absolute") || selected_type_el.is("#balance_relative") ) ) {
+    if(selected_account_el.length && (selected_type_el.is("#balance") || selected_type_el.is("#profit") ) ) {
         
         var start = selected_account_el.data("start");
         var end = selected_account_el.data("end");

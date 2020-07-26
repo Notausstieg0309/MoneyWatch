@@ -15,7 +15,7 @@ from flask_babel import format_date, gettext, format_currency
 bp = Blueprint('analysis', __name__)
 
 
-def calcAbsAccountBalanceFor(account_id, date):
+def calcAccountBalanceFor(account_id, date):
 
 
     balance = None
@@ -26,7 +26,7 @@ def calcAbsAccountBalanceFor(account_id, date):
         balance = 0
 
         for account in accounts:
-            balance += round(calcAbsAccountBalanceFor(account.id, date), 2)
+            balance += round(calcAccountBalanceFor(account.id, date), 2)
 
     else:
 
@@ -59,7 +59,7 @@ def createBaseData(start, end, interval):
         
     return result
     
-def getRelativeBalance(account_id, start, end, interval):
+def getProfit(account_id, start, end, interval):
 
     result = createBaseData(start, end, interval)
 
@@ -82,14 +82,14 @@ def getRelativeBalance(account_id, start, end, interval):
    
     return result
 
-def getAbsoluteBalance(account_id, start, end, interval):
+def getAccountBalance(account_id, start, end, interval):
 
-    result = getRelativeBalance(account_id, start, end, interval)
+    result = getProfit(account_id, start, end, interval)
     
     if "data" in result:
     
         if len(result["data"]) > 0:
-            balance = calcAbsAccountBalanceFor(account_id, end)
+            balance = calcAccountBalanceFor(account_id, end)
             
             # substract the first item from the sum as 
             # otherwise the difference between the first and last item will not match
@@ -100,7 +100,7 @@ def getAbsoluteBalance(account_id, start, end, interval):
         old_data = result["data"]
         
         # reverse the list to get the latest item first, 
-        # from here we start to calculate the absolute balance
+        # from here we start to calculate the account balance
         # back to the oldest item
         old_data.reverse()
 
@@ -124,7 +124,7 @@ def getAbsoluteBalance(account_id, start, end, interval):
    
     return result
 
-def getBalanceByType(account_id, start, end, interval, type_val):
+def getSumByType(account_id, start, end, interval, type_val):
 
     result = createBaseData(start, end, interval)
 
@@ -138,7 +138,7 @@ def getBalanceByType(account_id, start, end, interval, type_val):
      
     return result
     
-def getBalanceByRule(start, end, interval, rule_id):
+def getSumByRule(start, end, interval, rule_id):
 
     result = createBaseData(start, end, interval)
     
@@ -150,11 +150,11 @@ def getBalanceByRule(start, end, interval, rule_id):
 
     return result
 
-def getBalanceByCategory(start, end, interval, category_id):
+def getSumByCategory(start, end, interval, category_id):
 
     result = createBaseData(start, end, interval)
     
-    category = Category.query.filter_by(id=category_id).one_or_none();
+    category = Category.query.filter_by(id=category_id).one_or_none()
     
     if category is not None:
         category.setTimeframe(start, end)
@@ -298,29 +298,24 @@ def data():
         end_date = start_date
         start_date = tmp
         
-    
-
-    
-    
-    
     if "type" in data:
     
-        if data["type"] == "balance_relative":
-            return jsonify(getRelativeBalance(data["account_id"], start_date, end_date, data["interval"]))
+        if data["type"] == "profit":
+            return jsonify(getProfit(data["account_id"], start_date, end_date, data["interval"]))
             
-        elif  data["type"] == "balance_absolute":
-           return jsonify(getAbsoluteBalance(data["account_id"], start_date, end_date, data["interval"]))
+        elif  data["type"] == "balance":
+           return jsonify(getAccountBalance(data["account_id"], start_date, end_date, data["interval"]))
             
         
         elif data["type"] == "in" or data["type"] == "out":
         
             if "subtype" in data:
                 if data["subtype"] == "overall":
-                    return jsonify(getBalanceByType(data["account_id"], start_date, end_date, data["interval"], data["type"]))
+                    return jsonify(getSumByType(data["account_id"], start_date, end_date, data["interval"], data["type"]))
                 elif data["subtype"] == "rule":
-                    return jsonify(getBalanceByRule(start_date, end_date, data["interval"], data["rule"]))
+                    return jsonify(getSumByRule(start_date, end_date, data["interval"], data["rule"]))
                 elif data["subtype"] == "category":
-                    return jsonify(getBalanceByCategory(start_date, end_date, data["interval"], data["category"]))
+                    return jsonify(getSumByCategory(start_date, end_date, data["interval"], data["category"]))
             else:
                 abort("400", "no subtype specified")
             
@@ -354,7 +349,6 @@ def json_rules(account_id, type):
             item["start"] = oldest_transaction.date.strftime("%Y-%m")
             item["end"] = latest_transaction.date.strftime("%Y-%m")
             
-
         result.append(item)
             
     return jsonify(result)

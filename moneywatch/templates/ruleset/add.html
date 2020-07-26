@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-{% block title %}{% trans %}New Rule{% endtrans %} ({% if type == "in" %}{% trans %}Earnings{% endtrans %}{% else %}{% trans %}Spendings{% endtrans %}{% endif %}){% endblock %}
+{% block title %}{% trans %}New rule{% endtrans %} ({% if type == "in" %}{% trans %}deposits{% endtrans %}{% else %}{% trans %}withdrawals{% endtrans %}{% endif %}){% endblock %}
 {% endblock %}
 
 {% block content %}

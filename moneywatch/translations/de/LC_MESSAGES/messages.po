@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-18 10:39+0200\n"
-"PO-Revision-Date: 2020-07-18 10:43+0200\n"
+"POT-Creation-Date: 2020-07-26 17:54+0200\n"
+"PO-Revision-Date: 2020-07-26 17:59+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4\n"
 
 #: accounts.py:34 accounts.py:86 categories.py:38 categories.py:108
 #: ruleset.py:125
@@ -187,18 +187,17 @@ msgid "What do you want to see?"
 msgstr "Was soll angezeigt werden?"
 
 #: templates/analysis/index.html:40
-msgid "Absolute Account Balance (end of month)"
-msgstr "Kontostand (zum Ende des Monats)"
+msgid "Account Balance (at the end of interval)"
+msgstr "Kontostand (am Ende des Intervals)"
 
-#: templates/analysis/index.html:44
-msgid "Relative Account Balance (end of month)"
-msgstr "Kontobilanz (zum Ende des Monats)"
+#: templates/analysis/index.html:44 templates/overview/overview.html:164
+msgid "Profit / Loss"
+msgstr "Gewinn / Verlust"
 
 #: templates/analysis/index.html:49 templates/categories/add.html:4
 #: templates/categories/change.html:4 templates/categories/index.html:45
 #: templates/overview/overview.html:154 templates/overview/overview.html:205
-#: templates/ruleset/add.html:4
-msgid "Earnings"
+msgid "Deposits"
 msgstr "Einnahmen"
 
 #: templates/analysis/index.html:54 templates/analysis/index.html:73
@@ -216,8 +215,7 @@ msgstr "nach Kategorie"
 #: templates/analysis/index.html:68 templates/categories/add.html:4
 #: templates/categories/change.html:4 templates/categories/index.html:49
 #: templates/overview/overview.html:159 templates/overview/overview.html:209
-#: templates/ruleset/add.html:4
-msgid "Spendings"
+msgid "Withdrawals"
 msgstr "Ausgaben"
 
 #: templates/analysis/index.html:91
@@ -341,7 +339,7 @@ msgid "Delete this category"
 msgstr "Diese Kategorie löschen"
 
 #: templates/categories/index.html:37
-msgid "No categories for earnings exist."
+msgid "No categories for Deposits exist."
 msgstr "Es existieren keine Kategorien für Einnahmen."
 
 #: templates/categories/index.html:39
@@ -535,10 +533,6 @@ msgstr "Geplant"
 msgid "Current"
 msgstr "Aktuell"
 
-#: templates/overview/overview.html:164
-msgid "Balance"
-msgstr "Bilanz"
-
 #: templates/overview/overview.html:169
 msgid "current values incl. pending regular transactions"
 msgstr "aktuellen Zahlen inkl. noch ausstehenden Transaktionen"
@@ -574,8 +568,16 @@ msgid "particular transactions:"
 msgstr "Besondere Transaktionen:"
 
 #: templates/ruleset/add.html:4
-msgid "New Rule"
+msgid "New rule"
 msgstr "Neue Regel"
+
+#: templates/ruleset/add.html:4
+msgid "deposits"
+msgstr "Einnahmen"
+
+#: templates/ruleset/add.html:4
+msgid "withdrawals"
+msgstr "Ausgaben"
 
 #: templates/ruleset/add.html:16
 msgid "The name of the rule. This value is only displayed in the ruleset overview."
@@ -651,7 +653,7 @@ msgid "No rules exist yet."
 msgstr "Es existieren aktuell keine Regeln."
 
 #: templates/ruleset/index.html:37
-msgid "Rules for earnings"
+msgid "Rules for deposits"
 msgstr "Regeln für Einnahmen"
 
 #: templates/ruleset/index.html:41 templates/ruleset/index.html:47
@@ -659,7 +661,7 @@ msgid "Add rule"
 msgstr "Neue Regel"
 
 #: templates/ruleset/index.html:44
-msgid "Rules for spendings"
+msgid "Rules for withdrawals"
 msgstr "Regeln für Ausgaben"
 
 #: templates/transactions/edit.html:4
@@ -692,4 +694,25 @@ msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert."
 #~ msgstr "letzte Transaktion"
 
 #~ msgid "last import"
+#~ msgstr ""
+
+#~ msgid "Absolute Account Balance (end of month)"
+#~ msgstr "Kontostand (zum Ende des Monats)"
+
+#~ msgid "Relative Account Balance (end of month)"
+#~ msgstr "Kontobilanz (zum Ende des Monats)"
+
+#~ msgid "Balance"
+#~ msgstr "Bilanz"
+
+#~ msgid "New Rule"
+#~ msgstr "Neue Regel"
+
+#~ msgid "Rules for Deposits"
+#~ msgstr "Regeln für Einnahmen"
+
+#~ msgid "Rules for Withdrawals"
+#~ msgstr "Regeln für Ausgaben"
+
+#~ msgid "Profit & Loss"
 #~ msgstr ""

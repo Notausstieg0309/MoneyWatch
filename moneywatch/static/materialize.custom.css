@@ -226,40 +226,40 @@ div.overview div.caption {
     vertical-align:bottom;
 }
 
-table.balance {
+table.profit {
     width:unset;
     margin-left:auto;
     margin-right:auto;
     margin-bottom: 1em;
 }    
 
-table.balance th,td {
+table.profit th,td {
     padding: 5px 10px 5px 10px;
 }
 
-table.balance .num {
+table.profit .num {
     text-align:right;
 }
-table.balance td:nth-child(1), table.balance th:nth-child(1) {  
+table.profit td:nth-child(1), table.profit th:nth-child(1) {  
     border-right: 1px solid #000;
     font-weight: bold;
 }
 
-table.balance tr:first-child > th {  
+table.profit tr:first-child > th {  
     border-bottom: 1px solid #000;
 }
 
-table.balance tr.final_balance {
+table.profit tr.profit {
     border-top: 3px double #000;
     font-size: 1.15em;
 }
 
 /* highlight current balance value */
-table.balance tr.final_balance td.current { 
+table.profit tr.profit td.current { 
    font-weight: bold;
 }
 
-table.balance th.current.with_planned:after {
+table.profit th.current.with_planned:after {
     content: "*";
 }
 

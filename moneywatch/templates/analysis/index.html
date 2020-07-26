@@ -36,17 +36,17 @@
           <div class="center">
             <span class="inline-block left-align">
               <label>
-                <input class="with-gap analysis-input-type" name="type" value="balance_absolute" id="balance_absolute" type="radio" />
-                <span>{% trans %}Absolute Account Balance (end of month){% endtrans %}</span>
+                <input class="with-gap analysis-input-type" name="type" value="balance" id="balance" type="radio" />
+                <span>{% trans %}Account Balance (at the end of interval){% endtrans %}</span>
               </label><br>
               <label>
-                <input class="with-gap analysis-input-type" name="type" value="balance_relative" id="balance_relative" type="radio" />
-                <span>{% trans %}Relative Account Balance (end of month){% endtrans %}</span>
+                <input class="with-gap analysis-input-type" name="type" value="profit" id="profit" type="radio" />
+                <span>{% trans %}Profit / Loss{% endtrans %}</span>
               </label><br>
 
               <label>
                 <input class="with-gap analysis-input-type" name="type" value="in" id="in" type="radio"  />
-                <span>{% trans %}Earnings{% endtrans %}</span>
+                <span>{% trans %}Deposits{% endtrans %}</span>
               </label><br>
               <ul id="subtype-menu-in" class="browser-default" style="display:none;">      
                 <label>
@@ -65,7 +65,7 @@
 
               <label>
                 <input class="with-gap analysis-input-type" name="type" value="out" id="out" type="radio"  />
-                <span>{% trans %}Spendings{% endtrans %}</span>
+                <span>{% trans %}Withdrawals{% endtrans %}</span>
               </label>  
               <ul id="subtype-menu-out" class="browser-default" style="display:none;">  
                 <label>

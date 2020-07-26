@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-18 10:40+0200\n"
+"POT-Creation-Date: 2020-07-26 17:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,18 +193,17 @@ msgid "What do you want to see?"
 msgstr ""
 
 #: templates/analysis/index.html:40
-msgid "Absolute Account Balance (end of month)"
+msgid "Account Balance (at the end of interval)"
 msgstr ""
 
-#: templates/analysis/index.html:44
-msgid "Relative Account Balance (end of month)"
+#: templates/analysis/index.html:44 templates/overview/overview.html:164
+msgid "Profit / Loss"
 msgstr ""
 
 #: templates/analysis/index.html:49 templates/categories/add.html:4
 #: templates/categories/change.html:4 templates/categories/index.html:45
 #: templates/overview/overview.html:154 templates/overview/overview.html:205
-#: templates/ruleset/add.html:4
-msgid "Earnings"
+msgid "Deposits"
 msgstr ""
 
 #: templates/analysis/index.html:54 templates/analysis/index.html:73
@@ -222,8 +221,7 @@ msgstr ""
 #: templates/analysis/index.html:68 templates/categories/add.html:4
 #: templates/categories/change.html:4 templates/categories/index.html:49
 #: templates/overview/overview.html:159 templates/overview/overview.html:209
-#: templates/ruleset/add.html:4
-msgid "Spendings"
+msgid "Withdrawals"
 msgstr ""
 
 #: templates/analysis/index.html:91
@@ -347,7 +345,7 @@ msgid "Delete this category"
 msgstr ""
 
 #: templates/categories/index.html:37
-msgid "No categories for earnings exist."
+msgid "No categories for Deposits exist."
 msgstr ""
 
 #: templates/categories/index.html:39
@@ -553,10 +551,6 @@ msgstr ""
 msgid "Current"
 msgstr ""
 
-#: templates/overview/overview.html:164
-msgid "Balance"
-msgstr ""
-
 #: templates/overview/overview.html:169
 msgid "current values incl. pending regular transactions"
 msgstr ""
@@ -592,7 +586,15 @@ msgid "particular transactions:"
 msgstr ""
 
 #: templates/ruleset/add.html:4
-msgid "New Rule"
+msgid "New rule"
+msgstr ""
+
+#: templates/ruleset/add.html:4
+msgid "deposits"
+msgstr ""
+
+#: templates/ruleset/add.html:4
+msgid "withdrawals"
 msgstr ""
 
 #: templates/ruleset/add.html:16
@@ -675,7 +677,7 @@ msgid "No rules exist yet."
 msgstr ""
 
 #: templates/ruleset/index.html:37
-msgid "Rules for earnings"
+msgid "Rules for deposits"
 msgstr ""
 
 #: templates/ruleset/index.html:41 templates/ruleset/index.html:47
@@ -683,7 +685,7 @@ msgid "Add rule"
 msgstr ""
 
 #: templates/ruleset/index.html:44
-msgid "Rules for spendings"
+msgid "Rules for withdrawals"
 msgstr ""
 
 #: templates/transactions/edit.html:4

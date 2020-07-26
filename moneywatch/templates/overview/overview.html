@@ -47,7 +47,7 @@
     {%- set row_class -%}
     {{ row_class }}{% if transaction.overdue %} overdue{% endif %}
     {%- endset -%}
-    {{ item_row(row_class, name, transaction.valuta, transaction.valuta|currencyformat("EUR"), "0", "0"|currencyformat("EUR")) }}
+    {{ item_row(row_class, name, transaction.valuta, transaction.valuta|currencyformat('EUR'), "0", "0"|currencyformat('EUR')) }}
 {%- endmacro %}
 
 
@@ -63,10 +63,10 @@
         {%- elif transaction.trend < 0 -%}
           &#8600;
         {%- endif -%}
-        {{ transaction.trend | currencyformat("EUR") }}
+        {{ transaction.trend | currencyformat('EUR') }}
     {%- endset -%}
     {%- endif -%}
-    {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat("EUR")) }}
+    {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat('EUR')) }}
 {%- endmacro %}
 
 
@@ -78,7 +78,7 @@
             <i class="red-text tiny overdue material-icons tooltipped" data-tooltip="{% trans %}This category contains overdue planned transactions.{% endtrans %}">warning</i>
             {% endif %}
             {%- if category.planned_transactions_valuta != 0 -%}
-            <span class="new badge red lighten-2 tooltipped" data-position="bottom" data-tooltip="{% trans %}The overall amount of pending regular transactions in or underneath this category.{% endtrans %}" data-badge-caption="{% trans %}pending{% endtrans %}">{% if category.planned_transactions_valuta > 0 %}+{% endif %}{{ category.planned_transactions_valuta | currencyformat("EUR") }}</span>
+            <span class="new badge red lighten-2 tooltipped" data-position="bottom" data-tooltip="{% trans %}The overall amount of pending regular transactions in or underneath this category.{% endtrans %}" data-badge-caption="{% trans %}pending{% endtrans %}">{% if category.planned_transactions_valuta > 0 %}+{% endif %}{{ category.planned_transactions_valuta | currencyformat('EUR') }}</span>
             {%- elif category.has_regular_rules %}
             <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
             {%- endif -%}
@@ -86,13 +86,13 @@
         
         {%- if category.budget_monthly is not none -%}
         {%- set perc = (category.valuta / category.budget) * 100 -%}
-         <div class="budget_perc right tooltipped" data-position="bottom" data-tooltip="{% trans budget=category.budget|abs|currencyformat("EUR") %}The current consumption of the planned budget of {{budget}}.{% endtrans %}" data-label="{{ perc| int}} %">
+         <div class="budget_perc right tooltipped" data-position="bottom" data-tooltip="{% trans budget=category.budget|abs|currencyformat('EUR') %}The current consumption of the planned budget of {{budget}}.{% endtrans %}" data-label="{{ perc| int}} %">
           <span class="value {% if perc > 90 %}red{% elif perc > 75 %}yellow{% else %}green{% endif %} lighten-4" style="width:{{ perc }}%;"></span>
         </div>
         {% endif -%}
     
     {%- endset -%}
-    {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat("EUR"), category.valuta, category.valuta|currencyformat("EUR") )}}
+    {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat('EUR'), category.valuta, category.valuta|currencyformat('EUR') )}}
 {%- endmacro %}
 
 
@@ -122,7 +122,7 @@
 
 {% macro particular_transaction_item(class, rule_list) -%}
 {% for item in rule_list  %}
-<span class="{{ class }}">{{ item[0].name }} ({{ item[0].next_valuta|currencyformat("EUR") }}){% if not loop.last %}, {% endif -%}
+<span class="{{ class }}">{{ item[0].name }} ({{ item[0].next_valuta|currencyformat('EUR') }}){% if not loop.last %}, {% endif -%}
 {%- endfor -%}
 {%- endmacro %}
 
@@ -144,26 +144,26 @@
 
 </div>
 <div class="col s12 m6 center-align">
-<table border="0" cellspacing="0" class="balance z-depth-2">
+<table border="0" cellspacing="0" class="profit z-depth-2">
 <tr>
 <th>&nbsp;</th>
 <th class="planned right-align">{% trans %}Planned{% endtrans %}</th>
 <th class="current right-align" data-enable-switch="{{ current_month | int }}">{% trans %}Current{% endtrans %}</th>
 </tr>
-<tr class="earnings">
-<td>{% trans %}Earnings{% endtrans %}</td>
-<td class="num planned" data-num="{{ balance['planned']['in'] }}">{{ balance['planned']['in'] | currencyformat("EUR") }}</td>
-<td class="num current" data-without-planned-formatted="{{ balance['current']['in'] | currencyformat("EUR") }}" data-with-planned-formatted="{{ balance['current_with_planned_transactions']['in'] | currencyformat("EUR") }}" data-without-planned-num="{{ balance['current']['in'] }}" data-with-planned-num="{{ balance['current_with_planned_transactions']['in'] }}" data-num="{{ balance['current']['in'] }}">{{ balance['current']['in'] | currencyformat("EUR") }}</td>
+<tr>
+<td>{% trans %}Deposits{% endtrans %}</td>
+<td class="num planned" data-num="{{ profit['planned']['in'] }}">{{ profit['planned']['in'] | currencyformat('EUR') }}</td>
+<td class="num current" data-without-planned-formatted="{{ profit['current']['in'] | currencyformat('EUR') }}" data-with-planned-formatted="{{ profit['current_with_planned_transactions']['in'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['in'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['in'] }}" data-num="{{ profit['current']['in'] }}">{{ profit['current']['in'] | currencyformat('EUR') }}</td>
 </tr>
-<tr class="spendings">
-<td>{% trans %}Spendings{% endtrans %}</td>
-<td class="num planned" data-num="{{ balance['planned']['out'] }}">{{ balance['planned']['out'] | currencyformat("EUR") }}</td>
-<td class="num current" data-without-planned-formatted="{{ balance['current']['out'] | currencyformat("EUR") }}" data-with-planned-formatted="{{ balance['current_with_planned_transactions']['out'] | currencyformat("EUR") }}" data-without-planned-num="{{ balance['current']['out'] }}" data-with-planned-num="{{ balance['current_with_planned_transactions']['out'] }}" data-num="{{ balance['current']['out'] }}">{{ balance['current']['out'] | currencyformat("EUR") }}</td>
+<tr>
+<td>{% trans %}Withdrawals{% endtrans %}</td>
+<td class="num planned" data-num="{{ profit['planned']['out'] }}">{{ profit['planned']['out'] | currencyformat('EUR') }}</td>
+<td class="num current" data-without-planned-formatted="{{ profit['current']['out'] | currencyformat('EUR') }}" data-with-planned-formatted="{{ profit['current_with_planned_transactions']['out'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['out'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['out'] }}" data-num="{{ profit['current']['out'] }}">{{ profit['current']['out'] | currencyformat('EUR') }}</td>
 </tr>
-<tr class="final_balance">
-<td>{% trans %}Balance{% endtrans %}</td>
-<td class="num planned" data-num="{{ balance['planned']['balance'] }}">{% if balance['planned']['balance'] > 0 %}+{% endif %}{{ balance['planned']['balance'] | currencyformat("EUR") }}</td>
-<td class="num current" data-without-planned-formatted="{% if balance['current']['balance'] > 0 %}+{% endif %}{{ balance['current']['balance'] | currencyformat("EUR") }}" data-with-planned-formatted="{% if balance['current_with_planned_transactions']['balance'] > 0 %}+{% endif %}{{ balance['current_with_planned_transactions']['balance'] | currencyformat("EUR") }}" data-without-planned-num="{{ balance['current']['balance'] }}" data-with-planned-num="{{ balance['current_with_planned_transactions']['balance'] }}" data-num="{{ balance['current']['balance'] }}">{% if balance['current']['balance'] > 0 %}+{% endif %}{{ balance['current']['balance'] | currencyformat("EUR") }}</td>
+<tr class="profit">
+<td>{% trans %}Profit / Loss{% endtrans %}</td>
+<td class="num planned" data-num="{{ profit['planned']['profit'] }}">{% if profit['planned']['profit'] > 0 %}+{% endif %}{{ profit['planned']['profit'] | currencyformat('EUR') }}</td>
+<td class="num current" data-without-planned-formatted="{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}" data-with-planned-formatted="{% if profit['current_with_planned_transactions']['profit'] > 0 %}+{% endif %}{{ profit['current_with_planned_transactions']['profit'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['profit'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['profit'] }}" data-num="{{ profit['current']['profit'] }}">{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}</td>
 </tr>
 </table>
 <div style="display:none;" class="with_planned_info">* &ndash; {% trans %}current values incl. pending regular transactions{% endtrans %}</div>
@@ -202,11 +202,11 @@
 <br>
 <div class="row overview">
 <div class="col s12 m6 in">
-{{ item_row("caption",_("Earnings"), None, _("Planned"), None, _("Current")) }}
+{{ item_row("caption",_("Deposits"), None, _("Planned"), None, _("Current")) }}
 {{ category_item(list_in) }}
 </div>
 <div class="col s12 m6 out">
-{{ item_row("caption",_("Spendings"), None, _("Planned"), None, _("Current")) }}
+{{ item_row("caption",_("Withdrawals"), None, _("Planned"), None, _("Current")) }}
 {{ category_item(list_out) }}
 </div>
 </div>

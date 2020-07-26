@@ -56,34 +56,34 @@ $(function() {
     $('.num').each(function () { formatNumberEl(this); });
     
     // overview: switch between current values and current incl. pending transactions
-    $('table.balance th.current[data-enable-switch=1]')
+    $('table.profit th.current[data-enable-switch=1]')
        .css("cursor", "pointer")
        .click(function() {
            
            if($(this).hasClass("with_planned"))
            {
-                $('table.balance td.current').hide(100, function() {
+                $('table.profit td.current').hide(100, function() {
                    
-                    $('table.balance td.current').each(function () {
+                    $('table.profit td.current').each(function () {
                         $(this).data("num", $(this).data("without-planned-num"));
                         $(this).html($(this).data("without-planned-formatted"));
                         formatNumberEl(this);
                     }).show(100);
                     
-                    $('table.balance th.current').removeClass("with_planned");
+                    $('table.profit th.current').removeClass("with_planned");
                     $('div.with_planned_info').slideUp(200);
                });
            }
            else
            {
-                $('table.balance td.current').hide(100, function() {
-                    $('table.balance td.current').each(function () {
+                $('table.profit td.current').hide(100, function() {
+                    $('table.profit td.current').each(function () {
                         $(this).data("num", $(this).data("with-planned-num"));
                         $(this).html($(this).data("with-planned-formatted"));
                         formatNumberEl(this);
                     }).show(100);
                     
-                    $('table.balance th.current').addClass("with_planned");
+                    $('table.profit th.current').addClass("with_planned");
                     $('div.with_planned_info').slideDown(200);
                 });
            }
