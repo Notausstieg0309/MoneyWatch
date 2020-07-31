@@ -536,15 +536,22 @@ $(function () {
                 type: "post",
                 data: params
             }).done(function (res) {
-                console.log("chart data response", res);
+
                 var data = generateAnalysisChartData(res);
-                console.log("generated chart data", data);
+          
                 createAnalysisChart(res);
                 createTable(res);
                 $("div.chart-spinner").hide()
                 $("div.table-spinner").hide()
-                $("canvas.chart-container").slideDown()
-                $("div.table-container").show()
+
+                if(res.data.length == 1) {
+                    $("ul.analysis-tabs").tabs("select", "table");
+                    $("div.table-container").slideDown()
+                    $("canvas.chart-container").show()
+                } else {
+                    $("canvas.chart-container").slideDown()
+                    $("div.table-container").show()
+                }
             });
         }
 
