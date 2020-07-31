@@ -161,7 +161,7 @@
 <td class="num current" data-without-planned-formatted="{{ profit['current']['out'] | currencyformat('EUR') }}" data-with-planned-formatted="{{ profit['current_with_planned_transactions']['out'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['out'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['out'] }}" data-num="{{ profit['current']['out'] }}">{{ profit['current']['out'] | currencyformat('EUR') }}</td>
 </tr>
 <tr class="profit">
-<td>{% trans %}Profit / Loss{% endtrans %}</td>
+<td>{% trans %}Net Change{% endtrans %}</td>
 <td class="num planned" data-num="{{ profit['planned']['profit'] }}">{% if profit['planned']['profit'] > 0 %}+{% endif %}{{ profit['planned']['profit'] | currencyformat('EUR') }}</td>
 <td class="num current" data-without-planned-formatted="{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}" data-with-planned-formatted="{% if profit['current_with_planned_transactions']['profit'] > 0 %}+{% endif %}{{ profit['current_with_planned_transactions']['profit'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['profit'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['profit'] }}" data-num="{{ profit['current']['profit'] }}">{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}</td>
 </tr>
