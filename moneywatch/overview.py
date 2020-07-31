@@ -115,7 +115,7 @@ def index():
     sum = 0
     
     for account in accounts:
-        sum += account.profit
+        sum += account.balance
     return render_template('overview/index.html',accounts=accounts, sum=sum)
         
 @bp.route('/<int:account_id>/')
