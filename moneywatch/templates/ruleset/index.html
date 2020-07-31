@@ -4,6 +4,15 @@
 {% block title %}{% trans %}Import Ruleset{% endtrans %} ({{ account.name }}){% endblock %}
 {% endblock %}
 
+{% macro tooltip_regular(regularity) %}
+{% set tmp_msg =  { 1: _("monthly"),
+                    3: _("quarterly"), 
+                    6: _("semi-annual"),
+                    12: _("annual")
+                  }
+-%}
+{%- trans %}This is a rule identifying regular transactions{% endtrans %} ({{tmp_msg[regularity]}}).
+{%- endmacro %}
 
 {% macro rule_table(rules) %}
     {% if rules %}
@@ -17,12 +26,12 @@
 
     {% for rule in rules %}
     <tr>
-      <td class="name valign-wrapper">{{ rule['name'] }}{% if rule.regular %}&nbsp;&nbsp;<i class="tooltipped grey-text material-icons" data-tooltip="{% trans %}This is a rule identifying regular transactions{% endtrans %}">update</i>{% endif %}</td>
-      <td class="pattern">{{ rule['pattern'] }}</td>
+      <td class="name valign-wrapper">{{ rule.name }}{% if rule.regular %}&nbsp;&nbsp;<i class="tooltipped grey-text material-icons" data-tooltip="{{ tooltip_regular(rule.regular) }}">update</i>{% endif %}</td>
+      <td class="pattern">{{ rule.pattern }}</td>
       <td class="category_path">{{ rule.category.getCategoryPath(" > ") }}</td>
       <td class="buttons">
-        <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.change', id=rule['id']) }}" data-tooltip="{% trans %}change this rule{% endtrans %}"><i class="material-icons">edit</i></a>
-        <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.delete', id=rule['id']) }}" data-tooltip="{% trans %}delete this rule{% endtrans %}"><i class="material-icons">delete</i></a> 
+        <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.change', id=rule.id) }}" data-tooltip="{% trans %}change this rule{% endtrans %}"><i class="material-icons">edit</i></a>
+        <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.delete', id=rule.id) }}" data-tooltip="{% trans %}delete this rule{% endtrans %}"><i class="material-icons">delete</i></a> 
       </td>
     </tr> 
     {% endfor %}
