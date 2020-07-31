@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-26 17:54+0200\n"
-"PO-Revision-Date: 2020-07-26 17:59+0200\n"
+"POT-Creation-Date: 2020-07-31 10:08+0200\n"
+"PO-Revision-Date: 2020-07-31 10:09+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -187,11 +187,11 @@ msgid "What do you want to see?"
 msgstr "Was soll angezeigt werden?"
 
 #: templates/analysis/index.html:40
-msgid "Account Balance (at the end of interval)"
-msgstr "Kontostand (am Ende des Intervals)"
+msgid "Account Balance (end of interval)"
+msgstr "Kontostand (am Ende vom Interval)"
 
 #: templates/analysis/index.html:44 templates/overview/overview.html:164
-msgid "Profit / Loss"
+msgid "Net Change"
 msgstr "Gewinn / Verlust"
 
 #: templates/analysis/index.html:49 templates/categories/add.html:4
@@ -242,7 +242,7 @@ msgstr "Import-Regel"
 
 #: templates/analysis/index.html:154 templates/importer/check.html:27
 #: templates/importer/multiple_rule_match.html:20 templates/ruleset/add.html:44
-#: templates/ruleset/change.html:31 templates/ruleset/index.html:14
+#: templates/ruleset/change.html:31 templates/ruleset/index.html:23
 #: templates/transactions/edit.html:31
 msgid "Category"
 msgstr "Kategorie"
@@ -264,12 +264,12 @@ msgid "Grouping"
 msgstr "Gruppierung"
 
 #: templates/analysis/index.html:179 templates/ruleset/add.html:53
-#: templates/ruleset/change.html:38
+#: templates/ruleset/change.html:38 templates/ruleset/index.html:8
 msgid "monthly"
 msgstr "monatlich"
 
 #: templates/analysis/index.html:183 templates/ruleset/add.html:54
-#: templates/ruleset/change.html:39
+#: templates/ruleset/change.html:39 templates/ruleset/index.html:9
 msgid "quarterly"
 msgstr "quartalsweise"
 
@@ -584,7 +584,7 @@ msgid "The name of the rule. This value is only displayed in the ruleset overvie
 msgstr "Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-Regeln benutzt."
 
 #: templates/ruleset/add.html:17 templates/ruleset/change.html:13
-#: templates/ruleset/index.html:12
+#: templates/ruleset/index.html:21
 msgid "Rule Name"
 msgstr "Regelname"
 
@@ -609,11 +609,13 @@ msgid "no regularity"
 msgstr "keine Regelmäßigkeit"
 
 #: templates/ruleset/add.html:55 templates/ruleset/change.html:40
-msgid "every half year"
+#: templates/ruleset/index.html:10
+msgid "semi-annual"
 msgstr "halbjährlich"
 
 #: templates/ruleset/add.html:56 templates/ruleset/change.html:41
-msgid "every year"
+#: templates/ruleset/index.html:11
+msgid "annual"
 msgstr "jährlich"
 
 #: templates/ruleset/add.html:58 templates/ruleset/change.html:43
@@ -632,35 +634,35 @@ msgstr "Betrag"
 msgid "Change Rule"
 msgstr "Ändere Regel"
 
-#: templates/ruleset/index.html:13
-msgid "Match Pattern"
-msgstr "Suchausdruck"
-
-#: templates/ruleset/index.html:20
+#: templates/ruleset/index.html:14
 msgid "This is a rule identifying regular transactions"
 msgstr "Diese Regel identifiziert regelmäßige Transaktionen."
 
-#: templates/ruleset/index.html:24
+#: templates/ruleset/index.html:22
+msgid "Match Pattern"
+msgstr "Suchausdruck"
+
+#: templates/ruleset/index.html:33
 msgid "change this rule"
 msgstr "Diese Regel ändern"
 
-#: templates/ruleset/index.html:25
+#: templates/ruleset/index.html:34
 msgid "delete this rule"
 msgstr "Diese Regel löschen"
 
-#: templates/ruleset/index.html:32
+#: templates/ruleset/index.html:41
 msgid "No rules exist yet."
 msgstr "Es existieren aktuell keine Regeln."
 
-#: templates/ruleset/index.html:37
+#: templates/ruleset/index.html:46
 msgid "Rules for deposits"
 msgstr "Regeln für Einnahmen"
 
-#: templates/ruleset/index.html:41 templates/ruleset/index.html:47
+#: templates/ruleset/index.html:50 templates/ruleset/index.html:56
 msgid "Add rule"
 msgstr "Neue Regel"
 
-#: templates/ruleset/index.html:44
+#: templates/ruleset/index.html:53
 msgid "Rules for withdrawals"
 msgstr "Regeln für Ausgaben"
 
@@ -716,3 +718,15 @@ msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert."
 
 #~ msgid "Profit & Loss"
 #~ msgstr ""
+
+#~ msgid "Account Balance (at the end of interval)"
+#~ msgstr "Kontostand (am Ende des Intervals)"
+
+#~ msgid "Profit / Loss"
+#~ msgstr "Gewinn / Verlust"
+
+#~ msgid "every half year"
+#~ msgstr "halbjährlich"
+
+#~ msgid "every year"
+#~ msgstr "jährlich"
