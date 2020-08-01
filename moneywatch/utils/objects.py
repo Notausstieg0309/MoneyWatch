@@ -445,7 +445,15 @@ class Category(db.Model):
 
         return True
     
-        
+    
+    def sibling_name_exists(self, name):
+
+        res = Category.query.filter_by(type = self.type, parent_id = self.parent_id, name = name).one_or_none()
+
+        if res is not None:
+            return True
+
+        return False
 
     
 
