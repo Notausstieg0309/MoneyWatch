@@ -16,7 +16,10 @@ def create_app(test_config=None):
 
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config.from_mapping(
+    if test_config is not None:
+        app.config.from_mapping(test_config)
+    else:
+        app.config.from_mapping(
             SESSION_TYPE="filesystem",
             SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db.sqlite'),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
