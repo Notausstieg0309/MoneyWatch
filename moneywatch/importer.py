@@ -63,10 +63,7 @@ def index():
                 
                 # apply account id for transactions that raised an ItemsWithoutAccountError exception
                 elif "no_account_given" in session and "account_id" in request.form:
-                    item_ids = session["no_account_given"]
-                    
                     apply_account_id_changes(session["no_account_given"], request.form["account_id"])
-              
                     session.pop("no_account_given", None)
                     
                 
@@ -184,9 +181,6 @@ def create_transactions_from_import(items, check_all=False):
                         
                 item["account_id"] = accounts[item["account"]]
                 item.pop("account", None)   
-            else:
-                account_missing = True
-   
                
             trans = Transaction(**item)
             exist = trans.exist
