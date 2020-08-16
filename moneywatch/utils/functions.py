@@ -9,20 +9,6 @@ from flask_babel import format_date
 def get_date_from_string(date, format):
 
     return datetime.datetime.strptime(date, format).date()
-    
-def get_date_from_days(days):
-
-    date_unix = datetime.date(1970,1,1)
-    date_target = date_unix + datetime.timedelta(days=days)
-    return date_target
-    
-def get_days_from_date(date):
-    if date is None:
-        return 0
-    
-    date_unix = datetime.date(1970,1,1)
-    date_target = date - date_unix
-    return date_target.days
 
 def get_quarter_from_date(date):
     return (date.month-1)//3 + 1
