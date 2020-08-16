@@ -3,7 +3,7 @@ import moneywatch.utils.functions as utils
 import datetime
 import re
 
-from moneywatch.utils.exceptions import *
+from moneywatch.utils.exceptions import MultipleRuleMatchError
 
 from flask import current_app
 

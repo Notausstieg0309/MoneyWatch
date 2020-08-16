@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from moneywatch.utils.objects import db, Rule,Category, Transaction, Account
 from moneywatch.utils.plugins import ImportPluginsManager
-from moneywatch.utils.exceptions import *
+from moneywatch.utils.exceptions import MultipleRuleMatchError, ItemsWithoutAccountError, UnknownAccountError, MultiplePluginMatchError, NoPluginMatchError
 
 bp = Blueprint('import', __name__)
 plugins = ImportPluginsManager(os.path.dirname(os.path.realpath(__file__))+"/import_plugins")
