@@ -98,11 +98,12 @@ def _monthdelta(d1, d2):
     
 def add_months(date, months):
     date_new = date 
+    original_day = date.day
+    maxdays_original = monthrange(date_new.year, date_new.month)[1]
+
     for i in range(months):   
         year = date_new.year
         month = date_new.month
-        day = date_new.day
-        maxdays_before = monthrange(year, month)[1]
         
         if month == 12:
             month = 1
@@ -110,25 +111,25 @@ def add_months(date, months):
         else:
             month += 1
 
-        maxdays_after = monthrange(year, month)[1]
+        maxdays = monthrange(year, month)[1]
         
         # avoid 31.10 => 31.11 (does not exist, last day in november is 30.11)
-        if day == maxdays_before or day > maxdays_after:
-            date_new = datetime.date(year,month,maxdays_after)
-       
-        else:  
-            date_new = datetime.date(year,month,day)
+        if original_day == maxdays_original or original_day > maxdays:
+            date_new = datetime.date(year,month,maxdays)
+        else:
+            date_new = datetime.date(year,month,original_day)
     
     return date_new
 
 
 def substract_months(date, months):
+    date_new = date 
+    original_day = date.day
+    maxdays_original = monthrange(date_new.year, date_new.month)[1]
 
     for i in range(months):   
-        year = date.year
-        month = date.month
-        day = date.day
-        maxdays_before = monthrange(year, month)[1]
+        year = date_new.year
+        month = date_new.month
         
         if month == 1:
             month = 12
@@ -136,17 +137,15 @@ def substract_months(date, months):
         else:
             month -= 1
         
-        
         maxdays_after = monthrange(year, month)[1]
         
         # avoid 31.10 => 31.11 (does not exist, last day in november is 30.11)
-        if day == maxdays_before or day > maxdays_after:
-            date = datetime.date(year,month,maxdays_after)
-       
+        if original_day == maxdays_original or original_day > maxdays_after:
+            date_new = datetime.date(year,month,maxdays_after)
         else:  
-            date = datetime.date(year,month,day)
+            date_new = datetime.date(year,month,original_day)
     
-    return date
+    return date_new
   
 
 def is_same_month_in_list(days, list):
