@@ -97,9 +97,8 @@ def index():
                     
                 db.session.commit()
                 
-                session.pop("import_objects", None)
-                session.pop("import_items", None)
-                
+                session.clear()
+                                
                 if len(valutas.keys()) == 1:
                     return redirect(url_for('overview.overview', account_id = (list(valutas.keys()))[0] )) 
 
