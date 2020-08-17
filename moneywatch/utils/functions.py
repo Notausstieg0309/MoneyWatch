@@ -148,11 +148,11 @@ def substract_months(date, months):
     return date_new
   
 
-def is_same_month_in_list(days, list):
+def is_same_month_in_list(date, date_list):
 
     result = False
-    for item in list:
-        if is_same_month(days, item):
+    for item in date_list:
+        if is_same_month(date, item):
             result = True
             break
             

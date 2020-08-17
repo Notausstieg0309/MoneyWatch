@@ -14,4 +14,7 @@ setup(
         'Flask-Migrate',
         'pytest'
     ],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
+
 )

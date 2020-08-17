@@ -120,3 +120,42 @@ def test_add_months(start, months, expected):
 ])
 def test_substract_months(start, months, expected):
     assert utils.substract_months(start, months) == expected
+
+
+
+
+# is_same_month_in_list()
+@pytest.mark.parametrize("date,expected", [
+    (datetime.date(2020, 1, 19),  True),
+    (datetime.date(2020, 1, 16),  True),
+    (datetime.date(2020, 4, 16),  False),
+    (datetime.date(2019, 3, 14),  False),
+    (datetime.date(2020, 6, 19),  True),
+    (datetime.date(2020, 9, 30),  False),
+    (datetime.date(2020, 12, 30),  True),
+])
+def test_is_same_month_in_list(date, expected):
+
+    date_list = [
+        datetime.date(2020, 1, 16),
+        datetime.date(2020, 2, 29),
+        datetime.date(2020, 3, 4),
+        datetime.date(2020, 6, 5),
+        datetime.date(2020, 12, 31),
+    ]
+
+    assert utils.is_same_month_in_list(date, date_list) == expected
+
+
+
+
+# is_same_month()
+@pytest.mark.parametrize("date1,date2,expected", [
+    (datetime.date(2020, 1, 19), datetime.date(2020, 1, 1),  True),
+    (datetime.date(2020, 1, 16), datetime.date(2020, 1, 31),  True),
+    (datetime.date(2020, 1, 16), datetime.date(2021, 1, 16),  False),
+    (datetime.date(2020, 2, 16), datetime.date(2020, 1, 16),  False),
+])
+def test_is_same_month(date1, date2, expected):
+
+    assert utils.is_same_month(date1, date2) == expected
