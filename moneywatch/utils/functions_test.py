@@ -174,3 +174,28 @@ def test_is_same_month(date1, date2, expected):
 def test_get_cyclic_dates_for_timerange(date, months_interval, start, end, expected):
 
     assert utils.get_cyclic_dates_for_timerange(date, months_interval, start, end) == expected
+
+
+
+# normalize_iban()
+@pytest.mark.parametrize("iban,expected", [
+   ("DE73 7294 0493 0000 4030 05", "DE73729404930000403005"),
+   ("'DE73 - 7294 - 0493 - 0000 - 4030 - 05'", "DE73729404930000403005"),
+   ("DE73729404930000403005", "DE73729404930000403005")
+])
+def test_normalize_iban(iban, expected):
+
+    assert utils.normalize_iban(iban) == expected
+
+
+# is_valid_iban()
+@pytest.mark.parametrize("iban,expected", [
+   ("DE73 7294 0493 0000 4030 05", True),
+   ("'DE73 - 7294 - 0493 - 0000 - 4030 - 05'", True),
+   ("DE73729404930000403005", True),
+   ("DE7372940493000040300", False)
+
+])
+def test_is_valid_iban(iban, expected):
+
+    assert utils.is_valid_iban(iban) == expected
