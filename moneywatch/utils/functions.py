@@ -169,13 +169,20 @@ def get_cyclic_dates_for_timerange(date, months_interval, start, end):
 
     result = []
 
+    day = date.day
+
     while True:
 
         if date >= start and date <= end:
-
             result.append(date)
 
         date = add_months(date, months_interval)
+
+        maxdays = monthrange(date.year, date.month)[1]
+
+        # ensure 30.01 => 28.02 => 30.03
+        if date.day == maxdays and day < maxdays:
+            date  = date.replace(day=day)
     
         if date > end:
             break
