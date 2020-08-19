@@ -159,3 +159,18 @@ def test_is_same_month_in_list(date, expected):
 def test_is_same_month(date1, date2, expected):
 
     assert utils.is_same_month(date1, date2) == expected
+
+
+    
+
+# get_cyclic_dates_for_timerange()
+@pytest.mark.parametrize("date,months_interval,start,end,expected", [
+    (datetime.date(2020, 9, 19), 1,  datetime.date(2020, 9, 1), datetime.date(2020, 10, 31), [datetime.date(2020, 9, 19), datetime.date(2020, 10, 19)]),
+    (datetime.date(2020, 1, 29), 1,  datetime.date(2020, 1, 1), datetime.date(2020, 3, 31), [datetime.date(2020, 1, 29), datetime.date(2020, 2, 29), datetime.date(2020, 3, 29)]),
+    (datetime.date(2020, 1, 30), 1,  datetime.date(2020, 1, 1), datetime.date(2020, 3, 31), [datetime.date(2020, 1, 30), datetime.date(2020, 2, 29), datetime.date(2020, 3, 30)]),
+    (datetime.date(2020, 5, 11), 3,  datetime.date(2020, 1, 1), datetime.date(2020, 12, 31), [datetime.date(2020, 5, 11), datetime.date(2020, 8, 11), datetime.date(2020, 11, 11)]),
+    (datetime.date(2020, 1, 31), 1,  datetime.date(2020, 1, 1), datetime.date(2020, 4, 30), [datetime.date(2020, 1, 31), datetime.date(2020, 2, 29), datetime.date(2020, 3, 31), datetime.date(2020, 4, 30) ]),
+])
+def test_get_cyclic_dates_for_timerange(date, months_interval, start, end, expected):
+
+    assert utils.get_cyclic_dates_for_timerange(date, months_interval, start, end) == expected
