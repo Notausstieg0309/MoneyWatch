@@ -253,21 +253,23 @@ def index():
         item["id"] = account.id
         item["name"] = account.name
         
-        if oldest_transaction and latest_transaction is None:
+        if oldest_transaction is None and latest_transaction is None:
             item["disabled"] = 1
         else:
             item["end"] = latest_transaction.date.strftime("%Y-%m")
             item["start"] = oldest_transaction.date.strftime("%Y-%m")
 
-        if oldest is None:
-            oldest = oldest_transaction.date   
-        elif oldest > oldest_transaction.date:
-            oldest = oldest_transaction.date
+        if oldest_transaction is not None:
+            if oldest is None:
+                oldest = oldest_transaction.date   
+            elif oldest > oldest_transaction.date:
+                oldest = oldest_transaction.date
 
-        if newest is None:
-            newest = latest_transaction.date   
-        elif newest < latest_transaction.date:
-            newest = latest_transaction.date
+        if latest_transaction is not None:
+            if newest is None:
+                newest = latest_transaction.date   
+            elif latest_transaction is not None and newest < latest_transaction.date:
+                newest = latest_transaction.date
 
         account_list.append(item)
         
