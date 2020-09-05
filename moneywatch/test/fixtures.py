@@ -6,9 +6,10 @@ from moneywatch import create_app
 def app():
 
     config = {
-        TESTING = True,
-        SESSION_TYPE="filesystem",
-        SQLALCHEMY_DATABASE_URI="sqlite://"
+        "TESTING": True,
+        "SESSION_TYPE": "filesystem",
+        "SQLALCHEMY_DATABASE_URI": "sqlite://",
+        "SQLALCHEMY_TRACK_MODIFICATIONS": False
     }
 
     return create_app(config)
@@ -21,7 +22,7 @@ def client(app):
 
 @pytest.fixture
 def db(app):
-    from moneywatch import db
+    from moneywatch.utils.objects import db
     with app.app_context():
         db.create_all()
         yield db
