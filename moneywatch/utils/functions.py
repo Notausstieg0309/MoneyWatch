@@ -101,7 +101,7 @@ def add_months(date, months):
     original_day = date.day
     maxdays_original = monthrange(date_new.year, date_new.month)[1]
 
-    for i in range(months):   
+    for dummy in range(months):   
         year = date_new.year
         month = date_new.month
         
@@ -127,7 +127,7 @@ def substract_months(date, months):
     original_day = date.day
     maxdays_original = monthrange(date_new.year, date_new.month)[1]
 
-    for i in range(months):   
+    for dummy in range(months):   
         year = date_new.year
         month = date_new.month
         
