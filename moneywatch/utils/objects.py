@@ -17,7 +17,6 @@ from sqlalchemy.sql import collate, asc
 db = SQLAlchemy()
 
 
-
 class Account(db.Model):
 
     __tablename__ = 'accounts'
@@ -698,6 +697,11 @@ class Transaction(db.Model):
 def handle_before_insert(session, item):
 
     if isinstance(item, Transaction):  
+        
+        # update account balance
+        account = Account.query.filter_by(id=item.account_id).one()
+        account.balance = round(account.balance + item.valuta, 2)
+
         if item.rule_id is not None:
             rule = Rule.query.filter_by(id=item.rule_id).one_or_none()
             if rule is not None:

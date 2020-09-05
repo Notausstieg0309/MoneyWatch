@@ -79,28 +79,22 @@ def index():
                 # reverse transaction list to get oldest transaction first instead of newest transaction first
                 session['import_objects'].reverse()
                 
-                valutas = {}
+                account_ids = []
                 
                 
                 for transaction in session['import_objects']:
                     
-                    if not transaction.account_id in valutas:
-                        valutas[transaction.account_id] = 0
-                        
-                    valutas[transaction.account_id] += transaction.valuta
+                    if not transaction.account_id in account_ids:
+                        account_ids.append(transaction.account_id)
                     
                     db.session.add(transaction)
-                 
-                for account_id, valuta in valutas.items():
-                    account = Account.query.filter_by(id=account_id).one()
-                    account.balance = round(account.balance + valuta, 2)
                     
                 db.session.commit()
                 
                 session.clear()
                                 
-                if len(valutas.keys()) == 1:
-                    return redirect(url_for('overview.overview', account_id = (list(valutas.keys()))[0] )) 
+                if len(account_ids) == 1:
+                    return redirect(url_for('overview.overview', account_id = account_ids[0] )) 
 
                 return redirect(url_for('overview.index'))
 
