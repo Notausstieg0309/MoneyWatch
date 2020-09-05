@@ -60,10 +60,10 @@ def create_app(test_config=None):
     
     
     # Configure logging
-    handler = logging.FileHandler(app.config['LOGGING_LOCATION'])
-    handler.setLevel(app.config['LOGGING_LEVEL'])
+    handler = logging.FileHandler(app.config.get('LOGGING_LOCATION', os.path.join(app.instance_path,'moneywatch.log')))
+    handler.setLevel(app.config.get('LOGGING_LEVEL', logging.INFO))
     
-    formatter = logging.Formatter(app.config['LOGGING_FORMAT'])
+    formatter = logging.Formatter(app.config.get('LOGGING_FORMAT', '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
     handler.setFormatter(formatter)
     
     app.logger.addHandler(handler)
