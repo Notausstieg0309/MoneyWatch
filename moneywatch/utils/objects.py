@@ -694,7 +694,7 @@ class Transaction(db.Model):
 
 
 @event.listens_for(db.session, 'before_attach')
-def handle_before_insert(session, item):
+def handle_before_attach(session, item):
 
     if isinstance(item, Transaction):  
         
