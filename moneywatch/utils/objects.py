@@ -17,6 +17,15 @@ from sqlalchemy.sql import collate, asc
 db = SQLAlchemy()
 
 
+#                                    _   
+#     /\                            | |  
+#    /  \   ___ ___ ___  _   _ _ __ | |_ 
+#   / /\ \ / __/ __/ _ \| | | | '_ \| __|
+#  / ____ \ (_| (_| (_) | |_| | | | | |_ 
+# /_/    \_\___\___\___/ \__,_|_| |_|\__|
+#                                       
+     
+
 class Account(db.Model):
 
     __tablename__ = 'accounts'
