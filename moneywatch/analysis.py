@@ -1,14 +1,11 @@
-from flask import (
-            Blueprint, flash, current_app, g, redirect, render_template, request, url_for,session, jsonify
-            )
+from flask import (Blueprint, current_app, render_template, request, jsonify)
 from werkzeug.exceptions import abort
 
 import datetime
-import re
 
 import moneywatch.utils.functions as utils
 
-from moneywatch.utils.objects import Transaction, Rule, Category, Account
+from moneywatch.utils.objects import Rule, Category, Account
 from flask_babel import format_date, gettext, format_currency
 
 
@@ -31,34 +28,35 @@ def calcAccountBalanceFor(account_id, date):
     else:
 
         account = Account.query.filter_by(id=account_id).one()
-        
+
         balance = account.balance
 
         last_transaction = account.latest_transaction
-        
+
         if last_transaction:
-        
+
             start = date + datetime.timedelta(days=1)
-    
+
             transactions = account.transactions(start, last_transaction.date)
-            
+
             for transaction in transactions:
                 balance = round(balance - transaction.valuta, 2)
 
     return balance
-          
-    
+
+
 def createBaseData(start, end, interval):
 
     result = {}
-    
+
     result["interval"] = interval
 
     result["start"] = getLabelForDate(start, interval)
-    result["end"] =  getLabelForDate(end, interval)
-        
+    result["end"] = getLabelForDate(end, interval)
+
     return result
-    
+
+
 def getProfit(account_id, start, end, interval):
 
     result = createBaseData(start, end, interval)
@@ -75,44 +73,45 @@ def getProfit(account_id, start, end, interval):
     else:
         account = Account.query.filter_by(id=account_id).one()
         transactions = account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
-    
+
     transactions = filter(lambda x: x.type != "message", transactions)
-    
+
     result = createResultForTransactions(result, transactions)
-   
+
     return result
+
 
 def getAccountBalance(account_id, start, end, interval):
 
     result = getProfit(account_id, start, end, interval)
-    
+
     if "data" in result:
-    
+
         if len(result["data"]) > 0:
             balance = calcAccountBalanceFor(account_id, end)
-            
-            # substract the first item from the sum as 
+
+            # substract the first item from the sum as
             # otherwise the difference between the first and last item will not match
-            result["sum"] = round(result["sum"]  - result["data"][0]["valuta"], 2)
+            result["sum"] = round(result["sum"] - result["data"][0]["valuta"], 2)
             result["sum_formatted"] = format_currency(result["sum"], "EUR")
-            
+
         new_data = []
         old_data = result["data"]
-        
-        # reverse the list to get the latest item first, 
+
+        # reverse the list to get the latest item first,
         # from here we start to calculate the account balance
         # back to the oldest item
         old_data.reverse()
 
         for item in result["data"]:
-        
+
             orig_valuta = item["valuta"]
-            
+
             item["valuta"] = balance
             item["valuta_formatted"] = format_currency(item["valuta"], "EUR")
 
             balance = round(balance - orig_valuta, 2)
-            
+
             new_data.append(item)
 
         # now reverse again, to get the oldest item
@@ -120,53 +119,57 @@ def getAccountBalance(account_id, start, end, interval):
         new_data.reverse()
 
         result["data"] = new_data
-    
-   
+
+
     return result
+
 
 def getSumByType(account_id, start, end, interval, type_val):
 
     result = createBaseData(start, end, interval)
 
     account = Account.query.filter_by(id=account_id).one_or_none()
-    
+
     if account:
-    
+
         transactions = account.transactions_by_type(type_val, utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
         result = createResultForTransactions(result, transactions)
-     
+
     return result
-    
+
+
 def getSumByRule(start, end, interval, rule_id):
 
     result = createBaseData(start, end, interval)
-    
+
     rule = Rule.query.filter_by(id=rule_id).one()
-    
+
     transactions = rule.getTransactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
     result = createResultForTransactions(result, transactions)
 
     return result
 
+
 def getSumByCategory(start, end, interval, category_id):
 
     result = createBaseData(start, end, interval)
-    
+
     category = Category.query.filter_by(id=category_id).one_or_none()
-    
+
     if category is not None:
         category.setTimeframe(start, end)
-    
+
     transactions = category.transactions_with_childs
-    
+
     # transactions are not in the correct date order, sort here only once instead of multiple recursive sorting runs in Category.transactions_with_childs()
     transactions.sort(key=lambda x: x.date)
-    
+
     result = createResultForTransactions(result, transactions)
-     
-    return result  
+
+    return result
+
 
 def transToDict(transaction):
 
@@ -176,7 +179,7 @@ def transToDict(transaction):
     result["valuta_formatted"] = format_currency(transaction.valuta, "EUR")
     result["description"] = transaction.description
     result["full_text"] = transaction.full_text
-    result["date"] = format_date(transaction.date,gettext("yyyy-MM-dd"))
+    result["date"] = format_date(transaction.date, gettext("yyyy-MM-dd"))
     result["category"] = transaction.category.name
 
     return result
@@ -189,20 +192,20 @@ def getLabelForDate(date, interval):
     if interval == "12":
         return date.year
     elif interval == "6":
-        return gettext(u'%(half_year)sH %(year)s', half_year = utils.get_half_year_from_date(date), year = date.year)
+        return gettext(u'%(half_year)sH %(year)s', half_year=utils.get_half_year_from_date(date), year=date.year)
     elif interval == "3":
-        return gettext(u'Q%(quarter)s/%(year)s', quarter = utils.get_quarter_from_date(date), year = date.year)
+        return gettext(u'Q%(quarter)s/%(year)s', quarter=utils.get_quarter_from_date(date), year=date.year)
     else:
-        return gettext("%(month_name)s %(year)s", month = date.month, month_name = month_names[date.month-1], year = date.year)    
+        return gettext("%(month_name)s %(year)s", month=date.month, month_name=month_names[date.month - 1], year=date.year)
 
 
 def createResultForTransactions(result, transactions):
-    
+
     tmp = {"valuta": 0, "count": 0, "transactions": []}
-    
+
     data = []
     sum = 0
-    
+
     interval = result["interval"]
 
     for transaction in transactions:
@@ -212,7 +215,7 @@ def createResultForTransactions(result, transactions):
             sum = round(sum + tmp["valuta"], 2)
             tmp["valuta_formatted"] = format_currency(tmp["valuta"], "EUR")
             data.append(tmp.copy())
-            
+
             tmp["valuta"] = 0
             tmp["count"] = 0
             tmp["transactions"] = []
@@ -220,7 +223,7 @@ def createResultForTransactions(result, transactions):
         tmp["count"] += 1
         tmp["valuta"] = round(tmp["valuta"] + transaction.valuta, 2)
         tmp["label"] = transaction_label
-        
+
         tmp["transactions"].append(transToDict(transaction))
 
     # add remaining items of the last interval
@@ -230,29 +233,29 @@ def createResultForTransactions(result, transactions):
         data.append(tmp)
 
     result["data"] = data
-    result["sum"] = sum 
+    result["sum"] = sum
     result["sum_formatted"] = format_currency(result["sum"], "EUR")
 
     return result
-           
+
 
 @bp.route('/analysis/')
 def index():
     accounts = Account.query.all()
-    
+
     account_list = []
     oldest = None
     newest = None
 
     for account in accounts:
-    
+
         item = {}
         latest_transaction = account.latest_transaction
         oldest_transaction = account.oldest_transaction
-        
+
         item["id"] = account.id
         item["name"] = account.name
-        
+
         if oldest_transaction is None and latest_transaction is None:
             item["disabled"] = 1
         else:
@@ -261,24 +264,24 @@ def index():
 
         if oldest_transaction is not None:
             if oldest is None:
-                oldest = oldest_transaction.date   
+                oldest = oldest_transaction.date
             elif oldest > oldest_transaction.date:
                 oldest = oldest_transaction.date
 
         if latest_transaction is not None:
             if newest is None:
-                newest = latest_transaction.date   
+                newest = latest_transaction.date
             elif latest_transaction is not None and newest < latest_transaction.date:
                 newest = latest_transaction.date
 
         account_list.append(item)
-        
+
     if oldest is not None:
         oldest = oldest.strftime("%Y-%m")
 
     if newest is not None:
         newest = newest.strftime("%Y-%m")
-        
+
     return render_template('analysis/index.html', account_list=account_list, oldest=oldest, newest=newest)
 
 
@@ -286,31 +289,31 @@ def index():
 def data():
 
     data = request.form
-    
+
     current_app.logger.debug("analysis data request with params: %s", data)
-    
+
     start_date = utils.get_date_from_string(data["start"], "%Y-%m")
     end_date = utils.get_date_from_string(data["end"], "%Y-%m")
-    
+
     end_date = utils.get_last_day_of_month(year=end_date.year, month=end_date.month)
-    
+
     if start_date > end_date:
-        
+
         tmp = end_date
         end_date = start_date
         start_date = tmp
-        
+
     if "type" in data:
-    
+
         if data["type"] == "profit":
             return jsonify(getProfit(data["account_id"], start_date, end_date, data["interval"]))
-            
-        elif  data["type"] == "balance":
-           return jsonify(getAccountBalance(data["account_id"], start_date, end_date, data["interval"]))
-            
-        
+
+        elif data["type"] == "balance":
+            return jsonify(getAccountBalance(data["account_id"], start_date, end_date, data["interval"]))
+
+
         elif data["type"] == "in" or data["type"] == "out":
-        
+
             if "subtype" in data:
                 if data["subtype"] == "overall":
                     return jsonify(getSumByType(data["account_id"], start_date, end_date, data["interval"], data["type"]))
@@ -320,26 +323,26 @@ def data():
                     return jsonify(getSumByCategory(start_date, end_date, data["interval"], data["category"]))
             else:
                 abort("400", "no subtype specified")
-            
+
         else:
             abort("400", "unknown type specified")
     else:
         abort("400", "no type specified")
-    
+
     return jsonify(data)
-    
+
 
 
 @bp.route('/analysis/rules/<int:account_id>/<string:type>/')
 def json_rules(account_id, type):
 
     account = Account.query.filter_by(id=account_id).one()
-    
+
     result = []
 
     for rule in account.rules_by_type(type):
         item = {}
-        item["id"] = rule.id        
+        item["id"] = rule.id
         item["name"] = rule.name
 
         oldest_transaction = rule.oldest_transaction
@@ -350,9 +353,9 @@ def json_rules(account_id, type):
         else:
             item["start"] = oldest_transaction.date.strftime("%Y-%m")
             item["end"] = latest_transaction.date.strftime("%Y-%m")
-            
+
         result.append(item)
-            
+
     return jsonify(result)
 
 
@@ -360,10 +363,10 @@ def json_rules(account_id, type):
 def json_categories(account_id, type):
 
     account = Account.query.filter_by(id=account_id).one()
-    
+
     result = []
 
     for category in account.categories(type):
         result.extend(category.getCategoryIdsAndPaths(" > "))
-            
+
     return jsonify(result)

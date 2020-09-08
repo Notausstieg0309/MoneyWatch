@@ -2,6 +2,7 @@ import pytest
 
 from . import create_app
 
+
 @pytest.fixture
 def app():
 
