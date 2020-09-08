@@ -107,7 +107,6 @@ def db_filled(db):
 
     trans_3 = Transaction(id=3,
                           valuta = -35.78,
-                          date=start+timedelta(days=14),
                           full_text="BOOKING TEXT PATTERN3 #3",
                           date=start + timedelta(days=3),
                           description="Transaction 3",
@@ -288,7 +287,7 @@ def test_account_search_transactions(db_filled):
     account = Account.query.filter_by(id=1).one()
 
     result = account.search_for_transactions("PATTERN3")
-    expected = Transaction.query.filter(Transaction.id.in_([4, 5])).order_by(Transaction.date.desc()).all()
+    expected = Transaction.query.filter(Transaction.id.in_([3, 4, 5])).order_by(Transaction.date.desc()).all()
 
     assert result == expected
 
