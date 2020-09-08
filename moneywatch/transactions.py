@@ -1,12 +1,10 @@
-from flask import (Blueprint, flash, redirect, render_template, request, url_for, current_app, jsonify)
+from flask import (Blueprint, flash, redirect, render_template, request, url_for, jsonify)
 
 import moneywatch.utils.functions as utils
 
 from flask_babel import gettext
 
 from moneywatch.utils.objects import db, Transaction, Account
-
-from moneywatch.utils.exceptions import NoSuchItemError
 
 bp = Blueprint('transactions', __name__)
 
@@ -99,11 +97,3 @@ def transaction_messages(account_id, year, month, month_count):
     transactions = account.transactions_by_type("message", start=utils.get_first_day_of_month(year, month), end=end_date)
 
     return render_template('transactions/multiple_transaction.html', transactions=transactions)
-
-
-
-@bp.errorhandler(NoSuchItemError)
-def handle_no_such_transaction(error):
-    current_app.logger.debug("transaction not found: %s", error.data)
-
-    return "Not found", 404

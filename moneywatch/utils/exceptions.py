@@ -25,14 +25,6 @@ class NoPluginMatchError(Exception):
         self.file = file
 
 
-class NoSuchItemError(Exception):
-    def __init__(self, type, data):
-
-        super().__init__()
-        self.type = type
-        self.data = data
-
-
 class UnknownAccountError(Exception):
     def __init__(self, iban):
 
