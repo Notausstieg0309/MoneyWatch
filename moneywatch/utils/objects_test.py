@@ -1,7 +1,7 @@
 from . import functions as utils
-from .objects import Account,Category,Rule,Transaction
 
 from moneywatch.test.fixtures import *
+from .objects import Account, Category, Rule, Transaction, PlannedTransaction
 
 import pytest
 
@@ -54,6 +54,8 @@ def db_filled(db):
     cat_out_subsub1 = Category(id = 6, name="Sub-Sub Category SUBSUB1", budget_monthly=200, type="out", parent_id = cat_out_sub2.id)
     db.session.add(cat_out_subsub1)
 
+    cat_out_sub3 = Category(id=7, name="Main Category SUB3 with overdue", type="out", parent_id=None)
+    db.session.add(cat_out_sub3)
 
     # Rules
 
@@ -68,10 +70,13 @@ def db_filled(db):
     
     rule_out_2 = Rule(id = 4, name="Rule 4", type="out", category_id=cat_out_sub1.id, pattern=r"PATTERN4.*PATTERN4", description="Description - Rule 4")
     db.session.add(rule_out_2)
-    
-    rule_out_3 = Rule(id = 5, name="Rule 5", type="out", category_id=cat_out_subsub1.id, pattern="PATTERN5", description="Description - Rule 5")
+
+    rule_out_3 = Rule(id=5, name="Rule 5", type="out", category_id=cat_out_sub2.id, pattern="PATTERN5", regular=1, next_valuta=20, next_due=today + timedelta(days=2), description="Description - Rule 5")
     db.session.add(rule_out_3)
-    
+
+    # overdue rule
+    rule_out_4 = Rule(id=6, name="Rule 6", type="out", category_id=cat_out_sub3.id, pattern="PATTERN6", regular=1, next_valuta=20, next_due=today - timedelta(days=6), description="Description - Rule 6 - Overdue")
+    db.session.add(rule_out_4)
 
     db.session.commit()
 
@@ -101,9 +106,10 @@ def db_filled(db):
 
 
     trans_3 = Transaction(id=3,
-                          full_text="BOOKING TEXT PATTERN2 #3", 
                           valuta = -35.78,
                           date=start+timedelta(days=14),
+                          full_text="BOOKING TEXT PATTERN3 #3",
+                          date=start + timedelta(days=3),
                           description="Transaction 3",
                           rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
@@ -137,7 +143,7 @@ def db_filled(db):
                           full_text="MESSAGE TEXT #6", 
                           valuta = 0,
                           description = "",
-                          date = start+timedelta(days=2),
+                          date=today - timedelta(days=2),
                           account_id=account.id)
 
     db.session.add(trans_6)
@@ -172,7 +178,7 @@ def test_account_latest_transaction(db_filled):
 
     latest_transaction = account.latest_transaction
 
-    assert latest_transaction.id == 2
+    assert latest_transaction.id == 6
 
 def test_account_iban_formatted(db_filled):
     account = Account.query.filter_by(id=1).one()
@@ -202,8 +208,9 @@ def test_account_categories_out(db_filled):
     account = Account.query.filter_by(id=1).one()
 
     categories = account.categories("out")
-    
-    result = Category.query.filter(Category.id.in_([3, 4, 5])).all()
+
+    # category 6 is a subcategory and therefore should not appear here
+    result = Category.query.filter(Category.id.in_([3, 4, 5, 7])).all()
 
     assert categories == result
 
@@ -241,7 +248,7 @@ def test_account_rules_by_type_out(db_filled):
     account = Account.query.filter_by(id=1).one()
 
     rules = account.rules_by_type("out")
-    result = Rule.query.filter(Rule.id.in_([3, 4, 5])).all()
+    result = Rule.query.filter(Rule.id.in_([3, 4, 5, 6])).all()
 
     assert rules == result
 
@@ -274,7 +281,7 @@ def test_account_transactions(db_filled):
 
     transactions = account.transactions(start, start + timedelta(days=14))
 
-    assert len(transactions) == 4
+    assert len(transactions) == 3
     assert all(isinstance(el, Transaction) for el in transactions)
 
 def test_account_search_transactions(db_filled):
@@ -322,10 +329,134 @@ def test_account_creation_primary_key(db):
     assert item.id is not None
 
 
+#     _____      _
+#    / ____|    | |
+#   | |     __ _| |_ ___  __ _  ___  _ __ _   _
+#   | |    / _` | __/ _ \/ _` |/ _ \| '__| | | |
+#   | |___| (_| | ||  __/ (_| | (_) | |  | |_| |
+#    \_____\__,_|\__\___|\__, |\___/|_|   \__, |
+#                         __/ |            __/ |
+#                        |___/            |___/
+
+
+def test_category_planned_transactions_none(db_filled):
+
+    cat_1 = Category.query.filter_by(id=1).one()
+
+    cat_1.setTimeframe(today, today + timedelta(weeks=5))
+
+    planned_transactions = cat_1.planned_transactions
+
+    assert planned_transactions == []
+
+
+
+
+def test_category_planned_transactions_monthly(db_filled):
+
+    cat_2 = Category.query.filter_by(id=2).one()
+
+    cat_2.setTimeframe(today, today + timedelta(weeks=5))
+
+    planned_transactions = cat_2.planned_transactions
+
+    assert len(planned_transactions) == 1
+    assert isinstance(planned_transactions[0], PlannedTransaction)
+    assert planned_transactions[0].rule_id == 2
+
+
+def test_category_planned_transactions_monthly_past_month_none(db_filled):
 
 #   ____        __                       _   _             _     _    _                 _ _           
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |          
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __ 
+    cat_5 = Category.query.filter_by(id=5).one()
+
+    cat_5.setTimeframe(start, start + timedelta(weeks=4))
+
+    planned_transactions = cat_5.planned_transactions
+
+    assert planned_transactions == []
+
+
+def test_category_planned_transactions_quarterly(db_filled):
+
+    cat_4 = Category.query.filter_by(id=4).one()
+
+    cat_4.setTimeframe(today + timedelta(weeks=1), today + timedelta(weeks=10))
+
+    planned_transactions = cat_4.planned_transactions
+
+    assert len(planned_transactions) == 1
+    assert isinstance(planned_transactions[0], PlannedTransaction)
+    assert planned_transactions[0].rule_id == 3
+
+
+def test_category_planned_transactions_only_in_future(db_filled):
+
+    account = Account.query.filter_by(id=1).one()
+
+    latest_transaction = account.latest_transaction
+
+    cat_2 = Category.query.filter_by(id=2).one()
+
+    cat_2.setTimeframe(start, today + timedelta(weeks=5))
+
+    planned_transactions = cat_2.planned_transactions
+
+    assert len(planned_transactions) > 0
+
+    for planned_transaction in planned_transactions:
+        assert planned_transaction.date >= latest_transaction.date
+
+
+def test_category_has_regular_rules(db_filled):
+
+    cat_1 = Category.query.filter_by(id=1).one()
+
+    assert cat_1.has_regular_rules is False
+
+    cat_2 = Category.query.filter_by(id=2).one()
+
+    assert cat_2.has_regular_rules is True
+
+    cat_3 = Category.query.filter_by(id=3).one()
+
+    assert cat_3.has_regular_rules is False
+
+    cat_4 = Category.query.filter_by(id=4).one()
+
+    assert cat_4.has_regular_rules is True
+
+    cat_5 = Category.query.filter_by(id=5).one()
+
+    assert cat_5.has_regular_rules is True
+
+    cat_6 = Category.query.filter_by(id=6).one()
+
+    assert cat_6.has_regular_rules is False
+
+    cat_7 = Category.query.filter_by(id=7).one()
+
+    assert cat_7.has_regular_rules is True
+
+
+def test_category_has_overdued_planned_transactions(db_filled):
+
+    categories_no_overdue = Category.query.filter(Category.id.in_([1, 2, 3, 4, 5, 6])).all()
+
+    assert len(categories_no_overdue) == 6
+
+    for category in categories_no_overdue:
+        category.setTimeframe(start, today)
+        assert category.has_overdued_planned_transactions is False
+
+    category_with_overdue = Category.query.filter_by(id=7).one()
+    category_with_overdue.setTimeframe(start, today)
+
+    assert category_with_overdue.has_overdued_planned_transactions is True
+
+
 #  |  _ < / _ \  _/ _ \| '__/ _ \ / /\ \| __| __/ _` |/ __| '_ \|  __  |/ _` | '_ \ / _` | |/ _ \ '__|
 #  | |_) |  __/ || (_) | | |  __// ____ \ |_| || (_| | (__| | | | |  | | (_| | | | | (_| | |  __/ |   
 #  |____/ \___|_| \___/|_|  \___/_/    \_\__|\__\__,_|\___|_| |_|_|  |_|\__,_|_| |_|\__,_|_|\___|_|   
