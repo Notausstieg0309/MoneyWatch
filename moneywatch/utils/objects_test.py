@@ -1,5 +1,4 @@
 
-from moneywatch.test.fixtures import *
 from .objects import Account, Category, Rule, Transaction, PlannedTransaction
 
 import pytest

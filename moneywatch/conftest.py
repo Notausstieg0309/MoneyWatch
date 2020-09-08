@@ -1,6 +1,6 @@
 import pytest
 
-from moneywatch import create_app
+from . import create_app
 
 @pytest.fixture
 def app():
