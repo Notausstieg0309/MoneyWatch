@@ -596,6 +596,7 @@ class Transaction(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_transactions_account"), server_default="1", nullable=False)
     account = db.relationship("Account")
 
+
     @hybrid_property
     def type(self):
         if self.valuta > 0:
@@ -644,6 +645,17 @@ class Transaction(db.Model):
 
                 if self.category_id is None:
                     self.category_id = founded_rules[0].category_id
+
+                # calculate trend compared to the latest transaction in the database
+                if founded_rules[0].regular:
+
+                    latest_transaction = founded_rules[0].latest_transaction(self.date)
+
+                    if latest_transaction is not None:
+                        trend = round(self.valuta - latest_transaction.valuta, 2)
+                        self.trend = trend if trend != 0 else None
+                        current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s", self.trend, self.description, self.valuta, self.date)
+
 
         # if multiple match occurs and user selects "None" (value: False)
         if self.rule_id is False:
@@ -703,18 +715,10 @@ def handle_before_attach(session, item):
 
         if item.rule_id is not None:
             rule = Rule.query.filter_by(id=item.rule_id).one_or_none()
-            if rule is not None:
 
+            if rule is not None:
                 # update rule next due date/valuta
                 rule.updateNextDue(item.date, item.valuta)
-
-                if rule.regular:
-                    # calculate trend compared to the latest transaction in the database
-                    latest_transaction = rule.latest_transaction(item.date)
-                    if latest_transaction is not None:
-                        trend = round(item.valuta - latest_transaction.valuta, 2)
-                        item.trend = trend if trend != 0 else None
-                        current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s", item.trend, item.description, item.valuta, item.date)
 
 
 #    _____  _                            _ _______                             _   _
