@@ -20,8 +20,8 @@ def index(account_id):
     return render_template('ruleset/index.html', account=account, rules_in=rules_in, rules_out=rules_out)
 
 
-@bp.route('/<int:account_id>/ruleset/add/<string:type>/', methods=('GET', 'POST'))
-def add(account_id, type):
+@bp.route('/<int:account_id>/ruleset/add/<string:rule_type>/', methods=('GET', 'POST'))
+def add(account_id, rule_type):
 
     account = Account.query.filter_by(id=account_id).one()
 
@@ -34,45 +34,50 @@ def add(account_id, type):
         regular = request.form['regular']
         next_valuta = request.form.get('next_valuta', None)
         next_due = request.form.get('next_date', None)
-
         category_id = request.form.get('category_id', None)
+
         if not name:
             error = gettext('Rule name is required.')
 
         if not pattern:
             error = gettext('Search pattern is required.')
-        if "category_id" not in request.form:
+            
+        if not category_id:
             error = gettext('Category is required.')
 
         if error is not None:
             flash(error)
 
         else:
+
+            if next_due.strip() != "":
+                next_due = utils.get_date_from_string(next_due, "%Y-%m-%d")
+            else:
+                next_due = None
+
+            if next_valuta.strip() == "":
+                next_valuta = None
+
             item = {}
-            item["type"] = type
+
+            item["type"] = rule_type
             item["name"] = name
             item["pattern"] = pattern
             item["description"] = description
             item["category_id"] = category_id
             item["regular"] = regular
 
-            if next_valuta.strip() != "":
-                item["next_valuta"] = next_valuta
-            else:
-                next_valuta = None
-            if next_due.strip() != "":
-                next_due = utils.get_date_from_string(next_due, "%Y-%m-%d")
-            else:
-                next_due = None
-
-            new_rule = Rule(type=type, account_id=account.id, name=name, pattern=pattern, description=description, category_id=category_id, regular=regular, next_valuta=next_valuta, next_due=next_due)
+            item["next_due"] = next_due
+            item["next_valuta"] = next_valuta
+      
+            new_rule = Rule(**item)
 
             db.session.add(new_rule)
             db.session.commit()
 
             return redirect(url_for('ruleset.index', account_id=account.id))
 
-    categories = account.categories(type)
+    categories = account.categories(rule_type)
 
     if not categories:
         flash(gettext("Unable to create new rules. No categories are available to create rules for. Please create categories first."))
@@ -116,6 +121,7 @@ def change(id):
         regular = request.form['regular']
         next_due = request.form['next_due']
         next_valuta = request.form['next_valuta']
+
         if not name:
             error = gettext('Name is required.')
         if not pattern:
@@ -125,6 +131,7 @@ def change(id):
 
         if error is not None:
             flash(error)
+
         else:
 
             rule.name = name
