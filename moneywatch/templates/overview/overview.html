@@ -63,7 +63,7 @@
         {%- elif transaction.trend < 0 -%}
           &#8600;
         {%- endif -%}
-        {{ transaction.trend | currencyformat('EUR') }}
+        &nbsp;{{ transaction.trend | currencyformat('EUR') }}
     {%- endset -%}
     {%- endif -%}
     {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat('EUR')) }}

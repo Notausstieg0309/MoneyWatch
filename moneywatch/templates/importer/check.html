@@ -13,7 +13,17 @@
        <label for="{{index}}_description">{% trans %}Description{% endtrans %}</label>
        <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="{{index}}_description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
     </td>
-    <td rowspan=2" class="valuta num" data-num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</td>
+    <td rowspan=2 class="valuta">
+      <span class="valuta num" data-num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</span>
+      {% if transaction.trend is not none and transaction.trend != 0 %}<br><br>
+      <span class="trend num" data-num="{{ transaction.trend }}">{%- if transaction.trend > 0 -%}
+        &#8599;
+      {%- elif transaction.trend < 0 -%}
+        &#8600;
+      {%- endif %} {{ transaction.trend | currencyformat("EUR") }}</span>
+      {% endif %}
+      
+    </td>
   </tr>
   <tr>
     <td>
