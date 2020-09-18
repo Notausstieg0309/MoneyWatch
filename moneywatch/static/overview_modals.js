@@ -15,7 +15,7 @@ function generateChartData(res, regular, month_names, account_id)
     var links = [];
     
     
-    $.each(res, function(index, item) 
+    $.each(res, function(i, item) 
     {
         var label = generateLabel(item.day, item.month, item.year, regular, month_names);
         
@@ -24,23 +24,27 @@ function generateChartData(res, regular, month_names, account_id)
             var index = labels.indexOf(label);
             
             data[index] += item.valuta;
- 
-            pointBackgroundColors[index] = (item.reference ? "#ff0000" : "#000000");
+            
+            // if current item is the reference item and a label point already exists, change it to a reference point 
+            if(item.reference) {
+                pointBackgroundColors[index] = "#ff0000";
+                links[index] = undefined;
+            }
         }
         else
         {
             labels.push(label);
             data.push(item.valuta);
-            
-            links.push("/" + account_id + "/" + item.year + "/" + item.month + "/");
-            
+
             if(item.reference)
             {
                 pointBackgroundColors.push("#ff0000");
+                links.push(undefined);
             }
             else
             {
                pointBackgroundColors.push("#000000");
+               links.push("/" + account_id + "/" + item.year + "/" + item.month + "/");
             }
         }          
     });
@@ -136,22 +140,26 @@ function modalChart(url)
                 hover: {
                     onHover: function(e) {
                         var point = this.getElementAtEvent(e);
-                        if (point.length) e.target.style.cursor = 'pointer';
-                        else e.target.style.cursor = 'default';
+
+                        if(point.length > 0) {
+
+                            var URL = chart.data.datasets[point[0]._datasetIndex].links[point[0]._index];
+             
+                            if (URL !== undefined) e.target.style.cursor = 'pointer';
+                            else e.target.style.cursor = 'default';
+                        }
                     }
-                
                 }
             }
-            
-      
         });
         
-        $("div.modal canvas").on('click', function(evt){
-            var activePoint = chart.getElementAtEvent(evt);
+        $("div.modal canvas").on('click', function(e){
+            var activePoint = chart.getElementAtEvent(e);
             if(activePoint[0])
             {
                 var URL = chart.data.datasets[activePoint[0]._datasetIndex].links[activePoint[0]._index];
-                window.location.href = $SCRIPT_ROOT + URL;
+                
+                if (URL !== undefined) window.location.href = $SCRIPT_ROOT + URL;
             }
         });
         
