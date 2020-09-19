@@ -564,7 +564,7 @@ class Rule(db.Model):
             transaction.category_id = self.category_id
 
 
-    def matchTransaction(self, transaction):
+    def match_transaction(self, transaction):
         if re.search(self.pattern, transaction.full_text, re.IGNORECASE):
             return True
         else:
@@ -635,7 +635,7 @@ class Transaction(db.Model):
             account = Account.query.filter_by(id=self.account_id).one()
 
             for rule in account.rules_by_type(self.type):
-                if rule.matchTransaction(self):
+                if rule.match_transaction(self):
                     founded_rules.append(rule)
 
             if len(founded_rules) == 1:
