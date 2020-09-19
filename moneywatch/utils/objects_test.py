@@ -256,7 +256,7 @@ def test_account_rules_by_type_out(db_filled):
 def test_account_nonmonthly_rules_in(db_filled):
     account = Account.query.filter_by(id=1).one()
 
-    rules_in = account.getNonMonthlyRegularRulesForTimeframe("in", today + timedelta(weeks=8), today + timedelta(weeks=12))
+    rules_in = account.non_regular_rules("in", today + timedelta(weeks=8), today + timedelta(weeks=12))
 
     assert rules_in == []
 
@@ -264,7 +264,7 @@ def test_account_nonmonthly_rules_in(db_filled):
 def test_account_nonmonthly_rules_out(db_filled):
     account = Account.query.filter_by(id=1).one()
 
-    rules_out = account.getNonMonthlyRegularRulesForTimeframe("out", today + timedelta(weeks=6), today + timedelta(weeks=23))
+    rules_out = account.non_regular_rules("out", today + timedelta(weeks=6), today + timedelta(weeks=23))
 
     assert len(rules_out) == 1
     assert isinstance(rules_out[0], tuple)

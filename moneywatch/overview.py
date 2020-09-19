@@ -55,8 +55,8 @@ def createOverview(account_id, start, end):
     for category in list_out:
         sum_current_with_planned_transactions_out += category.valuta + category.planned_transactions_valuta
 
-    particular_rules_dates_in = account.getNonMonthlyRegularRulesForTimeframe("in", start=start, end=end)
-    particular_rules_dates_out = account.getNonMonthlyRegularRulesForTimeframe("out", start=start, end=end)
+    particular_rules_dates_in = account.non_regular_rules("in", start=start, end=end)
+    particular_rules_dates_out = account.non_regular_rules("out", start=start, end=end)
 
 
     months = utils.get_number_of_months(start, end)

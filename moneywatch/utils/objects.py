@@ -80,7 +80,7 @@ class Account(db.Model):
 
 
 
-    def getNonMonthlyRegularRulesForTimeframe(self, type, start, end):
+    def non_regular_rules(self, type, start, end):
 
         result = []
 
