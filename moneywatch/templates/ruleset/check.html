@@ -1,3 +1,17 @@
+{%- import 'transactions/index.html' as trans_templ -%}
+
+{%- macro matched_transaction_item(transaction) %}
+  <li class="collection-item">
+    <span>
+      <label>
+        <input type="checkbox" class="filled-in" name="matched_transactions" value="{{ transaction.id }}" {% if "matched_transactions" in request.form -%}{%- if transaction.id|string in selected_transaction_ids -%}checked{%- endif -%}{%- else -%}checked{%- endif %} />
+        <span class="black-text italic">{% trans %}Assign{% endtrans %}</span>
+      </label>
+    </span>
+    {{ trans_templ.transaction_item(transaction) }}
+  </li>
+{% endmacro %}
+
 {% extends 'base.html' %}
 
 {% block header %}
@@ -24,7 +38,7 @@
   </div>
   <div class="row">
     <div class="input-field col s12">
-      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required> 
+      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required>
       <label for="description">{% trans %}Short Description{% endtrans %}</label>
     </div>
   </div>
@@ -36,7 +50,7 @@
           {% for category in categories recursive %}
           <option value="{{ category['id'] }}"{% if (loop.length == 1 and loop.depth == 1 and category.childs | length == 0) or (selected_category == category['id']) %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
           {% if category.childs | length > 0 %}
-              {{ loop(category.childs)}} 
+              {{ loop(category.childs)}}
           {% endif %}
           {% endfor %}
         </select>
@@ -46,7 +60,7 @@
   </div>
   <div class="row">
     <div class="col s6">
-      <div class="input-field">  
+      <div class="input-field">
         <select name="regular">
           <option value="0"{% if 0 == selected_regular %} selected{% endif %}>{% trans %}no regularity{% endtrans %}</option>
           <option value="1"{% if 1 == selected_regular %} selected{% endif %}>{% trans %}monthly{% endtrans %}</option>
@@ -58,7 +72,7 @@
       </div>
     </div>
     </div>
-    <div id="regular_form_fields" class="row" style="display:none;">
+    <div id="regular_form_fields" class="row" {% if selected_regular == 0 %} style="display:none;" {% endif %}>
       <div class="input-field col s6">
         <input name="next_date" id="next_date" type="date" value="{{ request.form['next_date'] }}">
         <label for="next_date">{% trans %}Next Due{% endtrans %}</label>
@@ -71,11 +85,35 @@
     <div class="row">
       <div class="col s12">
         <label>
-          <input type="checkbox" class="filled-in" name="check_historical" />
+          <input type="checkbox" class="filled-in" name="check_historical" {% if request.form['check_historical'] %}checked{% endif %}/>
           <span class="black-text">{% trans  %}Check also all historical transactions for a successful match{% endtrans %}</span>
         </label>
       </div>
     </div>
+    {% if "check_historical" in request.form %}
+    {% if matched_transactions|length == 0 %}
+    <div class="row">
+      <div class="col s12">
+        <div class="italic center-align">
+          {% trans %}No matching transactions found.{% endtrans %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {%- if matched_transactions|length > 0 %}
+    <div class="row">
+      <div class="col s12">
+        <h5>{% trans %}Matched Transactions{% endtrans %}</h5>
+        <ul class="collection">
+        {% for transaction in matched_transactions %}
+        {{ matched_transaction_item(transaction) }}
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif -%}
+    {% endif -%}
     <div class="row">
       <div class="col s12">
         <span class="right">

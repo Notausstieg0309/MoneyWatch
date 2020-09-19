@@ -556,6 +556,12 @@ class Rule(db.Model):
                 self.next_due = next_due
 
 
+    def assign_transaction_ids(self, ids):
+        transactions = Transaction.query.filter(Transaction.id.in_(ids)).all()
+
+        for transaction in transactions:
+            transaction.rule_id = self.id
+            transaction.category_id = self.category_id
 
 
     def matchTransaction(self, transaction):

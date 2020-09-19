@@ -4,7 +4,7 @@ from flask_babel import gettext
 
 from moneywatch.utils.objects import db, Rule, Account
 import moneywatch.utils.functions as utils
-
+import re
 
 bp = Blueprint('ruleset', __name__)
 
@@ -25,8 +25,13 @@ def add(account_id, rule_type):
 
     account = Account.query.filter_by(id=account_id).one()
 
+    categories = account.categories(rule_type)
+
+    if not categories:
+        flash(gettext("Unable to create new rules. No categories are available to create rules for. Please create categories first."))
+        return redirect(url_for('ruleset.index', account_id=account.id))
+
     if request.method == 'POST':
-        error = None
 
         name = request.form['name'].strip()
         pattern = request.form['pattern']
@@ -36,27 +41,38 @@ def add(account_id, rule_type):
         next_due = request.form.get('next_date', None)
         category_id = request.form.get('category_id', None)
 
+        valid_pattern = True
+
+        errors = []
+
         if not name:
-            error = gettext('Rule name is required.')
+            errors.append(gettext('Rule name is required.'))
 
         if not pattern:
-            error = gettext('Search pattern is required.')
-            
+            errors.append(gettext('Search pattern is required.'))
+
         if not category_id:
-            error = gettext('Category is required.')
+            errors.append(gettext('Category is required.'))
 
-        if error is not None:
-            flash(error)
+        try:
+            re.compile(pattern)
+        except re.error:
+            valid_pattern = False
+            errors.append(gettext("Invalid search pattern. The given search pattern is not a valid regular expression"))
 
+
+        if next_due.strip() != "":
+            next_due = utils.get_date_from_string(next_due, "%Y-%m-%d")
         else:
+            next_due = None
 
-            if next_due.strip() != "":
-                next_due = utils.get_date_from_string(next_due, "%Y-%m-%d")
-            else:
-                next_due = None
+        if next_valuta.strip() == "":
+            next_valuta = None
 
-            if next_valuta.strip() == "":
-                next_valuta = None
+        matched_transactions = []
+        selected_transaction_ids = request.form.getlist("matched_transactions")
+
+        if len(errors) == 0:
 
             item = {}
 
@@ -69,21 +85,32 @@ def add(account_id, rule_type):
 
             item["next_due"] = next_due
             item["next_valuta"] = next_valuta
-      
+
             new_rule = Rule(**item)
 
-            db.session.add(new_rule)
-            db.session.commit()
+            if request.form.get("check_historical", None) == "on" and valid_pattern:
 
-            return redirect(url_for('ruleset.index', account_id=account.id))
+                for transaction in account.transactions_by_type(rule_type):
+                    if new_rule.match_transaction(transaction):
+                        matched_transactions.append(transaction)
 
-    categories = account.categories(rule_type)
+            if request.form['action'] == "save":
 
-    if not categories:
-        flash(gettext("Unable to create new rules. No categories are available to create rules for. Please create categories first."))
-        return redirect(url_for('ruleset.index', account_id=account.id))
+                db.session.add(new_rule)
+                db.session.commit()
 
-    return render_template('ruleset/add.html', account=account, type=type, categories=categories)
+                if request.form.get("check_historical", None) == "on" and len(selected_transaction_ids) > 0:
+                    new_rule.assign_transaction_ids(selected_transaction_ids)
+                    db.session.commit()
+
+                return redirect(url_for('ruleset.index', account_id=account.id))
+        else:
+            for error in errors:
+                flash(error)
+
+        return render_template('ruleset/check.html', account=account, rule_type=rule_type, categories=categories, matched_transactions=matched_transactions, selected_transaction_ids=selected_transaction_ids)
+
+    return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories)
 
 
 @bp.route('/ruleset/delete/<int:id>/')
