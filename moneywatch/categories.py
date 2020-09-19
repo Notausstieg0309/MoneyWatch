@@ -111,7 +111,7 @@ def change(type, id):
         if budget_monthly and not budget_monthly.isdigit():
             error = gettext('The budget must be given as numeric value.')
 
-        if current_category.name != name and current_category.sibling_name_exists(name):
+        if current_category.name != name and current_category.has_sibling_name(name):
             error = gettext("The name '%(name)s' already exists on this level", name=name)
 
         if error is not None:

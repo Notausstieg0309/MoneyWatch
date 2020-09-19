@@ -453,7 +453,7 @@ class Category(db.Model):
         return True
 
 
-    def sibling_name_exists(self, name):
+    def has_sibling_name(self, name):
 
         res = Category.query.filter_by(type=self.type, parent_id=self.parent_id, name=name).one_or_none()
 
