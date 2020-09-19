@@ -63,7 +63,6 @@ def index():
                     apply_account_id_changes(session["no_account_given"], request.form["account_id"])
                     session.pop("no_account_given", None)
 
-
                 session['import_objects'] = create_transactions_from_import(session['import_items'])
                 session.modified = True
 
@@ -77,7 +76,6 @@ def index():
                 session['import_objects'].reverse()
 
                 account_ids = []
-
 
                 for transaction in session['import_objects']:
 
@@ -202,7 +200,6 @@ def create_transactions_from_import(items, check_all=False):
 
     elif len(item_ids_iban_missing) > 0:
         raise ItemsWithoutAccountError(item_ids_iban_missing)
-
 
     return result
 

@@ -24,7 +24,7 @@
   </div>
   <div class="row">
     <div class="input-field col s12">
-      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required> 
+      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required>
       <label for="description">{% trans %}Short Description{% endtrans %}</label>
     </div>
   </div>
@@ -36,7 +36,7 @@
           {% for category in categories recursive %}
           <option value="{{ category['id'] }}"{% if (loop.length == 1 and loop.depth == 1 and category.childs | length == 0) or (selected_category == category['id']) %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
           {% if category.childs | length > 0 %}
-              {{ loop(category.childs)}} 
+              {{ loop(category.childs) }}
           {% endif %}
           {% endfor %}
         </select>
@@ -46,7 +46,7 @@
   </div>
   <div class="row">
     <div class="col s6">
-      <div class="input-field">  
+      <div class="input-field">
         <select name="regular">
           <option value="0"{% if 0 == selected_regular %} selected{% endif %}>{% trans %}no regularity{% endtrans %}</option>
           <option value="1"{% if 1 == selected_regular %} selected{% endif %}>{% trans %}monthly{% endtrans %}</option>
