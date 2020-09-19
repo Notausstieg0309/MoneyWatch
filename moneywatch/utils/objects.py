@@ -541,7 +541,7 @@ class Rule(db.Model):
         return result.order_by(Transaction.date.asc(), Transaction.id.asc()).first()
 
 
-    def updateNextDue(self, date, valuta):
+    def update_next_due(self, date, valuta):
 
         if self.regular:
             latest_transaction = self.latest_transaction()
@@ -724,7 +724,7 @@ def handle_before_attach(session, item):
 
             if rule is not None:
                 # update rule next due date/valuta
-                rule.updateNextDue(item.date, item.valuta)
+                rule.update_next_due(item.date, item.valuta)
 
 
 #    _____  _                            _ _______                             _   _
