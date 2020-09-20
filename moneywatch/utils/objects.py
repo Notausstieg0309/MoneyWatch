@@ -303,7 +303,7 @@ class Category(db.Model):
             # adapt budget to number of months
             budget *= -1 * utils.get_number_of_months(self.start, self.end)
 
-        return budget
+        return round(budget, 2)
 
 
     @property
@@ -397,7 +397,7 @@ class Category(db.Model):
             for transaction in self.transactions or []:
                 result += transaction.valuta
 
-            self._cache["valuta"] = result
+            self._cache["valuta"] = round(result, 2)
 
         return self._cache["valuta"]
 
@@ -414,7 +414,7 @@ class Category(db.Model):
             for transaction in self.planned_transactions or []:
                 result += transaction.valuta
 
-            self._cache["planned_transactions_valuta"] = result
+            self._cache["planned_transactions_valuta"] = round(result, 2)
 
         return self._cache["planned_transactions_valuta"]
 
@@ -436,7 +436,7 @@ class Category(db.Model):
             if self.budget is not None and not result < self.budget:
                 result = self.budget
 
-            self._cache["planned_valuta"] = result
+            self._cache["planned_valuta"] = round(result, 2)
 
         return self._cache["planned_valuta"]
 

@@ -64,20 +64,20 @@ def createOverview(account_id, start, end):
     profit = {}
 
     profit['planned'] = {}
-    profit['planned']['in'] = sum_planned_in
-    profit['planned']['out'] = sum_planned_out
+    profit['planned']['in'] = round(sum_planned_in, 2)
+    profit['planned']['out'] = round(sum_planned_out, 2)
 
     profit['current'] = {}
-    profit['current']['in'] = sum_current_in
-    profit['current']['out'] = sum_current_out
+    profit['current']['in'] = round(sum_current_in, 2)
+    profit['current']['out'] = round(sum_current_out, 2)
 
     profit['current_with_planned_transactions'] = {}
-    profit['current_with_planned_transactions']['in'] = sum_current_with_planned_transactions_in
-    profit['current_with_planned_transactions']['out'] = sum_current_with_planned_transactions_out
+    profit['current_with_planned_transactions']['in'] = round(sum_current_with_planned_transactions_in, 2)
+    profit['current_with_planned_transactions']['out'] = round(sum_current_with_planned_transactions_out, 2)
 
-    profit['current']['profit'] = sum_current_in + sum_current_out
-    profit['planned']['profit'] = sum_planned_in + sum_planned_out
-    profit['current_with_planned_transactions']['profit'] = sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out
+    profit['current']['profit'] = round(sum_current_in + sum_current_out, 2)
+    profit['planned']['profit'] = round(sum_planned_in + sum_planned_out, 2)
+    profit['current_with_planned_transactions']['profit'] = round(sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out)
 
 
     timing = {}
