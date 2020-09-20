@@ -303,7 +303,9 @@ class Category(db.Model):
             # adapt budget to number of months
             budget *= -1 * utils.get_number_of_months(self.start, self.end)
 
-        return round(budget, 2)
+            budget = round(budget, 2)
+
+        return budget
 
 
     @property
