@@ -30,34 +30,24 @@ def createOverview(account_id, start, end):
     sum_current_out = 0
     sum_current_in = 0
 
-    for category in list_out:
-        sum_current_out += category.valuta
-
-    for category in list_in:
-        sum_current_in += category.valuta
-
     sum_planned_out = 0
     sum_planned_in = 0
-
-    for category in list_in:
-        sum_planned_in += category.planned_valuta
-
-    for category in list_out:
-        sum_planned_out += category.planned_valuta
-
 
     sum_current_with_planned_transactions_in = 0
     sum_current_with_planned_transactions_out = 0
 
     for category in list_in:
+        sum_current_in += category.valuta
+        sum_planned_in += category.planned_valuta
         sum_current_with_planned_transactions_in += category.valuta + category.planned_transactions_valuta
 
     for category in list_out:
+        sum_current_out += category.valuta
+        sum_planned_out += category.planned_valuta
         sum_current_with_planned_transactions_out += category.valuta + category.planned_transactions_valuta
 
     particular_rules_dates_in = account.non_regular_rules("in", start=start, end=end)
     particular_rules_dates_out = account.non_regular_rules("out", start=start, end=end)
-
 
     months = utils.get_number_of_months(start, end)
 
@@ -99,9 +89,7 @@ def createOverview(account_id, start, end):
     particular_rules["out"] = particular_rules_dates_out
     particular_rules["count"] = len(particular_rules_dates_in) + len(particular_rules_dates_out)
 
-
     messages = len(account.transactions_by_type("message", start=start, end=end))
-
 
     return render_template('overview/overview.html', account=account, list_in=list_in, list_out=list_out, profit=profit, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages)
 
