@@ -430,7 +430,7 @@ function showRuleSelect(account_id, type) {
         $.getJSON($SCRIPT_ROOT + "/analysis/rules/" + account_id + "/" + type + "/", function (data, textStatus) {
            
            if(Array.isArray(data)) {           
-                 select_el.children("option:not([disabled])").remove();
+                 select_el.children("option:not(:first)").remove();
                  
                $.each(data, function(index, item) {
                   var new_el = $("<option></option>");
@@ -485,7 +485,7 @@ function showCategorySelect(account_id, type) {
         $.getJSON($SCRIPT_ROOT + "/analysis/categories/" + account_id + "/" + type + "/", function (data, textStatus) {
            
            if(Array.isArray(data)) {           
-                select_el.children("option:not([disabled])").remove();
+                select_el.children("option:not(:first)").remove();
                  
                $.each(data, function(index, item) {
                   var new_el = $("<option></option>");
