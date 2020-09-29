@@ -39,12 +39,12 @@ def createOverview(account_id, start, end):
     for category in list_in:
         sum_current_in += category.valuta
         sum_planned_in += category.planned_valuta
-        sum_current_with_planned_transactions_in += category.valuta + category.planned_transactions_valuta
+        sum_current_with_planned_transactions_in += (category.valuta + category.planned_transactions_valuta)
 
     for category in list_out:
         sum_current_out += category.valuta
         sum_planned_out += category.planned_valuta
-        sum_current_with_planned_transactions_out += category.valuta + category.planned_transactions_valuta
+        sum_current_with_planned_transactions_out += (category.valuta + category.planned_transactions_valuta)
 
     particular_rules_dates_in = account.non_regular_rules("in", start=start, end=end)
     particular_rules_dates_out = account.non_regular_rules("out", start=start, end=end)
@@ -67,7 +67,7 @@ def createOverview(account_id, start, end):
 
     profit['current']['profit'] = round(sum_current_in + sum_current_out, 2)
     profit['planned']['profit'] = round(sum_planned_in + sum_planned_out, 2)
-    profit['current_with_planned_transactions']['profit'] = round(sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out)
+    profit['current_with_planned_transactions']['profit'] = round(sum_current_with_planned_transactions_in + sum_current_with_planned_transactions_out, 2)
 
 
     timing = {}
