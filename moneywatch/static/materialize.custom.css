@@ -41,6 +41,9 @@ i.material-icons.tooltipped {
     user-select: none;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
 
 div.flash {
    background: #ffeded;

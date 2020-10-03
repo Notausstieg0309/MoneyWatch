@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-19 19:50+0200\n"
-"PO-Revision-Date: 2020-09-19 19:52+0200\n"
+"POT-Creation-Date: 2020-10-03 13:16+0200\n"
+"PO-Revision-Date: 2020-10-03 13:20+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
-"X-Generator: Poedit 2.4\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: accounts.py:34 accounts.py:86 categories.py:38 categories.py:109
 #: ruleset.py:153
@@ -459,6 +459,10 @@ msgstr "Bearbeiten"
 #: templates/overview/index.html:26
 msgid "delete"
 msgstr "Löschen"
+
+#: templates/overview/index.html:32
+msgid "Copy IBAN to clipboard"
+msgstr "Kopiere IBAN in die Zwischenablage"
 
 #: templates/overview/index.html:32
 msgid "last transaction"

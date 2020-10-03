@@ -23,6 +23,15 @@ function formatNumberEl(el) {
     }
 }
   
+function copyToClipboard(value) {
+    var $temp = $("<input>");
+
+    $("body").append($temp);
+    $temp.val(value).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
+
 $(function() {
     
     // general: initialize dropdown menus
@@ -55,6 +64,11 @@ $(function() {
     // general: colorize all numeric values 
     $('.num').each(function () { formatNumberEl(this); });
     
+    $('.copy-clipboard').on("click", function () {
+        var val = $(this).data("copy-value");
+        copyToClipboard(val);
+    });
+
     // overview: switch between current values and current incl. pending transactions
     $('table.profit th.current[data-enable-switch=1]')
        .css("cursor", "pointer")

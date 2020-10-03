@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-19 19:50+0200\n"
+"POT-Creation-Date: 2020-10-03 13:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -474,6 +474,10 @@ msgstr ""
 
 #: templates/overview/index.html:26
 msgid "delete"
+msgstr ""
+
+#: templates/overview/index.html:32
+msgid "Copy IBAN to clipboard"
 msgstr ""
 
 #: templates/overview/index.html:32
