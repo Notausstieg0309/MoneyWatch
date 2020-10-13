@@ -689,10 +689,11 @@ class Transaction(db.Model):
     @staticmethod
     def _normalizeText(text):
         new_text = text
-        for char in "/:.\\":
-            new_text.replace(char, " ")
 
-        ' '.join(new_text.split())
+        for char in "/:.\\":
+            new_text = new_text.replace(char, " ")
+
+        new_text = ' '.join(new_text.split())
 
         return new_text.upper()
 
