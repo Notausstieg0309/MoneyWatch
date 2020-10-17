@@ -122,7 +122,7 @@
 
 {% macro particular_transaction_item(class, rule_list) -%}
 {% for item in rule_list  %}
-<span class="{{ class }}">{{ item[0].name }} ({{ item[0].next_valuta|currencyformat('EUR') }}){% if not loop.last %}, {% endif -%}
+<span class="{{ class }}">{{ item[0].name }} - {{ item[0].next_valuta|currencyformat('EUR') }}</span> {% if not loop.last %} / {% endif -%}
 {%- endfor -%}
 {%- endmacro %}
 
@@ -193,7 +193,7 @@
 <div class="col s12 center-align">
 {% trans %}particular transactions:{% endtrans %}
 {{ particular_transaction_item("in", particular_rules["in"]) }}
-{%- if particular_rules["in"]|length > 0 and particular_rules["out"]|length > 0  %}, {% endif -%}
+{%- if particular_rules["in"]|length > 0 and particular_rules["out"]|length > 0  %} / {% endif -%}
 {{ particular_transaction_item("out", particular_rules["out"]) }}
 </div>
 </div>
