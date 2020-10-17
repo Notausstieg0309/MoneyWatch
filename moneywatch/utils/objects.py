@@ -588,7 +588,7 @@ class Transaction(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, index=True)
 
-    date = db.Column(db.Date, unique=False, nullable=False)
+    date = db.Column(db.Date, unique=False, nullable=False, index=True)
     valuta = db.Column(db.Float, unique=False, nullable=False)
     description = db.Column(db.String(100), unique=False, nullable=False)
     full_text = db.Column(db.String(100), unique=False, nullable=False)
