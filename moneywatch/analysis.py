@@ -201,39 +201,56 @@ def getLabelForDate(date, interval):
 
 def createResultForTransactions(result, transactions):
 
-    tmp = {"valuta": 0, "count": 0, "transactions": []}
-
     data = []
-    sum = 0
+
+    sum_valuta = 0
+
+    tmp_valuta = 0
+    tmp_count = 0
+    tmp_transactions = []
+    tmp_last_label = None
+
+    def getTempDict():
+
+        nonlocal tmp_valuta, tmp_count, tmp_transactions, tmp_last_label
+
+        tmp_dict = {
+            "valuta": round(tmp_valuta, 2),
+            "valuta_formatted": format_currency(tmp_valuta, "EUR"),
+            "count": tmp_count,
+            "transactions": tmp_transactions,
+            "label": tmp_last_label,
+        }
+
+        tmp_valuta = 0
+        tmp_count = 0
+        tmp_transactions = []
+
+        return tmp_dict
+
 
     interval = result["interval"]
 
     for transaction in transactions:
         transaction_label = getLabelForDate(transaction.date, interval)
 
-        if tmp.get("label", transaction_label) != transaction_label:
-            sum = round(sum + tmp["valuta"], 2)
-            tmp["valuta_formatted"] = format_currency(tmp["valuta"], "EUR")
-            data.append(tmp.copy())
+        if tmp_last_label != transaction_label and tmp_last_label is not None:
+            sum_valuta += tmp_valuta
+            data.append(getTempDict())
 
-            tmp["valuta"] = 0
-            tmp["count"] = 0
-            tmp["transactions"] = []
+        tmp_count += 1
+        tmp_valuta += transaction.valuta
+        tmp_last_label = transaction_label
 
-        tmp["count"] += 1
-        tmp["valuta"] = round(tmp["valuta"] + transaction.valuta, 2)
-        tmp["label"] = transaction_label
-
-        tmp["transactions"].append(transToDict(transaction))
+        tmp_transactions.append(transToDict(transaction))
 
     # add remaining items of the last interval
-    if tmp["count"] > 0:
-        sum = round(sum + tmp["valuta"], 2)
-        tmp["valuta_formatted"] = format_currency(tmp["valuta"], "EUR")
-        data.append(tmp)
+    if tmp_count > 0:
+        sum_valuta += tmp_valuta
+        data.append(getTempDict())
 
     result["data"] = data
-    result["sum"] = sum
+    result["sum"] = round(sum_valuta, 2)
     result["sum_formatted"] = format_currency(result["sum"], "EUR")
 
     return result
