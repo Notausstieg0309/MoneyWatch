@@ -114,13 +114,13 @@ class Account(db.Model):
         elif end is not None:
             result = result.filter(Transaction.date <= end)
 
-        result = result.order_by(Transaction.date.asc())
+        result = result.order_by(Transaction.date.asc(), Transaction.id.asc())
 
         return result.all()
 
     def search_for_transactions(self, term):
 
-        transactions = Transaction.query.filter(Transaction.account_id == self.id).filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc()).all()
+        transactions = Transaction.query.filter(Transaction.account_id == self.id).filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc(), Transaction.id.desc()).all()
 
         return transactions
 
@@ -142,7 +142,7 @@ class Account(db.Model):
         elif end is not None:
             result = result.filter(Transaction.date <= end)
 
-        result = result.order_by(Transaction.date.asc())
+        result = result.order_by(Transaction.date.asc(), Transaction.id.asc())
 
         return result.all()
 
@@ -344,6 +344,7 @@ class Category(db.Model):
 
             result = Transaction.query.filter_by(category_id=self.id)
             result = result.filter(Transaction.date.between(self.start, self.end))
+            result = result.order_by(Transaction.date.asc(), Transaction.id.asc())
 
             self._cache["transactions"] = result.all()
 
@@ -514,9 +515,9 @@ class Rule(db.Model):
             result = result.filter(Transaction.date <= end)
 
         if reversed:
-            result = result.order_by(Transaction.date.desc())
+            result = result.order_by(Transaction.date.desc(), Transaction.id.desc())
         else:
-            result = result.order_by(Transaction.date.asc())
+            result = result.order_by(Transaction.date.asc(), Transaction.id.asc())
 
         if limit is not None:
             result = result.limit(limit)
