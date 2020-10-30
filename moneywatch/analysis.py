@@ -124,7 +124,7 @@ def getAccountBalance(account_id, start, end, interval):
     return result
 
 
-def getSumByType(account_id, start, end, interval, type_val):
+def getSumByType(account_id, start, end, interval, trans_type):
 
     result = createBaseData(start, end, interval)
 
@@ -132,7 +132,7 @@ def getSumByType(account_id, start, end, interval, type_val):
 
     if account:
 
-        transactions = account.transactions_by_type(type_val, utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
+        transactions = account.transactions_by_type(trans_type, utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
         result = createResultForTransactions(result, transactions)
 
@@ -350,14 +350,14 @@ def data():
 
 
 
-@bp.route('/analysis/rules/<int:account_id>/<string:type>/')
-def json_rules(account_id, type):
+@bp.route('/analysis/rules/<int:account_id>/<string:trans_type>/')
+def json_rules(account_id, trans_type):
 
     account = Account.query.filter_by(id=account_id).one()
 
     result = []
 
-    for rule in account.rules_by_type(type):
+    for rule in account.rules_by_type(trans_type):
         item = {}
         item["id"] = rule.id
         item["name"] = rule.name
@@ -376,14 +376,14 @@ def json_rules(account_id, type):
     return jsonify(result)
 
 
-@bp.route('/analysis/categories/<int:account_id>/<string:type>/')
-def json_categories(account_id, type):
+@bp.route('/analysis/categories/<int:account_id>/<string:trans_type>/')
+def json_categories(account_id, trans_type):
 
     account = Account.query.filter_by(id=account_id).one()
 
     result = []
 
-    for category in account.categories(type):
+    for category in account.categories(trans_type):
         result.extend(category.getCategoryIdsAndPaths(" > "))
 
     return jsonify(result)
