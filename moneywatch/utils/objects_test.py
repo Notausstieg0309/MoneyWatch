@@ -460,6 +460,37 @@ def test_category_has_overdued_planned_transactions(db_filled):
     assert category_with_overdue.has_overdued_planned_transactions is True
 
 
+
+def test_category_budget(db_filled):
+    cat_1 = Category.query.filter_by(id=1).one()
+
+    assert cat_1.budget is None
+
+    cat_2 = Category.query.filter_by(id=2).one()
+
+    assert cat_2.budget is None
+
+    cat_3 = Category.query.filter_by(id=3).one()
+
+    assert cat_3.budget is None
+
+    cat_4 = Category.query.filter_by(id=4).one()
+
+    assert cat_4.budget is None
+
+    cat_5 = Category.query.filter_by(id=5).one()
+
+    assert cat_5.budget is None
+
+    cat_6 = Category.query.filter_by(id=6).one()
+
+    assert cat_6.budget == -200
+
+    cat_7 = Category.query.filter_by(id=7).one()
+
+    assert cat_7.budget is None
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
