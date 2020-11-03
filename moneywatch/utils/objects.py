@@ -208,6 +208,7 @@ class Category(db.Model):
             latest_transaction = self.account.latest_transaction
 
             latest_transaction_date = datetime.date.today()
+            today_date = datetime.date.today()
 
             if latest_transaction:
                 latest_transaction_date = latest_transaction.date
@@ -245,10 +246,10 @@ class Category(db.Model):
                                 and   # noqa: W503,W504
 
                                 # planned transactions should be listed only for current or future months
-                                (planned_date >= datetime.date.today() or utils.is_same_month(planned_date, datetime.date.today()))
+                                (planned_date >= today_date or utils.is_same_month(planned_date, today_date))
                         ):
 
-                            overdue = (planned_date <= latest_transaction_date and planned_date < datetime.date.today())
+                            overdue = (planned_date <= latest_transaction_date and planned_date < today_date)
 
                             if self.type == "out":
                                 result.append(PlannedTransaction(planned_date, rule.next_valuta * -1, rule.description, rule.id, overdue))
