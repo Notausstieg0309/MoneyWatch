@@ -460,7 +460,7 @@ div.item_container div.top_row {
     min-height: 30pt;
 }
 
-div.item_container.out  div.top_row {
+div.item_container.out div.top_row {
     background: rgb(250,226,226);
     background: linear-gradient(122deg, rgba(250,226,226,1) 24%, rgba(255,255,255,0) 70%);
 }
@@ -484,9 +484,35 @@ div.item_container div.top_row div.description div.short_description {
     font-weight: bold;
 }
 
+div.item_container.with_controls div.top_row div.description div.short_description {
+    font-weight: normal;
+}
+div.item_container div.top_row div.description div.short_description input {
+    font-weight: bold;
+}
+
+
+div.item_container div.top_row div.description div.message_noted {
+    line-height: 30pt;
+}
+
+
 div.item_container div.top_row div.description div.category {
     font-style:italic;
     font-size: 0.8em;
+}
+
+div.item_container.with_controls div.top_row div.description div.category {
+    font-style:normal;
+    font-size: 1em;
+}
+
+div.item_container.with_controls div.top_row div.description div.category div.input-field {
+    margin-bottom: 0rem;
+}
+
+div.item_container.with_controls div.top_row div.description div.category div.input-field input.select-dropdown {
+    margin-bottom: 0rem;
 }
 
 

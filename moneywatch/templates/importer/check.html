@@ -4,66 +4,59 @@
 {% block title %}{% trans %}Check imported transactions{% endtrans %}{% endblock %}
 {% endblock %}
 
-{% macro transaction_item(transaction, index) %}
-<li class="collection-item{% if transaction['category_id'] and transaction['description'] %} complete{% endif %}">
-<table class="transactions transaction imports">
-  <tr>
-    <td class="date" rowspan="3">{{ transaction.date | dateformat(_("yyyy-MM-dd")) }}</td>
-    <td class="short_description">
-       <label for="{{index}}_description">{% trans %}Description{% endtrans %}</label>
-       <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="{{index}}_description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
-    </td>
-    <td rowspan=2 class="valuta">
-      <span class="valuta num" data-num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</span>
-      {% if transaction.trend is not none and transaction.trend != 0 %}<br><br>
+
+
+
+{% macro item(transaction, index) %}
+<div class="transaction item_container with_controls {{ transaction.type }}{% if transaction.complete %} complete{% endif %}">
+  <div class="left_ribbon">{{transaction.date | dateformat(_("yyyy-MM-dd"))}}</div>
+  <div class="top_row">
+    <div class="description">
+      {% if transaction.type != "message" %}
+      <div class="short_description">
+        <label for="{{index}}_description">{% trans %}Description{% endtrans %}</label>
+        <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="{{index}}_description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
+      </div>
+      <div class="category">
+        <div class="input-field">
+          <select name="{{ index }}_category" required>
+              <option disabled {% if transaction.category_id is none %}selected {% endif %}value>{% trans %}Please Choose{% endtrans %}...</option>
+              {% for category in categories[transaction.account_id][transaction.type] %}
+              <option value="{{ category['id'] }}"{% if loop.length == 1 or (transaction.category_id and transaction.category_id |int == category['id']) %} selected{% endif %}>{{ category["path"] }}</option>
+              {% endfor %}
+          </select>
+          <label>{% trans %}Category{% endtrans %}</label>
+        </div>
+      </div>
+      {% else %}
+      <div class="message_noted">
+        <input type="hidden" name="{{ index }}_message" value="1" />
+        <label>
+          <input type="checkbox" class="filled-in" name="{{ index }}_noted" {% if transaction.description %} checked{% endif%} />
+          <span class="black-text">{% trans %}I have noted this message{% endtrans %}</span>
+        </label>
+      </div>
+      {% endif %}
+    </div>
+    {% if transaction.type != "message" %}
+    <span class="valuta_box {{ transaction.type }}">
+      <span class="valuta num" data-num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</span>
+      {%- if transaction.trend %}
+      <br>
       <span class="trend num" data-num="{{ transaction.trend }}">{%- if transaction.trend > 0 -%}
         &#8599;
       {%- elif transaction.trend < 0 -%}
         &#8600;
       {%- endif %} {{ transaction.trend | currencyformat("EUR") }}</span>
       {% endif %}
-      
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <div class="input-field">
-        <select name="{{ index }}_category" required>
-            <option disabled {% if transaction.category_id is none %}selected {% endif %}value>{% trans %}Please Choose{% endtrans %}...</option>
-            {% for category in categories[transaction.account_id][transaction.type] %}
-            <option value="{{category["id"] }}"{% if loop.length == 1 or (transaction.category_id and transaction.category_id |int == category["id"]) %} selected{% endif %}>{{ category["path"] }}</option>
-            {% endfor %}
-        </select>
-        <label>{% trans %}Category{% endtrans %}</label>
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" class="full_text" colspan="2">{{transaction.full_text}}</td>
-  </tr>
-</table> 
-</li>
+    </span>
+    {% endif %}
+  </div>
+  <div class="full_text">{{ transaction.full_text }}</div>
+</div>
 {% endmacro %}
 
-{% macro message_item(transaction, index) %}
-<li class="collection-item{% if transaction.description %} complete{% endif %}">
-<input type="hidden" name="{{ index }}_message" value="1" />
-<table class="transactions message imports">
-  <tr>
-    <td class="date" rowspan="2">{{ transaction.date | dateformat(_("yyyy-MM-dd")) }}</td>
-    <td colspan="2" class="full_text" colspan="2">{{transaction.full_text}}</td>
-  </tr>
-  <tr>
-    <td>   
-      <label>
-        <input type="checkbox" name="{{ index }}_noted" {% if transaction.description %} checked{% endif%} />
-        <span>{% trans %}I have noted this message{% endtrans %}</span>
-      </label>
-    </td>
-  </tr>
-</table> 
-</li>
-{% endmacro %}
+
 
 {% block content %}
 <br>
@@ -71,18 +64,12 @@
 {% if data %}
 <form method="post">
 <button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
-
 <button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
 
-<ul class="collection">
 {% for transaction in data %}
-{% if transaction.type == "message" %}
-{{ message_item(transaction, loop.index0) }} 
-{% else %}
-{{ transaction_item(transaction, loop.index0) }} 
-{% endif %}
+{{ item(transaction, loop.index0) }}
 {% endfor %}
-</ul>
+
 {% if data|length > 3 %}
 <button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
 <button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
