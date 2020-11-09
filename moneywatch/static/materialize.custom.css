@@ -434,50 +434,128 @@ span.account-color {
 
 */
 
-table.transactions tr:first-child {
-    border: unset;
+
+div.item_container {
+    position:relative;
+    border-radius: 5px;
+    margin:20px;
+
 }
 
-table.transactions tr:last-child {
-    border: unset;
+div.item_container.in {
+    border: 1px solid rgb(37, 104, 48);
 }
 
-table.transactions td.short_description{
+div.item_container.out {
+    border: 1px solid rgb(199, 102, 102);
+}
+
+div.item_container.message {
+    border: 1px solid #8e8e8e;
+}
+
+
+div.item_container div.top_row {
+    border-radius: 4px 4px 0px 0px;
+    min-height: 30pt;
+}
+
+div.item_container.out  div.top_row {
+    background: rgb(250,226,226);
+    background: linear-gradient(122deg, rgba(250,226,226,1) 24%, rgba(255,255,255,0) 70%);
+}
+
+div.item_container.in  div.top_row {
+    background: rgb(226,250,229);
+    background: linear-gradient(122deg, rgba(226,250,229,1) 24%, rgba(255,255,255,0) 70%);
+}
+
+div.item_container.message div.top_row {
+    background: rgb(224,224,224);
+    background: linear-gradient(122deg, rgba(224,224,224,1) 24%, rgba(255,255,255,0) 70%);
+}
+
+
+div.item_container div.top_row div.description {
+    margin: 0px 100px;
+}
+
+div.item_container div.top_row div.description div.short_description {
     font-weight: bold;
-    padding-bottom:0px;
 }
-table.transactions td.category{
-    font-size: 0.8em;
-    padding-top: 0px;
+
+div.item_container div.top_row div.description div.category {
     font-style:italic;
-
+    font-size: 0.8em;
 }
-table.transactions td.valuta {
+
+
+/* valuta box in top right corner */
+div.item_container div.top_row span.valuta_box {
+    position: absolute;
+    right:-10px;
+    top:-10px;
+    border-radius: 5px;
+    padding: 5px;
     text-align:right;
-    font-weight: bold;
-    width:1%;
-    white-space:nowrap;
-
-}
-table.transactions td.date{
-    text-align:center;
-    font-weight: bold;
-    width:1%;
-    white-space:nowrap;
 }
 
-table.transactions td.full_text {
-    color:grey;
+div.item_container div.top_row span.valuta_box.out {
+    border:  1px solid rgb(207, 42, 42);
+    background-color: rgb(250,226,226);
+}
+
+div.item_container div.top_row span.valuta_box.in {
+    border:  1px solid rgb(40, 136, 48);
+    background-color: rgb(226,250,229);
+}
+
+div.item_container div.top_row span.valuta_box span.valuta{
+    font-weight: bold;
+}
+
+div.item_container div.top_row span.valuta_box span.trend{
+    font-size: 0.95em;
+}
+
+
+div.item_container div.full_text {
     font-family: monospace;
+    border-top: 1px dotted #bbb ;
+    color: rgb(58, 58, 58);
+    padding: 5px;
 }
 
-table.transactions.message td.full_text {
-    font-style: italic;
+div.item_container.message div.full_text {
+    font-family: monospace;
     font-weight: bold;
 }
 
-table.transactions.message.imports td.full_text {
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+
+.left_ribbon {
+    margin-left: -10px;
+    float: left;
+	color: #fff;
+    top:4px;
+	position: relative;
+	text-transform: uppercase;
+	background: rgb(139, 139, 139);
+	border: 1px solid rgba(0,0,0,.3);
+	box-shadow: 0px 2px 5px rgba(0,0,0,.9);
+	padding: 3px 10px;
+    clear: both;
+}
+
+.left_ribbon::before {
+    display: block;
+    width: 9px;
+    height: 0px;
+    position: absolute;
+    bottom: -10px;
+    left: -1px;
+    content: "";
+    border-bottom: 9px solid transparent;
+    border-right: 9px solid rgb(107, 107, 107);
 }
 
 

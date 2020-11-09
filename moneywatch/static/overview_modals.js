@@ -13,19 +13,19 @@ function generateChartData(res, regular, month_names, account_id)
     var data = []
     var pointBackgroundColors = [];
     var links = [];
-    
-    
-    $.each(res, function(i, item) 
+
+
+    $.each(res, function(i, item)
     {
         var label = generateLabel(item.day, item.month, item.year, regular, month_names);
-        
+
         if(labels.includes(label))
         {
             var index = labels.indexOf(label);
-            
+
             data[index] += item.valuta;
-            
-            // if current item is the reference item and a label point already exists, change it to a reference point 
+
+            // if current item is the reference item and a label point already exists, change it to a reference point
             if(item.reference) {
                 pointBackgroundColors[index] = "#ff0000";
                 links[index] = undefined;
@@ -46,9 +46,9 @@ function generateChartData(res, regular, month_names, account_id)
                pointBackgroundColors.push("#000000");
                links.push("/" + account_id + "/" + item.year + "/" + item.month + "/");
             }
-        }          
+        }
     });
-    
+
     return {labels: labels, data: data, pointBackgroundColors: pointBackgroundColors, links: links};
 }
 
@@ -56,11 +56,11 @@ function generateChartData(res, regular, month_names, account_id)
 function generateLabel(day, month, year, regular, month_names)
 {
     var date = new Date(year, month, day);
-    
+
     switch(regular)
     {
         case 1:
-            return month_names[month - 1] + " " + year;        
+            return month_names[month - 1] + " " + year;
         case 3:
             return "Q" + Math.ceil(month/3) + " " + year;
         case 6:
@@ -74,7 +74,7 @@ function generateLabel(day, month, year, regular, month_names)
 function modalChart(url)
 {
     showInitModal();
-    
+
     $.ajax({
         url: $SCRIPT_ROOT + url,
         async: true,
@@ -83,20 +83,20 @@ function modalChart(url)
     }).done(function (res) {
 
         var backgroundColor = (res.type == "in" ? "rgba(0,255,0,0.1)" : "rgba(255,0,0,0.1)");
-        
+
         var items = generateChartData(res.data, res.regular, res.month_names, res.account_id)
         var ctx = $("div.modal canvas")[0].getContext('2d');
-       
+
         $("div.modal h4#caption").html(res.description);
-        
-        
-       
+
+
+
         chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: items.labels,
                 datasets: [
-                            { 
+                            {
                                 label: res.description,
                                 data: items.data,
                                 links: items.links,
@@ -117,9 +117,9 @@ function modalChart(url)
                                         return value + ' €';
                                       },
                             fontColor: (res.type == "in" ? "#006d14" : "#ff0000")
-                        }   
+                        }
                     }],
-                    xAxes: [{ 
+                    xAxes: [{
                         ticks: {
                           fontColor: "#000",
                         },
@@ -128,7 +128,7 @@ function modalChart(url)
                 tooltips: {
                     callbacks: {
                         label: function(tooltipItem, chart){
-                          
+
                             return new Intl.NumberFormat(getLang(), { style: 'currency', currency: 'EUR' } ).format(tooltipItem.yLabel);
                         }
                     },
@@ -144,7 +144,7 @@ function modalChart(url)
                         if(point.length > 0) {
 
                             var URL = chart.data.datasets[point[0]._datasetIndex].links[point[0]._index];
-             
+
                             if (URL !== undefined) e.target.style.cursor = 'pointer';
                             else e.target.style.cursor = 'default';
                         }
@@ -152,51 +152,51 @@ function modalChart(url)
                 }
             }
         });
-        
+
         $("div.modal canvas").on('click', function(e){
             var activePoint = chart.getElementAtEvent(e);
             if(activePoint[0])
             {
                 var URL = chart.data.datasets[activePoint[0]._datasetIndex].links[activePoint[0]._index];
-                
+
                 if (URL !== undefined) window.location.href = $SCRIPT_ROOT + URL;
             }
         });
-        
+
         $("div.modal canvas").show();
-        
+
         $("div.modal div.progress").hide();
     }).fail(function () {
         $('div.modal').modal("close");
     });
-    
+
 }
 
 function getLang()
 {
-    if (navigator.languages != undefined) 
-    return navigator.languages[0]; 
-    else 
+    if (navigator.languages != undefined)
+    return navigator.languages[0];
+    else
     return navigator.language;
 }
 
 function showInitModal()
 {
-    
+
     $("div.modal h4#caption").html("");
     $("div.modal div.progress").fadeIn();
     $("div.modal canvas").off("click").hide();
-    $("div.modal ul").remove();
-    
+    $("div.modal div.transaction").remove();
+
     if(chart)
         chart.destroy();
-    
+
     var canvas = $("div.modal canvas")[0];
     var context = canvas.getContext('2d');
-    
+
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.beginPath();
-    
+
     $('div.modal').modal("open");
 }
 
@@ -210,11 +210,11 @@ function modalTransactionDetails(url)
         dataType: 'html',
         type: "get",
     }).done(function (res) {
-        
-       
+
+
         showInitModal();
         $("div.modal div.progress").hide();
-          
+
         $("div.modal div.modal-content").append(res);
         $('div.modal .num').each(function () { formatNumberEl(this); });
     });
