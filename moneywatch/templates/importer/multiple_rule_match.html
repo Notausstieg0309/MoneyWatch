@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% macro transaction_item(transaction, index) %}
-<div class="transaction item_container with_controls multiple-rule-transaction {{ transaction.type }}">
+<div class="transaction item_container z-depth-1 with_controls multiple-rule-transaction {{ transaction.type }}">
   <div class="left_ribbon">{{ transaction.date | dateformat(_("yyyy-MM-dd")) }}</div>
   <div class="top_row">
     <div class="description">

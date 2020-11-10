@@ -6,7 +6,7 @@
 
 
 {% macro transaction_item(transaction) %}
-<div class="transaction item_container with_controls {{ transaction.type }}">
+<div class="transaction item_container z-depth-1 with_controls {{ transaction.type }}">
   <div class="left_ribbon">{{ transaction.date | dateformat(_("yyyy-MM-dd")) }}</div>
   <div class="top_row">
     <div class="description">
