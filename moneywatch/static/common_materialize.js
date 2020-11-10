@@ -133,19 +133,14 @@ $(function() {
         var selItem = $("select.rule-select option:selected");
         var description = selItem.attr("data-description");
         var category_id = selItem.attr("data-category-id");
-        var desc_no_replace = $("div.multiple-rule-transaction input[name='description']").attr("data-rule-no-replace");
-        var cat_no_empty = $("div.multiple-rule-transaction select[name='category_id']").attr("data-rule-no-empty");
 
-        if(desc_no_replace != "1")
+        if( typeof(description) != "undefined")
         {
-            if( typeof(description) != "undefined")
-            {
-                $("div.multiple-rule-transaction input[name='description']").val(description);
-            }
-            else
-            {
-                $("div.multiple-rule-transaction input[name='description']").val(null);
-            }
+            $("div.multiple-rule-transaction input[name='description']").val(description);
+        }
+        else
+        {
+            $("div.multiple-rule-transaction input[name='description']").val(null);
         }
 
         if( typeof(category_id) != "undefined")
@@ -155,7 +150,7 @@ $(function() {
             select_el.val(category_id);
             select_el.formSelect();
         }
-        else if(cat_no_empty != "1")
+        else
         {
             var select_el = $("div.multiple-rule-transaction select[name='category_id']");
 
@@ -182,7 +177,7 @@ $(function() {
                     "mouseleave": function(e) {
                                     $(this).find("span.edit").hide();
                                   }
-    },"ul.transactions_overview table.transactions");
+    },"div.transaction");
 
     // overview: show edit link if available when hovering a transaction
     $("div.overview div.transaction span.description").click(function() {
