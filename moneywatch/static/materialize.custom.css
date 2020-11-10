@@ -555,6 +555,7 @@ div.item_container div.full_text {
 div.item_container.message div.full_text {
     font-family: monospace;
     font-weight: bold;
+    color: #000;
 }
 
 
