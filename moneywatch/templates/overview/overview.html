@@ -3,7 +3,7 @@
 
 {% block header %}
 
-  {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("yyyy/MM")) }}{% if timing["months"] > 1 %} - {{ timing["end"] | dateformat(_("yyyy/MM")) }} ({{ timing["months"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
+  {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("yyyy/MM")) }}{% if timing["interval"] > 1 %} - {{ timing["end"] | dateformat(_("yyyy/MM")) }} ({{ timing["interval"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
 {% endblock %}
 
 
@@ -42,7 +42,7 @@
 
 {% macro planned_transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        {%- if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
+        {%- if timing["interval"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["interval"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{transaction.description}}{% if transaction.overdue %} <i class="tooltipped overdue tiny material-icons" data-tooltip="{% trans %}Planned transaction is overdue.{% endtrans %}">warning</i>{% endif %}
     {%- endset -%}
     {%- set row_class -%}
     {{ row_class }}{% if transaction.overdue %} overdue{% endif %}
@@ -53,7 +53,7 @@
 
 {% macro transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
+        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["interval"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["interval"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
     {%- endset -%}
 
     {% if transaction.trend is not none %}
@@ -137,14 +137,14 @@
 <div class="row  center-align">
   <div class="col m3 left-align hide-on-small-only">
 
-  {%- if timing["months"] == 1 -%}
+  {%- if timing["interval"] == 1 -%}
     <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['previous'].year, month=timing['previous'].month ) }}">&laquo; {% trans %}previous month{% endtrans %}</a>
     <br><br>
     <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['current_month_previous_year'].year, month=timing['current_month_previous_year'].month ) }}">&laquo;&laquo; {% trans year=timing['current_month_previous_year'].year %}current month in {{ year }}{% endtrans %}</a>
-  {% elif timing["months"] == 12 and timing["start"].month == 1 -%}
+  {% elif timing["interval"] == 12 and timing["start"].month == 1 -%}
     <a class="action btn" href="{{ url_for('overview.year_overview',account_id=account.id, year=timing['previous'].year ) }}">&laquo; {% trans %}previous year{% endtrans %}</a>
   {% else -%}
-    <a class="action btn" href="{{ url_for('overview.custom_overview',account_id=account.id, year=timing['previous'].year,month=timing['previous'].month, month_count=timing['months'] ) }}">&laquo; {% trans %}previous timeperiod{% endtrans %}</a>
+    <a class="action btn" href="{{ url_for('overview.custom_overview',account_id=account.id, year=timing['previous'].year,month=timing['previous'].month, interval=timing['interval'] ) }}">&laquo; {% trans %}previous timeperiod{% endtrans %}</a>
   {% endif -%}
   </div>
 
@@ -176,14 +176,14 @@
 
   <div class="col m3 right-align hide-on-small-only">
 
-    {%- if timing["months"] == 1 -%}
+    {%- if timing["interval"] == 1 -%}
       <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['next'].year, month=timing['next'].month ) }}">{% trans %}next month{% endtrans %} &raquo;</a>
       <br><br>
       <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['current_month_next_year'].year, month=timing['current_month_next_year'].month ) }}">{% trans year=timing["current_month_next_year"].year %}current month in {{ year }}{% endtrans %} &raquo;&raquo;</a>
-    {% elif timing["months"] == 12 and timing["start"].month == 1 -%}
+    {% elif timing["interval"] == 12 and timing["start"].month == 1 -%}
       <a class="btn" href="{{ url_for('overview.year_overview', account_id=account.id, year=timing['next'].year ) }}">{% trans %}next year{% endtrans %} &raquo;</a>
     {% else -%}
-      <a class="btn" href="{{ url_for('overview.custom_overview', account_id=account.id, year=timing['next'].year,month=timing['next'].month, month_count=timing['months'] ) }}">{% trans %}next timeperiod{% endtrans %} &raquo;</a>
+      <a class="btn" href="{{ url_for('overview.custom_overview', account_id=account.id, year=timing['next'].year,month=timing['next'].month, interval=timing['interval'] ) }}">{% trans %}next timeperiod{% endtrans %} &raquo;</a>
     {% endif -%}
 
     <br><br>
@@ -191,11 +191,11 @@
   </div>
   {%- if messages > 0 -%}
   <div class="right-centered">
-    <span class="message-modal  tooltipped" data-year="{{ timing["start"].year }}" data-month="{{ timing["start"].month }}" data-month-count={{ timing["months"] }} data-account-id="{{ account.id }}" data-tooltip="{% if timing["months"] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span>
+    <span class="message-modal  tooltipped" data-year="{{ timing['start'].year }}" data-month="{{ timing['start'].month }}" data-month-count={{ timing['interval'] }} data-account-id="{{ account.id }}" data-tooltip="{% if timing['interval'] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span>
   </div>
   {% endif %}
 
-  {% if timing["months"] == 1 and particular_rules["count"] > 0 %}
+  {% if timing["interval"] == 1 and particular_rules["count"] > 0 %}
   <div class="divider"></div>
   <br>
   <div class="row particular_transactions">

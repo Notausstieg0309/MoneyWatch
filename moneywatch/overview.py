@@ -49,7 +49,7 @@ def createOverview(account_id, start, end):
     particular_rules_dates_in = account.non_regular_rules("in", start=start, end=end)
     particular_rules_dates_out = account.non_regular_rules("out", start=start, end=end)
 
-    months = utils.get_number_of_months(start, end)
+    interval = utils.get_number_of_months(start, end)
 
     profit = {}
 
@@ -72,11 +72,12 @@ def createOverview(account_id, start, end):
 
     timing = {}
 
-    timing["previous"] = utils.substract_months(start, months)
+    timing["previous"] = utils.substract_months(start, interval)
     timing["next"] = end + datetime.timedelta(days=1)
     timing["current_month_previous_year"] = utils.substract_months(start, 12)
     timing["current_month_next_year"] = utils.add_months(start, 12)
-    timing["months"] = months
+    timing["interval"] = interval
+
     timing["start"] = start
     timing["end"] = end
 
