@@ -13,16 +13,16 @@
        <input name="name" type="text" id="name" value="{{ request.form['name'] }}" required>
        <label for="name">{% trans %}Category Name{% endtrans %}{% if path %} ({% trans %}below of{% endtrans %} {{ path }}){% endif %}</label>
      </div>
-     
+
     {% if type == "out" %}
     <div class="input-field">
       <input name="budget_monthly" type="number" step="0.01" id="budget_monthly" value="{{ request.form['budget_monthly'] }}">
       <label for="budget_monthly">{% trans %}Monthly Budget{% endtrans %} ({% trans %}optional{% endtrans %})</label>
      </div>
     {% endif %}
-    
+
     {% if parent %}
-     <input type="hidden" name="parent" id="name" value="{{ parent }}">
+    <input type="hidden" name="parent" id="name" value="{{ parent }}">
     {% endif %}
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>

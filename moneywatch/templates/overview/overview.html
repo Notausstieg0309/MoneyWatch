@@ -16,14 +16,14 @@
         <div class="col s12 m9 name truncate">{{ name }}</div>
         <div class="col s12 m3 right right-align">
         {%- endif -%}
-        
+
         {%- if text_planned is defined -%}
           {%- if num_planned is not none -%}
             <div class="col num s6 planned" data-num="{{ num_planned }}">{{ text_planned }}</div>
           {%- else -%}
-            <div class="col s6 planned">{{ text_planned }}</div>  
+            <div class="col s6 planned">{{ text_planned }}</div>
           {%- endif -%}
-          
+
           {%- if num_valuta is not none -%}
             <div class="col num s6 current" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
           {%- else -%}
@@ -34,7 +34,7 @@
             <div class="col num s12 current" data-num="{{ num_valuta }}">{{ text_valuta }}</div>
           {%- else -%}
             <div class="col s12 current">{{ text_valuta }}</div>
-          {%- endif -%} 
+          {%- endif -%}
 		{%- endif -%}
         </div>
     </div>
@@ -55,7 +55,7 @@
     {%- set name -%}
         <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["months"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["months"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
     {%- endset -%}
-    
+
     {% if transaction.trend is not none %}
     {%- set planned_text -%}
         {%- if transaction.trend > 0 -%}
@@ -86,14 +86,14 @@
             <i class="green-text tiny material-icons tooltipped" data-position="bottom" data-tooltip="{% trans %}All regular transactions for this category are already done.{% endtrans %}">check_circle</i>
             {%- endif -%}
         {%- endif -%}
-        
+
         {%- if category.budget_monthly is not none -%}
         {%- set perc = (category.valuta / category.budget) * 100 -%}
          <div class="budget_perc right tooltipped" data-position="bottom" data-tooltip="{% trans budget=category.budget|abs|currencyformat('EUR') %}The current consumption of the planned budget of {{budget}}.{% endtrans %}" data-label="{{ perc| int}} %">
           <span class="value {% if perc > 90 %}red{% elif perc > 75 %}yellow{% else %}green{% endif %} lighten-4" style="width:{{ perc }}%;"></span>
         </div>
         {% endif -%}
-    
+
     {%- endset -%}
     {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat('EUR'), category.valuta, category.valuta|currencyformat('EUR') )}}
 {%- endmacro %}
@@ -103,7 +103,7 @@
 {% for category in category_list recursive %}
   <div class="category_container{% if loop.depth == 1 %} root{% endif %}{% if category.transactions|length == 0 %} no_transactions{% endif %}{% if category.childs|length == 0 %} no_subcategories{% endif %}">
     {{ category_row("category_header", category) }}
-    {%- if category.childs|length > 0 or category.transactions|length > 0 or category.planned_transactions|length > 0 %} 
+    {%- if category.childs|length > 0 or category.transactions|length > 0 or category.planned_transactions|length > 0 %}
     <div class="category_content">
         {{loop(category.childs) }}
         {%- for transaction in category.transactions -%}
@@ -134,7 +134,7 @@
 {% block content %}
 <div class="row  center-align">
 <div class="col m3 left-align hide-on-small-only">
-  
+
 {%- if timing["months"] == 1 -%}
   <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['previous'].year, month=timing['previous'].month ) }}">&laquo; {% trans %}previous month{% endtrans %}</a>
   <br><br>
@@ -215,12 +215,12 @@
 </div>
 
 <div id="transaction_chart" class="modal">
-    <div class="modal-content"> 
-      <h4 id="caption"></h4> 
-        <div class="progress" style="display:hidden;"> 
-            <div class="indeterminate"></div> 
-        </div> 
+    <div class="modal-content">
+      <h4 id="caption"></h4>
+        <div class="progress" style="display:hidden;">
+            <div class="indeterminate"></div>
+        </div>
         <canvas id="transaction_chart" min-height="300" max-height="500"></canvas>
-    </div> 
+    </div>
 </div>
 {% endblock %}

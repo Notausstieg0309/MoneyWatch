@@ -9,17 +9,19 @@
 <br>
 
 <form method="post">
-<button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
-<p>
-{{ ngettext('The file contains %(num)s transaction which cannot be assigned to the correct account automatically.', 'The file contains %(num)s transactions which cannot be assigned to the correct account automatically.', count_items) }}<br>
-<br>
-{% trans %}Please decide for which account these transactions should be imported.{% endtrans %}<br><br>
-<label for="account_id">{% trans %}Account{% endtrans %}</label>
-        <select class="browser-default account-select" name="account_id" required>
-            <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
-            {% for account in accounts %}
-            <option value="{{account.id}}">{{ account.name }} ({{ account.iban_formatted }})</option>
-            {% endfor %}
-        </select>
-</p>
+  <button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
+  <p>
+    {{ ngettext('The file contains %(num)s transaction which cannot be assigned to the correct account automatically.', 'The file contains %(num)s transactions which cannot be assigned to the correct account automatically.', count_items) }}<br>
+    <br>
+    {% trans %}Please decide for which account these transactions should be imported.{% endtrans %}<br><br>
+    <label for="account_id">{% trans %}Account{% endtrans %}</label>
+    <select class="browser-default account-select" name="account_id" required>
+      <option disabled selected value>{% trans %}Please Choose{% endtrans %}...</option>
+      {% for account in accounts %}
+      <option value="{{account.id}}">{{ account.name }} ({{ account.iban_formatted }})</option>
+      {% endfor %}
+    </select>
+  </p>
+</form>
+
 {% endblock %}

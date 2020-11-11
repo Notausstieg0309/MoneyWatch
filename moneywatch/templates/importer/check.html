@@ -5,8 +5,6 @@
 {% endblock %}
 
 
-
-
 {% macro item(transaction, index) %}
 <div class="transaction item_container z-depth-1 with_controls {{ transaction.type }}{% if transaction.complete %} complete{% endif %}">
   <div class="left_ribbon">{{transaction.date | dateformat(_("yyyy-MM-dd"))}}</div>
@@ -55,7 +53,6 @@
   <div class="full_text">{{ transaction.full_text }}</div>
 </div>
 {% endmacro %}
-
 
 
 {% block content %}

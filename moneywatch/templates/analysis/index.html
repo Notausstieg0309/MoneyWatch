@@ -21,9 +21,9 @@
         <li class="tab col s4"><a class="active" href="#settings">{% trans %}Parameters{% endtrans %}</a></li>
         <li class="tab disabled col s4"><a href="#chart">{% trans %}Chart{% endtrans %}</a></li>
         <li class="tab disabled col s4"><a href="#table">{% trans %}Table{% endtrans %}</a></li>
-
       </ul>
     </div>
+
     <div id="settings" class="col s12 m6 offset-m3">
       <br><br>
       <ul class="collection with-header criteria-container">
@@ -48,7 +48,7 @@
                 <input class="with-gap analysis-input-type" name="type" value="in" id="in" type="radio"  />
                 <span class="black-text">{% trans %}Deposits{% endtrans %}</span>
               </label><br>
-              <ul id="subtype-menu-in" class="browser-default" style="display:none;">      
+              <ul id="subtype-menu-in" class="browser-default" style="display:none;">
                 <label>
                   <input class="with-gap subtype" name="subtype_in" id="overall" value="overall" type="radio"  />
                   <span class="black-text">{% trans %}Overall{% endtrans %}</span>
@@ -66,8 +66,8 @@
               <label>
                 <input class="with-gap analysis-input-type" name="type" value="out" id="out" type="radio"  />
                 <span class="black-text">{% trans %}Withdrawals{% endtrans %}</span>
-              </label>  
-              <ul id="subtype-menu-out" class="browser-default" style="display:none;">  
+              </label>
+              <ul id="subtype-menu-out" class="browser-default" style="display:none;">
                 <label>
                   <input class="with-gap subtype" name="subtype_out" id="overall" value="overall" type="radio"  />
                   <span class="black-text">{% trans %}Overall{% endtrans %}</span>
@@ -80,18 +80,18 @@
                   <input class="with-gap subtype" name="subtype_out" id="category" value="category" type="radio"  />
                   <span class="black-text">{% trans %}By Category{% endtrans %}</span>
                 </label>
-            
+
               </ul>
             </span>
           </div>
         </li>
-        {% if account_list|length > 1 %} 
+        {% if account_list|length > 1 %}
         <li class="collection-item criteria" id="account"  style="display:none;">
           <span class="inline-block">
             <h6 class="inline-block">{% trans %}For which account?{% endtrans %}</h6>
             <hr>
           </span>
-          <div class="input-field"> 
+          <div class="input-field">
             <select id="account">
               <option disabled{% if account_list|length > 1 %} selected{% endif %}>{% trans %}Please select...{% endtrans %}</option>
               <option class="all_accounts" data-start="{{ oldest }}" data-end="{{ newest }}" value="ALL">{% trans %}[All Accounts]{% endtrans %}</option>
@@ -123,7 +123,7 @@
               </div>
             </div>
           </div>
-          <div class="input-field"> 
+          <div class="input-field">
             <select id="rule" name="rule">
               <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
             </select>
@@ -145,11 +145,10 @@
                 </div>
               </div>
             </div>
-            
           </div>
-          <div class="input-field"> 
+          <div class="input-field">
             <select id="category" name="category_id">
-              <option disabled selected>{% trans %}Please select...{% endtrans %}</option>   
+              <option disabled selected>{% trans %}Please select...{% endtrans %}</option>
             </select>
             <label>{% trans %}Category{% endtrans %}</label>
           </div>
@@ -161,7 +160,7 @@
           </span>
           <div class="row">
             <div class="col l12 xl6">
-              <table> 
+              <table>
                 <tr>
                   <td>{% trans %}From{% endtrans %}:</td>
                   <td><input id="start" name="start" type="month" ></td>
@@ -190,7 +189,7 @@
               <input class="with-gap interval" name="interval"  value="12" type="radio"  />
               <span class="black-text">{% trans %}annual{% endtrans %}</span>
             </label><br>
-          </div>      
+          </div>
         </div>
       </li>
       <li class="right-align collection-item" id="submit" >
@@ -198,7 +197,7 @@
       </li>
     </ul>
   </div>
-  
+
   <div id="chart" class="col s12">
   <br><br>
    <div class="center chart-spinner circle-spinner">
@@ -217,7 +216,7 @@
           </div>
     <canvas id="analysis_chart" class="chart-container" min-height="300" max-height="500" style="display:none;"></canvas>
   </div>
-  
+
   <div id="table" class="col s12 m8 offset-m2 l6 offset-l3 xl4 offset-xl4">
   <br><br>
      <div class="center table-spinner circle-spinner">
@@ -234,11 +233,10 @@
         </div>
       </div>
       <div class="table-container" style="display:none;">
-        <table class="analysis-table" border="1">
+        <table class="analysis-table">
         <template>
           <tr class="item">
             <td class="center-align label-value"></td>
-          
             <td class="right-align count-value"></td>
             <td class="right-align valuta-value num"></td>
           </tr>

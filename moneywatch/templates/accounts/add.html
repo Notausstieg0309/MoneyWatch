@@ -9,12 +9,12 @@
 <div class="col l3 hide-on-small-only"></div>
 <div class="col l6 s12">
   <form method="post">
-   
+
     <div class="input-field">
       <input name="name" id="name" type="text" value="{{ request.form['name'] }}" required>
       <label for="name">{% trans %}Account Name{% endtrans %}</label>
     </div>
-    
+
     <div class="row">
     <div class="col m8 s12">
     <div class="input-field">
@@ -29,9 +29,9 @@
     </div>
     </div>
     </div>
-    
 
-    
+
+
     <div class="row">
      <div class="col m3 s6">
          <p>
@@ -56,9 +56,9 @@
     </div>
     {% endif %}
     {% endfor %}
-    
+
     </div>
-    
+
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>
  </div>

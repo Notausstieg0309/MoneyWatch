@@ -12,12 +12,12 @@
   <form method="post">
     <label for="name">{% trans %}Category Name{% endtrans %}</label>
     <input name="name" id="name" value="{{ request.form['name'] or category['name'] }}" required><br>
-    
+
     {% if type == "out" %}
     <label for="budget_monthly">{% trans %}Monthly Budget{% endtrans %} ({% trans %}optional{% endtrans %})</label>
     <input name="budget_monthly" min="0" type="number" id="budget_monthly" value="{{ request.form['budget_monthly'] or category.budget_monthly }}"><br>
     {% endif %}
-    
+
     <div class="input-field">
       <select name="parent">
         <option {% if selected_parent == 0 %} selected{% endif %} value="0">[{% trans %}none{% endtrans %}]</option>
@@ -26,14 +26,13 @@
             <option value="{{ cat['id'] }}"{% if selected_parent == cat['id'] %} selected{% endif %}>{{ cat.getCategoryPath(" > ") }}</option>
             {% endif %}
             {% if cat.childs | length > 0 %}
-                {{ loop(cat.childs)}} 
+                {{ loop(cat.childs)}}
             {% endif %}
-
         {% endfor %}
       </select>
       <label for="parent">{% trans %}Superior Category{% endtrans %}</label>
     </div>
-    
+
     <br>
     <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
   </form>

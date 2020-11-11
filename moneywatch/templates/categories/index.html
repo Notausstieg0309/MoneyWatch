@@ -11,11 +11,10 @@
   <div class="category row">
 
     <div class="col s12">
-     {{ category.name }} 
+     {{ category.name }}
      {% if category.budget is not none %}
      ({% trans budget=category.budget|currencyformat("EUR") %}mthly. budget: {{budget}}{% endtrans %})
      {% endif %}
-     
 
      <span class="right">
       <a class="btn-small tooltipped" data-tooltip="{% trans %}Add new subcategory{% endtrans %}" data-position="right" href="{{ url_for('categories.add', account_id=account.id, type=type, parent=category['id']) }}"><i class="material-icons">add</i></a>
@@ -27,7 +26,7 @@
     </div>
   </div>
   {%- if category.childs | length > 0 %}
-  <div class="subcategories">   
+  <div class="subcategories">
       {{ loop(category.childs) }}
   </div>
 {% endif %}
@@ -38,7 +37,6 @@
 {% endif %}
 <a class="btn" href="{{ url_for('categories.add', account_id= account_id, type=type) }}">{% trans %}New Main Category{% endtrans %}</a>
 {% endmacro %}
-
 
 
 {% block content %}

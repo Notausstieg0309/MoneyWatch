@@ -19,7 +19,7 @@
       <li><a class="dropdown-trigger-hover" data-target="dd_categories_{{ dropdown_trigger }}">{% trans %}Categories{% endtrans %}<i class="material-icons right">arrow_drop_down</i></a></li>
        {% endif -%}
      {% endif -%}
-      <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>    
+      <li><a href="{{ url_for('overview.index') }}">{% trans %}Overview{% endtrans %}</a></li>
 {%- endmacro -%}
 
 {%- macro dropdown_menu(id_value, url_target) -%}

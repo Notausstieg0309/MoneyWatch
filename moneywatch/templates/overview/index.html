@@ -16,29 +16,28 @@
 {% endmacro %}
 
 {% macro account_item(account) %}
-    <table class="account_detail" data-account-id="{{ account.id }}">
-    <tr>
-     <td class="id" {% if account.color %}style="background-color:#{{account.color}};"{% endif %} rowspan="2"># {{ account.id }}</td>
-      <td class="name"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.name }}</a></td>
-      <td class="settings"><span class="right settings-icon" style="display:none;"><a class="dropdown-trigger" data-target="account_item_{{account.id}}"><i class="material-icons tiny grey-text">settings</i></a></span>
-          <ul id='account_item_{{account.id}}' class='dropdown-content'>
-            <li><a href="{{ url_for('accounts.change', id=account.id) }}">{% trans %}edit{% endtrans %}</a></li>
-            <li><a href="{{ url_for('accounts.delete', id=account.id) }}">{% trans %}delete{% endtrans %}</a></li>
-         </ul>
-      </td>
-      <td rowspan="2" data-num="{{ account.balance }}" class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
-    </tr>
-    <tr>
-      <td colspan="2" class="iban">{{ account.iban_formatted }}{% if account.last_update is not none %} <span class="copy-clipboard cursor-pointer tooltipped" data-tooltip="{% trans %}Copy IBAN to clipboard{% endtrans %}" data-position="right" data-copy-value="{{ account.iban }}"><i class="material-icons tiny grey-text">content_copy</i></span><span class="right hide-on-med-and-down grey-text">({% trans %}last transaction{% endtrans %}: {{ time_delta(account.last_update) }})</span>{% endif %}</td>
-    </tr>
-    </table>
+<table class="account_detail" data-account-id="{{ account.id }}">
+<tr>
+  <td class="id" {% if account.color %}style="background-color:#{{account.color}};"{% endif %} rowspan="2"># {{ account.id }}</td>
+  <td class="name"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.name }}</a></td>
+  <td class="settings"><span class="right settings-icon" style="display:none;"><a class="dropdown-trigger" data-target="account_item_{{account.id}}"><i class="material-icons tiny grey-text">settings</i></a></span>
+      <ul id='account_item_{{account.id}}' class='dropdown-content'>
+        <li><a href="{{ url_for('accounts.change', id=account.id) }}">{% trans %}edit{% endtrans %}</a></li>
+        <li><a href="{{ url_for('accounts.delete', id=account.id) }}">{% trans %}delete{% endtrans %}</a></li>
+      </ul>
+  </td>
+  <td rowspan="2" data-num="{{ account.balance }}" class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
+</tr>
+<tr>
+  <td colspan="2" class="iban">{{ account.iban_formatted }}{% if account.last_update is not none %} <span class="copy-clipboard cursor-pointer tooltipped" data-tooltip="{% trans %}Copy IBAN to clipboard{% endtrans %}" data-position="right" data-copy-value="{{ account.iban }}"><i class="material-icons tiny grey-text">content_copy</i></span><span class="right hide-on-med-and-down grey-text">({% trans %}last transaction{% endtrans %}: {{ time_delta(account.last_update) }})</span>{% endif %}</td>
+</tr>
+</table>
 {% endmacro %}
 
 
 
 {% block content %}
 <div class="row account_overview center-align">
-
   <div class="col m1 l2 hide-on-small-only"></div>
   <div class="col m10 l8 s12">
    {% if accounts %}
@@ -48,7 +47,7 @@
      </div>
     {% endfor %}
      <div class="sum right-align">
-     <span class="prefix">{% trans %}total{% endtrans %} </span><span class="num" data-num="{{ sum }}">{{ sum  | currencyformat("EUR") }}</span>
+      <span class="prefix">{% trans %}total{% endtrans %} </span><span class="num" data-num="{{ sum }}">{{ sum  | currencyformat("EUR") }}</span>
      </div>
     {% else %}
     <div id="no_accounts_yet">{% trans %}There are no accounts defined yet. Please click below on the add button to create a new account.{% endtrans %}</div>
