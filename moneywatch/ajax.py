@@ -60,7 +60,15 @@ def transactions_to_intervals(interval, transactions, reference_id):
         tmp_dict["reference"] = 1 if reference_id in tmp_dict["ids"] else 0
 
         if tmp_dict["reference"] == 0:
-            tmp_dict["link"] = url_for("overview.custom_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, interval=interval, highlight=tmp_dict["ids"])
+
+            if interval == 3:
+                tmp_dict["link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), highlight=tmp_dict["ids"])
+            elif interval == 6:
+                tmp_dict["link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), highlight=tmp_dict["ids"])
+            elif interval == 12:
+                tmp_dict["link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, highlight=tmp_dict["ids"])
+            else:
+                tmp_dict["link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, highlight=tmp_dict["ids"])
 
         tmp_valuta = 0
         tmp_transactions = []
