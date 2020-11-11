@@ -210,11 +210,11 @@ def get_label_for_date(date, interval):
 
     month_names = get_babel_month_names()
 
-    if interval == "12":
+    if interval == 12:
         return date.year
-    elif interval == "6":
+    elif interval == 6:
         return gettext(u'%(half_year)sH %(year)s', half_year=get_half_year_from_date(date), year=date.year)
-    elif interval == "3":
+    elif interval == 3:
         return gettext(u'Q%(quarter)s/%(year)s', quarter=get_quarter_from_date(date), year=date.year)
     else:
         return gettext("%(month_name)s %(year)s", month=date.month, month_name=month_names[date.month - 1], year=date.year)

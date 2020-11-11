@@ -301,6 +301,8 @@ def data():
 
     end_date = utils.get_last_day_of_month(year=end_date.year, month=end_date.month)
 
+    interval = int(data.get("interval", 1))
+
     if start_date > end_date:
 
         tmp = end_date
@@ -310,21 +312,21 @@ def data():
     if "type" in data:
 
         if data["type"] == "profit":
-            return jsonify(getProfit(data["account_id"], start_date, end_date, data["interval"]))
+            return jsonify(getProfit(data["account_id"], start_date, end_date, interval))
 
         elif data["type"] == "balance":
-            return jsonify(getAccountBalance(data["account_id"], start_date, end_date, data["interval"]))
+            return jsonify(getAccountBalance(data["account_id"], start_date, end_date, interval))
 
 
         elif data["type"] == "in" or data["type"] == "out":
 
             if "subtype" in data:
                 if data["subtype"] == "overall":
-                    return jsonify(getSumByType(data["account_id"], start_date, end_date, data["interval"], data["type"]))
+                    return jsonify(getSumByType(data["account_id"], start_date, end_date, interval, data["type"]))
                 elif data["subtype"] == "rule":
-                    return jsonify(getSumByRule(start_date, end_date, data["interval"], data["rule"]))
+                    return jsonify(getSumByRule(start_date, end_date, interval, data["rule"]))
                 elif data["subtype"] == "category":
-                    return jsonify(getSumByCategory(start_date, end_date, data["interval"], data["category"]))
+                    return jsonify(getSumByCategory(start_date, end_date, interval, data["category"]))
             else:
                 abort("400", "no subtype specified")
 
