@@ -67,7 +67,9 @@
     {%- endset -%}
     {%- endif -%}
 
+    {%- if highlight_ids is not none -%}
     {%- set row_class -%}{{ row_class }}{%- if transaction.id|string in highlight_ids %} highlighted{% endif %}{% endset -%}
+    {% endif %}
 
     {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat('EUR')) }}
 {%- endmacro %}
