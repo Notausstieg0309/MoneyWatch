@@ -14,17 +14,38 @@ function generateChartData(res, regular, month_names, account_id)
     var pointBackgroundColors = [];
     var links = [];
 
+
     $.each(res, function(i, item)
     {
-        labels.push(item.label);
-        data.push(item.valuta)
+        var label = generateLabel(item.day, item.month, item.year, regular, month_names);
 
-        if(item.reference) {
-            pointBackgroundColors.push("#ff0000");
-            links.push(undefined);
-        } else {
-            pointBackgroundColors.push("#000000");
-            links.push(item.link);
+        if(labels.includes(label))
+        {
+            var index = labels.indexOf(label);
+
+            data[index] += item.valuta;
+
+            // if current item is the reference item and a label point already exists, change it to a reference point
+            if(item.reference) {
+                pointBackgroundColors[index] = "#ff0000";
+                links[index] = undefined;
+            }
+        }
+        else
+        {
+            labels.push(label);
+            data.push(item.valuta);
+
+            if(item.reference)
+            {
+                pointBackgroundColors.push("#ff0000");
+                links.push(undefined);
+            }
+            else
+            {
+               pointBackgroundColors.push("#000000");
+               links.push("/" + account_id + "/" + item.year + "/" + item.month + "/");
+            }
         }
     });
 

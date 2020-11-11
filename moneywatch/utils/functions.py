@@ -3,7 +3,7 @@ import math
 import re
 
 from calendar import monthrange
-from flask_babel import format_date, gettext
+from flask_babel import format_date
 
 
 def get_date_from_string(date, format):
@@ -204,20 +204,6 @@ def get_babel_month_names():
         month_names.append(format_date(d, "MMM"))
 
     return month_names
-
-
-def get_label_by_interval(date, interval):
-
-    month_names = get_babel_month_names()
-
-    if interval == "12":
-        return date.year
-    elif interval == "6":
-        return gettext(u'%(half_year)sH %(year)s', half_year=get_half_year_from_date(date), year=date.year)
-    elif interval == "3":
-        return gettext(u'Q%(quarter)s/%(year)s', quarter=get_quarter_from_date(date), year=date.year)
-    else:
-        return gettext("%(month_name)s %(year)s", month=date.month, month_name=month_names[date.month - 1], year=date.year)
 
 
 def normalize_iban(value):

@@ -125,6 +125,6 @@ def month_overview(account_id, year, month):
     return createOverview(account_id, utils.get_first_day_of_month(year, month), utils.get_last_day_of_month(year, month))
 
 
-@bp.route('/<int:account_id>/<int:year>/<int:month>/<int:interval>')
-def custom_overview(account_id, year, month, interval):
-    return createOverview(account_id, utils.get_first_day_of_month(year, month), utils.add_months(utils.get_last_day_of_month(year, month), (interval - 1)))
+@bp.route('/<int:account_id>/<int:year>/<int:month>/<int:month_count>')
+def custom_overview(account_id, year, month, month_count):
+    return createOverview(account_id, utils.get_first_day_of_month(year, month), utils.add_months(utils.get_last_day_of_month(year, month), (month_count - 1)))
