@@ -62,6 +62,24 @@ def get_last_day_of_month(year=None, month=None):
     return date_last_month
 
 
+def get_first_day_of_quarter(year, quarter):
+    return datetime.date(year, (3 * quarter) - 2, 1)
+
+
+def get_last_day_of_quarter(year, quarter):
+    month = 3 * quarter
+    return datetime.date(year, (month % 12) + 1, 1) + datetime.timedelta(days=-1)
+
+
+def get_first_day_of_halfyear(year, half):
+    return datetime.date(year, (6 * half) - 2, 1)
+
+
+def get_last_day_of_halfyear(year, half):
+    month = 6 * half
+    return datetime.date(year, (month % 12) + 1, 1) + datetime.timedelta(days=-1)
+
+
 def get_number_of_months(start=None, end=None):
 
     start_date = get_first_day_of_month()
