@@ -133,94 +133,98 @@
 
 {% block content %}
 <div class="row  center-align">
-<div class="col m3 left-align hide-on-small-only">
+  <div class="col m3 left-align hide-on-small-only">
 
-{%- if timing["months"] == 1 -%}
-  <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['previous'].year, month=timing['previous'].month ) }}">&laquo; {% trans %}previous month{% endtrans %}</a>
-  <br><br>
-  <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['current_month_previous_year'].year, month=timing['current_month_previous_year'].month ) }}">&laquo;&laquo; {% trans year=timing['current_month_previous_year'].year %}current month in {{ year }}{% endtrans %}</a>
-{% elif timing["months"] == 12 and timing["start"].month == 1 -%}
-  <a class="action btn" href="{{ url_for('overview.year_overview',account_id=account.id, year=timing['previous'].year ) }}">&laquo; {% trans %}previous year{% endtrans %}</a>
-{% else -%}
-  <a class="action btn" href="{{ url_for('overview.custom_overview',account_id=account.id, year=timing['previous'].year,month=timing['previous'].month, month_count=timing['months'] ) }}">&laquo; {% trans %}previous timeperiod{% endtrans %}</a>
-{% endif -%}
+  {%- if timing["months"] == 1 -%}
+    <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['previous'].year, month=timing['previous'].month ) }}">&laquo; {% trans %}previous month{% endtrans %}</a>
+    <br><br>
+    <a class="action btn" href="{{ url_for('overview.month_overview',account_id=account.id, year=timing['current_month_previous_year'].year, month=timing['current_month_previous_year'].month ) }}">&laquo;&laquo; {% trans year=timing['current_month_previous_year'].year %}current month in {{ year }}{% endtrans %}</a>
+  {% elif timing["months"] == 12 and timing["start"].month == 1 -%}
+    <a class="action btn" href="{{ url_for('overview.year_overview',account_id=account.id, year=timing['previous'].year ) }}">&laquo; {% trans %}previous year{% endtrans %}</a>
+  {% else -%}
+    <a class="action btn" href="{{ url_for('overview.custom_overview',account_id=account.id, year=timing['previous'].year,month=timing['previous'].month, month_count=timing['months'] ) }}">&laquo; {% trans %}previous timeperiod{% endtrans %}</a>
+  {% endif -%}
+  </div>
 
-</div>
-<div class="col s12 m6 center-align">
-<table border="0" cellspacing="0" class="profit z-depth-2">
-<tr>
-<th>&nbsp;</th>
-<th class="planned right-align">{% trans %}Planned{% endtrans %}</th>
-<th class="current right-align" data-enable-switch="{{ current_month | int }}">{% trans %}Current{% endtrans %}</th>
-</tr>
-<tr>
-<td>{% trans %}Deposits{% endtrans %}</td>
-<td class="num planned" data-num="{{ profit['planned']['in'] }}">{{ profit['planned']['in'] | currencyformat('EUR') }}</td>
-<td class="num current" data-without-planned-formatted="{{ profit['current']['in'] | currencyformat('EUR') }}" data-with-planned-formatted="{{ profit['current_with_planned_transactions']['in'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['in'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['in'] }}" data-num="{{ profit['current']['in'] }}">{{ profit['current']['in'] | currencyformat('EUR') }}</td>
-</tr>
-<tr>
-<td>{% trans %}Withdrawals{% endtrans %}</td>
-<td class="num planned" data-num="{{ profit['planned']['out'] }}">{{ profit['planned']['out'] | currencyformat('EUR') }}</td>
-<td class="num current" data-without-planned-formatted="{{ profit['current']['out'] | currencyformat('EUR') }}" data-with-planned-formatted="{{ profit['current_with_planned_transactions']['out'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['out'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['out'] }}" data-num="{{ profit['current']['out'] }}">{{ profit['current']['out'] | currencyformat('EUR') }}</td>
-</tr>
-<tr class="profit">
-<td>{% trans %}Net Change{% endtrans %}</td>
-<td class="num planned" data-num="{{ profit['planned']['profit'] }}">{% if profit['planned']['profit'] > 0 %}+{% endif %}{{ profit['planned']['profit'] | currencyformat('EUR') }}</td>
-<td class="num current" data-without-planned-formatted="{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}" data-with-planned-formatted="{% if profit['current_with_planned_transactions']['profit'] > 0 %}+{% endif %}{{ profit['current_with_planned_transactions']['profit'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['profit'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['profit'] }}" data-num="{{ profit['current']['profit'] }}">{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}</td>
-</tr>
-</table>
-<div style="display:none;" class="with_planned_info">* &ndash; {% trans %}current values incl. pending regular transactions{% endtrans %}</div>
-</div>
-<div class="col m3 right-align hide-on-small-only">
+  <div class="col s12 m6 center-align">
+    <table border="0" cellspacing="0" class="profit z-depth-2">
+      <tr>
+        <th>&nbsp;</th>
+        <th class="planned right-align">{% trans %}Planned{% endtrans %}</th>
+        <th class="current right-align" data-enable-switch="{{ current_month | int }}">{% trans %}Current{% endtrans %}</th>
+      </tr>
+      <tr>
+        <td>{% trans %}Deposits{% endtrans %}</td>
+        <td class="num planned" data-num="{{ profit['planned']['in'] }}">{{ profit['planned']['in'] | currencyformat('EUR') }}</td>
+        <td class="num current" data-without-planned-formatted="{{ profit['current']['in'] | currencyformat('EUR') }}" data-with-planned-formatted="{{ profit['current_with_planned_transactions']['in'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['in'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['in'] }}" data-num="{{ profit['current']['in'] }}">{{ profit['current']['in'] | currencyformat('EUR') }}</td>
+      </tr>
+      <tr>
+        <td>{% trans %}Withdrawals{% endtrans %}</td>
+        <td class="num planned" data-num="{{ profit['planned']['out'] }}">{{ profit['planned']['out'] | currencyformat('EUR') }}</td>
+        <td class="num current" data-without-planned-formatted="{{ profit['current']['out'] | currencyformat('EUR') }}" data-with-planned-formatted="{{ profit['current_with_planned_transactions']['out'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['out'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['out'] }}" data-num="{{ profit['current']['out'] }}">{{ profit['current']['out'] | currencyformat('EUR') }}</td>
+      </tr>
+      <tr class="profit">
+        <td>{% trans %}Net Change{% endtrans %}</td>
+        <td class="num planned" data-num="{{ profit['planned']['profit'] }}">{% if profit['planned']['profit'] > 0 %}+{% endif %}{{ profit['planned']['profit'] | currencyformat('EUR') }}</td>
+        <td class="num current" data-without-planned-formatted="{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}" data-with-planned-formatted="{% if profit['current_with_planned_transactions']['profit'] > 0 %}+{% endif %}{{ profit['current_with_planned_transactions']['profit'] | currencyformat('EUR') }}" data-without-planned-num="{{ profit['current']['profit'] }}" data-with-planned-num="{{ profit['current_with_planned_transactions']['profit'] }}" data-num="{{ profit['current']['profit'] }}">{% if profit['current']['profit'] > 0 %}+{% endif %}{{ profit['current']['profit'] | currencyformat('EUR') }}</td>
+      </tr>
+    </table>
+    <div style="display:none;" class="with_planned_info">* &ndash; {% trans %}current values incl. pending regular transactions{% endtrans %}</div>
+  </div>
 
-{%- if timing["months"] == 1 -%}
-  <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['next'].year, month=timing['next'].month ) }}">{% trans %}next month{% endtrans %} &raquo;</a>
-  <br><br>
-  <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['current_month_next_year'].year, month=timing['current_month_next_year'].month ) }}">{% trans year=timing["current_month_next_year"].year %}current month in {{ year }}{% endtrans %} &raquo;&raquo;</a>
-{% elif timing["months"] == 12 and timing["start"].month == 1 -%}
-  <a class="btn" href="{{ url_for('overview.year_overview', account_id=account.id, year=timing['next'].year ) }}">{% trans %}next year{% endtrans %} &raquo;</a>
-{% else -%}
-  <a class="btn" href="{{ url_for('overview.custom_overview', account_id=account.id, year=timing['next'].year,month=timing['next'].month, month_count=timing['months'] ) }}">{% trans %}next timeperiod{% endtrans %} &raquo;</a>
-{% endif -%}
+  <div class="col m3 right-align hide-on-small-only">
 
-<br><br>
-</div>
-</div>
-{%- if messages > 0 -%}
-<div class="right-centered"><span class="message-modal  tooltipped" data-year="{{ timing["start"].year }}" data-month="{{ timing["start"].month }}" data-month-count={{ timing["months"] }} data-account-id="{{ account.id }}" data-tooltip="{% if timing["months"] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span></div>
-{% endif %}
-{% if timing["months"] == 1 and particular_rules["count"] > 0 %}
-<div class="divider"></div>
-<br>
-<div class="row particular_transactions">
-<div class="col s12 center-align">
-{% trans %}particular transactions:{% endtrans %}
-{{ particular_transaction_item("in", particular_rules["in"]) }}
-{%- if particular_rules["in"]|length > 0 and particular_rules["out"]|length > 0  %} / {% endif -%}
-{{ particular_transaction_item("out", particular_rules["out"]) }}
-</div>
-</div>
-{% endif %}
-<div class="divider"></div>
-<br>
-<div class="row overview">
-<div class="col s12 m6 in">
-{{ item_row("caption",_("Deposits"), None, _("Planned"), None, _("Current")) }}
-{{ category_item(list_in) }}
-</div>
-<div class="col s12 m6 out">
-{{ item_row("caption",_("Withdrawals"), None, _("Planned"), None, _("Current")) }}
-{{ category_item(list_out) }}
-</div>
-</div>
+    {%- if timing["months"] == 1 -%}
+      <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['next'].year, month=timing['next'].month ) }}">{% trans %}next month{% endtrans %} &raquo;</a>
+      <br><br>
+      <a class="btn" href="{{ url_for('overview.month_overview', account_id=account.id, year=timing['current_month_next_year'].year, month=timing['current_month_next_year'].month ) }}">{% trans year=timing["current_month_next_year"].year %}current month in {{ year }}{% endtrans %} &raquo;&raquo;</a>
+    {% elif timing["months"] == 12 and timing["start"].month == 1 -%}
+      <a class="btn" href="{{ url_for('overview.year_overview', account_id=account.id, year=timing['next'].year ) }}">{% trans %}next year{% endtrans %} &raquo;</a>
+    {% else -%}
+      <a class="btn" href="{{ url_for('overview.custom_overview', account_id=account.id, year=timing['next'].year,month=timing['next'].month, month_count=timing['months'] ) }}">{% trans %}next timeperiod{% endtrans %} &raquo;</a>
+    {% endif -%}
+
+    <br><br>
+    </div>
+  </div>
+  {%- if messages > 0 -%}
+  <div class="right-centered">
+    <span class="message-modal  tooltipped" data-year="{{ timing["start"].year }}" data-month="{{ timing["start"].month }}" data-month-count={{ timing["months"] }} data-account-id="{{ account.id }}" data-tooltip="{% if timing["months"] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span>
+  </div>
+  {% endif %}
+
+  {% if timing["months"] == 1 and particular_rules["count"] > 0 %}
+  <div class="divider"></div>
+  <br>
+  <div class="row particular_transactions">
+    <div class="col s12 center-align">
+    {% trans %}particular transactions:{% endtrans %}
+    {{ particular_transaction_item("in", particular_rules["in"]) }}
+    {%- if particular_rules["in"]|length > 0 and particular_rules["out"]|length > 0  %} / {% endif -%}
+    {{ particular_transaction_item("out", particular_rules["out"]) }}
+    </div>
+  </div>
+  {% endif %}
+  <div class="divider"></div>
+  <br>
+  <div class="row overview">
+    <div class="col s12 m6 in">
+      {{ item_row("caption",_("Deposits"), None, _("Planned"), None, _("Current")) }}
+      {{ category_item(list_in) }}
+    </div>
+    <div class="col s12 m6 out">
+      {{ item_row("caption",_("Withdrawals"), None, _("Planned"), None, _("Current")) }}
+      {{ category_item(list_out) }}
+    </div>
+  </div>
 
 <div id="transaction_chart" class="modal">
-    <div class="modal-content">
-      <h4 id="caption"></h4>
-        <div class="progress" style="display:hidden;">
-            <div class="indeterminate"></div>
-        </div>
-        <canvas id="transaction_chart" min-height="300" max-height="500"></canvas>
-    </div>
+  <div class="modal-content">
+    <h4 id="caption"></h4>
+      <div class="progress" style="display:hidden;">
+          <div class="indeterminate"></div>
+      </div>
+      <canvas id="transaction_chart" min-height="300" max-height="500"></canvas>
+  </div>
 </div>
 {% endblock %}
