@@ -229,6 +229,10 @@ div.overview .highlighted {
     font-weight:  600;
 }
 
+div.overview .highlighted .description {
+    color: #c54c14;
+}
+
 div.overview div.caption > div.name {
     font-size: 1.3em;
     font-weight: bold;
