@@ -51,8 +51,8 @@ def createBaseData(start, end, interval):
 
     result["interval"] = interval
 
-    result["start"] = getLabelForDate(start, interval)
-    result["end"] = getLabelForDate(end, interval)
+    result["start"] = utils.get_label_for_date(start, interval)
+    result["end"] = utils.get_label_for_date(end, interval)
 
     return result
 
@@ -185,19 +185,6 @@ def transToDict(transaction):
     return result
 
 
-def getLabelForDate(date, interval):
-
-    month_names = utils.get_babel_month_names()
-
-    if interval == "12":
-        return date.year
-    elif interval == "6":
-        return gettext(u'%(half_year)sH %(year)s', half_year=utils.get_half_year_from_date(date), year=date.year)
-    elif interval == "3":
-        return gettext(u'Q%(quarter)s/%(year)s', quarter=utils.get_quarter_from_date(date), year=date.year)
-    else:
-        return gettext("%(month_name)s %(year)s", month=date.month, month_name=month_names[date.month - 1], year=date.year)
-
 
 def createResultForTransactions(result, transactions):
 
@@ -232,7 +219,7 @@ def createResultForTransactions(result, transactions):
     interval = result["interval"]
 
     for transaction in transactions:
-        transaction_label = getLabelForDate(transaction.date, interval)
+        transaction_label = utils.get_label_for_date(transaction.date, interval)
 
         if tmp_last_label != transaction_label and tmp_last_label is not None:
             sum_valuta += tmp_valuta
