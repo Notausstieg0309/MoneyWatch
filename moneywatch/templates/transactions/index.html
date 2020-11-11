@@ -60,6 +60,13 @@
 
 {% if transactions %}
 {% for transaction in transactions %}
+{% if loop.previtem is defined and (loop.previtem.date.month != transaction.date.month or loop.previtem.date.year != transaction.date.year) %}
+<div class="transaction_divider">
+{{ loop.previtem.date | dateformat(_("MMMM yyyy"))}}
+<hr class="transaction_divider" />
+{{ transaction.date | dateformat(_("MMMM yyyy")) }}
+</div>
+{% endif %}
 {{ item(transaction) }}
 {% endfor %}
 

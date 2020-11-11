@@ -591,6 +591,21 @@ div.item_container.message div.full_text {
     border-right: 9px solid rgb(107, 107, 107);
 }
 
+div.transaction_divider {
+    text-align: center;
+    color: grey;
+    font-weight: bold;
+    padding:0px;
+    margin: -5px;
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+div.transaction_divider hr {
+    border-top: 1px dotted grey;
+    padding:0px;
+    margin:3px;
+}
 
 .left_ribbon a {
     color: #fff;
