@@ -104,9 +104,11 @@ $(function() {
        });
 
 
-    // overview: minimize categories that have no subcategories
+    // overview: minimize categories that have no subcategories and no higlighted items
     $('div.category_container.no_subcategories').each(function() {
-        $(this).children(".category_content").hide();
+        if($(this).find(".category_content .highlighted").length == 0) {
+            $(this).children(".category_content").hide();
+        }
     });
 
 

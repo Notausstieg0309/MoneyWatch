@@ -223,6 +223,12 @@ div.overview div.col.num {
     padding-left:0px;
 }
 
+/* style highlighted items */
+div.overview .highlighted {
+    text-shadow: 0px 0px 6px  rgb(255, 255, 0);
+    font-weight:  600;
+}
+
 div.overview div.caption > div.name {
     font-size: 1.3em;
     font-weight: bold;
@@ -586,6 +592,15 @@ div.item_container.message div.full_text {
 }
 
 
+.left_ribbon a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.left_ribbon a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
 /*
   _____      _                        _
  / ____|    | |                      (_)

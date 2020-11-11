@@ -66,6 +66,9 @@
         &nbsp;{{ transaction.trend | currencyformat('EUR') }}
     {%- endset -%}
     {%- endif -%}
+
+    {%- set row_class -%}{{ row_class }}{%- if transaction.id|string in highlight_ids %} highlighted{% endif %}{% endset -%}
+
     {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat('EUR')) }}
 {%- endmacro %}
 
