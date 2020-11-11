@@ -476,8 +476,8 @@ div.item_container.out div.top_row {
 }
 
 div.item_container.in  div.top_row {
-    background: rgb(226,250,229);
-    background: linear-gradient(122deg, rgba(226,250,229,1) 24%, rgba(255,255,255,0) 70%);
+    background: rgb(202, 255, 209);
+    background: linear-gradient(122deg, rgba(202, 255, 209,1) 24%, rgba(255,255,255,0) 70%);
 }
 
 div.item_container.message div.top_row {
