@@ -7,7 +7,15 @@
 
 {% macro item(transaction) %}
 <div class="transaction item_container z-depth-1 {{ transaction.type }}">
-  <div class="left_ribbon"><a href="{{ url_for('overview.month_overview', account_id=transaction.account_id, year=transaction.date.year, month=transaction.date.month, highlight=transaction.id) }}">{{transaction.date | dateformat(_("yyyy-MM-dd"))}}</a></div>
+  <div class="left_ribbon">
+    {%- if transaction.type != "message" -%}
+    <a href="{{ url_for('overview.month_overview', account_id=transaction.account_id, year=transaction.date.year, month=transaction.date.month, highlight=transaction.id) }}">
+    {%- endif %}
+      {{- transaction.date | dateformat(_("yyyy-MM-dd")) -}}
+    {%- if transaction.type != "message" -%}
+    </a>
+    {%- endif %}
+  </div>
   <div class="top_row">
     <div class="description">
       {% if transaction.type != "message" %}
