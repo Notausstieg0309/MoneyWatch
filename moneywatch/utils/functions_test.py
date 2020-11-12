@@ -75,6 +75,56 @@ def test_get_last_day_of_month(year, month, expected):
     assert utils.get_last_day_of_month(year, month) == expected
 
 
+# get_first_day_of_quarter()
+@pytest.mark.parametrize("year,quarter,expected", [
+    (None, None, datetime.date(datetime.date.today().year, (((datetime.date.today().month - 1) // 3) + 1) * 3 - 2, 1)),
+    (2009, None, datetime.date(2009, (((datetime.date.today().month - 1) // 3) + 1) * 3 - 2, 1)),
+    (None, 2, datetime.date(datetime.date.today().year, 4, 1)),
+    (2009, 3, datetime.date(2009, 7, 1)),
+    (2020, 4, datetime.date(2020, 10, 1)),
+])
+def test_get_first_day_of_quarter(year, quarter, expected):
+    assert utils.get_first_day_of_quarter(year, quarter) == expected
+
+
+# get_last_day_of_quarter()
+@pytest.mark.parametrize("year,quarter,expected", [
+    (2020, 1, datetime.date(2020, 3, 31)),
+    (2020, 2, datetime.date(2020, 6, 30)),
+    (2021, 3, datetime.date(2021, 9, 30)),
+    (2100, 2, datetime.date(2100, 6, 30)),
+    (2000, 4, datetime.date(2000, 12, 31))
+])
+def test_get_last_day_of_quarter(year, quarter, expected):
+    assert utils.get_last_day_of_quarter(year, quarter) == expected
+
+
+
+# get_first_day_of_halfyear()
+@pytest.mark.parametrize("year,half,expected", [
+    (None, None, datetime.date(datetime.date.today().year, (((datetime.date.today().month - 1) // 6) + 1) * 6 - 5, 1)),
+    (2009, None, datetime.date(2009, (((datetime.date.today().month - 1) // 6) + 1) * 6 - 5, 1)),
+    (None, 2, datetime.date(datetime.date.today().year, 7, 1)),
+    (2009, 1, datetime.date(2009, 1, 1)),
+    (2020, 2, datetime.date(2020, 7, 1))
+])
+def test_get_first_day_of_halfyear(year, half, expected):
+    assert utils.get_first_day_of_halfyear(year, half) == expected
+
+
+# get_last_day_of_halfyear()
+@pytest.mark.parametrize("year,half,expected", [
+    (2020, 1, datetime.date(2020, 6, 30)),
+    (2020, 2, datetime.date(2020, 12, 31)),
+    (2021, 1, datetime.date(2021, 6, 30)),
+    (2100, 2, datetime.date(2100, 12, 31))
+])
+def test_get_last_day_of_quarter(year, half, expected):
+    assert utils.get_last_day_of_halfyear(year, half) == expected
+
+
+
+
 # get_number_of_months()
 @pytest.mark.parametrize("start,end,expected", [
     (None, None, 1),

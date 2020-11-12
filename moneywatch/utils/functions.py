@@ -41,43 +41,48 @@ def get_last_day_of_month(year=None, month=None):
 
     date_first = get_first_day_of_month()
 
-    date_last_year = date_first.year
-    date_last_month = date_first.month
+    date_year = year if year is not None else date_first.year
+    date_month = month if month is not None else date_first.month
 
-    if year:
-        date_last_year = year
-
-    if month:
-        date_last_month = month
-
-    if date_last_month == 12:
-        date_last_year += 1
-        date_last_month = 1
-    else:
-        date_last_month += 1
-
-    date_first_next = datetime.date(date_last_year, date_last_month, 1)
-    date_last_month = date_first_next - datetime.timedelta(days=1)
-
-    return date_last_month
+    return datetime.date(date_year + date_month // 12, date_month % 12 + 1, 1) - datetime.timedelta(days=1)
 
 
 def get_first_day_of_quarter(year, quarter):
-    return datetime.date(year, (3 * quarter) - 2, 1)
+
+    date_first = get_first_day_of_month()
+
+    date_year = year if year is not None else date_first.year
+    date_quarter = quarter if quarter is not None else get_quarter_from_date(date_first)
+
+    return datetime.date(date_year, (3 * date_quarter) - 2, 1)
 
 
 def get_last_day_of_quarter(year, quarter):
-    month = 3 * quarter
-    return datetime.date(year, (month % 12) + 1, 1) + datetime.timedelta(days=-1)
+    date_first = get_first_day_of_month()
+
+    date_year = year if year is not None else date_first.year
+    date_quarter = quarter if quarter is not None else get_quarter_from_date(date_first)
+
+    month = (3 * date_quarter)
+    remaining = month // 12
+    return datetime.date(date_year + remaining, month % 12 + 1, 1) + datetime.timedelta(days=-1)
 
 
 def get_first_day_of_halfyear(year, half):
-    return datetime.date(year, (6 * half) - 2, 1)
+    date_first = get_first_day_of_month()
+
+    date_year = year if year is not None else date_first.year
+    date_half = half if half is not None else get_half_year_from_date(date_first)
+
+    month = 6 * date_half - 5
+
+    return datetime.date(date_year, month, 1)
 
 
 def get_last_day_of_halfyear(year, half):
     month = 6 * half
-    return datetime.date(year, (month % 12) + 1, 1) + datetime.timedelta(days=-1)
+    remaining = month // 12
+    return datetime.date(year + remaining, month % 12 + 1, 1) + datetime.timedelta(days=-1)
 
 
 def get_number_of_months(start=None, end=None):
