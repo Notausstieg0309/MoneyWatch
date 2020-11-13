@@ -12,6 +12,8 @@ setup(
         'Flask-Babel',
         'Flask-SQLAlchemy',
         'Flask-Migrate',
+        'Flask-Assets',
+        'cssmin',
         'pytest'
     ],
     setup_requires=['pytest-runner'],

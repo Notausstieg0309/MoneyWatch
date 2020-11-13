@@ -32,23 +32,23 @@
 
 <!doctype html>
 <html>
-<head>
-<title>{% block title %}{% endblock %} - Moneywatch</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='materialize.min.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='materialize.icons.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='materialize.custom.css') }}">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="format-detection" content="telephone=no" />
-<script type=text/javascript>
-  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-</script>
-<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='materialize.min.js') }}"></script>
-<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='Chart.bundle.min.js') }}"></script>
-<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='common_materialize.js') }}"></script>
-<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='overview_modals.js') }}"></script>
-<script language="javascript" type="text/javascript" src="{{ url_for('static', filename='analysis.js') }}"></script>
-</head>
+  <head>
+    <title>{% block title %}{% endblock %} - Moneywatch</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no" />
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    {% assets "base_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets "base_js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% block assets %}{% endblock %}
+
+  </head>
 <body>
 
 {{ dropdown_menu("dd_transactions_mobile", "transactions.index") }}

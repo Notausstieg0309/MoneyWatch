@@ -4,6 +4,11 @@
 {% block title %}{% trans %}Analysis{% endtrans %}{% endblock %}
 {% endblock %}
 
+{% block assets %}
+{% assets "analysis_js" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
 
 {% block content %}
 
