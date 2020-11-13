@@ -14,19 +14,19 @@
       {{- transaction.date | dateformat(_("yyyy-MM-dd")) -}}
     {%- if transaction.type != "message" -%}
     </a>
-    {%- endif %}
+    {%- endif -%}
   </div>
   <div class="top_row">
     <div class="description">
       {% if transaction.type != "message" %}
       <div class="short_description">{{transaction.description}}
-        {%- if transaction.is_editable -%}
+        {% if transaction.is_editable -%}
           <span class='edit' style="display:none;">
             <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}">
               <i class='tiny material-icons'>edit</i>
             </a>
           </span>
-        {% endif %}
+        {%- endif %}
       </div>
       <div class="category">{{ transaction.category.name }}</div>
       {% endif%}
@@ -66,18 +66,17 @@
 </div>
 {% endif %}
 
-{% if transactions %}
-{% for transaction in transactions %}
-{% if loop.previtem is defined and (loop.previtem.date.month != transaction.date.month or loop.previtem.date.year != transaction.date.year) %}
+{%- if transactions -%}
+{% for transaction in transactions -%}
+{%- if loop.previtem is defined and (loop.previtem.date.month != transaction.date.month or loop.previtem.date.year != transaction.date.year) %}
 <div class="transaction_divider">
 {{ loop.previtem.date | dateformat(_("MMMM yyyy"))}}
 <hr class="transaction_divider" />
 {{ transaction.date | dateformat(_("MMMM yyyy")) }}
 </div>
-{% endif %}
+{% endif -%}
 {{ item(transaction) }}
-{% endfor %}
-
+{%- endfor %}
 {% else %}
 <div class="no_content center-align">{% trans %}No transactions available.{% endtrans %}</div>
 {% endif %}
