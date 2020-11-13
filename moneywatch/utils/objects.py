@@ -664,7 +664,8 @@ class Transaction(db.Model):
                     if latest_transaction is not None:
                         trend = round(self.valuta - latest_transaction.valuta, 2)
                         self.trend = trend if trend != 0 else None
-                        current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s", self.trend, self.description, self.valuta, self.date)
+                        if self.trend is not None:
+                            current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s", self.trend, self.description, self.valuta, self.date)
 
 
         # if multiple match occurs and user selects "None" (value: False)
