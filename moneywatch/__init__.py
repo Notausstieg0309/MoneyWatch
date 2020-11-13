@@ -1,7 +1,8 @@
 import os
 import logging
+import click
 
-from flask import Flask, session, request
+from flask import Flask, request, send_file, abort
 from flask_session import Session
 from flask_babel import Babel
 from flask_migrate import Migrate
@@ -93,11 +94,36 @@ def create_app(test_config=None):
     @app.context_processor
     def context_processor():
         return dict(accounts_list=Account.query.with_entities(Account.id, Account.name).order_by(Account.id.asc()).all())
-    
-    
-   
-    
-    
+
+    # create a demo database // ATTENTION: THIS COMMAND WIPES YOUR LOCAL DATABASE
+    @app.cli.command("create-demo")
+    @click.argument("plugin", required=True, type=str)
+    @click.option("--offset", type=click.IntRange(min=0))
+    def create_demo(plugin, offset):
+        print("using plugin: %s" % plugin)
+        from moneywatch.utils.demo import create_demo_db
+        from moneywatch.importer import plugins
+
+        if not plugins.plugin_loaded(plugin):
+            print("unavailable plugin: %s" % plugin)
+            return
+
+        # create the demo database and retrieve all importable items
+        importer_items = create_demo_db(offset)
+
+        print("creating import file via plugin '%s'" % plugin)
+
+        filename = None
+
+        with open(os.path.join(app.instance_path, "demo_import_content"), "wb") as f:
+            # create the import file by using the selected plugin
+            filename = plugins.create_file(importer_items, f, plugin)
+
+        with open(os.path.join(app.instance_path, "demo_import_filename"), "w") as f:
+            f.write(filename)
+
+        print("successfuly created demo databaase. You can download the import file by accessing '/demo' via web browser")
+
     # Configure logging
     handler = logging.FileHandler(app.config.get('LOGGING_LOCATION', os.path.join(app.instance_path, 'moneywatch.log')))
     handler.setLevel(app.config.get('LOGGING_LEVEL', logging.INFO))
@@ -123,6 +149,17 @@ def create_app(test_config=None):
     app.register_blueprint(ajax.bp)
     app.register_blueprint(accounts.bp)
     app.register_blueprint(analysis.bp)
-    
+
+
+    @app.route("/demo")
+    def demo_download():
+
+        if os.path.exists(os.path.join(app.instance_path, "demo_import_content")) and os.path.exists(os.path.join(app.instance_path, "demo_import_filename")):
+            with open(os.path.join(app.instance_path, "demo_import_filename")) as f:
+                filename = f.readline()
+            return send_file(os.path.join(app.instance_path, "demo_import_content"), as_attachment=True, attachment_filename=filename.strip(), cache_timeout=-1)
+        else:
+            return abort(404)
+
     return app
 

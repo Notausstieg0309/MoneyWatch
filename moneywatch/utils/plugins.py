@@ -10,6 +10,9 @@ class LoadPluginException(Exception):
 class NoParseFunctionException(Exception):
     pass
 
+class NoCreateFunctionException(Exception):
+    pass
+
 
 class PluginManager:
     def __init__(self, path):
@@ -123,10 +126,30 @@ class ImportPluginsManager(PluginManager):
             else:
                 raise NoParseFunctionException(gettext("The plugin %s has no parse_function implemented or registered").format(plugin))
 
-
         result.sort(key=lambda x: x["date"])
 
         # reverse the list after sort to keep a stable order
         result.reverse()
 
         return result
+
+
+    def create_file(self, items, fd, plugin):
+
+        result = None
+
+        self._load_plugins()
+
+        if self.plugin_loaded(plugin):
+            create_function = self._plugin_info[plugin].get("create_function", None)
+
+            if create_function is not None and hasattr(create_function, '__call__'):
+                items.sort(key=lambda x: x["date"])
+                result = create_function(items, fd)
+            else:
+                raise NoCreateFunctionException(plugin)
+
+        return result
+
+    def plugin_loaded(self, plugin_name):
+        return plugin_name in self._plugin_info

@@ -66,10 +66,21 @@ def check_csv(stream, name):
     return False
 
 
+def create_csv(items, fd):
+
+    for item in items:
+        item["date"] = item["date"].strftime("%d.%m.%Y")
+        line = '{date};"{full_text}";"{valuta}";"";"";\'{account}\'\r\n'.format(**item).encode("latin-1")
+        fd.write(line)
+
+    return "CHK_123.csv"
+
+
 # register plugin
 plugin_info["targobank_csv"] = {
     "description": "Targobank CSV",
     "parse_function": parse_csv,
     "check_function": check_csv,
+    "create_function": create_csv,
     "file_extension": ".csv"
 }

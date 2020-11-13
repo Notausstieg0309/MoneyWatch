@@ -271,3 +271,23 @@ def format_iban_human(value):
         items.append(value[index: index + 4])
 
     return " ".join(items)
+
+
+def demo_date(day, month=0):
+    new_date = datetime.date.today()
+
+    if day < 0:
+        new_date = get_last_day_of_month(new_date.year, new_date.month)
+    else:
+        new_date = new_date.replace(day=day)
+
+    if month > 0:
+        new_date = substract_months(new_date, month)
+
+    while new_date.weekday() > 4:
+        if day < 0:
+            new_date -= datetime.timedelta(days=1)
+        else:
+            new_date += datetime.timedelta(days=1)
+
+    return new_date
