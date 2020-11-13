@@ -99,7 +99,6 @@ def test_get_last_day_of_quarter(year, quarter, expected):
     assert utils.get_last_day_of_quarter(year, quarter) == expected
 
 
-
 # get_first_day_of_halfyear()
 @pytest.mark.parametrize("year,half,expected", [
     (None, None, datetime.date(datetime.date.today().year, (((datetime.date.today().month - 1) // 6) + 1) * 6 - 5, 1)),
@@ -119,7 +118,7 @@ def test_get_first_day_of_halfyear(year, half, expected):
     (2021, 1, datetime.date(2021, 6, 30)),
     (2100, 2, datetime.date(2100, 12, 31))
 ])
-def test_get_last_day_of_quarter(year, half, expected):
+def test_get_last_day_of_halfyear(year, half, expected):
     assert utils.get_last_day_of_halfyear(year, half) == expected
 
 
@@ -133,6 +132,7 @@ def test_get_last_day_of_quarter(year, half, expected):
     (datetime.date(2020, 1, 1), datetime.date(2020, 2, 2), 2),
     (datetime.date(2020, 1, 1), datetime.date(2020, 12, 31), 12),
     (datetime.date(2020, 1, 1), datetime.date(2021, 1, 2), 13),
+    (datetime.date(2020, 1, 1), datetime.date(2020, 1, 1), 1),
 ])
 def test_get_number_of_months(start, end, expected):
     assert utils.get_number_of_months(start, end) == expected
@@ -165,7 +165,8 @@ def test_add_months(start, months, expected):
     (datetime.date(2020, 3, 29), 2, datetime.date(2020, 1, 29)),
     (datetime.date(2020, 3, 30), 1, datetime.date(2020, 2, 29)),
     (datetime.date(2020, 3, 31), 1, datetime.date(2020, 2, 29)),
-    (datetime.date(2020, 3, 31), 2, datetime.date(2020, 1, 31))
+    (datetime.date(2020, 3, 31), 2, datetime.date(2020, 1, 31)),
+    (datetime.date(2020, 2, 29), 3, datetime.date(2019, 11, 30)),
 ])
 def test_substract_months(start, months, expected):
     assert utils.substract_months(start, months) == expected
