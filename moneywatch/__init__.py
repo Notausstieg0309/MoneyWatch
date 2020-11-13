@@ -10,9 +10,8 @@ from babel import negotiate_locale
 
 
 def create_app(test_config=None):
-    
     from moneywatch import ruleset, categories, transactions, overview, utils, importer, ajax, accounts, analysis
-    from moneywatch.utils.objects import db,Account
+    from moneywatch.utils.objects import db, Account
 
     app = Flask(__name__, instance_relative_config=True)
     
@@ -21,24 +20,24 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(
             SESSION_TYPE="filesystem",
-            SQLALCHEMY_DATABASE_URI="sqlite:///"+os.path.join(app.instance_path,'db.sqlite'),
+            SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(app.instance_path, 'db.sqlite'),
             SQLALCHEMY_TRACK_MODIFICATIONS=False,
-            #SQLALCHEMY_ECHO=True,
-            #SQLALCHEMY_RECORD_QUERIES=True, 
-            BABEL_DEFAULT_LOCALE='en',     
-            LOGGING_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            LOGGING_LOCATION = os.path.join(app.instance_path,'moneywatch.log'),
-            LOGGING_LEVEL = logging.DEBUG          
-    )
-    
-    
+            # SQLALCHEMY_ECHO=True,
+            # SQLALCHEMY_RECORD_QUERIES=True,
+            BABEL_DEFAULT_LOCALE='en',
+            LOGGING_FORMAT='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            LOGGING_LOCATION=os.path.join(app.instance_path, 'moneywatch.log'),
+            LOGGING_LEVEL=logging.DEBUG
+        )
+
+
     Session(app)
     babel = Babel(app)
-    
+
     db.init_app(app)
-    
+
     migrate = Migrate(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "migrations"))
-    
+
     with app.app_context():
         if db.engine.url.drivername == 'sqlite':
             migrate.init_app(app, db, render_as_batch=True)
@@ -49,8 +48,8 @@ def create_app(test_config=None):
     def get_current_locale():
         preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
         return negotiate_locale(preferred, [str(translation) for translation in babel.list_translations()])
-    
-    
+
+
     @app.context_processor
     def context_processor():
         return dict(accounts_list=Account.query.with_entities(Account.id, Account.name).order_by(Account.id.asc()).all())
@@ -60,14 +59,14 @@ def create_app(test_config=None):
     
     
     # Configure logging
-    handler = logging.FileHandler(app.config.get('LOGGING_LOCATION', os.path.join(app.instance_path,'moneywatch.log')))
+    handler = logging.FileHandler(app.config.get('LOGGING_LOCATION', os.path.join(app.instance_path, 'moneywatch.log')))
     handler.setLevel(app.config.get('LOGGING_LEVEL', logging.INFO))
-    
+
     formatter = logging.Formatter(app.config.get('LOGGING_FORMAT', '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
     handler.setFormatter(formatter)
-    
+
     app.logger.addHandler(handler)
-    
+
     try:
         os.makedirs(app.instance_path)
     except OSError:
@@ -75,7 +74,7 @@ def create_app(test_config=None):
 
     # register database commands
     db.init_app(app)
-    
+
     app.register_blueprint(ruleset.bp)
     app.register_blueprint(categories.bp)
     app.register_blueprint(transactions.bp)
@@ -87,4 +86,3 @@ def create_app(test_config=None):
     
     return app
 
-  
