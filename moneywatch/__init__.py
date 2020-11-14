@@ -14,6 +14,7 @@ def create_app(test_config=None):
 
     from moneywatch import ruleset, categories, transactions, overview, importer, ajax, accounts, analysis
     from moneywatch.utils.objects import db, Account
+    from moneywatch.utils.cache_buster import cache_busting
 
     app = Flask(__name__, instance_relative_config=True)
     
@@ -122,5 +123,6 @@ def create_app(test_config=None):
         else:
             return abort(404)
 
-    return app
+    cache_busting(app)
 
+    return app
