@@ -413,35 +413,35 @@ def test_category_planned_transactions_only_in_future(db_filled):
         assert planned_transaction.date >= latest_transaction.date
 
 
-def test_category_has_regular_rules(db_filled):
+def test_category_regular_rules_done(db_filled):
 
     cat_1 = Category.query.filter_by(id=1).one()
 
-    assert cat_1.has_regular_rules is False
+    assert cat_1.regular_rules_done is None
 
     cat_2 = Category.query.filter_by(id=2).one()
 
-    assert cat_2.has_regular_rules is True
+    assert cat_2.regular_rules_done is None
 
     cat_3 = Category.query.filter_by(id=3).one()
 
-    assert cat_3.has_regular_rules is False
+    assert cat_3.regular_rules_done is None
 
     cat_4 = Category.query.filter_by(id=4).one()
 
-    assert cat_4.has_regular_rules is True
+    assert cat_4.regular_rules_done is None
 
     cat_5 = Category.query.filter_by(id=5).one()
 
-    assert cat_5.has_regular_rules is True
+    assert cat_5.regular_rules_done is None
 
     cat_6 = Category.query.filter_by(id=6).one()
 
-    assert cat_6.has_regular_rules is False
+    assert cat_6.regular_rules_done is None
 
     cat_7 = Category.query.filter_by(id=7).one()
 
-    assert cat_7.has_regular_rules is True
+    assert cat_7.regular_rules_done is None
 
 
 def test_category_has_overdued_planned_transactions(db_filled):

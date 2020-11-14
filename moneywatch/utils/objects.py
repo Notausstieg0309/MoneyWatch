@@ -263,20 +263,32 @@ class Category(db.Model):
 
 
     @property
-    def has_regular_rules(self):
+    def regular_rules_done(self):
 
-        if "has_regular_rules" not in self._cache:
+        if "regular_rules_done" not in self._cache:
 
-            result = False
+            result = None
 
-            for rule in self.rules:
-                if rule.regular:
+            for category in self.childs:
+                if category.regular_rules_done is True:
                     result = True
+                elif category.regular_rules_done is False:
+                    result = False
                     break
 
-            self._cache["has_regular_rules"] = result
+            if result is None or result is True:
+                for transaction in self.transactions:
+                    if transaction.rule_id is not None:
+                        if transaction.rule.regular:
+                            result = True
+                            break
 
-        return self._cache["has_regular_rules"]
+                if result and len(self.planned_transactions) > 0:
+                    result = False
+
+            self._cache["regular_rules_done"] = result
+
+        return self._cache["regular_rules_done"]
 
     @property
     def has_overdued_planned_transactions(self):
