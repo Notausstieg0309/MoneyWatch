@@ -168,8 +168,9 @@ def create_items(items, cls, additional_values=None):
 
     for item in items:
         if additional_values is not None:
-            additional_values.update(item)
-            item = additional_values
+            tmp = additional_values.copy()
+            tmp.update(item)
+            item = tmp
 
         db.session.add(cls(**item))
 
