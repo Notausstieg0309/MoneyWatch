@@ -499,7 +499,6 @@ class Rule(db.Model):
     name = db.Column(db.String(100), unique=False, nullable=False)
     description = db.Column(db.String(100), unique=False, nullable=False)
     pattern = db.Column(db.String(100), unique=False, nullable=False)
-    regular = db.Column(db.Integer, unique=False, nullable=True)
     type = db.Column(db.Enum("in", "out"), unique=False, nullable=False)
     # active = db.Column(db.Boolean, server_default=True, nullable=False)
 
