@@ -6,11 +6,6 @@
   {% block title %}{% trans %}Overview{% endtrans %} - {{ timing["start"] |dateformat(_("yyyy/MM")) }}{% if timing["interval"] > 1 %} - {{ timing["end"] | dateformat(_("yyyy/MM")) }} ({{ timing["interval"] }} {% trans %}Months{% endtrans %}){%endif%}{% endblock %}
 {% endblock %}
 
-{% block assets %}
-{% assets "overview_js" %}
-<script type="text/javascript" src="{{ ASSET_URL }}"></script>
-{% endassets %}
-{% endblock %}
 
 {% macro item_row(row_class,name,num_planned,text_planned,num_valuta,text_valuta) %}
     <div class="row {{row_class}}">

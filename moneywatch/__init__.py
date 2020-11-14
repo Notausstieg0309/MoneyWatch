@@ -6,7 +6,6 @@ from flask import Flask, request, send_file, abort
 from flask_session import Session
 from flask_babel import Babel
 from flask_migrate import Migrate
-from flask_assets import Environment, Bundle
 from babel import negotiate_locale
 
 
@@ -17,7 +16,7 @@ def create_app(test_config=None):
     from moneywatch.utils.objects import db, Account
 
     app = Flask(__name__, instance_relative_config=True)
-
+    
     if test_config is not None:
         app.config.from_mapping(test_config)
     else:
@@ -46,45 +45,7 @@ def create_app(test_config=None):
             migrate.init_app(app, db, render_as_batch=True)
         else:
             migrate.init_app(app, db)
-
-    assets = Environment(app)
-
-    bundles = {
-
-        # JS
-        'base_js': Bundle(
-            'jquery.min.js',
-            'materialize.min.js',
-            'common_materialize.js',
-            output='base.%(version)s.assets.js',
-            merge=True,
-            filters='rjsmin'),
-
-        'analysis_js': Bundle(
-            'Chart.bundle.min.js',
-            'analysis.js',
-            output='analysis.%(version)s.assets.js',
-            merge=True,
-            filters='rjsmin'),
-
-        'overview_js': Bundle(
-            'Chart.bundle.min.js',
-            'overview_modals.js',
-            output='overview.%(version)s.assets.js',
-            merge=True,
-            filters='rjsmin'),
-
-        # CSS
-        'base_css': Bundle(
-            'materialize.min.css',
-            'materialize.icons.css',
-            'materialize.custom.css',
-            output='base.%(version)s.assets.css',
-            filters='cssmin'),
-    }
-
-    assets.register(bundles)
-
+        
     @babel.localeselector
     def get_current_locale():
         preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
