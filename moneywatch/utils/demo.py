@@ -17,10 +17,16 @@ ACCOUNT_DEFAULT = 1
 
 
 ACCOUNTS = [
-    {"id": 1, "name": "Checking Account", "iban": "DE99123456781000987654", "balance": 2038.45, "color": "bbdefb"}
+    {"id": 1, "name": "Checking account", "iban": "DE99123456781000987654", "balance": 2038.45, "color": "bbdefb"},
+    {"id": 2, "name": "Savings account", "iban": "DE99123456781000543210", "balance": 0, "color": "fff9c4"},
+    {"id": 3, "name": "Credit line", "iban": "DE99002198761000003456", "balance": -1050.98, "color": "ffcdd2"}
 ]
 
 CATEGORIES = [
+
+    # Checking account
+    # ================
+
     # Deposits
     {"id": 1, "name": "Salary", "type": "in"},
     {"id": 2, "name": "Cash Deposit", "type": "in"},
@@ -38,11 +44,37 @@ CATEGORIES = [
     {"id": 12, "name": "Gas", "type": "out", "budget_monthly": 200, "parent_id": 11},
     {"id": 13, "name": "Insurances", "type": "out", "parent_id": 4},
     {"id": 14, "name": "Cash Withdrawals", "type": "out", "budget_monthly": 200, "parent_id": 5},
+
+    # Savings account
+    # ================
+
+    # Deposits
+    {"id": 15, "account_id": 2, "name": "Planned Savings", "type": "in"},
+    {"id": 16, "account_id": 2, "name": "Unplanned Savings", "type": "in"},
+
+    # Withdrawals
+    {"id": 17, "account_id": 2, "name": "Withdrawals", "type": "out"},
+
+    # Credit line
+    # ===========
+
+    # Deposits
+    {"id": 18, "account_id": 3, "name": "Planned Savings", "type": "in"},
+    {"id": 19, "account_id": 3, "name": "Unplanned Savings", "type": "in"},
+
+    # Withdrawals
+    {"id": 20, "account_id": 3, "name": "Withdrawals", "type": "out"},
 ]
 
 RULESET = [
+
+    # Checking account
+    # ================
+
+    # Deposits
     {"name": "Salary", "description": "Salary", "pattern": "FOOBAR INC. SALARY", "type": "in", "regular": 1, "category_id": 1},
 
+    # Withdrawals
     {"name": "Appartment Rent", "description": "Rent", "pattern": "Living LLC Apartment Rent", "type": "out", "regular": 1, "category_id": 6},
     {"name": "Health Insurance", "description": "Health Insurance", "pattern": "YourInsurance LLC contract 3483-39432 JON DOE", "type": "out", "regular": 1, "category_id": 13},
     {"name": "Mobile Contract", "description": "Mobile Account", "pattern": "MOBILE ACCOUNT 491232345", "type": "out", "regular": 1, "category_id": 10},
@@ -57,19 +89,44 @@ RULESET = [
     {"name": "ATM Cash Withdrawal", "description": "Cash Withdrawal", "pattern": "ATM CASH WITHDRAWAL", "type": "out", "category_id": 14},
     {"name": "Car Insurance", "description": "Car Insurance", "pattern": "YourInsurance LLC. contract 3345-456434 JON DOE", "type": "out", "regular": 3, "category_id": 13},
     {"name": "Car Tax", "description": "Car Taxes", "pattern": "CAR TAX JOHN DOE", "type": "out", "regular": 1, "category_id": 11},
+    {"name": "Deposit for Savings account", "description": "Savings account", "pattern": "TRANSFER SAVINGS ACCOUNT", "type": "out", "regular": 1, "category_id": 7},
+    {"name": "Deposit for Credit line", "description": "Credit line", "pattern": "TRANSFER CREDIT LINE", "type": "out", "regular": 1, "category_id": 7},
+
+    # Savings account
+    # ================
+
+    # Deposits
+    {"account_id": 2, "name": "Deposit from checking account", "description": "Deposit checking account", "pattern": "TRANSFER SAVINGS ACCOUNT", "type": "in", "regular": 1, "category_id": 15},
+
+
+    # Savings account
+    # ================
+
+    # Deposits
+    {"account_id": 3, "name": "Deposit from checking account", "description": "Deposit checking account", "pattern": "TRANSFER CREDIT LINE", "type": "in", "regular": 1, "category_id": 18},
+
+
 ]
 
 
 TRANSACTIONS = [
+
+    # Checking account
+    # ================
+
     # Accident Insurance
-    {"date": demo_date(1), "valuta": -37.89, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
-    {"date": demo_date(1, 1), "valuta": -37.89, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
+    {"date": demo_date(1), "valuta": -38.89, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
+    {"date": demo_date(1, 1), "valuta": -35.36, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
     {"date": demo_date(1, 2), "valuta": -35.36, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
     {"date": demo_date(1, 3), "valuta": -35.36, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
     {"date": demo_date(1, 4), "valuta": -35.36, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
     {"date": demo_date(1, 5), "valuta": -31.33, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
     {"date": demo_date(1, 6), "valuta": -31.33, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
     {"date": demo_date(1, 7), "valuta": -29.98, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
+    {"date": demo_date(1, 8), "valuta": -29.98, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
+    {"date": demo_date(1, 9), "valuta": -29.98, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
+    {"date": demo_date(1, 10), "valuta": -29.98, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC contract 3483-39432 JON DOE %d %Y // %d-%m-%Y/00:51 0 50584600 701528545289964875"},
+
 
     # ALDI
     {"date": demo_date(2), "valuta": -56.32, "full_text": "SEPA DIRECT DEBIT ALDI SAYS THANK YOU FOR YOUR PURCHASE %d-%m-%Y SEPA // %d-%m-%Y/13:15 0 58066845 878965452266887875"},
@@ -118,7 +175,7 @@ TRANSACTIONS = [
     {"date": demo_date(18, 1), "valuta": -448.0, "full_text": "TRANSFER Living LLC Apartment Rent JON DOE"},
 
     # Salary
-    {"date": demo_date(17), "valuta": 1859.58, "full_text": "FOOBAR INC. SALARY CONTRACT 8486652584"},
+    {"date": demo_date(17), "valuta": 1910.25, "full_text": "FOOBAR INC. SALARY CONTRACT 8486652584"},
     {"date": demo_date(17, 1), "valuta": 1859.58, "full_text": "FOOBAR INC. SALARY CONTRACT 8486652584"},
 
     # Mobile Account
@@ -129,7 +186,7 @@ TRANSACTIONS = [
     {"date": demo_date(20), "valuta": -101.1, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC. contract 3483-33789 JON DOE BILL NO. 876999645-884"},
     {"date": demo_date(20, 1), "valuta": -101.1, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC. contract 3483-33789 JON DOE BILL NO. 876999645-884"},
 
-    # Car Insurance
+    # Car Insurance (used for special transaction indication)
     {"date": demo_date(-1), "valuta": -138.47, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC. contract 3345-456434 JON DOE BILL NO. 87699345-884"},
     {"date": demo_date(-1, 3), "valuta": -138.47, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC. contract 3345-456434 JON DOE BILL NO. 87699342-884"},
     {"date": demo_date(-1, 6), "valuta": -138.47, "full_text": "SEPA DIRECT DEBIT YourInsurance LLC. contract 3345-456434 JON DOE BILL NO. 87699342-884"},
@@ -140,6 +197,16 @@ TRANSACTIONS = [
     {"date": demo_date(1, 2), "valuta": -108.45, "full_text": "SEPA DIRECT CAR TAX JOHN DOE %d-%m-%Y BILL NO. 87699342-884"},
     {"date": demo_date(1, 3), "valuta": -108.45, "full_text": "SEPA DIRECT CAR TAX JOHN DOE %d-%m-%Y BILL NO. 87699342-884"},
 
+    # Transfer for savings account
+    {"date": demo_date(18), "valuta": -100.0, "full_text": "SEPA TRANSFER SAVINGS ACCOUNT // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"date": demo_date(18, 2), "valuta": -100.0, "full_text": "SEPA TRANSFER SAVINGS ACCOUNT // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"date": demo_date(18, 3), "valuta": -100.0, "full_text": "SEPA TRANSFER SAVINGS ACCOUNT // %d-%m-%Y/13:15 0 9855455 88966452"},
+
+    # Transfer for credit line
+    {"date": demo_date(20), "valuta": -100.0, "full_text": "SEPA TRANSFER CREDIT LINE // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"date": demo_date(20, 2), "valuta": -100.0, "full_text": "SEPA TRANSFER CREDIT LINE // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"date": demo_date(20, 3), "valuta": -100.0, "full_text": "SEPA TRANSFER CREDIT LINE // %d-%m-%Y/13:15 0 9855455 88966452"},
+
     # non-regular transactions
     {"date": demo_date(5), "valuta": -19.99, "description": "Amazon - iPad Cover", "category_id": 5, "full_text": "SEPA DIRECT DEBIT AMAZON PAYMENTS ORDER 4587-878-845868 SEPA // %d-%m-%Y/13:15 0 9855455 88966452"},
     {"date": demo_date(15), "valuta": -43.89, "description": "Sushi Restaurant", "category_id": 5, "full_text": "SEPA DIRECT DEBIT SUSHI PALAST THANKS FOR YOUR VISIT SEPA // %d-%m-%Y/13:15 0 9855455 88966452"},
@@ -149,8 +216,29 @@ TRANSACTIONS = [
     {"date": demo_date(1), "valuta": 0, "description": "1", "full_text": "FOR AGREED DISPOSITION CREDITS UP TO EUR 1 000 00: 9 49% P A OVER EUR 1 000 00: 11 49% P A (FOR THE ENTIRE CLAIM) SPECIAL INTEREST RATE FOR TOLERATED OVERHAUL: 14 50% P A"},
     {"date": demo_date(15), "valuta": 0, "description": "1", "full_text": "INTEREST RATE CHANGE: FOR AGREED DISPOSITION CREDITS, FOLLOWING TARGET RATES APPLY: UP TO 1 000 00 EUR: 9 49% P A OVER 1 000 00 EUR: 11 49% P A (FOR THE ENTIRE CLAIM) TARGET INTEREST RATE FOR TOLERATED OVERDRAFT P A: 14 50% P A"},
     {"date": demo_date(-1, 1), "valuta": 0, "description": "1", "full_text": "CAPITAL INCOME TAX NO CAPITAL INCOME TAX APPLIED"},
-]
 
+    # Savings account
+    # ================
+
+    # Deposits
+
+    # Transfer to Savings account
+    {"account_id": 2, "date": demo_date(19), "valuta": 100.0, "full_text": "SEPA TRANSFER SAVINGS ACCOUNT // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"account_id": 2, "date": demo_date(19, 1), "valuta": 100.0, "full_text": "SEPA TRANSFER SAVINGS ACCOUNT // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"account_id": 2, "date": demo_date(19, 2), "valuta": 100.0, "full_text": "SEPA TRANSFER SAVINGS ACCOUNT // %d-%m-%Y/13:15 0 9855455 88966452"},
+
+
+    # Credit line
+    # ================
+
+    # Deposits
+
+    # Transfer to Savings account
+    {"account_id": 3, "date": demo_date(21), "valuta": 100.0, "full_text": "SEPA TRANSFER CREDIT LINE // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"account_id": 3, "date": demo_date(21, 1), "valuta": 100.0, "full_text": "SEPA TRANSFER CREDIT LINE // %d-%m-%Y/13:15 0 9855455 88966452"},
+    {"account_id": 3, "date": demo_date(21, 2), "valuta": 100.0, "full_text": "SEPA TRANSFER CREDIT LINE // %d-%m-%Y/13:15 0 9855455 88966452"},
+
+]
 
 
 #  ______                _   _
