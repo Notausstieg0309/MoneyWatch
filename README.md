@@ -24,7 +24,7 @@ It tracks for each account the planned and already performed transactions.
 
 ![Screenshot of account overview](screenshots/overview.png?raw=true "Screenshot of account overview")
 
-The overview shows you what are the maximum planned earnings and spendings (using all your planned budgets) and shows what is your current status.
+The overview shows you what are the maximum planned deposits and withdrawals (using all your planned budgets) and shows your current account status.
 
 ![](screenshots/balance.png?raw=true "Balance table screenshot")
 
@@ -32,7 +32,7 @@ It indicates planned transactions (formatted as gray italic transaction) based o
 
 ![](screenshots/planned_transaction.png?raw=true "Planned transactions")
 
-Categories, which have assigned a maximum planned budget, display and budget indicator in the title bar indicating the percentual amount of already used budget for all underlying transactions.
+Categories, which have assigned a maximum planned budget, displays a budget indicator in the title bar indicating the percentual amount of already used budget for all underlying transactions.
 
 ![](screenshots/budget_indicator.png?raw=true "Budget indicator for categories with a maximum planned amount for spendings.")
 
@@ -49,6 +49,14 @@ You can examine the overall history of a regular transaction by showing a histor
 Regular transactions are expected to be booked on a specific date (based on the last transaction date). When an expected transaction is not booked on that day, you see an overdue indicator (warning sign) for the transaction and all contained categories.
 
 ![](screenshots/overdue.png?raw=true "The overdue indicator.")
+
+Depending on your bank, your account statement can contain important messages, during import you must acknowledge these messages. In the overview you can see, that the current month contains messages due to the message indication.
+
+![](screenshots/messages_button.png?raw=true "Indication for messages that were imported for the current month")
+
+You can view these message by clicking on the indication.
+
+![](screenshots/messages_modal.png?raw=true "List of messages")
 
 ## Transactions
 
@@ -76,7 +84,7 @@ A rule has a search pattern defined, which will be checked against the full book
 Transactions can be imported using a file based import. During import, the transaction will be checked against the defined ruleset to automatically identify and assign transactions to specific categories and provide a initial short description. The assignment and short descriptions can be overwritten during import.
 
 Transactions, which are not covered by any rule, must be assigned manually.
-
+![Screenshot of file upload](screenshots/import_fileupload.png?raw=true "Screenshot of file upload")
 ![Screenshot of transaction import](screenshots/imports.png?raw=true "Screenshot of importing new transactions")
 
 ## Quickstart Guide
