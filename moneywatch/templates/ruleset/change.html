@@ -12,10 +12,10 @@
     <form method="post">
       <label for="name">{% trans %}Rule Name{% endtrans %}</label>
       <input name="name" id="name" value="{{ request.form['name'] or rule['name'] }}" required><br>
-      
+
       <label for="pattern">{% trans %}Search Pattern{% endtrans %}</label>
       <input name="pattern" class="pattern" id="pattern" value="{{ request.form['pattern'] or rule['pattern']  }}" required><br>
-      
+
       <label for="description">{% trans %}Short Description{% endtrans %}</label>
       <input name="description" id="description" value="{{ request.form['description'] or rule['description'] }}" required><br>
 
@@ -24,14 +24,14 @@
           {% for category in categories recursive -%}
           <option value="{{ category['id'] }}"{% if selected_category == category.id %} selected{% endif %}>{{ category.getCategoryPath(" > ") }}</option>
           {% if category.childs | length > 0 %}
-              {{ loop(category.childs)}} 
+              {{ loop(category.childs)}}
           {% endif %}
           {% endfor -%}
         </select>
         <label for="category">{% trans %}Category{% endtrans %}</label>
       </div>
       <br>
-      
+
       <div class="input-field">
         <select name="regular">
         <option value="0"{% if 0 == selected_regular %} selected{% endif %}>{% trans %}no regularity{% endtrans %}</option>
@@ -43,7 +43,7 @@
         <label for="category">{% trans %}Regularity{% endtrans %}</label>
       </div>
       <br>
-      
+
       <div id="regular_form_fields" class="row"{% if selected_regular == 0 %} style="display:none;"{% endif %}>
         <div class="input-field col s6">
           <input name="next_due" id="next_due" type="date" {% if request.form['next_due'] or rule.next_due %}value="{{ request.form['next_due'] or rule.next_due.strftime('%Y-%m-%d') }}"{% endif %}><br>
@@ -54,7 +54,7 @@
           <label for="next_valuta">{% trans %}Amount{% endtrans %}</label>
         </div>
       </div>
-      <button class="btn-small" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
+      <button class="btn-small right" type="submit" name="action" value="save">{% trans %}Save{% endtrans %}</button>
     </form>
   </div>
  </div>
