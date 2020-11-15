@@ -13,6 +13,6 @@ setup(
         'Flask-SQLAlchemy',
         'Flask-Migrate',
     ],
-    tests_requires=['pytest'],
+    tests_require=['pytest'],
 
 )
