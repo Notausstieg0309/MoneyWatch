@@ -58,6 +58,9 @@ class PluginManager:
                 print(self._load_error_str(f, e))
                 continue
 
+            for key in plugin_info.keys():
+                plugin_info[key]["_filename"] = os.path.basename(f)
+
             self._plugin_info.update(plugin_info)
 
 
@@ -89,7 +92,8 @@ class ImportPluginsManager(PluginManager):
                 if check_result:
                     result.append({
                         "name": name,
-                        "description": info.get("description", None)
+                        "description": info.get("description", None),
+                        "_filename": info.get("_filename", None)
                     })
 
             # if no check function available always select the plugin so the user can decide

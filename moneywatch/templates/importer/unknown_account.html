@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{% trans %}Check imported transactions{% endtrans %}{% endblock %}
+{% endblock %}
+
+{% macro item(transaction) %}
+
+    {%- if transaction.valuta > 0 -%}
+    {%- set transaction_type = "in" -%}
+    {%- elif transaction.valuta < 0 -%}
+    {%- set transaction_type = "out" -%}
+    {%- else -%}
+    {%- set transaction_type = "message" -%}
+    {%- endif -%}
+
+<div class="transaction item_container z-depth-1 {{ transaction_type }}">
+  <div class="left_ribbon">
+      {{- transaction.date | dateformat(_("yyyy-MM-dd")) -}}
+  </div>
+  <div class="top_row">
+    <div class="description">
+
+    </div>
+    {% if transaction.value != 0 %}
+    <span class="valuta_box {{ transaction_type }}">
+      <span class="valuta num" data-num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</span>
+    </span>
+    {% endif %}
+  </div>
+  <div class="full_text black-text">{{ transaction.full_text }}</div>
+</div>
+{% endmacro %}
+
+
+{% block content %}
+<br>
+
+<div class="row">
+    <div class="col s12 m8 offset-m2">
+        {% trans -%}
+        The uploaded file contains transactions for the following unknown account IBAN.
+        {%- endtrans %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 m8 offset-m2 hide-on-small-only">
+        <div class="center unknown_account">
+            <span class="description">{{ plugin_description }}</span> &mdash; <span class="iban">{{ iban_formatted }}</span>
+        </div>
+    </div>
+    <div class="unknown_account col center-align s12 m4 offset-m2 hide-on-med-and-up">
+        <span class="description">{{ plugin_description }}</span>
+    </div>
+    <div class="unknown_account col center-align s12  hide-on-med-and-up">
+        <span class="iban">{{ iban_formatted }}</span>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col s12 m4 offset-m2 left-align">
+        {% trans -%}
+        Do you want to create a new account for this IBAN?
+        {%- endtrans %}
+    </div>
+    <div class="col s12 m4 center-align">
+        <form method="POST">
+            <button type="submit" class="btn-small" name="ignore_iban" value="{{ iban }}">{% trans %}No{% endtrans%}</button>
+            <a class="btn-small" href="{{ url_for('accounts.add', iban=iban) }}">{% trans %}Yes{% endtrans%}</a>
+        </form>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m8 offset-m2">
+        {{ item(transaction) }}
+    </div>
+</div>
+<p>
+
+</p>
+{% endblock %}

@@ -17,7 +17,6 @@ plugins = ImportPluginsManager(os.path.dirname(os.path.realpath(__file__)) + "/i
 @bp.route('/import/', methods=('GET', 'POST'))
 def index():
 
-
     if request.method == 'POST':
         error = None
 
@@ -40,8 +39,12 @@ def index():
                         items = plugins.parse_file(request.files['file'], available_plugins[0]["name"])
 
                         session['import_items'] = items
-                        session['import_plugin_description'] = available_plugins[0]["description"] or gettext("Import plugin \"%(name)s\" (no description available)", name=available_plugins[0]["name"])
-                        session['import_objects'] = create_transactions_from_import(items)
+                        session['import_plugin_description'] = available_plugins[0]["description"] or gettext('Import plugin file "%(name)s"', name=available_plugins[0]["_filename"])
+
+                        try:
+                            session['import_objects'] = create_transactions_from_import(items)
+                        except UnknownAccountError as e:
+                            raise UnknownAccountError(iban=e.iban, item=e.item, plugin_description=session['import_plugin_description'])
 
                     else:
                         raise MultiplePluginMatchError(request.files['file'], available_plugins)
@@ -63,14 +66,24 @@ def index():
                     apply_account_id_changes(session["no_account_given"], request.form["account_id"])
                     session.pop("no_account_given", None)
 
-                session['import_objects'] = create_transactions_from_import(session['import_items'])
+                if "ignore_iban" in request.form:
+                    iban = request.form["ignore_iban"]
+                    for item in session['import_items'][:]:
+                        if item.get("account", None) == iban:
+                            session['import_items'].remove(item)
+
+                try:
+                    session['import_objects'] = create_transactions_from_import(session['import_items'])
+                except UnknownAccountError as e:
+                    raise UnknownAccountError(iban=e.iban, item=e.item, plugin_description=session['import_plugin_description'])
+
                 session.modified = True
 
             elif "import_objects" in session:
                 apply_import_edits(session['import_objects'], request.form)
                 session.modified = True
 
-            if request.form['action'] == "save":
+            if request.form.get('action', None) == "save":
 
                 # reverse transaction list to get oldest transaction first instead of newest transaction first
                 session['import_objects'].reverse()
@@ -141,6 +154,11 @@ def handle_no_account_given(error):
 
     return render_template('importer/no_account_given.html', accounts=accounts, count_items=len(error.index_list))
 
+@bp.errorhandler(UnknownAccountError)
+def handle_unknown_account_error(error):
+
+    return render_template('importer/unknown_account.html', transaction=error.item, plugin_description=error.plugin_description, iban=error.iban, iban_formatted=utils.format_iban_human(error.iban))
+
 
 def create_transactions_from_import(items, check_all=False):
 
@@ -165,7 +183,7 @@ def create_transactions_from_import(items, check_all=False):
                     if account is not None:
                         accounts[item["account"]] = account.id
                     else:
-                        raise UnknownAccountError(iban)
+                        raise UnknownAccountError(iban, item)
 
                 item["account_id"] = accounts[item["account"]]
                 item.pop("account", None)
@@ -218,7 +236,6 @@ def apply_import_edits(import_objects, input_data):
     for index, transaction in enumerate(import_objects):
 
         if transaction.type == "message":
-            current_app.logger.debug("message noted: %s", input_data)
             if input_data.get(str(index) + "_noted", None):
                 transaction.description = True
 

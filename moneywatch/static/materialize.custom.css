@@ -684,7 +684,17 @@ td.short_description input {
     font-weight: bold;
 }
 
+div.unknown_account {
+    line-height: 2.rem;
+    font-size: 1.1rem;
 
+    padding: 20pt;
+}
+
+div.unknown_account .iban {
+    font-weight: 600;
+    font-family: monospace;
+}
 
 /*
  _____       _                _

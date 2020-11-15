@@ -26,11 +26,14 @@ class NoPluginMatchError(Exception):
 
 
 class UnknownAccountError(Exception):
-    def __init__(self, iban):
+
+    def __init__(self, iban, item, plugin_description=None):
 
         super().__init__()
 
         self.iban = iban
+        self.item = item
+        self.plugin_description = plugin_description
 
 
 class ItemsWithoutAccountError(Exception):
