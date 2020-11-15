@@ -110,60 +110,85 @@ At the first start, it will create a python virual environment, install all depe
 
 ```
 $ ./start_flask_devel.sh
+./start_flask_devel.sh
 -> creating python virtual environment
 -> enable virtual environment
 -> installing moneywatch in virtual environment
 Obtaining file:///opt/moneywatch
 Collecting Flask (from moneywatch==0.1)
-  Using cached https://files.pythonhosted.org/packages/7f/e7/08578774ed4536d3242b14dacb4696386634607af824ea997202cd0edb4b/Flask-1.0.2-py2.py3-none-any.whl
+  Downloading https://files.pythonhosted.org/packages/f2/28/2a03252dfb9ebf377f40fba6a7841b47083260bf8bd8e737b0c6952df83f/Flask-1.1.2-py2.py3-none-any.whl (94kB)
+    100% |████████████████████████████████| 98kB 415kB/s
 Collecting Flask-Session (from moneywatch==0.1)
-  Using cached https://files.pythonhosted.org/packages/7e/a3/3ba4cec2becb7c4e65dfa95052c7050832c12a1fc8a475ac572842c460bc/Flask_Session-0.3.1-py2.py3-none-any.whl
+  Downloading https://files.pythonhosted.org/packages/32/6a/c1cf600a14b98347a35b1142bb5f2674f356c261a6de4a36c88fc8a47620/Flask_Session-0.3.2-py2.py3-none-any.whl
 Collecting Flask-Babel (from moneywatch==0.1)
-Collecting itsdangerous>=0.24 (from Flask->moneywatch==0.1)
-  Using cached https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
-Collecting Werkzeug>=0.14 (from Flask->moneywatch==0.1)
-  Using cached https://files.pythonhosted.org/packages/20/c4/12e3e56473e52375aa29c4764e70d1b8f3efa6682bef8d0aae04fe335243/Werkzeug-0.14.1-py2.py3-none-any.whl
+  Downloading https://files.pythonhosted.org/packages/ab/3e/02331179ffab8b79e0383606a028b6a60fb1b4419b84935edd43223406a0/Flask_Babel-2.0.0-py3-none-any.whl
+Collecting Flask-SQLAlchemy (from moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/af/4b/3dd83c3e2c6e3034b804d971952e0120606506f153990cc56d2d33173b72/Flask_SQLAlchemy-2.4.4-py2.py3-none-any.whl
+Collecting Flask-Migrate (from moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/e5/64/c75f173ba5420f5174be6f04dfa8d8250d4808c12a9cd781e84c0b31684f/Flask_Migrate-2.5.3-py2.py3-none-any.whl
+Collecting Werkzeug>=0.15 (from Flask->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/cc/94/5f7079a0e00bd6863ef8f1da638721e9da21e5bacee597595b318f71d62e/Werkzeug-1.0.1-py2.py3-none-any.whl (298kB)
+    100% |████████████████████████████████| 299kB 168kB/s
+Collecting Jinja2>=2.10.1 (from Flask->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/30/9e/f663a2aa66a09d838042ae1a2c5659828bb9b41ea3a6efa20a20fd92b121/Jinja2-2.11.2-py2.py3-none-any.whl (125kB)
+    100% |████████████████████████████████| 126kB 367kB/s
 Collecting click>=5.1 (from Flask->moneywatch==0.1)
-  Using cached https://files.pythonhosted.org/packages/fa/37/45185cb5abbc30d7257104c434fe0b07e5a195a6847506c074527aa599ec/Click-7.0-py2.py3-none-any.whl
-Collecting Jinja2>=2.10 (from Flask->moneywatch==0.1)
-  Using cached https://files.pythonhosted.org/packages/7f/ff/ae64bacdfc95f27a016a7bed8e8686763ba4d277a78ca76f32659220a731/Jinja2-2.10-py2.py3-none-any.whl
+  Downloading https://files.pythonhosted.org/packages/d2/3d/fa76db83bf75c4f8d338c2fd15c8d33fdd7ad23a9b5e57eb6c5de26b430e/click-7.1.2-py2.py3-none-any.whl (82kB)
+    100% |████████████████████████████████| 86kB 335kB/s
+Collecting itsdangerous>=0.24 (from Flask->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/76/ae/44b03b253d6fade317f32c24d100b3b35c2239807046a4c953c7b89fa49e/itsdangerous-1.1.0-py2.py3-none-any.whl
+Collecting cachelib (from Flask-Session->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/e6/fc/9c5571cf72ac3ea64ad5cd9d704c1000452cb483a6a3233357d8f3da6991/cachelib-0.1.1-py3-none-any.whl
 Collecting Babel>=2.3 (from Flask-Babel->moneywatch==0.1)
-  Using cached https://files.pythonhosted.org/packages/b8/ad/c6f60602d3ee3d92fbed87675b6fb6a6f9a38c223343ababdb44ba201f10/Babel-2.6.0-py2.py3-none-any.whl
-Collecting MarkupSafe>=0.23 (from Jinja2>=2.10->Flask->moneywatch==0.1)
-Collecting pytz>=0a (from Babel>=2.3->Flask-Babel->moneywatch==0.1)
-  Downloading https://files.pythonhosted.org/packages/61/28/1d3920e4d1d50b19bc5d24398a7cd85cc7b9a75a490570d5a30c57622d34/pytz-2018.9-py2.py3-none-any.whl (510kB)
-    100% |████████████████████████████████| 512kB 111kB/s
-Installing collected packages: itsdangerous, Werkzeug, click, MarkupSafe, Jinja2, Flask, Flask-Session, pytz, Babel, Flask-Babel, moneywatch
+  Downloading https://files.pythonhosted.org/packages/dd/a5/81076e10b5ef74493cf08a8e419e61b64324c9c55db4aa7f89c0240c4873/Babel-2.9.0-py2.py3-none-any.whl (8.8MB)
+    100% |████████████████████████████████| 8.8MB 7.0kB/s
+Collecting pytz (from Flask-Babel->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/12/f8/ff09af6ff61a3efaad5f61ba5facdf17e7722c4393f7d8a66674d2dbd29f/pytz-2020.4-py2.py3-none-any.whl (509kB)
+    100% |████████████████████████████████| 512kB 128kB/s
+Collecting SQLAlchemy>=0.8.0 (from Flask-SQLAlchemy->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/69/ef/6d18860e18db68b8f25e0d268635f2f8cefa7a1cbf6d9d9f90214555a364/SQLAlchemy-1.3.20.tar.gz (6.3MB)
+    100% |████████████████████████████████| 6.3MB 10kB/s
+Collecting alembic>=0.7 (from Flask-Migrate->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/12/aa/c261dfd7f4ba6ce4701846a2689a46e2a172e012171de4378fc2926e3bf0/alembic-1.4.3-py2.py3-none-any.whl (159kB)
+    100% |████████████████████████████████| 163kB 286kB/s
+Collecting MarkupSafe>=0.23 (from Jinja2>=2.10.1->Flask->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094/MarkupSafe-1.1.1.tar.gz
+Collecting python-dateutil (from alembic>=0.7->Flask-Migrate->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/d4/70/d60450c3dd48ef87586924207ae8907090de0b306af2bce5d134d78615cb/python_dateutil-2.8.1-py2.py3-none-any.whl (227kB)
+    100% |████████████████████████████████| 229kB 211kB/s
+Collecting python-editor>=0.3 (from alembic>=0.7->Flask-Migrate->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/c6/d3/201fc3abe391bbae6606e6f1d598c15d367033332bd54352b12f35513717/python_editor-1.0.4-py3-none-any.whl
+Collecting Mako (from alembic>=0.7->Flask-Migrate->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/a6/37/0e706200d22172eb8fa17d68a7ae22dec7631a0a92266634fb518a88a5b2/Mako-1.1.3-py2.py3-none-any.whl (75kB)
+    100% |████████████████████████████████| 77kB 506kB/s
+Collecting six>=1.5 (from python-dateutil->alembic>=0.7->Flask-Migrate->moneywatch==0.1)
+  Downloading https://files.pythonhosted.org/packages/ee/ff/48bde5c0f013094d729fe4b0316ba2a24774b3ff1c52d924a8a4cb04078a/six-1.15.0-py2.py3-none-any.whl
+Installing collected packages: Werkzeug, MarkupSafe, Jinja2, click, itsdangerous, Flask, cachelib, Flask-Session, pytz, Babel, Flask-Babel, SQLAlchemy, Flask-SQLAlchemy, six, python-dateutil, python-editor, Mako, alembic, Flask-Migrate, moneywatch
+  Running setup.py install for MarkupSafe
+  Running setup.py install for SQLAlchemy
   Running setup.py develop for moneywatch
-Successfully installed Babel-2.6.0 Flask-1.0.2 Flask-Babel-0.12.2 Flask-Session-0.3.1 Jinja2-2.10 MarkupSafe-1.1.0 Werkzeug-0.14.1 click-7.0 itsdangerous-1.1.0 moneywatch pytz-2018.9
-You are using pip version 7.1.2, however version 18.1 is available.
+Successfully installed Babel-2.9.0 Flask-1.1.2 Flask-Babel-2.0.0 Flask-Migrate-2.5.3 Flask-SQLAlchemy-2.4.4 Flask-Session-0.3.2 Jinja2-2.11.2 Mako-1.1.3 MarkupSafe-1.1.1 SQLAlchemy-1.3.20 Werkzeug-1.0.1 alembic-1.4.3 cachelib-0.1.1 click-7.1.2 itsdangerous-1.1.0 moneywatch python-dateutil-2.8.1 python-editor-1.0.4 pytz-2020.4 six-1.15.0
+You are using pip version 7.1.2, however version 20.2.4 is available.
 You should consider upgrading via the 'pip install --upgrade pip' command.
--> initializing SQLite database
-initialized database.
+-> updating database
+[2020-11-15 12:52:17,587] DEBUG in cache_buster: computing cache-busting values for static resources...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 8a1bd376774f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade 8a1bd376774f -> 07f9fee4d16a, change category_id can be NULL
+INFO  [alembic.runtime.migration] Running upgrade 07f9fee4d16a -> a2487f80fe2c, remove trend_calculated from transactions table
+INFO  [alembic.runtime.migration] Running upgrade a2487f80fe2c -> 2f7b1d0b3c37, add accounts table
+INFO  [alembic.runtime.migration] Running upgrade 2f7b1d0b3c37 -> a025f3a71951, add color column to accounts table
+INFO  [alembic.runtime.migration] Running upgrade a025f3a71951 -> aaf2ea3a2ce8, add index to date column
 -> starting flask webserver on port 1234
  * Serving Flask app "moneywatch" (lazy loading)
  * Environment: development
  * Debug mode: on
  * Running on http://0.0.0.0:1234/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 292-414-762
 ```
 
 You can stop the server by pressing CTRL+C.
 
-After the first run, the startup is faster:
-
-```
-$ ./start_flask_devel.sh
--> enable virtual environment
--> starting flask webserver on port 1234
- * Serving Flask app "moneywatch" (lazy loading)
- * Environment: development
- * Debug mode: on
- * Running on http://0.0.0.0:1234/ (Press CTRL+C to quit)
- * Restarting with stat
-```
 
 ## Import Plugin Mechanism
 
