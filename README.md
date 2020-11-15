@@ -28,7 +28,13 @@ The overview shows you what are the maximum planned deposits and withdrawals (us
 
 ![](screenshots/balance.png?raw=true "Balance table screenshot")
 
-It indicates planned transactions (formatted as gray italic transaction) based on defined rules for regular transactions. 
+To get an idea how the net change would look like when all planned transactions would be done, click on the "Current" column to see the net change including all pending transactions.
+
+![](screenshots/balance_link.png?raw=true "Link to switch current balance view")
+
+![](screenshots/balance_clicked.png?raw=true "Balance view including all pending transactions valutas")
+
+Each category indicates planned transactions (formatted as gray italic transaction) based on defined rules for regular transactions. 
 
 ![](screenshots/planned_transaction.png?raw=true "Planned transactions")
 
@@ -50,13 +56,21 @@ Regular transactions are expected to be booked on a specific date (based on the 
 
 ![](screenshots/overdue.png?raw=true "The overdue indicator.")
 
-Depending on your bank, your account statement can contain important messages, during import you must acknowledge these messages. In the overview you can see, that the current month contains messages due to the message indication.
+Depending on your bank, your account statement can contain important messages, during import you must acknowledge these messages. 
+
+![](screenshots/messages_import.png?raw=true "Acknowledge of messages during import")
+
+In the overview you can see, that the current month contains messages due to the message indication.
 
 ![](screenshots/messages_button.png?raw=true "Indication for messages that were imported for the current month")
 
 You can view these message by clicking on the indication.
 
 ![](screenshots/messages_modal.png?raw=true "List of messages")
+
+All regular transactions that are not planned every month (quarterly/semiannual/annual transactions) will be shown in particular when they are due for current month.
+
+![](screenshots/particular_transactions.png?raw=true "Particular transactions")
 
 ## Transactions
 
@@ -84,6 +98,7 @@ A rule has a search pattern defined, which will be checked against the full book
 Transactions can be imported using a file based import. During import, the transaction will be checked against the defined ruleset to automatically identify and assign transactions to specific categories and provide a initial short description. The assignment and short descriptions can be overwritten during import.
 
 Transactions, which are not covered by any rule, must be assigned manually.
+
 ![Screenshot of file upload](screenshots/import_fileupload.png?raw=true "Screenshot of file upload")
 ![Screenshot of transaction import](screenshots/imports.png?raw=true "Screenshot of importing new transactions")
 
