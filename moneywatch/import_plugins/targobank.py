@@ -22,10 +22,10 @@ def parse_csv(stream, name):
 
     for item in items:
 
-        if item.strip():
+        if item:
             result_item = {}
 
-            columns = column_split_re.split(item)
+            columns = column_split_re.split(item.strip(" '\"\n"))
 
             date = columns[0]
             full_text = columns[1]
