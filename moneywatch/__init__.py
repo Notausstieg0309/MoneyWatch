@@ -17,7 +17,7 @@ def create_app(test_config=None):
     from moneywatch.utils.cache_buster import cache_busting
 
     app = Flask(__name__, instance_relative_config=True)
-    
+
     if test_config is not None:
         app.config.from_mapping(test_config)
     else:
@@ -33,6 +33,7 @@ def create_app(test_config=None):
             LOGGING_LEVEL=logging.DEBUG
         )
 
+    os.makedirs(app.instance_path, exist_ok=True)
 
     Session(app)
     babel = Babel(app)
@@ -46,7 +47,7 @@ def create_app(test_config=None):
             migrate.init_app(app, db, render_as_batch=True)
         else:
             migrate.init_app(app, db)
-        
+
     @babel.localeselector
     def get_current_locale():
         preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
@@ -94,11 +95,6 @@ def create_app(test_config=None):
     handler.setFormatter(formatter)
 
     app.logger.addHandler(handler)
-
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
 
     # register database commands
     db.init_app(app)
