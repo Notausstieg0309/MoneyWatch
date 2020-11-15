@@ -29,7 +29,17 @@
   <td rowspan="2" data-num="{{ account.balance }}" class="balance num"><a href="{{ url_for('overview.overview', account_id=account.id) }}">{{ account.balance | currencyformat("EUR") }}</a></td>
 </tr>
 <tr>
-  <td colspan="2" class="iban">{{ account.iban_formatted }}{% if account.last_update is not none %} <span class="copy-clipboard cursor-pointer tooltipped" data-tooltip="{% trans %}Copy IBAN to clipboard{% endtrans %}" data-position="right" data-copy-value="{{ account.iban }}"><i class="material-icons tiny grey-text">content_copy</i></span><span class="right hide-on-med-and-down grey-text">({% trans %}last transaction{% endtrans %}: {{ time_delta(account.last_update) }})</span>{% endif %}</td>
+  <td colspan="2" class="iban">
+    {{ account.iban_formatted }}
+    <span class="copy-clipboard cursor-pointer tooltipped" data-tooltip="{% trans %}Copy IBAN to clipboard{% endtrans %}" data-position="right" data-copy-value="{{ account.iban }}">
+      <i class="material-icons tiny grey-text">content_copy</i>
+    </span>
+    {% if account.last_update is not none %}
+    <span class="right hide-on-med-and-down grey-text">
+      ({% trans %}last transaction{% endtrans %}: {{ time_delta(account.last_update) }})
+    </span>
+    {% endif %}
+  </td>
 </tr>
 </table>
 {% endmacro %}
