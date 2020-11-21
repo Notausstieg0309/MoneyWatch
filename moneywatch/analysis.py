@@ -76,7 +76,7 @@ def getProfit(account_id, start, end, interval):
 
     transactions = filter(lambda x: x.type != "message", transactions)
 
-    result.update(createResultForTransactions(interval, transactions))
+    result.update(createResultForTransactions(interval, transactions, create_links=(account_id != "ALL")))
 
     return result
 
@@ -186,7 +186,7 @@ def transToDict(transaction):
 
 
 
-def createResultForTransactions(interval, transactions, highlight_links=False, reference_id=None):
+def createResultForTransactions(interval, transactions, create_links=True, highlight_links=False, reference_id=None):
 
     data = []
     result = {}
@@ -209,20 +209,21 @@ def createResultForTransactions(interval, transactions, highlight_links=False, r
             "label": tmp_last_label,
         }
 
-        if highlight_links:
+        if (create_links and highlight_links) or reference_id is not None:
             tmp_dict["ids"] = [transaction.id for transaction in tmp_transactions]
 
         if reference_id is not None:
             tmp_dict["reference"] = 1 if reference_id in tmp_dict["ids"] else 0
 
-        if interval == 3:
-            tmp_dict["link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), highlight=tmp_dict.get("ids", None))
-        elif interval == 6:
-            tmp_dict["link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), highlight=tmp_dict.get("ids", None))
-        elif interval == 12:
-            tmp_dict["link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, highlight=tmp_dict.get("ids", None))
-        else:
-            tmp_dict["link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, highlight=tmp_dict.get("ids", None))
+        if create_links:
+            if interval == 3:
+                tmp_dict["link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), highlight=tmp_dict.get("ids", None))
+            elif interval == 6:
+                tmp_dict["link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), highlight=tmp_dict.get("ids", None))
+            elif interval == 12:
+                tmp_dict["link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, highlight=tmp_dict.get("ids", None))
+            else:
+                tmp_dict["link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, highlight=tmp_dict.get("ids", None))
 
         tmp_valuta = 0
         tmp_count = 0
