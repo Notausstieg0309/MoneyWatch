@@ -1,4 +1,4 @@
-from flask import (Blueprint, current_app, render_template, request, jsonify)
+from flask import (Blueprint, current_app, render_template, request, jsonify, url_for)
 from werkzeug.exceptions import abort
 
 import datetime
@@ -76,7 +76,7 @@ def getProfit(account_id, start, end, interval):
 
     transactions = filter(lambda x: x.type != "message", transactions)
 
-    result = createResultForTransactions(result, transactions)
+    result.update(createResultForTransactions(interval, transactions))
 
     return result
 
@@ -134,7 +134,7 @@ def getSumByType(account_id, start, end, interval, trans_type):
 
         transactions = account.transactions_by_type(trans_type, utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
-        result = createResultForTransactions(result, transactions)
+        result.update(createResultForTransactions(interval, transactions))
 
     return result
 
@@ -147,7 +147,7 @@ def getSumByRule(start, end, interval, rule_id):
 
     transactions = rule.getTransactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
 
-    result = createResultForTransactions(result, transactions)
+    result.update(createResultForTransactions(interval, transactions, highlight_links=True))
 
     return result
 
@@ -166,7 +166,7 @@ def getSumByCategory(start, end, interval, category_id):
     # transactions are not in the correct date order, sort here only once instead of multiple recursive sorting runs in Category.transactions_with_childs()
     transactions.sort(key=lambda x: x.date)
 
-    result = createResultForTransactions(result, transactions)
+    result.update(createResultForTransactions(interval, transactions))
 
     return result
 
@@ -186,9 +186,10 @@ def transToDict(transaction):
 
 
 
-def createResultForTransactions(result, transactions):
+def createResultForTransactions(interval, transactions, highlight_links=False, reference_id=None):
 
     data = []
+    result = {}
 
     sum_valuta = 0
 
@@ -205,18 +206,32 @@ def createResultForTransactions(result, transactions):
             "valuta": round(tmp_valuta, 2),
             "valuta_formatted": format_currency(tmp_valuta, "EUR"),
             "count": tmp_count,
-            "transactions": tmp_transactions,
             "label": tmp_last_label,
         }
+
+        if highlight_links:
+            tmp_dict["ids"] = [transaction.id for transaction in tmp_transactions]
+
+        if reference_id is not None:
+            tmp_dict["reference"] = 1 if reference_id in tmp_dict["ids"] else 0
+
+        if interval == 3:
+            tmp_dict["link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), highlight=tmp_dict.get("ids", None))
+        elif interval == 6:
+            tmp_dict["link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), highlight=tmp_dict.get("ids", None))
+        elif interval == 12:
+            tmp_dict["link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, highlight=tmp_dict.get("ids", None))
+        else:
+            tmp_dict["link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, highlight=tmp_dict.get("ids", None))
 
         tmp_valuta = 0
         tmp_count = 0
         tmp_transactions = []
 
+        tmp_dict.pop("ids", None)
+
         return tmp_dict
 
-
-    interval = result["interval"]
 
     for transaction in transactions:
         transaction_label = utils.get_label_for_date(transaction.date, interval)
@@ -229,7 +244,7 @@ def createResultForTransactions(result, transactions):
         tmp_valuta += transaction.valuta
         tmp_last_label = transaction_label
 
-        tmp_transactions.append(transToDict(transaction))
+        tmp_transactions.append(transaction)
 
     # add remaining items of the last interval
     if tmp_count > 0:

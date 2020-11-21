@@ -12,6 +12,7 @@ function generateAnalysisChartData(res)
     var labels = []
     var data = []
     var pointColors = [];
+    var links = [];
 
     var red = "#a82727";
     var green = "#045904";
@@ -26,9 +27,13 @@ function generateAnalysisChartData(res)
         } else {
             pointColors.push(green);
         }
+
+        if("link" in item) {
+            links.push(item.link);
+        }
     });
 
-    return {labels: labels, data: data, pointColors: pointColors};
+    return {labels: labels, data: data, pointColors: pointColors, links: links};
 }
 
 function createTable(res) {
@@ -99,6 +104,7 @@ function createAnalysisChart(res)
                             {
                                 label: res.description,
                                 data: items.data,
+                                links: items.links,
                                 pointBackgroundColor: items.pointColors,
                                 pointRadius: 5,
                                 pointHoverRadius: 10,
@@ -135,12 +141,17 @@ function createAnalysisChart(res)
                     display: false
                 },
                 hover: {
-                   /* onHover: function(e) {
+                    onHover: function(e) {
                         var point = this.getElementAtEvent(e);
-                        if (point.length) e.target.style.cursor = 'pointer';
-                        else e.target.style.cursor = 'default';
+
+                        if(point.length > 0) {
+
+                            var URL = analysis_chart.data.datasets[point[0]._datasetIndex].links[point[0]._index];
+
+                            if (URL !== undefined) e.target.style.cursor = 'pointer';
+                            else e.target.style.cursor = 'default';
+                        }
                     }
-                    */
                 }
             }
         });
@@ -565,4 +576,16 @@ $(function () {
 
         $("ul.analysis-tabs").tabs("select", "chart");
     });
+
+
+    $("canvas.chart-container").on('click', function(e){
+        var activePoint = analysis_chart.getElementAtEvent(e);
+        if(activePoint[0])
+        {
+            var URL = analysis_chart.data.datasets[activePoint[0]._datasetIndex].links[activePoint[0]._index];
+
+            if (URL !== undefined) window.location.href = URL;
+        }
+    });
+
 });
