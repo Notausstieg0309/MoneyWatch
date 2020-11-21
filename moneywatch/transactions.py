@@ -100,6 +100,20 @@ def transaction_details_multi():
     return render_template('transactions/multiple_transaction.html', transactions=transactions)
 
 
+@bp.route('/<int:account_id>/transactions/messages/<int:year>/<int:month>/<int:month_count>/')
+def transaction_messages(account_id, year, month, month_count):
+
+    account = Account.query.filter_by(id=account_id).one_or_none()
+
+    if account is None:
+        return jsonify(None), 404
+
+    end_date = utils.add_months(utils.get_last_day_of_month(year, month), (month_count - 1))
+    transactions = account.transactions_by_type("message", start=utils.get_first_day_of_month(year, month), end=end_date)
+
+    return render_template('transactions/multiple_transaction.html', transactions=transactions)
+
+
 def int_list(values):
 
     result = []
