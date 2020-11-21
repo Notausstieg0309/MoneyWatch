@@ -1,6 +1,7 @@
 from flask import (Blueprint, jsonify, url_for)
 from flask_babel import format_currency
 import moneywatch.utils.functions as utils
+from moneywatch.analysis import createResultForTransactions
 
 from .utils.objects import Transaction
 
@@ -32,60 +33,11 @@ def transaction_chart_data(transaction_id):
     transactions.append(initial_transaction)
     transactions.extend(transactions_after)
 
-    return jsonify({
+    result = {
         "type": initial_transaction.type,
-        "description": rule.description,
-        "data": list(transactions_to_intervals(rule.regular, transactions, initial_transaction.id)),
-    })
+        "description": rule.description
+    }
 
+    result.update(createResultForTransactions(rule.regular, transactions, highlight_links=True, reference_id=initial_transaction.id))
 
-
-def transactions_to_intervals(interval, transactions, reference_id):
-
-    tmp_valuta = 0
-    tmp_transactions = []
-    tmp_last_label = None
-
-    def getTempDict():
-
-        nonlocal tmp_valuta, tmp_transactions, tmp_last_label
-
-        tmp_dict = {
-            "valuta": round(tmp_valuta, 2),
-            "valuta_formatted": format_currency(tmp_valuta, "EUR"),
-            "ids": [transaction.id for transaction in tmp_transactions],
-            "label": tmp_last_label,
-        }
-
-        tmp_dict["reference"] = 1 if reference_id in tmp_dict["ids"] else 0
-
-        if tmp_dict["reference"] == 0:
-
-            if interval == 3:
-                tmp_dict["link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), highlight=tmp_dict["ids"])
-            elif interval == 6:
-                tmp_dict["link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), highlight=tmp_dict["ids"])
-            elif interval == 12:
-                tmp_dict["link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, highlight=tmp_dict["ids"])
-            else:
-                tmp_dict["link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, highlight=tmp_dict["ids"])
-
-        tmp_valuta = 0
-        tmp_transactions = []
-
-        return tmp_dict
-
-    for transaction in transactions:
-        transaction_label = utils.get_label_for_date(transaction.date, interval)
-
-        if tmp_last_label != transaction_label and tmp_last_label is not None:
-            yield getTempDict()
-
-        tmp_valuta += transaction.valuta
-        tmp_last_label = transaction_label
-
-        tmp_transactions.append(transaction)
-
-    # add remaining items of the last interval
-    if len(tmp_transactions) > 0:
-        yield getTempDict()
+    return jsonify(result)
