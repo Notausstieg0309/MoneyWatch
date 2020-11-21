@@ -549,7 +549,7 @@ $(function () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             $.ajax({
-                url: $SCRIPT_ROOT + "/analysis/data/",
+                url: $(this).data("submit-url"),
                 async: true,
                 dataType: 'json',
                 type: "post",

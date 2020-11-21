@@ -53,7 +53,27 @@
 
 {% macro transaction_row(row_class,transaction) -%}
     {%- set name -%}
-        <span data-transaction-id="{{ transaction.id }}" class="description">{% if timing["interval"] > 1 %}{{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash; {% endif %}{% if timing["interval"] == 1 %}{{ transaction.date | dateformat(_("MM-dd")) }} &ndash; {% endif -%}{{ transaction.description }}</span>{% if transaction.rule_id is not none and transaction.rule.regular %} <i data-transaction-id="{{ transaction.id }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">show_chart</i>{% endif %}{% if transaction.is_editable %}<span class='edit' style="display:none;"> <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}"><i class='tiny material-icons'>edit</i></a></span>{% endif %}
+        <span data-details-url="{{ url_for('transactions.transaction_details_single', id=transaction.id) }}" class="description">
+          {% if timing["interval"] > 1 %}
+            {{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash;
+          {% endif %}
+          {% if timing["interval"] == 1 %}
+            {{ transaction.date | dateformat(_("MM-dd")) }} &ndash;
+          {% endif -%}
+          {{ transaction.description }}
+        </span>
+        {% if transaction.rule_id is not none and transaction.rule.regular %}
+         <i data-chart-data-url="{{ url_for('ajax.transaction_chart_data', transaction_id=transaction.id) }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">
+           show_chart
+         </i>
+        {% endif %}
+        {% if transaction.is_editable %}
+        <span class='edit' style="display:none;">
+          <a class="tooltipped" href="{{ url_for('transactions.edit', id=transaction.id) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}">
+            <i class='tiny material-icons'>edit</i>
+          </a>
+        </span>
+        {% endif %}
     {%- endset -%}
 
     {% if transaction.trend is not none %}
@@ -191,7 +211,7 @@
   </div>
   {%- if messages > 0 -%}
   <div class="right-centered">
-    <span class="message-modal  tooltipped" data-year="{{ timing['start'].year }}" data-month="{{ timing['start'].month }}" data-month-count={{ timing['interval'] }} data-account-id="{{ account.id }}" data-tooltip="{% if timing['interval'] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span>
+    <span class="message-modal tooltipped" data-messages-url="{{ url_for('transactions.transaction_messages', year=timing['start'].year, month=timing['start'].month, month_count=timing['interval'], account_id=account.id ) }}" data-tooltip="{% if timing['interval'] == 1 %}{{ ngettext('This month contains %(num)d message. Click here to show them.', 'This month contains %(num)d messages. Click here to show them.', messages) }}{% else %}{{ ngettext('This timeframe contains %(num)d message. Click here to show them.', 'This timeframe contains %(num)d messages. Click here to show them.', messages) }}{% endif %}"><i class="material-icons">email</i>&nbsp;&nbsp;{{messages}}</span>
   </div>
   {% endif %}
 

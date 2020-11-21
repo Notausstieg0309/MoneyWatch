@@ -123,10 +123,10 @@ $(function() {
     });
 
     // overview: add click handler for transaction charts modal popup
-    $('div.overview i.transaction_chart[data-transaction-id]')
+    $('div.overview i.transaction_chart[data-chart-data-url]')
        .css("cursor", "pointer")
        .click(function() {
-           modalChart("/ajax/transaction_chart/"+$(this).attr("data-transaction-id")+"/");
+           modalChart($(this).data("chart-data-url"));
     });
 
 
@@ -181,14 +181,14 @@ $(function() {
                                   }
     },"div.transaction");
 
-    // overview: show edit link if available when hovering a transaction
+    // overview: show transaction details modal when clicking on transaction description
     $("div.overview div.transaction span.description").click(function() {
-        modalTransactionDetails("/transactions/single/"+$(this).attr("data-transaction-id")+"/");
+        modalTransactionDetails($(this).data("details-url"));
     });
 
     // overview: show transaction messages for current month
     $("span.message-modal").click(function() {
-        modalTransactionDetails("/" + $(this).attr("data-account-id") + "/transactions/messages/" + $(this).attr("data-year") + "/" + $(this).attr("data-month") + "/" + $(this).attr("data-month-count") + "/");
+        modalTransactionDetails($(this).data("messages-url"));
     });
 
 

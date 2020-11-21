@@ -55,7 +55,7 @@ function modalChart(url)
     showInitModal();
 
     $.ajax({
-        url: $SCRIPT_ROOT + url,
+        url: url,
         async: true,
         dataType: 'json',
         type: "get",
@@ -67,8 +67,6 @@ function modalChart(url)
         var ctx = $("div.modal canvas")[0].getContext('2d');
 
         $("div.modal h4#caption").html(res.description);
-
-
 
         chart = new Chart(ctx, {
             type: 'line',
@@ -184,7 +182,7 @@ function showInitModal()
 function modalTransactionDetails(url)
 {
     $.ajax({
-        url: $SCRIPT_ROOT + url,
+        url: url,
         async: true,
         dataType: 'html',
         type: "get",
