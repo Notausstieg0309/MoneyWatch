@@ -613,7 +613,7 @@ $(function () {
         $('div#analysis_transaction_modal').modal("open");
 
         $.ajax({
-            url: $SCRIPT_ROOT + value,
+            url: value,
             async: true,
             dataType: 'html',
             type: "get",
