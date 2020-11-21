@@ -236,8 +236,8 @@
         <table class="analysis-table">
         <template>
           <tr class="item">
-            <td class="center-align label-value"></td>
-            <td class="right-align count-value"></td>
+            <td class="center-align"><span class="label-value table-link-overview"></span></td>
+            <td class="right-align"><span class="count-value table-link-modal"></span></td>
             <td class="right-align valuta-value num"></td>
           </tr>
         </template>
@@ -247,5 +247,15 @@
         </table>
       </div>
     </div>
+</div>
+
+<div id="analysis_transaction_modal" class="modal">
+  <div class="modal-content">
+    <h4 id="caption"></h4>
+    <div class="progress" style="display:hidden;">
+      <div class="indeterminate"></div>
+    </div>
+    <div class="transaction_container"></div>
+  </div>
 </div>
 {% endblock %}

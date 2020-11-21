@@ -24,7 +24,7 @@ function generateChartData(res, regular, month_names, account_id)
             links.push(undefined);
         } else {
             pointBackgroundColors.push("#000000");
-            links.push(item.link);
+            links.push(item.overview_link);
         }
     });
 

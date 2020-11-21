@@ -28,7 +28,7 @@ function generateAnalysisChartData(res)
             pointColors.push(green);
         }
 
-        if("link" in item) {
+        if("overview_link" in item) {
             links.push(item.link);
         }
     });
@@ -51,6 +51,14 @@ function createTable(res) {
         new_tr_el.find(".valuta-value").html(item.valuta_formatted);
         new_tr_el.find(".valuta-value.num").data("num", item.valuta);
         new_tr_el.find(".count-value").html(item.count);
+
+        if("overview_link" in item) {
+            new_tr_el.find(".table-link-overview").data("link", item.overview_link).addClass("table-link");
+        }
+
+        if("transaction_details_link" in item) {
+            new_tr_el.find(".table-link-modal").data("link", item.transaction_details_link).addClass("table-link");
+        }
 
         new_tr_el.insertBefore("table.analysis-table tr.sum");
     });
@@ -529,7 +537,7 @@ $(function () {
         criteriaChangedHandler();
     });
 
-
+    // click handler on submit for requesting data and generate chart + table
     $('ul.criteria-container button#submit').click(function () {
 
         var params = createRequestDataObject();
@@ -577,7 +585,7 @@ $(function () {
         $("ul.analysis-tabs").tabs("select", "chart");
     });
 
-
+    // canvas click handler to navigate to overview link for each interval point
     $("canvas.chart-container").on('click', function(e){
         var activePoint = analysis_chart.getElementAtEvent(e);
         if(activePoint[0])
@@ -586,6 +594,34 @@ $(function () {
 
             if (URL !== undefined) window.location.href = URL;
         }
+    });
+
+
+    // table click handler for overview link for each interval entry
+    $("div.table-container").on("click", ".table-link.table-link-overview", function(e) {
+        var value = $(this).data("link");
+
+        if (value !== undefined) window.location.href = value;
+    });
+
+    // table click handler to display transaction details modal for each interval entry
+    $("div.table-container").on("click", ".table-link.table-link-modal", function(e) {
+        var value = $(this).data("link");
+
+        $("div#analysis_transaction_modal div.progress").fadeIn();
+        $("div#analysis_transaction_modal div.transaction_container div.item_container").remove();
+        $('div#analysis_transaction_modal').modal("open");
+
+        $.ajax({
+            url: $SCRIPT_ROOT + value,
+            async: true,
+            dataType: 'html',
+            type: "get",
+        }).done(function (res) {
+            $("div#analysis_transaction_modal div.progress").hide();
+            $("div#analysis_transaction_modal div.transaction_container").html(res);
+            $('div#analysis_transaction_modal .num').each(function () { formatNumberEl(this); });
+        });
     });
 
 });

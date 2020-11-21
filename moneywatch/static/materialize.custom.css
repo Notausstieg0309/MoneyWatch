@@ -789,3 +789,12 @@ table.analysis-table tr.sum {
 li.criteria#timing tr {
     border-bottom: unset;
 }
+
+/* format links in analysis table view */
+.analysis-table .table-link {
+    cursor: pointer;
+}
+
+.analysis-table .table-link:hover {
+    text-decoration: underline;
+}

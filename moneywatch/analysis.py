@@ -217,13 +217,16 @@ def createResultForTransactions(interval, transactions, create_links=True, highl
 
         if create_links:
             if interval == 3:
-                tmp_dict["link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), h=tmp_dict.get("ids", None))
+                tmp_dict["overview_link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), h=tmp_dict.get("ids", None))
             elif interval == 6:
-                tmp_dict["link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), h=tmp_dict.get("ids", None))
+                tmp_dict["overview_link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), h=tmp_dict.get("ids", None))
             elif interval == 12:
-                tmp_dict["link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, h=tmp_dict.get("ids", None))
+                tmp_dict["overview_link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, h=tmp_dict.get("ids", None))
             else:
-                tmp_dict["link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, h=tmp_dict.get("ids", None))
+                tmp_dict["overview_link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, h=tmp_dict.get("ids", None))
+
+            if(highlight_links):
+                tmp_dict["transaction_details_link"] = url_for("transactions.transaction_details_multi", h=tmp_dict.get("ids", None))
 
         tmp_valuta = 0
         tmp_count = 0

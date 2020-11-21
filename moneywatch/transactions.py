@@ -72,7 +72,7 @@ def edit(id):
 
 
 @bp.route('/transactions/single/<int:id>/')
-def transaction_details(id):
+def transaction_details_single(id):
 
     transaction = Transaction.query.filter_by(id=id).one_or_none()
 
@@ -85,15 +85,28 @@ def transaction_details(id):
     return render_template('transactions/single_transaction.html', transaction=transaction)
 
 
-@bp.route('/<int:account_id>/transactions/messages/<int:year>/<int:month>/<int:month_count>/')
-def transaction_messages(account_id, year, month, month_count):
+@bp.route('/transactions/multi/')
+def transaction_details_multi():
 
-    account = Account.query.filter_by(id=account_id).one_or_none()
+    ids = request.args.getlist("h")
 
-    if account is None:
+    ids = int_list(ids)
+
+    if ids is None:
         return jsonify(None), 404
 
-    end_date = utils.add_months(utils.get_last_day_of_month(year, month), (month_count - 1))
-    transactions = account.transactions_by_type("message", start=utils.get_first_day_of_month(year, month), end=end_date)
+    transactions = Transaction.query.filter(Transaction.id.in_(ids)).all()
 
     return render_template('transactions/multiple_transaction.html', transactions=transactions)
+
+
+def int_list(values):
+
+    result = []
+
+    for value in values:
+        try:
+            result.append(int(value))
+        except Exception:
+            return None
+    return result
