@@ -3,7 +3,7 @@ import re
 
 def parse_csv(stream, name):
 
-    is_valuta_re = re.compile(r'^-?\d+[\.,]\d{2}$')
+    is_valuta_re = re.compile(r'^-?\d+(?:[\.,]\d{2})?$')
 
     column_split_re = re.compile(r'["\']?;["\']?')
     items = stream.read().decode("latin-1").split('\r\n')
