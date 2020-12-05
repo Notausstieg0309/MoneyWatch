@@ -52,7 +52,7 @@ def parse_csv(stream, name):
             result_item['valuta'] = float(valuta.replace(",", "."))
             result_item['account'] = account
 
-            if result_item['valuta'] == 0 and (result_item['full_text'].startswith("RESERV") or result_item['full_text'].startswith("VORAUSDATIERTE")):
+            if result_item['valuta'] == 0 and result_item['full_text'].startswith("RESERV"):
                 continue
 
             result.append(result_item)
