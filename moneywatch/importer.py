@@ -31,7 +31,7 @@ def index():
 
                 available_plugins = plugins.resolve_plugins_for_file(request.files['file'])
 
-                session.pop("import_objects", None)
+                session.clear()
 
                 if len(available_plugins) > 0:
 
