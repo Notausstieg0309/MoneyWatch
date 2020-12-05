@@ -29,7 +29,7 @@ function generateAnalysisChartData(res)
         }
 
         if("overview_link" in item) {
-            links.push(item.link);
+            links.push(item.overview_link);
         }
     });
 
