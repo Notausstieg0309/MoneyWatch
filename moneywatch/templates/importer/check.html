@@ -6,18 +6,18 @@
 
 
 {% macro item(transaction, index) %}
-<div class="transaction item_container z-depth-1 with_controls {{ transaction.type }}{% if transaction.complete %} complete{% endif %}">
+<div class="transaction item_container z-depth-1 with_controls {{ transaction.type }}{% if transaction.complete %} complete{% endif %}" data-index="{{index}}">
   <div class="left_ribbon">{{transaction.date | dateformat(_("yyyy-MM-dd"))}}</div>
   <div class="top_row">
     <div class="description">
       {% if transaction.type != "message" %}
       <div class="short_description">
-        <label for="{{index}}_description">{% trans %}Description{% endtrans %}</label>
-        <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="{{index}}_description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
+        <label for="description">{% trans %}Description{% endtrans %}</label>
+        <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
       </div>
       <div class="category">
         <div class="input-field">
-          <select name="{{ index }}_category" required>
+          <select name="category" required>
               <option disabled {% if transaction.category_id is none %}selected {% endif %}value>{% trans %}Please Choose{% endtrans %}...</option>
               {% for category in categories[transaction.account_id][transaction.type] %}
               <option value="{{ category['id'] }}"{% if loop.length == 1 or (transaction.category_id and transaction.category_id |int == category['id']) %} selected{% endif %}>{{ category["path"] }}</option>
@@ -28,9 +28,9 @@
       </div>
       {% else %}
       <div class="message_noted">
-        <input type="hidden" name="{{ index }}_message" value="1" />
+        <input type="hidden" name="message" value="1" />
         <label>
-          <input type="checkbox" class="filled-in" name="{{ index }}_noted" {% if transaction.description %} checked{% endif%} />
+          <input type="checkbox" class="filled-in" name="noted" {% if transaction.description %} checked{% endif%} />
           <span class="black-text">{% trans %}I have noted this message{% endtrans %}</span>
         </label>
       </div>
@@ -59,7 +59,7 @@
 <br>
 
 {% if data %}
-<form method="post">
+<form method="post" id="import_check">
 <button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
 <button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
 

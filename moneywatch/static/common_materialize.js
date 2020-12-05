@@ -199,6 +199,19 @@ $(function() {
     function(e) {
        $(this).find("span.settings-icon").hide();
     });
+
+    // importer: add index values to form elements before submitting
+    $("form#import_check").submit(function (e) {
+        $("form#import_check .item_container").each(function() {
+            var el = $(this);
+            var index = el.data("index");
+
+            el.find("input,select").each(function() {
+                var item = $(this);
+                item.attr("name", index + "_" + item.attr("name"));
+            });
+        });
+    });
 });
 
 
