@@ -146,7 +146,7 @@
 
 {% macro particular_transaction_item(class, rule_list) -%}
 {% for item in rule_list  %}
-<span class="{{ class }}">{{ item[0].name }} - {{ item[0].next_valuta|currencyformat('EUR') }}</span> {% if not loop.last %} / {% endif -%}
+<span class="{{ class }}">{{ item[0].name }} &ndash; {{ item[0].next_valuta|currencyformat('EUR') }}</span> {% if not loop.last %} / {% endif -%}
 {%- endfor -%}
 {%- endmacro %}
 
