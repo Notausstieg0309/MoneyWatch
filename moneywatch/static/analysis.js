@@ -315,6 +315,7 @@ function criteriaChangedHandler() {
     var selected_rule_el = $("ul.criteria-container select#rule option:checked:not([disabled])");
 
     var selected_category_el = $("ul.criteria-container select#category option:checked:not([disabled])");
+    var selected_category_val = $("ul.criteria-container select#category").val();
 
     // when type is selected, show account dropdown and subtype radio buttons (for type "in" / "out")
     if(selected_type_el.length) {

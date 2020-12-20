@@ -52,22 +52,21 @@
 
 
 {% macro transaction_row(row_class,transaction) -%}
-    {%- set name -%}
+    {%- set name %}
         <span data-details-url="{{ url_for('transactions.transaction_details_single', id=transaction.id) }}" class="description">
-          {% if timing["interval"] > 1 %}
-            {{ transaction.date | dateformat(_("yyyy-MM-dd")) }} &ndash;
-          {% endif %}
-          {% if timing["interval"] == 1 %}
-            {{ transaction.date | dateformat(_("MM-dd")) }} &ndash;
-          {% endif -%}
-          {{ transaction.description }}
+          {% if timing["interval"] > 1 -%}
+            {{ transaction.date | dateformat(_("yyyy-MM-dd")) }}
+          {%- else -%}
+            {{ transaction.date | dateformat(_("MM-dd")) }}
+          {%- endif -%}
+          {{' '}}&ndash; {{ transaction.description }}
         </span>
-        {% if transaction.rule_id is not none and transaction.rule.regular %}
-         <i data-chart-data-url="{{ url_for('ajax.transaction_chart_data', transaction_id=transaction.id) }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">
+        {% if transaction.rule_id is not none and transaction.rule.regular -%}
+        <i data-chart-data-url="{{ url_for('ajax.transaction_chart_data', transaction_id=transaction.id) }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">
            show_chart
-         </i>
-        {% endif %}
-        {% if transaction.is_editable %}
+        </i>
+        {%- endif -%}
+        {% if transaction.is_editable -%}
         <span class='edit' style="display:none;">
           <a class="tooltipped" href="{{ url_for('transactions.edit', id=transaction.id) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}">
             <i class='tiny material-icons'>edit</i>
