@@ -668,21 +668,10 @@ div.categories div.category  i.material-icons {
 
 */
 
-table.transactions.imports td.short_description {
-    font-weight: unset;
+div.item_container.transaction.incomplete {
+    box-shadow: 0 0 5px 5px #ffd649;
 }
 
-table.transactions.imports td.valuta .trend {
-    font-weight: initial;
-}
-
-li.collection-item.complete {
-    background: #d5ffd5;
-}
-
-td.short_description input {
-    font-weight: bold;
-}
 
 div.unknown_account {
     line-height: 2.rem;
