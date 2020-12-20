@@ -47,10 +47,10 @@ function createTable(res) {
 
         var new_tr_el = $(tr_template);
 
-        new_tr_el.find(".label-value").html(item.label);
-        new_tr_el.find(".valuta-value").html(item.valuta_formatted);
+        new_tr_el.find(".label-value").text(item.label);
+        new_tr_el.find(".valuta-value").text(item.valuta_formatted);
         new_tr_el.find(".valuta-value.num").data("num", item.valuta);
-        new_tr_el.find(".count-value").html(item.count);
+        new_tr_el.find(".count-value").text(item.count);
 
         if("overview_link" in item) {
             new_tr_el.find(".table-link-overview").data("link", item.overview_link).addClass("table-link");
@@ -65,7 +65,7 @@ function createTable(res) {
 
     var sum_tr_el = table_el.find("tr.sum");
 
-    sum_tr_el.find(".sum-value").html(res.sum > 0 ? "+" + res.sum_formatted : res.sum_formatted);
+    sum_tr_el.find(".sum-value").text(res.sum > 0 ? "+" + res.sum_formatted : res.sum_formatted);
     sum_tr_el.find(".sum-value.num").data("num", res.sum);
 
     // reformat the inserted numeric values
@@ -464,7 +464,7 @@ function showRuleSelect(account_id, type) {
                     new_el.data("start", item.start);
                     new_el.data("end", item.end);
                   }
-                  new_el.html(item.name);
+                  new_el.text(item.name);
 
                   select_el.append(new_el);
                });
@@ -511,7 +511,7 @@ function showCategorySelect(account_id, type) {
                   var new_el = $("<option></option>");
 
                   new_el.attr("value", item.id);
-                  new_el.html(item.path);
+                  new_el.text(item.path);
 
                   select_el.append(new_el);
                });
