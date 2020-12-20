@@ -397,16 +397,16 @@ function criteriaChangedHandler() {
                 $("ul.criteria-container > li#rule").slideUp();
                 $("ul.criteria-container > li#category").slideUp();
             } else {
-              $("ul.criteria-container > li#rule").slideUp();
-              $("ul.criteria-container > li#category").slideUp();
+                $("ul.criteria-container > li#rule").slideUp();
+                $("ul.criteria-container > li#category").slideUp();
             }
         } else {
-          $("ul.criteria-container > li#rule").slideUp();
-          $("ul.criteria-container > li#category").slideUp();
+            $("ul.criteria-container > li#rule").slideUp();
+            $("ul.criteria-container > li#category").slideUp();
         }
     } else {
-         $("ul.criteria-container > li#rule").slideUp();
-         $("ul.criteria-container > li#category").slideUp();
+        $("ul.criteria-container > li#rule").slideUp();
+        $("ul.criteria-container > li#category").slideUp();
     }
 
 
@@ -423,7 +423,7 @@ function criteriaChangedHandler() {
     if(createRequestDataObject() !== undefined) {
         $("ul.criteria-container button#submit").removeClass("disabled");
     } else {
-       $("ul.criteria-container button#submit").addClass("disabled");
+        $("ul.criteria-container button#submit").addClass("disabled");
     }
 
 }
