@@ -580,7 +580,11 @@ class Rule(db.Model):
 
 
     def match_transaction(self, transaction):
-        if re.search(self.pattern, transaction.full_text, re.IGNORECASE):
+        pattern = self.pattern.strip()
+
+        pattern = pattern.replace(" ", r'\s+')
+
+        if re.search(pattern, transaction.full_text, re.IGNORECASE):
             return True
         else:
             return False
