@@ -560,6 +560,7 @@ div.item_container div.full_text {
     border-top: 1px dotted #bbb ;
     color: rgb(58, 58, 58);
     padding: 5px;
+    white-space: pre-wrap;
 }
 
 div.item_container.message div.full_text {
