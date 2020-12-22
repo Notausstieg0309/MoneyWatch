@@ -584,6 +584,8 @@ class Rule(db.Model):
 
         pattern = pattern.replace(" ", r'\s+')
 
+        pattern = r'(?:^\s*|\s+)' + pattern + r'(?:\s+|\s*$)'
+
         if re.search(pattern, transaction.full_text, re.IGNORECASE):
             return True
         else:
