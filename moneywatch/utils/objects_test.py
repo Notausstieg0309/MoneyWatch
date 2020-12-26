@@ -286,6 +286,20 @@ def test_account_transactions(db_filled):
     assert len(transactions) == 3
     assert all(isinstance(el, Transaction) for el in transactions)
 
+    transactions = account.transactions(start + timedelta(days=20))
+
+    assert len(transactions) > 0
+    assert all(isinstance(el, Transaction) for el in transactions)
+    assert transactions[0].id == 5
+    assert transactions[-1].id == 6
+
+    transactions = account.transactions(None, today - timedelta(days=20))
+
+    assert len(transactions) > 0
+    assert all(isinstance(el, Transaction) for el in transactions)
+    assert transactions[0].id == 4
+    assert transactions[-1].id == 2
+
 
 def test_account_search_transactions(db_filled):
     account = Account.query.filter_by(id=1).one()
@@ -317,6 +331,25 @@ def test_account_transactions_by_type_out(db_filled):
 
     assert result == expected
 
+    transactions = account.transactions_by_type("out", start + timedelta(days=20))
+
+    assert len(transactions) == 1
+    assert all(isinstance(el, Transaction) for el in transactions)
+    assert transactions[0].id == 5
+
+    transactions = account.transactions_by_type("out", None, today - timedelta(days=20))
+
+    assert len(transactions) > 0
+    assert all(isinstance(el, Transaction) for el in transactions)
+    assert transactions[0].id == 4
+    assert transactions[-1].id == 5
+
+    transactions = account.transactions_by_type("out", start + timedelta(days=15), today - timedelta(days=20))
+
+    assert len(transactions) == 1
+    assert all(isinstance(el, Transaction) for el in transactions)
+    assert transactions[0].id == 5
+
 
 def test_account_transactions_by_type_message(db_filled):
     account = Account.query.filter_by(id=1).one()
@@ -333,6 +366,14 @@ def test_account_creation_primary_key(db):
     db.session.add(item)
     db.session.commit()
     assert item.id is not None
+
+
+def test_account_empty(db):
+    item = Account(name="test", balance=0, iban="DE71003002001232345678")
+
+    assert item.latest_transaction is None
+    assert item.oldest_transaction is None
+    assert item.last_update is None
 
 
 #     _____      _
