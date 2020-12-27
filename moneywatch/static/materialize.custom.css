@@ -224,14 +224,20 @@ div.overview div.col.num {
 }
 
 /* style highlighted items */
-div.overview .highlighted {
+div.overview .transaction.highlighted {
     text-shadow: 0px 0px 6px  rgb(255, 255, 0);
     font-weight:  600;
 }
 
-div.overview .highlighted .description {
+div.overview .transaction.highlighted .description {
     color: #c54c14;
 }
+
+/* highlighted category container */
+div.overview div.category_container.highlighted {
+    box-shadow: 0 0 3px 3px #ffe249
+}
+
 
 div.overview div.caption > div.name {
     font-size: 1.3em;

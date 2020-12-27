@@ -111,6 +111,10 @@ $(function() {
         }
     });
 
+    // overview: highlight category container for highlighted transactions as well
+    $('div.category_container .category_content .highlighted').each(function() {
+       $(this).closest(".category_container").addClass("highlighted");
+    });
 
     // overview: enable collapse functionality of category container
     $('div.category_container:not(.overview)').each(function () {
