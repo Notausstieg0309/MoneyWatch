@@ -789,6 +789,7 @@ li.criteria#timing tr {
 /* format links in analysis table view */
 .analysis-table .table-link {
     cursor: pointer;
+    color: black;
 }
 
 .analysis-table .table-link:hover {

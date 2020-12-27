@@ -53,7 +53,14 @@ function createTable(res) {
         new_tr_el.find(".count-value").text(item.count);
 
         if("overview_link" in item) {
-            new_tr_el.find(".table-link-overview").data("link", item.overview_link).addClass("table-link");
+
+            var new_link = $('<a>',{
+                href: item.overview_link,
+                target: "_blank",
+                class: "table-link"
+            })
+
+            new_tr_el.find(".table-link-overview").wrapInner(new_link);
         }
 
         if("transaction_details_link" in item) {
