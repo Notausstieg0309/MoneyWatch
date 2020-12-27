@@ -566,6 +566,7 @@ $(function () {
 
                 if(res.data.length == 1) {
                     $("ul.analysis-tabs").tabs("select", "table");
+                    $("ul.analysis-tabs li.chart").addClass("disabled");
                     $("div.table-container").slideDown()
                     $("canvas.chart-container").show()
                 } else {
