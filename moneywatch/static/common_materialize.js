@@ -214,6 +214,20 @@ $(function() {
             });
         });
     });
+
+    // ruleset: enable check button, if "check historical transactions" is active
+    $("input[name='check_historical']").change(function() {
+        var checked = $(this).prop('checked');
+
+        $("button.btn[value='check']").prop("disabled", !checked);
+        $("button.btn.inital[value='save']").prop("disabled", checked);
+
+        if(checked) {
+            $("div.matched_transactions").slideDown();
+        } else {
+            $("div.matched_transactions").slideUp();
+        }
+    });
 });
 
 
