@@ -54,6 +54,8 @@ def parse_csv(stream, name):
 
             result.append(result_item)
 
+    result.reverse()
+
     return result
 
 
