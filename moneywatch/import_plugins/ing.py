@@ -8,24 +8,26 @@ def parse_csv(stream, name):
     # go back to begin of file
     stream.seek(0)
 
-    type = get_csv_type(stream)
+    csv_type = get_csv_type(stream)
 
-    items = []
+    account = None
 
-    # extract IBAN from 4th row second column
-    account = normalize_iban(re.split('"?;"?', lines[3])[1])
+    for item in lines:
+        if item.startswith("IBAN;"):
+            account = normalize_iban(re.split('"?;"?',item)[1])
+            break
 
-    if type == "without_saldo":
-        items = lines[14:]
-    elif type == "with_saldo":
-        items = lines[15:]
-
+    parsing = False
 
     result = []
 
-    for item in items:
+    for item in lines:
+        if not parsing:
+            if item.startswith("Buchung;Valuta"):
+                parsing = True
+                continue
 
-        if item.strip():
+        if parsing and item.strip():
             result_item = {}
 
             columns = re.split('"?;"?', item)
@@ -34,11 +36,10 @@ def parse_csv(stream, name):
             full_text = columns[2] + " " + columns[3] + " " + columns[4]
             valuta = ""
 
-            if type == "without_saldo":
+            if csv_type == "without_saldo":
                 valuta = columns[5]
-            elif type == "with_saldo":
+            elif csv_type == "with_saldo":
                 valuta = columns[7]
-
 
             if re.match(r"^\d\d\.\d\d\.\d\d\d\d$", date):  # german format
                 result_item['date'] = get_date_from_string(columns[0], '%d.%m.%Y')
@@ -47,7 +48,9 @@ def parse_csv(stream, name):
 
             result_item['full_text'] = full_text.strip()
             result_item['valuta'] = float(valuta.replace(",", "."))
-            result_item['account'] = account
+
+            if account:
+                result_item['account'] = account
 
             result.append(result_item)
 
@@ -60,19 +63,14 @@ def get_csv_type(stream):
 
     items = content.split("\n")
 
-    try:
-        if items[3].startswith("IBAN;"):
 
-            if not is_valid_iban(re.split('"?;"?', items[3])[1]):
-                return None
+    for item in items:
 
-            if items[13].startswith("Buchung;Valuta;Auftraggeber"):
-                return "without_saldo"
-            elif items[14].startswith("Buchung;Valuta;Auftraggeber"):
-                return "with_saldo"
+        if item.startswith("Saldo;"):
+            return "with_saldo"
 
-    except IndexError:
-        pass
+        if item.startswith("Buchung;Valuta;Auftraggeber"):
+            return "without_saldo"
 
     return None
 
