@@ -130,10 +130,7 @@ class ImportPluginsManager(PluginManager):
             else:
                 raise NoParseFunctionException(gettext("The plugin %s has no parse_function implemented or registered").format(plugin))
 
-        result.sort(key=lambda x: x["date"])
-
-        # reverse the list after sort to keep a stable order
-        result.reverse()
+        result.sort(key=lambda x: x["date"], reverse=True)
 
         return result
 
