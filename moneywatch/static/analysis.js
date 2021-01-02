@@ -320,9 +320,7 @@ function criteriaChangedHandler() {
     var selected_account_el = $("ul.criteria-container select#account option:checked:not([disabled])");
 
     var selected_rule_el = $("ul.criteria-container select#rule option:checked:not([disabled])");
-
     var selected_category_el = $("ul.criteria-container select#category option:checked:not([disabled])");
-    var selected_category_val = $("ul.criteria-container select#category").val();
 
     // when type is selected, show account dropdown and subtype radio buttons (for type "in" / "out")
     if(selected_type_el.length) {
@@ -364,7 +362,9 @@ function criteriaChangedHandler() {
             if(selected_subtype_el.is("#rule")) {
                 // hide category selection and show the rule selection
                 $("ul.criteria-container > li#category").slideUp();
-                showRuleSelect(selected_account_el.attr("value"), selected_type_el.attr("value"));
+
+                var type = selected_type_el.attr("value");
+                showRuleSelect(selected_account_el.attr("value"), type, selected_account_el.data("rules-" + type + "-url"));
 
                 if(selected_rule_el.length) {
                     var start = new Date(account_start);
@@ -394,7 +394,9 @@ function criteriaChangedHandler() {
             } else if(selected_subtype_el.is("#category")) {
                 // hide rule selection and show the category selection
                 $("ul.criteria-container > li#rule").slideUp();
-                showCategorySelect(selected_account_el.attr("value"), selected_type_el.attr("value"));
+
+                var type = selected_type_el.attr("value");
+                showCategorySelect(selected_account_el.attr("value"), type, selected_account_el.data("categories-" + type + "-url"));
 
                 if(selected_category_el.length) {
                     setTimerangeControlsAndShow(account_start, account_end);
@@ -437,7 +439,7 @@ function criteriaChangedHandler() {
 }
 
 // generate the rule select dropdown menu by request the data via AJAX
-function showRuleSelect(account_id, type) {
+function showRuleSelect(account_id, type, json_url) {
 
     var select_el = $("ul.criteria-container > li#rule select#rule");
     var select_container = select_el.parents(".input-field");
@@ -448,13 +450,12 @@ function showRuleSelect(account_id, type) {
     var current_type = select_el.data("type");
 
     if(current_account_id != account_id || current_type != type) {
-
         spinner_el.show()
         select_container.hide();
 
         $("ul.criteria-container > li#rule").slideDown();
 
-        $.getJSON($SCRIPT_ROOT + "/analysis/rules/" + account_id + "/" + type + "/", function (data, textStatus) {
+        $.getJSON(json_url, function (data, textStatus) {
 
            if(Array.isArray(data)) {
                  select_el.children("option:not(:first)").remove();
@@ -492,7 +493,7 @@ function showRuleSelect(account_id, type) {
 
 
 // generate the category select dropdown menu by request the data via AJAX
-function showCategorySelect(account_id, type) {
+function showCategorySelect(account_id, type, json_url) {
 
     var select_el = $("ul.criteria-container > li#category select#category");
     var select_container = select_el.parents(".input-field");
@@ -509,7 +510,7 @@ function showCategorySelect(account_id, type) {
 
         $("ul.criteria-container > li#category").slideDown();
 
-        $.getJSON($SCRIPT_ROOT + "/analysis/categories/" + account_id + "/" + type + "/", function (data, textStatus) {
+        $.getJSON(json_url, function (data, textStatus) {
 
            if(Array.isArray(data)) {
                 select_el.children("option:not(:first)").remove();

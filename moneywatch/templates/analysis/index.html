@@ -5,6 +5,14 @@
 {% endblock %}
 
 
+{% macro account_json_urls(account_id) -%}
+  {% for item in ["categories","rules"] -%}
+    {% for trans_type in ["in","out"] -%}
+      {{' '}}data-{{ item }}-{{ trans_type }}-url="{{ url_for('analysis.json_' + item, account_id=account_id, trans_type=trans_type) }}"
+    {%- endfor %}
+  {%- endfor %}
+{% endmacro %}
+
 {% block content %}
 
 
@@ -95,9 +103,9 @@
             <select id="account">
               <option disabled{% if account_list|length > 1 %} selected{% endif %}>{% trans %}Please select...{% endtrans %}</option>
               <option class="all_accounts" data-start="{{ oldest }}" data-end="{{ newest }}" value="ALL">{% trans %}[All Accounts]{% endtrans %}</option>
-              {% for account in account_list %}
-              <option value="{{ account['id'] }}" data-start="{{ account['start'] }}" data-end="{{ account['end'] }}"{% if account_list|length == 1 %} selected{% endif %}>{{ account['name'] }}</option>
-              {% endfor %}
+              {%- for account in account_list %}
+              <option value="{{ account['id'] }}" {{ account_json_urls(account.id) }} data-start="{{ account['start'] }}" data-end="{{ account['end'] }}"{% if account_list|length == 1 %} selected{% endif %}>{{ account['name'] }}</option>
+              {%- endfor %}
             </select>
             <label>{% trans %}Account{% endtrans %}</label>
           </div>
