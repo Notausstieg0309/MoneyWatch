@@ -66,13 +66,13 @@ def getProfit(account_id, start, end, interval):
     if account_id == "ALL":
         accounts = Account.query.all()
         for account in accounts:
-            transactions.extend(account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month)))
+            transactions.extend(account.transactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end)))
 
         # transactions are not in the correct date order as the transaction list is extended per account with the given timerange, we need to sort everything correctly
         transactions.sort(key=lambda x: x.date)
     else:
         account = Account.query.filter_by(id=account_id).one()
-        transactions = account.transactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
+        transactions = account.transactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
 
     transactions = filter(lambda x: x.type != "message", transactions)
 
@@ -132,7 +132,7 @@ def getSumByType(account_id, start, end, interval, trans_type):
 
     if account:
 
-        transactions = account.transactions_by_type(trans_type, utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
+        transactions = account.transactions_by_type(trans_type, utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
 
         result.update(createResultForTransactions(interval, transactions))
 
@@ -145,7 +145,7 @@ def getSumByRule(start, end, interval, rule_id):
 
     rule = Rule.query.filter_by(id=rule_id).one()
 
-    transactions = rule.getTransactions(utils.get_first_day_of_month(start.year, start.month), utils.get_last_day_of_month(end.year, end.month))
+    transactions = rule.getTransactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
 
     result.update(createResultForTransactions(interval, transactions, highlight_links=True))
 
