@@ -21,28 +21,30 @@ def get_half_year_from_date(date):
     return (date.month - 1) // 6 + 1
 
 
-def get_first_day_of_month(year=None, month=None):
+def get_first_day_of_month(year=None, month=None, date=None):
 
     date_today = datetime.date.today()
-    date_month = date_today.month
-    date_year = date_today.year
 
-    if month:
-        date_month = month
-    if year:
-        date_year = year
+    if date is not None and isinstance(date, datetime.date):
+        date_month = date.month
+        date_year = date.year
+    else:
+        date_year = year if year is not None else date_today.year
+        date_month = month if month is not None else date_today.month
 
-    date_first = datetime.date(date_year, date_month, 1)
-
-    return date_first
+    return datetime.date(date_year, date_month, 1)
 
 
-def get_last_day_of_month(year=None, month=None):
+def get_last_day_of_month(year=None, month=None, date=None):
 
     date_first = get_first_day_of_month()
 
-    date_year = year if year is not None else date_first.year
-    date_month = month if month is not None else date_first.month
+    if date is not None and isinstance(date, datetime.date):
+        date_month = date.month
+        date_year = date.year
+    else:
+        date_year = year if year is not None else date_first.year
+        date_month = month if month is not None else date_first.month
 
     return datetime.date(date_year + date_month // 12, date_month % 12 + 1, 1) - datetime.timedelta(days=1)
 
