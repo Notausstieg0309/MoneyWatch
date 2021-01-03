@@ -514,7 +514,8 @@ class Rule(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_rules_account"), server_default="1", nullable=False)
     account = db.relationship("Account")
 
-    def getTransactions(self, start=None, end=None, limit=None, reversed=False):
+
+    def getTransactions(self, start=None, end=None):
 
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
 
@@ -526,20 +527,10 @@ class Rule(db.Model):
         elif end is not None:
             result = result.filter(Transaction.date <= end)
 
-        if reversed:
-            result = result.order_by(Transaction.date.desc(), Transaction.id.desc())
-        else:
-            result = result.order_by(Transaction.date.asc(), Transaction.id.asc())
-
-        if limit is not None:
-            result = result.limit(limit)
-
-        if reversed:
-            result = result.all()
-            result.reverse()
-            return result
+        result = result.order_by(Transaction.date.asc(), Transaction.id.asc())
 
         return result.all()
+
 
     def latest_transaction(self, before=None):
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
@@ -548,6 +539,7 @@ class Rule(db.Model):
             result = result.filter(Transaction.date <= before)
 
         return result.order_by(Transaction.date.desc(), Transaction.id.desc()).first()
+
 
     @property
     def oldest_transaction(self):
