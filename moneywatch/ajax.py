@@ -1,11 +1,8 @@
-from flask import (Blueprint, jsonify, url_for)
-from flask_babel import format_currency
-import moneywatch.utils.functions as utils
+from flask import (Blueprint, jsonify)
+
 from moneywatch.analysis import createResultForTransactions
-
-from .utils.objects import Transaction
-
-from datetime import timedelta
+from moneywatch.utils.objects import Transaction
+from moneywatch.utils.functions import add_months, substract_months, get_first_day_of_month, get_last_day_of_month
 
 bp = Blueprint('ajax', __name__)
 
@@ -25,13 +22,19 @@ def transaction_chart_data(transaction_id):
 
     transaction_date = initial_transaction.date
 
-    transactions_after = rule.getTransactions(transaction_date + timedelta(days=1), None, 12)
-    transactions_before = rule.getTransactions(None, transaction_date - timedelta(days=1), 12, True)
+    if not rule.regular:
+        return jsonify(None), 404
 
-    transactions = []
-    transactions.extend(transactions_before)
-    transactions.append(initial_transaction)
-    transactions.extend(transactions_after)
+    if rule.regular == 1:
+        months = 12
+    elif rule.regular > 1 and rule.regular < 12:
+        months = 24
+    elif rule.regular == 12:
+        months = 48
+    else:
+        months = 12
+
+    transactions = rule.getTransactions(get_first_day_of_month(date=substract_months(transaction_date, months)), get_last_day_of_month(date=add_months(transaction_date, months)))
 
     result = {
         "type": initial_transaction.type,
