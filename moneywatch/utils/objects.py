@@ -381,6 +381,24 @@ class Category(db.Model):
         # ordering should be made by the calling function to avoid recursive sorting
         return self._cache["transactions_with_childs"]
 
+
+    @property
+    def transactions_combined(self):
+
+        if "transactions_combined" not in self._cache:
+
+            result = []
+
+            result.extend(self.transactions)
+            result.extend(self.planned_transactions)
+
+            result.sort(key=lambda item: item.date)
+
+            self._cache["transactions_combined"] = result
+
+        return self._cache["transactions_combined"]
+
+
     def getCategoryPath(self, delimiter):
 
         if self.parent_id is not None:

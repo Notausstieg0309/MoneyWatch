@@ -127,13 +127,14 @@
     {%- if category.childs|length > 0 or category.transactions|length > 0 or category.planned_transactions|length > 0 %}
     <div class="category_content">
         {{loop(category.childs) }}
-        {%- for transaction in category.transactions -%}
-          {{ transaction_row("transaction", transaction) }}
-        {%- endfor -%}
-
-        {%- for transaction in category.planned_transactions -%}
-            {{ planned_transaction_row("planned_transaction",transaction) }}
+        {% for item in category.transactions_combined -%}
+          {%- if item.__class__.__name__ == "Transaction" -%}
+            {{ transaction_row("transaction", item) }}
+          {%- elif item.__class__.__name__ == "PlannedTransaction" -%}
+            {{ planned_transaction_row("planned_transaction",item) }}
+          {%- endif %}
         {%- endfor %}
+
     </div>
     {% else %}
     <div class="category_content no_transactions">{% trans %}No transactions available{% endtrans %}</div>
