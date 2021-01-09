@@ -1,14 +1,5 @@
 
-// materialize: initialize JS addons
-$(document).ready(function(){
-    M.AutoInit();
-
-    // custom initialization of tooltips due to specific options for tooltip appearance
-    var elems = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems, {"enterDelay": 500});
-
-});
-
+var tooltip_options = {"enterDelay": 300};
 
 function formatNumberEl(el) {
     item = $(el);
@@ -69,10 +60,16 @@ function checkTransactionsImport() {
 
 $(function() {
 
+    // initialize materialize
+    M.AutoInit();
+
     // general: initialize dropdown menus
     $('.dropdown-trigger').dropdown({
         coverTrigger: false
     });
+
+    // general: initialize tooltips
+    $(".tooltipped").tooltip(tooltip_options);
 
     // general: initialize dropdown menus with special for nav menu dropdown
     $('.dropdown-trigger-hover').dropdown({
