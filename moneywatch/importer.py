@@ -108,7 +108,6 @@ def index():
 @bp.errorhandler(MultipleRuleMatchError)
 def handle_multiple_rule_match(error):
 
-    current_app.logger.debug("exception: %s", error)
     session["multiple_rule_match"] = error.index
 
     if error.transaction.valuta < 0:
