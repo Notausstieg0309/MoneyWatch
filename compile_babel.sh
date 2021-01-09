@@ -1,4 +1,10 @@
 #!/bin/sh
 
-cd $(dirname $0)/moneywatch
-pybabel compile -d translations
+WD=$(dirname $0)
+
+echo "-> enable virtual environment"
+. $WD/venv/bin/activate
+
+WD="$WD/moneywatch"
+
+(cd $WD; pybabel compile -d translations)
