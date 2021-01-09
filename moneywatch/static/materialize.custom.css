@@ -456,6 +456,7 @@ div.item_container {
     position:relative;
     border-radius: 5px;
     margin:20px;
+    transition: box-shadow 0.5s;
 
 }
 

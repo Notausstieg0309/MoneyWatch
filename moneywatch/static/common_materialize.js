@@ -32,6 +32,41 @@ function copyToClipboard(value) {
     $temp.remove();
 }
 
+// importer: check if all transactions are complete and ready for saving
+function checkTransactionsImport() {
+    var complete = true;
+
+    $("form#import_check .item_container").each(function () {
+        var item = $(this);
+        if(item.hasClass("in") || item.hasClass("out")) {
+            var text = $(item).find("input[name='description']").val();
+            var category = $(item).find("select[name='category'] option:checked:not([disabled])").val();
+            if(text && category) {
+                item.removeClass("incomplete");
+                item.addClass("complete");
+            } else {
+                item.removeClass("complete");
+                item.addClass("incomplete");
+                complete = false;
+            }
+        }
+        else if(item.hasClass("message")) {
+            var noted = $(item).find("input[name='noted']").is(":checked");
+            console.log(item, noted);
+            if(noted) {
+                item.removeClass("incomplete");
+                item.addClass("complete");
+            } else {
+                item.removeClass("complete");
+                item.addClass("incomplete");
+                complete = false;
+            }
+        }
+    });
+
+    $("form#import_check button[type='submit']").prop("disabled", !complete);
+}
+
 $(function() {
 
     // general: initialize dropdown menus
@@ -213,6 +248,16 @@ $(function() {
                 item.attr("name", index + "_" + item.attr("name"));
             });
         });
+    });
+
+    // importer: check transaction items (in/out) for completeness
+    $("form#import_check .item_container").on("change", "select,input[type='checkbox']", function(event) {
+        checkTransactionsImport();
+    });
+
+    // importer: check transaction items (in/out) for completeness
+    $("form#import_check .item_container").on("input", "input[type='text']", function(event) {
+        checkTransactionsImport();
     });
 
     // ruleset: enable check button, if "check historical transactions" is active

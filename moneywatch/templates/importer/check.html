@@ -60,16 +60,13 @@
 
 {% if data %}
 <form method="post" id="import_check">
-<button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
-<button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
-
+  <button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
 {% for transaction in data %}
 {{ item(transaction, loop.index0) }}
 {% endfor %}
 
 {% if data|length > 3 %}
-<button class="btn-small" name="action" value="check" type="submit">{% trans %}Check again{% endtrans %}</button>
-<button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
+  <button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
 {% endif %}
 </form>
 {% else %}
