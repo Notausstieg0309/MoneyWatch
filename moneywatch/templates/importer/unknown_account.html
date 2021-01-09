@@ -22,7 +22,7 @@
     <div class="description">
 
     </div>
-    {% if transaction.value != 0 %}
+    {% if transaction_type != "message" %}
     <span class="valuta_box {{ transaction_type }}">
       <span class="valuta num" data-num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</span>
     </span>
