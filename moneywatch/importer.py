@@ -41,11 +41,6 @@ def index():
                         session['import_items'] = items
                         session['import_plugin_description'] = available_plugins[0]["description"] or gettext('Import plugin file "%(name)s"', name=available_plugins[0]["_filename"])
 
-                        try:
-                            session['import_objects'] = create_transactions_from_import(items)
-                        except UnknownAccountError as e:
-                            raise UnknownAccountError(iban=e.iban, item=e.item, plugin_description=session['import_plugin_description'])
-
                     else:
                         raise MultiplePluginMatchError(request.files['file'], available_plugins)
 
@@ -54,7 +49,7 @@ def index():
 
 
 
-            if "import_items" in session and "import_objects" not in session:
+            if "import_items" in session:
 
                 # apply rule id for transactions that raised an MultipleRuleMatchError exception
                 if "multiple_rule_match" in session:
@@ -79,14 +74,10 @@ def index():
 
                 session.modified = True
 
-            elif "import_objects" in session:
-                apply_import_edits(session['import_objects'], request.form)
-                session.modified = True
+
 
             if request.form.get('action', None) == "save":
-
-                # reverse transaction list to get oldest transaction first instead of newest transaction first
-                session['import_objects'].reverse()
+                apply_import_edits(session['import_objects'], request.form)
 
                 account_ids = []
 
@@ -94,8 +85,6 @@ def index():
 
                     if transaction.account_id not in account_ids:
                         account_ids.append(transaction.account_id)
-
-                    db.session.add(transaction)
 
                 db.session.commit()
 
@@ -119,7 +108,8 @@ def index():
 @bp.errorhandler(MultipleRuleMatchError)
 def handle_multiple_rule_match(error):
 
-    session["multiple_rule_match"] = error.transaction.id
+    current_app.logger.debug("exception: %s", error)
+    session["multiple_rule_match"] = error.index
 
     if error.transaction.valuta < 0:
         categories = get_categories()[error.transaction.account_id]["out"]
@@ -174,51 +164,57 @@ def create_transactions_from_import(items, check_all=False):
     item_ids_iban_missing = []
 
     for item in items:
-        try:
-            if "account" in item:
 
-                if not item["account"] in accounts:
-                    iban = utils.normalize_iban(item["account"])
-                    account = Account.query.filter_by(iban=iban).one_or_none()
-                    if account is not None:
-                        accounts[item["account"]] = account.id
-                    else:
-                        raise UnknownAccountError(iban, item)
+        if "account" in item:
 
-                item["account_id"] = accounts[item["account"]]
-                item.pop("account", None)
+            if not item["account"] in accounts:
+                iban = utils.normalize_iban(item["account"])
+                account = Account.query.filter_by(iban=iban).one_or_none()
+                if account is not None:
+                    accounts[item["account"]] = account.id
+                else:
+                    raise UnknownAccountError(iban, item)
 
-            trans = Transaction(**item)
-            exist = trans.exist
+            item["account_id"] = accounts[item["account"]]
+            item.pop("account", None)
 
-            # if a transaction of the given file already exists, save the account_id to use it for items, that don't have a account iban provided by the import plugin.
-            if latest_transaction_account_id is None and "account" not in item and exist:
-                latest_transaction_account_id = trans.account_id
+        trans = Transaction(**item)
+        exist = trans.exist
 
-            if exist and not check_all:
-                break
+        # if a transaction of the given file already exists, save the account_id to use it for items, that don't have a account iban provided by the import plugin.
+        if latest_transaction_account_id is None and "account" not in item and exist:
+            latest_transaction_account_id = trans.account_id
 
-            if exist and check_all:
-                continue
+        if exist and not check_all:
+            break
 
-            if trans.account_id:
-                trans.check_rule_matching()
-            else:
-                item_ids_iban_missing.append(items.index(item))
+        if exist and check_all:
+            continue
 
-            result.append(trans)
-        except MultipleRuleMatchError as e:
-            raise MultipleRuleMatchError(e.transaction, e.rules, items.index(item))
+        if not trans.account_id:
+            item_ids_iban_missing.append(items.index(item))
 
-    if latest_transaction_account_id is not None:
-        for item in result:
-            if item.account_id is None:
-                item.account_id = latest_transaction_account_id
-                item.check_rule_matching()
+        result.append(trans)
 
-    elif len(item_ids_iban_missing) > 0:
+
+    if latest_transaction_account_id is None and len(item_ids_iban_missing) > 0:
         raise ItemsWithoutAccountError(item_ids_iban_missing)
 
+    # reverse transaction list to get correct ID order while adding (oldest transaction first instead of newest transaction first)
+    # and correct trend calculation based on the previous transaction (within session or already stored in database)
+    for item in reversed(result):
+        if latest_transaction_account_id is not None and item.account_id is None:
+            item.account_id = latest_transaction_account_id
+
+        db.session.add(item)
+
+        try:
+            # perform rule matching after adding item to session,
+            # so trend calculation is considering previous added
+            # items in pending DB session not yet stored
+            item.check_rule_matching()
+        except MultipleRuleMatchError as e:
+            raise MultipleRuleMatchError(e.transaction, e.rules, result.index(item))
     return result
 
 

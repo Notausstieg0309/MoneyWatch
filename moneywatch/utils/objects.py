@@ -550,11 +550,11 @@ class Rule(db.Model):
         return result.all()
 
 
-    def latest_transaction(self, before=None):
+    def latest_transaction(self, before_id=None):
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
 
-        if before is not None:
-            result = result.filter(Transaction.date <= before)
+        if before_id is not None:
+            result = result.filter(Transaction.id < before_id)
 
         return result.order_by(Transaction.date.desc(), Transaction.id.desc()).first()
 
@@ -569,16 +569,13 @@ class Rule(db.Model):
     def update_next_due(self, date, valuta):
 
         if self.regular:
-            latest_transaction = self.latest_transaction()
 
-            if latest_transaction is None or (latest_transaction is not None and latest_transaction.date < date):
+            next_due = utils.add_months(date, self.regular)
 
-                next_due = utils.add_months(date, self.regular)
+            current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%.2f'", self.name, self.id, next_due, valuta)
 
-                current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%s'", self.name, self.id, next_due, valuta)
-
-                self.next_valuta = abs(valuta)
-                self.next_due = next_due
+            self.next_valuta = abs(valuta)
+            self.next_due = next_due
 
 
     def assign_transaction_ids(self, ids):
@@ -619,7 +616,7 @@ class Transaction(db.Model):
 
     date = db.Column(db.Date, unique=False, nullable=False, index=True)
     valuta = db.Column(db.Float, unique=False, nullable=False)
-    description = db.Column(db.String(100), unique=False, nullable=False)
+    description = db.Column(db.String(100), unique=False, nullable=True)
     full_text = db.Column(db.String(100), unique=False, nullable=False)
 
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True, index=True)
@@ -658,8 +655,8 @@ class Transaction(db.Model):
         return False
 
     def check_rule_matching(self):
-
-        if self.type != "message" and self.rule_id is None and self.id is None:
+        # if no rule is given (from multiple rule match form), check ruleset...
+        if self.type != "message" and self.rule_id is None:
 
             founded_rules = []
 
@@ -683,19 +680,25 @@ class Transaction(db.Model):
                 if self.category_id is None:
                     self.category_id = founded_rules[0].category_id
 
-                # calculate trend compared to the latest transaction in the database
-                if founded_rules[0].regular:
+        # rule is set (manual by multiple rule match form or found by ruleset search)
+        if self.rule_id is not None:
+            rule = Rule.query.filter_by(id=self.rule_id).one()
 
-                    latest_transaction = founded_rules[0].latest_transaction(self.date)
+            # update rule next due
+            rule.update_next_due(self.date, self.valuta)
 
-                    if latest_transaction is not None:
-                        trend = round(self.valuta - latest_transaction.valuta, 2)
-                        self.trend = trend if trend != 0 else None
-                        if self.trend is not None:
-                            current_app.logger.debug("calculated trend '%s' for transaction '%s' (%s) from %s", self.trend, self.description, self.valuta, self.date)
+            # calculate trend compared to the latest transaction in the database
+            if rule.regular:
 
+                latest_transaction = rule.latest_transaction(self.id)
 
-        # if multiple match occurs and user selects "None" (value: False)
+                if latest_transaction is not None:
+                    trend = round(self.valuta - latest_transaction.valuta, 2)
+                    self.trend = trend if trend != 0 else None
+                    if self.trend is not None:
+                        current_app.logger.debug("calculated trend '%.2f' for transaction '%s' (%s) from %s based on last transaction from %s (%.2f)", self.trend, self.description, self.valuta, self.date, latest_transaction.date, latest_transaction.valuta)
+
+        # if multiple rule match was happened and user selected "None" (value: False)
         if self.rule_id is False:
             self.rule_id = None
 
@@ -752,12 +755,7 @@ def handle_before_attach(session, item):
         account = Account.query.filter_by(id=item.account_id).one()
         account.balance = round(account.balance + item.valuta, 2)
 
-        if item.rule_id is not None:
-            rule = Rule.query.filter_by(id=item.rule_id).one_or_none()
 
-            if rule is not None:
-                # update rule next due date/valuta
-                rule.update_next_due(item.date, item.valuta)
 
 
 #    _____  _                            _ _______                             _   _
