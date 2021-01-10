@@ -572,10 +572,11 @@ class Rule(db.Model):
 
             next_due = utils.add_months(date, self.regular)
 
-            current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%.2f'", self.name, self.id, next_due, valuta)
+            if next_due > self.next_due:
+                current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%.2f'", self.name, self.id, next_due, valuta)
 
-            self.next_valuta = abs(valuta)
-            self.next_due = next_due
+                self.next_valuta = abs(valuta)
+                self.next_due = next_due
 
 
     def assign_transaction_ids(self, ids):
