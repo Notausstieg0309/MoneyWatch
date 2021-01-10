@@ -35,7 +35,10 @@ class Account(db.Model):
     iban = db.Column(db.String(22), unique=True, nullable=False)
     balance = db.Column(db.Float, unique=False, nullable=False)
     color = db.Column(db.String(6), unique=False, nullable=True)
-    rules = db.relationship("Rule")
+    rules = db.relationship("Rule", backref="account", cascade="all, delete, delete-orphan")
+
+    _transactions = db.relationship("Transaction", backref="account", cascade="all, delete, delete-orphan")
+    _categories = db.relationship("Category", backref="account", cascade="all, delete, delete-orphan")
 
 
     @property
@@ -166,8 +169,7 @@ class Category(db.Model):
     budget_monthly = db.Column(db.Integer, unique=False, nullable=True)
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_categories_account"), server_default="1", nullable=False)
-    account = db.relationship("Account")
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_categories_account", ondelete="CASCADE"), server_default="1", nullable=False)
 
     _childs = db.relationship("Category",
                               # cascade deletions
@@ -529,8 +531,7 @@ class Rule(db.Model):
 
     transactions = db.relationship("Transaction")
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_rules_account"), server_default="1", nullable=False)
-    account = db.relationship("Account")
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_rules_account", ondelete="CASCADE"), server_default="1", nullable=False)
 
 
     def getTransactions(self, start=None, end=None):
@@ -628,8 +629,7 @@ class Transaction(db.Model):
 
     trend = db.Column(db.Float, unique=False, nullable=True)
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_transactions_account"), server_default="1", nullable=False)
-    account = db.relationship("Account")
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_transactions_account", ondelete="CASCADE"), server_default="1", nullable=False)
 
 
     @hybrid_property
