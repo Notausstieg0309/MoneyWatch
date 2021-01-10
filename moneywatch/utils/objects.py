@@ -683,7 +683,10 @@ class Transaction(db.Model):
 
         # rule is set (manual by multiple rule match form or found by ruleset search)
         if self.rule_id is not None:
-            rule = Rule.query.filter_by(id=self.rule_id).one()
+            rule = Rule.query.filter_by(id=self.rule_id).one_or_none()
+
+            if rule is None:
+                return
 
             # update rule next due
             rule.update_next_due(self.date, self.valuta)
