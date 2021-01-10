@@ -62,11 +62,8 @@ def add():
 @bp.route('/accounts/delete/<int:id>/')
 def delete(id):
 
-    account = Account.query.filter_by(id=id).one_or_none()
-
-    if account is not None:
-        db.session.delete(account)
-        db.session.commit()
+    Account.query.filter_by(id=id).delete()
+    db.session.commit()
 
     return redirect(url_for('overview.index'))
 
