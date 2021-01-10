@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-09 11:49+0100\n"
-"PO-Revision-Date: 2020-11-15 18:14+0100\n"
+"POT-Creation-Date: 2021-01-10 10:47+0100\n"
+"PO-Revision-Date: 2021-01-10 10:50+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: accounts.py:34 accounts.py:86 categories.py:38 categories.py:109
 #: ruleset.py:153
@@ -61,31 +62,14 @@ msgstr "Keine Datei hochgeladen"
 msgid "Import plugin file \"%(name)s\""
 msgstr "Import Plugin-Datei \"%(name)s\""
 
-#: importer.py:140
+#: importer.py:129
 #, python-format
-msgid ""
-"The file contains transactions that cannot be clearly assigned to an "
-"account based on the IBAN. Since only one account is currently created, "
-"these transactions were automatically assigned to the account "
-"\"%(account_name)s\". In case this is wrong, please create an appropriate"
-" account first and then assign the transactions manually to the new "
-"account during import."
-msgstr ""
-"Die Datei enthält Transaktionen die nicht eindeutig einem Konto basierend"
-" auf der IBAN zugeordnet werden können. Da aktuell nur ein einziges Konto"
-" angelegt ist, wurden alle Transaktionen automatisch dem Konto "
-"\"%(account_name)s\" zugeordnet. Sollte dies nicht korrekt sein, bitte "
-"zuerst das neue Konto anlegen und anschließend die Transaktionen im "
-"Rahmen des Import-Vorgangs manuell dem neuen Konto zuordnen."
+msgid "The file contains transactions that cannot be clearly assigned to an account based on the IBAN. Since only one account is currently created, these transactions were automatically assigned to the account \"%(account_name)s\". In case this is wrong, please create an appropriate account first and then assign the transactions manually to the new account during import."
+msgstr "Die Datei enthält Transaktionen die nicht eindeutig einem Konto basierend auf der IBAN zugeordnet werden können. Da aktuell nur ein einziges Konto angelegt ist, wurden alle Transaktionen automatisch dem Konto \"%(account_name)s\" zugeordnet. Sollte dies nicht korrekt sein, bitte zuerst das neue Konto anlegen und anschließend die Transaktionen im Rahmen des Import-Vorgangs manuell dem neuen Konto zuordnen."
 
 #: ruleset.py:31
-msgid ""
-"Unable to create new rules. No categories are available to create rules "
-"for. Please create categories first."
-msgstr ""
-"Es können keine neuen Regeln angelegt werden. Es sind keine Kategorien "
-"vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien"
-" anlegen."
+msgid "Unable to create new rules. No categories are available to create rules for. Please create categories first."
+msgstr "Es können keine neuen Regeln angelegt werden. Es sind keine Kategorien vorhanden für die Regeln anegelegt werden können. Bitte zuerst Kategorien anlegen."
 
 #: ruleset.py:49
 msgid "Rule name is required."
@@ -100,12 +84,8 @@ msgid "Category is required."
 msgstr "Kategorie ist notwendig."
 
 #: ruleset.py:61
-msgid ""
-"Invalid search pattern. The given search pattern is not a valid regular "
-"expression"
-msgstr ""
-"Ungültiger Suchausdruck. Der angegebene Suchausdruck ist kein gültiger "
-"regulärer Ausdruck (Regex)."
+msgid "Invalid search pattern. The given search pattern is not a valid regular expression"
+msgstr "Ungültiger Suchausdruck. Der angegebene Suchausdruck ist kein gültiger regulärer Ausdruck (Regex)."
 
 #: transactions.py:70
 #, python-format
@@ -164,9 +144,9 @@ msgstr "Keine Farbe"
 
 #: templates/accounts/add.html:62 templates/accounts/change.html:54
 #: templates/categories/add.html:27 templates/categories/change.html:37
-#: templates/importer/check.html:63 templates/importer/check.html:69
-#: templates/ruleset/add.html:83 templates/ruleset/change.html:57
-#: templates/ruleset/check.html:121 templates/transactions/edit.html:54
+#: templates/importer/check.html:58 templates/ruleset/add.html:83
+#: templates/ruleset/change.html:57 templates/ruleset/check.html:121
+#: templates/transactions/edit.html:54
 msgid "Save"
 msgstr "Speichern"
 
@@ -392,7 +372,11 @@ msgstr "Bitte auswählen"
 msgid "I have noted this message"
 msgstr "Zur Kenntnis genommen"
 
-#: templates/importer/check.html:73
+#: templates/importer/check.html:58
+msgid "Please check the missing input for the following highlighted transactions."
+msgstr "Bitte die folgenden hervorgehobenen Transaktionen auf fehlende Eingaben überprüfen."
+
+#: templates/importer/check.html:76
 msgid "No transactions found."
 msgstr "Keine Transaktionen verfügbar."
 
@@ -422,18 +406,8 @@ msgid "Check again"
 msgstr "Erneut überprüfen"
 
 #: templates/importer/multiple_rule_match.html:51
-msgid ""
-"The following transaction matches multiple rules. This problem can occur "
-"when rules uses a search pattern that is not specific enough for such "
-"edge cases. If this problem happens several times with the same rules "
-"involved please consider to precise the search pattern of these rules."
-msgstr ""
-"Die folgende Transaktion passt zu mehreren Import-Regeln. Dieses Problem "
-"kann auftreten, wenn verschiedene Import-Regeln einen Suchausdruck "
-"verwenden, der nicht spezifisch genug in solchen Fällen ist. Wenn dieses "
-"Problem mit der selben Regel wiederholt auftritt, sollte man den "
-"Suchausdruck basierend auf den bereits vorhandenen Transaktionen "
-"versuchen zu präzisieren."
+msgid "The following transaction matches multiple rules. This problem can occur when rules uses a search pattern that is not specific enough for such edge cases. If this problem happens several times with the same rules involved please consider to precise the search pattern of these rules."
+msgstr "Die folgende Transaktion passt zu mehreren Import-Regeln. Dieses Problem kann auftreten, wenn verschiedene Import-Regeln einen Suchausdruck verwenden, der nicht spezifisch genug in solchen Fällen ist. Wenn dieses Problem mit der selben Regel wiederholt auftritt, sollte man den Suchausdruck basierend auf den bereits vorhandenen Transaktionen versuchen zu präzisieren."
 
 #: templates/importer/multiple_rule_match.html:53
 msgid "Please decide which rule this transaction applies to."
@@ -449,32 +423,18 @@ msgstr "Keine"
 
 #: templates/importer/no_account_given.html:14
 #, python-format
-msgid ""
-"The file contains %(num)s transaction which cannot be assigned to the "
-"correct account automatically."
-msgid_plural ""
-"The file contains %(num)s transactions which cannot be assigned to the "
-"correct account automatically."
-msgstr[0] ""
-"Die zu importierende Datei enthält %(num)s Transaktion, welche nicht "
-"automatisch einem Konto zugeordnet werden kann."
-msgstr[1] ""
-"Die zu importierende Datei enthält %(num)s Transaktionen, welche nicht "
-"automatisch einem Konto zugeordnet werden können."
+msgid "The file contains %(num)s transaction which cannot be assigned to the correct account automatically."
+msgid_plural "The file contains %(num)s transactions which cannot be assigned to the correct account automatically."
+msgstr[0] "Die zu importierende Datei enthält %(num)s Transaktion, welche nicht automatisch einem Konto zugeordnet werden kann."
+msgstr[1] "Die zu importierende Datei enthält %(num)s Transaktionen, welche nicht automatisch einem Konto zugeordnet werden können."
 
 #: templates/importer/no_account_given.html:16
 msgid "Please decide for which account these transactions should be imported."
-msgstr ""
-"Bitte wählen, für welches Konto diese Transaktionen importiert werden "
-"sollen."
+msgstr "Bitte wählen, für welches Konto diese Transaktionen importiert werden sollen."
 
 #: templates/importer/unknown_account.html:41
-msgid ""
-"The uploaded file contains transactions for the following unknown account"
-" IBAN."
-msgstr ""
-"Die hochgeladene Datei enthält Transaktionen für die folgende aktuell "
-"unbekannte IBAN."
+msgid "The uploaded file contains transactions for the following unknown account IBAN."
+msgstr "Die hochgeladene Datei enthält Transaktionen für die folgende aktuell unbekannte IBAN."
 
 #: templates/importer/unknown_account.html:64
 msgid "Do you want to create a new account for this IBAN?"
@@ -513,12 +473,8 @@ msgid "last transaction"
 msgstr "letzte Transaktion"
 
 #: templates/overview/index.html:63
-msgid ""
-"There are no accounts defined yet. Please click below on the add button "
-"to create a new account."
-msgstr ""
-"Aktuell sind keine Konten definiert. Klick unten auf den Hinzufügen-"
-"Button um ein neues Konto anzulegen."
+msgid "There are no accounts defined yet. Please click below on the add button to create a new account."
+msgstr "Aktuell sind keine Konten definiert. Klick unten auf den Hinzufügen-Button um ein neues Konto anzulegen."
 
 #: templates/overview/overview.html:6
 msgid "yyyy/MM"
@@ -546,17 +502,11 @@ msgstr "Transaktion bearbeiten"
 
 #: templates/overview/overview.html:102
 msgid "This category contains overdue planned transactions."
-msgstr ""
-"Diese Kategorie enthält geplante Transaktionen die bereits überfällig "
-"sind."
+msgstr "Diese Kategorie enthält geplante Transaktionen die bereits überfällig sind."
 
 #: templates/overview/overview.html:105
-msgid ""
-"The overall amount of pending regular transactions in or underneath this "
-"category."
-msgstr ""
-"Der ausstehende Betrag aller noch offenen regelmäßigen Transaktionen in "
-"oder unterhalb dieser Kategorie."
+msgid "The overall amount of pending regular transactions in or underneath this category."
+msgstr "Der ausstehende Betrag aller noch offenen regelmäßigen Transaktionen in oder unterhalb dieser Kategorie."
 
 #: templates/overview/overview.html:105
 msgid "pending"
@@ -564,9 +514,7 @@ msgstr "ausstehend"
 
 #: templates/overview/overview.html:107
 msgid "All regular transactions for this category are already done."
-msgstr ""
-"Alle regelmäßigen Transaktionen für diese Kategorie sind bereits "
-"durchgeführt."
+msgstr "Alle regelmäßigen Transaktionen für diese Kategorie sind bereits durchgeführt."
 
 #: templates/overview/overview.html:113
 #, python-format
@@ -625,20 +573,14 @@ msgstr "nächster Zeitraum"
 msgid "This month contains %(num)d message. Click here to show them."
 msgid_plural "This month contains %(num)d messages. Click here to show them."
 msgstr[0] "Dieser Monat enthält %(num)d Nachricht. Hier klicken um diese anzuzeigen."
-msgstr[1] ""
-"Dieser Monat enthält %(num)d Nachrichten. Hier klicken um diese "
-"anzuzeigen."
+msgstr[1] "Dieser Monat enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
 
 #: templates/overview/overview.html:214
 #, python-format
 msgid "This timeframe contains %(num)d message. Click here to show them."
 msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
-msgstr[0] ""
-"Dieser Zeitraum enthält %(num)d Nachricht. Hier klicken um diese "
-"anzuzeigen."
-msgstr[1] ""
-"Dieser Zeitraum enthält %(num)d Nachrichten. Hier klicken um diese "
-"anzuzeigen."
+msgstr[0] "Dieser Zeitraum enthält %(num)d Nachricht. Hier klicken um diese anzuzeigen."
+msgstr[1] "Dieser Zeitraum enthält %(num)d Nachrichten. Hier klicken um diese anzuzeigen."
 
 #: templates/overview/overview.html:223
 msgid "particular transactions:"
@@ -657,12 +599,8 @@ msgid "withdrawals"
 msgstr "Ausgaben"
 
 #: templates/ruleset/add.html:15 templates/ruleset/check.html:29
-msgid ""
-"The name of the rule. This value is only displayed in the ruleset "
-"overview."
-msgstr ""
-"Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-"
-"Regeln benutzt."
+msgid "The name of the rule. This value is only displayed in the ruleset overview."
+msgstr "Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-Regeln benutzt."
 
 #: templates/ruleset/add.html:16 templates/ruleset/change.html:13
 #: templates/ruleset/check.html:30 templates/ruleset/index.html:21
@@ -670,13 +608,8 @@ msgid "Rule Name"
 msgstr "Regelname"
 
 #: templates/ruleset/add.html:21 templates/ruleset/check.html:35
-msgid ""
-"The search pattern (phython based regular expression) used to identify "
-"matching transactions during import based on their booking text."
-msgstr ""
-"Der Such-Ausdruck (Python-basierter regulärer Ausdruck), welcher zu "
-"importierende Transaktionen anhand des Buchungstextes erkennt und "
-"entsprechend zuordnet."
+msgid "The search pattern (phython based regular expression) used to identify matching transactions during import based on their booking text."
+msgstr "Der Such-Ausdruck (Python-basierter regulärer Ausdruck), welcher zu importierende Transaktionen anhand des Buchungstextes erkennt und entsprechend zuordnet."
 
 #: templates/ruleset/add.html:22 templates/ruleset/change.html:16
 #: templates/ruleset/check.html:36
@@ -684,13 +617,8 @@ msgid "Search Pattern"
 msgstr "Suchausdruck"
 
 #: templates/ruleset/add.html:27 templates/ruleset/check.html:41
-msgid ""
-"The short description that will be used for all matched transactions "
-"during import. The short description still can be changed during import."
-msgstr ""
-"Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend "
-"es Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des"
-" Imports dennoch geändert werden."
+msgid "The short description that will be used for all matched transactions during import. The short description still can be changed during import."
+msgstr "Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend es Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des Imports dennoch geändert werden."
 
 #: templates/ruleset/add.html:28 templates/ruleset/change.html:19
 #: templates/ruleset/check.html:42
@@ -778,16 +706,8 @@ msgid "Edit Transaction"
 msgstr "Transaktion bearbeiten"
 
 #: templates/transactions/edit.html:64
-msgid ""
-"This transaction was identified by a rule. You can clear the binding of "
-"this transaction to the matched rule in case this transaction was "
-"mistakenly matched. In this case you should adapt the search pattern of "
-"the corresponding rule."
-msgstr ""
-"Diese Transaktion wurde durch eine Import-Regel identifiziert. Die "
-"Verbindung zu dieser Import-Regel kann aufgehoben werden, falls die "
-"Transaktion fälschlicherweise durch diese Regel erkannt wurde. In diesem "
-"Fall sollte der Suchausdruck dieser Regel angepasst werden."
+msgid "This transaction was identified by a rule. You can clear the binding of this transaction to the matched rule in case this transaction was mistakenly matched. In this case you should adapt the search pattern of the corresponding rule."
+msgstr "Diese Transaktion wurde durch eine Import-Regel identifiziert. Die Verbindung zu dieser Import-Regel kann aufgehoben werden, falls die Transaktion fälschlicherweise durch diese Regel erkannt wurde. In diesem Fall sollte der Suchausdruck dieser Regel angepasst werden."
 
 #: templates/transactions/edit.html:70
 #, python-format
@@ -889,4 +809,3 @@ msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert."
 
 #~ msgid "Do you want to create a new account and import all transactions?"
 #~ msgstr ""
-

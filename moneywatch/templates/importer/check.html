@@ -54,19 +54,22 @@
 </div>
 {% endmacro %}
 
+{% macro save_button() %}
+<span class="tooltipped" data-tooltip="{% trans %}Please check the missing input for the following highlighted transactions.{% endtrans %}" data-position="right"><button class="btn-small" name="action" value="save"type="submit">{% trans %}Save{% endtrans %}</button></span>
+{% endmacro %}
 
 {% block content %}
 <br>
 
 {% if data %}
 <form method="post" id="import_check">
-  <button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
+  {{ save_button() }}
 {% for transaction in data %}
 {{ item(transaction, loop.index0) }}
 {% endfor %}
 
 {% if data|length > 3 %}
-  <button class="btn-small" name="action" value="save" {% if not complete %} disabled {% endif %} type="submit">{% trans %}Save{% endtrans %}</button>
+  {{ save_button() }}
 {% endif %}
 </form>
 {% else %}

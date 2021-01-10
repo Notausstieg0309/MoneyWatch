@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-09 11:49+0100\n"
+"POT-Creation-Date: 2021-01-10 10:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Import plugin file \"%(name)s\""
 msgstr ""
 
-#: importer.py:140
+#: importer.py:129
 #, python-format
 msgid ""
 "The file contains transactions that cannot be clearly assigned to an "
@@ -152,9 +152,9 @@ msgstr ""
 
 #: templates/accounts/add.html:62 templates/accounts/change.html:54
 #: templates/categories/add.html:27 templates/categories/change.html:37
-#: templates/importer/check.html:63 templates/importer/check.html:69
-#: templates/ruleset/add.html:83 templates/ruleset/change.html:57
-#: templates/ruleset/check.html:121 templates/transactions/edit.html:54
+#: templates/importer/check.html:58 templates/ruleset/add.html:83
+#: templates/ruleset/change.html:57 templates/ruleset/check.html:121
+#: templates/transactions/edit.html:54
 msgid "Save"
 msgstr ""
 
@@ -380,7 +380,11 @@ msgstr ""
 msgid "I have noted this message"
 msgstr ""
 
-#: templates/importer/check.html:73
+#: templates/importer/check.html:58
+msgid "Please check the missing input for the following highlighted transactions."
+msgstr ""
+
+#: templates/importer/check.html:76
 msgid "No transactions found."
 msgstr ""
 

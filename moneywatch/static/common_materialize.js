@@ -56,6 +56,14 @@ function checkTransactionsImport() {
     });
 
     $("form#import_check button[type='submit']").prop("disabled", !complete);
+
+    // activate/deactivate the tooltip for submit button
+    if(complete) {
+        $("form#import_check button[type='submit']").closest(".tooltipped").tooltip("destroy");
+    }
+    else {
+        $("form#import_check button[type='submit']").closest(".tooltipped").tooltip(tooltip_options);
+    }
 }
 
 $(function() {
@@ -256,6 +264,11 @@ $(function() {
     $("form#import_check .item_container").on("input", "input[type='text']", function(event) {
         checkTransactionsImport();
     });
+
+    // importer: initally check for transaction completeness
+    if($("form#import_check .item_container").length > 0) {
+        checkTransactionsImport();
+    }
 
     // ruleset: enable check button, if "check historical transactions" is active
     $("input[name='check_historical']").change(function() {
