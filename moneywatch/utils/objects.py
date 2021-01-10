@@ -574,7 +574,7 @@ class Rule(db.Model):
 
             next_due = utils.add_months(date, self.regular)
 
-            if next_due > self.next_due:
+            if self.next_due is None or next_due > self.next_due:
                 current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%.2f'", self.name, self.id, next_due, valuta)
 
                 self.next_valuta = abs(valuta)
