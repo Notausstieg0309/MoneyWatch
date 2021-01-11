@@ -142,8 +142,8 @@ div.overview div.category_container {
 }
 div.overview div.category_content {
     margin-left:0.5em;
-    margin-top:0.5em;
-    margin-bottom:0.5em;
+    padding-top:0.2em;
+    padding-bottom:0.2em;
 }
 
 
