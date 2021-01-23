@@ -12,9 +12,22 @@ from sqlalchemy.sql import expression as fn
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import event, orm, or_
 from sqlalchemy.sql import collate, asc
+from sqlalchemy import MetaData
 
 
-db = SQLAlchemy()
+# define explicit naming convention defaults for SQL-Alchemy
+convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(column_0_name)s",
+    "type_ck": "ck_%(table_name)s_%(column_0_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+
+metadata = MetaData(naming_convention=convention)
+
+db = SQLAlchemy(metadata=metadata)
 
 
 #                                     _
@@ -169,7 +182,7 @@ class Category(db.Model):
     budget_monthly = db.Column(db.Integer, unique=False, nullable=True)
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_categories_account", ondelete="CASCADE"), server_default="1", nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', ondelete="CASCADE"), server_default="1", nullable=False)
     account = db.relationship("Account", back_populates="_categories")
 
     _childs = db.relationship("Category",
@@ -533,7 +546,7 @@ class Rule(db.Model):
 
     transactions = db.relationship("Transaction", back_populates="rule")
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_rules_account", ondelete="CASCADE"), server_default="1", nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', ondelete="CASCADE"), server_default="1", nullable=False)
     account = db.relationship("Account", back_populates="rules")
 
     def getTransactions(self, start=None, end=None):
@@ -623,15 +636,15 @@ class Transaction(db.Model):
     description = db.Column(db.String(100), unique=False, nullable=True)
     full_text = db.Column(db.String(100), unique=False, nullable=False)
 
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id', name="fk_transactions_category",), nullable=True, index=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id',), nullable=True, index=True)
     category = db.relationship("Category", back_populates="_transactions")
 
-    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id', name="fk_transactions_rule"), nullable=True, index=True)
+    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id'), nullable=True, index=True)
     rule = db.relationship("Rule", back_populates="transactions")
 
     trend = db.Column(db.Float, unique=False, nullable=True)
 
-    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_transactions_account", ondelete="CASCADE"), server_default="1", nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', ondelete="CASCADE"), server_default="1", nullable=False)
     account = db.relationship("Account", back_populates="_transactions")
 
     @hybrid_property
@@ -760,8 +773,6 @@ def handle_before_attach(session, item):
         # update account balance
         account = Account.query.filter_by(id=item.account_id).one()
         account.balance = round(account.balance + item.valuta, 2)
-
-
 
 
 #    _____  _                            _ _______                             _   _
