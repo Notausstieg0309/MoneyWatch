@@ -639,7 +639,7 @@ class Transaction(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id',), nullable=True, index=True)
     category = db.relationship("Category", back_populates="_transactions")
 
-    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id'), nullable=True, index=True)
+    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id', ondelete="SET NULL"), nullable=True, index=True)
     rule = db.relationship("Rule", back_populates="transactions")
 
     trend = db.Column(db.Float, unique=False, nullable=True)
