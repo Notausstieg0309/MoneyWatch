@@ -35,10 +35,10 @@ class Account(db.Model):
     iban = db.Column(db.String(22), unique=True, nullable=False)
     balance = db.Column(db.Float, unique=False, nullable=False)
     color = db.Column(db.String(6), unique=False, nullable=True)
-    rules = db.relationship("Rule", backref="account", cascade="all, delete, delete-orphan")
+    rules = db.relationship("Rule", back_populates="account", cascade="all, delete, delete-orphan")
 
-    _transactions = db.relationship("Transaction", backref="account", cascade="all, delete, delete-orphan")
-    _categories = db.relationship("Category", backref="account", cascade="all, delete, delete-orphan")
+    _transactions = db.relationship("Transaction", back_populates="account", cascade="all, delete, delete-orphan")
+    _categories = db.relationship("Category", back_populates="account", cascade="all, delete, delete-orphan")
 
 
     @property
@@ -170,6 +170,7 @@ class Category(db.Model):
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
 
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_categories_account", ondelete="CASCADE"), server_default="1", nullable=False)
+    account = db.relationship("Account", back_populates="_categories")
 
     _childs = db.relationship("Category",
                               # cascade deletions
@@ -181,8 +182,9 @@ class Category(db.Model):
                               backref=db.backref("parent", remote_side='Category.id'),
                               )
 
-    rules = db.relationship("Rule")
+    rules = db.relationship("Rule", back_populates="category")
 
+    _transactions = db.relationship("Transaction", back_populates="category")
 
     def __init__(self, start=None, end=None, **kwargs):
         self._cache = {}
@@ -527,12 +529,12 @@ class Rule(db.Model):
     regular = db.Column(db.Integer, unique=False, nullable=True)
 
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
-    category = db.relationship("Category")
+    category = db.relationship("Category", back_populates="rules")
 
-    transactions = db.relationship("Transaction")
+    transactions = db.relationship("Transaction", back_populates="rule")
 
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_rules_account", ondelete="CASCADE"), server_default="1", nullable=False)
-
+    account = db.relationship("Account", back_populates="rules")
 
     def getTransactions(self, start=None, end=None):
 
@@ -621,16 +623,16 @@ class Transaction(db.Model):
     description = db.Column(db.String(100), unique=False, nullable=True)
     full_text = db.Column(db.String(100), unique=False, nullable=False)
 
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True, index=True)
-    category = db.relationship("Category")
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id', name="fk_transactions_category",), nullable=True, index=True)
+    category = db.relationship("Category", back_populates="_transactions")
 
-    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id'), nullable=True, index=True)
-    rule = db.relationship("Rule")
+    rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id', name="fk_transactions_rule"), nullable=True, index=True)
+    rule = db.relationship("Rule", back_populates="transactions")
 
     trend = db.Column(db.Float, unique=False, nullable=True)
 
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', name="fk_transactions_account", ondelete="CASCADE"), server_default="1", nullable=False)
-
+    account = db.relationship("Account", back_populates="_transactions")
 
     @hybrid_property
     def type(self):
