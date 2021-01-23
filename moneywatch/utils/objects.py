@@ -180,14 +180,14 @@ class Category(db.Model):
     name = db.Column(db.String(100), unique=False, nullable=False)
     type = db.Column(db.Enum("in", "out"), unique=False, nullable=False)
     budget_monthly = db.Column(db.Integer, unique=False, nullable=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
+    parent_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete="CASCADE"), nullable=True)
 
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', ondelete="CASCADE"), server_default="1", nullable=False)
     account = db.relationship("Account", back_populates="_categories")
 
     _childs = db.relationship("Category",
                               # cascade deletions
-                              cascade="all",
+                              cascade="all, delete, delete-orphan",
 
                               # many to one + adjacency list - remote_side
                               # is required to reference the 'remote'

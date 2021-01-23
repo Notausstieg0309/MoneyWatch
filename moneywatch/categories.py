@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, redirect, render_template, request, url_for)
+from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort)
 
 from flask_babel import gettext
 
@@ -72,12 +72,16 @@ def add(account_id, type):
 @bp.route('/categories/delete/<int:id>/')
 def delete(id):
 
-    account_id = Category.query.filter_by(id=id).one().account_id
 
-    Category.query.filter_by(id=id).delete()
-    db.session.commit()
+    category = Category.query.filter_by(id=id).one_or_none()
+    if category is not None:
 
-    return redirect(url_for('categories.index', account_id=account_id))
+        account_id = category.account_id
+        db.session.delete(category)
+        db.session.commit()
+
+        return redirect(url_for('categories.index', account_id=account_id))
+    return abort(404, "Not Found")
 
 
 @bp.route('/categories/change/<string:type>/<int:id>/', methods=('GET', 'POST'))
