@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-10 10:47+0100\n"
-"PO-Revision-Date: 2021-01-10 10:50+0100\n"
+"POT-Creation-Date: 2021-01-24 13:03+0100\n"
+"PO-Revision-Date: 2021-01-24 13:06+0100\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,16 +19,16 @@ msgstr ""
 "Generated-By: Babel 2.9.0\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: accounts.py:34 accounts.py:86 categories.py:38 categories.py:109
+#: accounts.py:34 accounts.py:89 categories.py:38 categories.py:113
 #: ruleset.py:153
 msgid "Name is required."
 msgstr "Name ist notwendig."
 
-#: accounts.py:37 accounts.py:89
+#: accounts.py:37 accounts.py:92
 msgid "IBAN is required."
 msgstr "IBAN ist notwendig"
 
-#: accounts.py:40 accounts.py:92
+#: accounts.py:40 accounts.py:95
 msgid "The provided IBAN is not valid"
 msgstr "Die eingegebene IBAN ist nicht gültig."
 
@@ -44,11 +44,11 @@ msgstr "Der eingegebene Kontostand ist kein gültiger numerischer Wert."
 msgid "yyyy-MM-dd"
 msgstr "dd.MM.yyyy"
 
-#: categories.py:41 categories.py:112
+#: categories.py:41 categories.py:116
 msgid "The budget must be given as numeric value."
 msgstr "Das Budget muss als numerischer Wert angegeben werden."
 
-#: categories.py:45 categories.py:115
+#: categories.py:45 categories.py:119
 #, python-format
 msgid "The name '%(name)s' already exists on this level"
 msgstr "Der Name '%(name)s' existiert bereits auf dieser Ebene."
@@ -475,6 +475,10 @@ msgstr "letzte Transaktion"
 #: templates/overview/index.html:63
 msgid "There are no accounts defined yet. Please click below on the add button to create a new account."
 msgstr "Aktuell sind keine Konten definiert. Klick unten auf den Hinzufügen-Button um ein neues Konto anzulegen."
+
+#: templates/overview/index.html:66
+msgid "Add a new account"
+msgstr "Ein neues Konto anlegen"
 
 #: templates/overview/overview.html:6
 msgid "yyyy/MM"

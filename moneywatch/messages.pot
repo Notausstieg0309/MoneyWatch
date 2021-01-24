@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-10 10:47+0100\n"
+"POT-Creation-Date: 2021-01-24 13:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: accounts.py:34 accounts.py:86 categories.py:38 categories.py:109
+#: accounts.py:34 accounts.py:89 categories.py:38 categories.py:113
 #: ruleset.py:153
 msgid "Name is required."
 msgstr ""
 
-#: accounts.py:37 accounts.py:89
+#: accounts.py:37 accounts.py:92
 msgid "IBAN is required."
 msgstr ""
 
-#: accounts.py:40 accounts.py:92
+#: accounts.py:40 accounts.py:95
 msgid "The provided IBAN is not valid"
 msgstr ""
 
@@ -42,11 +42,11 @@ msgstr ""
 msgid "yyyy-MM-dd"
 msgstr ""
 
-#: categories.py:41 categories.py:112
+#: categories.py:41 categories.py:116
 msgid "The budget must be given as numeric value."
 msgstr ""
 
-#: categories.py:45 categories.py:115
+#: categories.py:45 categories.py:119
 #, python-format
 msgid "The name '%(name)s' already exists on this level"
 msgstr ""
@@ -494,6 +494,10 @@ msgstr ""
 msgid ""
 "There are no accounts defined yet. Please click below on the add button "
 "to create a new account."
+msgstr ""
+
+#: templates/overview/index.html:66
+msgid "Add a new account"
 msgstr ""
 
 #: templates/overview/overview.html:6

@@ -63,7 +63,9 @@
     <div id="no_accounts_yet">{% trans %}There are no accounts defined yet. Please click below on the add button to create a new account.{% endtrans %}</div>
     {% endif %}
     <div class="divider"></div>
-    <a class="btn-floating btn-large {% if not accounts %}pulse{% endif %}" href="{{ url_for('accounts.add') }}"><i class="material-icons">add</i></a>
+    <a class="btn-floating btn-large {% if not accounts %}pulse{% endif %} tooltipped" href="{{ url_for('accounts.add') }}" data-tooltip="{% trans %}Add a new account{% endtrans %}" data-position="top">
+      <i class="material-icons">add</i>
+    </a>
   </div>
   <div class="col m1 l2 hide-on-small-only"></div>
 </div>
