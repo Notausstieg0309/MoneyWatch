@@ -132,7 +132,7 @@ def db_filled(db, today, start):
                           valuta=-207.89,
                           date=start + timedelta(days=2),
                           description="Transaction 4",
-                          rule_id=rule_out_2.id,
+                          rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
                           account_id=account.id)
 
@@ -143,7 +143,7 @@ def db_filled(db, today, start):
                           valuta=-207.89,
                           date=start + timedelta(days=32),
                           description="Transaction 5",
-                          rule_id=rule_out_2.id,
+                          rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
                           account_id=account.id)
 
@@ -158,6 +158,16 @@ def db_filled(db, today, start):
 
     db.session.add(trans_6)
 
+    trans_7 = Transaction(id=7,
+                          full_text="BOOKING TEXT PATTERN2 #1",
+                          valuta=29.98,
+                          date=start + timedelta(days=2),
+                          description="Transaction 7",
+                          rule_id=rule_in_2.id,
+                          category_id=cat_in_sub1.id,
+                          account_id=account.id)
+
+    db.session.add(trans_7)
 
     db.session.commit()
 
@@ -291,12 +301,12 @@ def test_account_transactions(db_filled, start, today):
 
     transactions = account.transactions()
 
-    assert len(transactions) == 6
+    assert len(transactions) == 7
     assert all(isinstance(el, Transaction) for el in transactions)
 
     transactions = account.transactions(start, start + timedelta(days=14))
 
-    assert len(transactions) == 3
+    assert len(transactions) == 4
     assert all(isinstance(el, Transaction) for el in transactions)
 
     transactions = account.transactions(start + timedelta(days=20))
@@ -331,7 +341,7 @@ def test_account_transactions_by_type_in(db_filled):
     account = Account.query.filter_by(id=1).one()
 
     result = account.transactions_by_type("in")
-    expected = Transaction.query.filter(Transaction.id.in_([1, 2])).order_by(Transaction.date.asc()).all()
+    expected = Transaction.query.filter(Transaction.id.in_([1, 2, 7])).order_by(Transaction.date.asc()).all()
 
     assert result == expected
 
@@ -436,7 +446,22 @@ def test_category_planned_transactions_monthly_past_month_none(db_filled, start)
     assert planned_transactions == []
 
 
-def test_category_planned_transactions_quarterly(db_filled):
+def test_category_planned_transactions_monthly_without_existing(db_filled, start, today):
+
+    cat_2 = Category.query.filter_by(id=2).one()
+
+    cat_2.setTimeframe(start, today + timedelta(weeks=3))
+
+    planned_transactions = cat_2.planned_transactions
+    transactions = cat_2.transactions
+    assert len(planned_transactions) == 1
+    assert planned_transactions[0].date == datetime.date(2020, 4, 4)
+    assert planned_transactions[0].valuta == 29.98
+    assert len(transactions) == 1
+    assert transactions[0].id == 7
+
+
+def test_category_planned_transactions_quarterly(db_filled, today):
 
     cat_4 = Category.query.filter_by(id=4).one()
 
@@ -557,4 +582,4 @@ def test_category_budget(db_filled):
 def test_before_attach_handler_account_balance(db_filled):
     account = Account.query.first()
 
-    assert account.balance == 3418.0
+    assert account.balance == 3447.98
