@@ -1,4 +1,5 @@
 import pytest
+import datetime
 
 from . import create_app
 
@@ -29,3 +30,30 @@ def db(app):
         yield db
         db.drop_all()
         db.session.commit()
+
+
+
+@pytest.fixture
+def fixed_date(monkeypatch):
+
+    original_date = datetime.date
+
+    def with_metaclass(meta, *base_cls):
+        return meta("NewBaseCls", base_cls, {})
+
+    class fixeddate_meta(type):
+        def __instancecheck__(self, instance):
+            return isinstance(instance, original_date)
+
+    class fixeddate(with_metaclass(fixeddate_meta, original_date)):
+        _today_date = datetime.date.today()
+
+        @classmethod
+        def today(self):
+            return self._today_date
+
+        @classmethod
+        def set_today(self, value):
+            self._today_date = value
+
+    monkeypatch.setattr(datetime, 'date', fixeddate)

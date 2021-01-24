@@ -18,14 +18,27 @@ from datetime import timedelta
 #  ======================================================
 #
 
-today = datetime.date.today()
 
-start = today - datetime.timedelta(weeks=8)
-start = datetime.date(year=start.year, month=start.month, day=1)
 
 
 @pytest.fixture
-def db_filled(db):
+def today(fixed_date):
+    new_today = datetime.date(2020, 3, 20)
+
+    datetime.date.set_today(new_today)
+
+    return new_today
+
+
+@pytest.fixture
+def start(today):
+    start = today - datetime.timedelta(weeks=8)
+    start = datetime.date(year=start.year, month=start.month, day=1)
+    return start
+
+
+@pytest.fixture
+def db_filled(db, today, start):
 
     # Accounts
 
@@ -213,7 +226,7 @@ def test_account_categories_out(db_filled):
     assert categories == result
 
 
-def test_account_categories_timeframe(db_filled):
+def test_account_categories_timeframe(db_filled, today, start):
     account = Account.query.filter_by(id=1).one()
 
     categories = account.categories("out")
@@ -253,7 +266,7 @@ def test_account_rules_by_type_out(db_filled):
     assert rules == result
 
 
-def test_account_nonmonthly_rules_in(db_filled):
+def test_account_nonmonthly_rules_in(db_filled, today):
     account = Account.query.filter_by(id=1).one()
 
     rules_in = account.non_regular_rules("in", today + timedelta(weeks=8), today + timedelta(weeks=12))
@@ -261,7 +274,7 @@ def test_account_nonmonthly_rules_in(db_filled):
     assert rules_in == []
 
 
-def test_account_nonmonthly_rules_out(db_filled):
+def test_account_nonmonthly_rules_out(db_filled, today):
     account = Account.query.filter_by(id=1).one()
 
     rules_out = account.non_regular_rules("out", today + timedelta(weeks=6), today + timedelta(weeks=23))
@@ -273,7 +286,7 @@ def test_account_nonmonthly_rules_out(db_filled):
     assert rules_out[0][0].id == 3
 
 
-def test_account_transactions(db_filled):
+def test_account_transactions(db_filled, start, today):
     account = Account.query.filter_by(id=1).one()
 
     transactions = account.transactions()
@@ -323,7 +336,7 @@ def test_account_transactions_by_type_in(db_filled):
     assert result == expected
 
 
-def test_account_transactions_by_type_out(db_filled):
+def test_account_transactions_by_type_out(db_filled, start, today):
     account = Account.query.filter_by(id=1).one()
 
     result = account.transactions_by_type("out")
@@ -386,7 +399,7 @@ def test_account_empty(db):
 #                        |___/            |___/
 
 
-def test_category_planned_transactions_none(db_filled):
+def test_category_planned_transactions_none(db_filled, today):
 
     cat_1 = Category.query.filter_by(id=1).one()
 
@@ -399,7 +412,7 @@ def test_category_planned_transactions_none(db_filled):
 
 
 
-def test_category_planned_transactions_monthly(db_filled):
+def test_category_planned_transactions_monthly(db_filled, today):
 
     cat_2 = Category.query.filter_by(id=2).one()
 
@@ -412,7 +425,7 @@ def test_category_planned_transactions_monthly(db_filled):
     assert planned_transactions[0].rule_id == 2
 
 
-def test_category_planned_transactions_monthly_past_month_none(db_filled):
+def test_category_planned_transactions_monthly_past_month_none(db_filled, start):
 
     cat_5 = Category.query.filter_by(id=5).one()
 
@@ -427,7 +440,7 @@ def test_category_planned_transactions_quarterly(db_filled):
 
     cat_4 = Category.query.filter_by(id=4).one()
 
-    cat_4.setTimeframe(today + timedelta(weeks=1), today + timedelta(weeks=10))
+    cat_4.setTimeframe(datetime.date(2020, 4, 1), datetime.date(2020, 6, 30))
 
     planned_transactions = cat_4.planned_transactions
 
@@ -436,7 +449,7 @@ def test_category_planned_transactions_quarterly(db_filled):
     assert planned_transactions[0].rule_id == 3
 
 
-def test_category_planned_transactions_only_in_future(db_filled):
+def test_category_planned_transactions_only_in_future(db_filled, today, start):
 
     account = Account.query.filter_by(id=1).one()
 
@@ -454,7 +467,7 @@ def test_category_planned_transactions_only_in_future(db_filled):
         assert planned_transaction.date >= latest_transaction.date
 
 
-def test_category_regular_rules_done(db_filled):
+def test_category_regular_rules_done(db_filled, today):
 
     cat_1 = Category.query.filter_by(id=1).one()
 
@@ -485,7 +498,7 @@ def test_category_regular_rules_done(db_filled):
     assert cat_7.regular_rules_done is None
 
 
-def test_category_has_overdued_planned_transactions(db_filled):
+def test_category_has_overdued_planned_transactions(db_filled, start, today):
 
     categories_no_overdue = Category.query.filter(Category.id.in_([1, 2, 3, 4, 5, 6])).all()
 
