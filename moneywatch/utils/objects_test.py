@@ -37,6 +37,19 @@ def start(today):
 
 
 @pytest.fixture
+def db_only_account(db):
+
+    # Account
+    account = Account(id=1, name="Main Account", balance=0, iban="DE67100200301230002345")
+    db.session.add(account)
+
+    db.session.commit()
+
+    return db
+
+
+
+@pytest.fixture
 def db_filled(db, today, start):
 
     # Accounts
@@ -491,35 +504,58 @@ def test_category_planned_transactions_only_in_future(db_filled, today, start):
         assert planned_transaction.date >= latest_transaction.date
 
 
-def test_category_regular_rules_done(db_filled, today):
+def test_category_regular_rules_done(db_only_account, today):
 
-    cat_1 = Category.query.filter_by(id=1).one()
+    datetime.date.set_today(2020, 1, 15)
+    db = db_only_account
 
-    assert cat_1.regular_rules_done is None
+    cat = Category(id=1, name="Main Category", account_id=1, type="in", parent_id=None)
 
-    cat_2 = Category.query.filter_by(id=2).one()
+    rule = Rule(id=1, account_id=1, name="Rule Sub", type="in", category_id=cat.id, pattern="PATTERN2", regular=1, next_valuta=10, next_due=datetime.date(2020, 1, 20), description="Description - Rule 2")
 
-    assert cat_2.regular_rules_done is None
+    trans_1 = Transaction(id=1,
+                          full_text="BOOKING TEXT PATTERN",
+                          valuta=20,
+                          date=datetime.date(2020, 1, 10),
+                          description="Transaction 1",
+                          category_id=cat.id,
+                          account_id=1)
 
-    cat_3 = Category.query.filter_by(id=3).one()
 
-    assert cat_3.regular_rules_done is None
+    db.session.add_all([cat, rule, trans_1])
+    db.session.commit()
 
-    cat_4 = Category.query.filter_by(id=4).one()
+    cat.setTimeframe(datetime.date(2020, 1, 1), datetime.date(2020, 1, 31))
 
-    assert cat_4.regular_rules_done is None
+    # Category has one planned transaction by Rule #1 => False
+    assert cat.regular_rules_done is False
 
-    cat_5 = Category.query.filter_by(id=5).one()
+    cat._cache = {}
 
-    assert cat_5.regular_rules_done is None
+    trans_2 = Transaction(id=2,
+                          full_text="BOOKING TEXT PATTERN2",
+                          valuta=20,
+                          date=datetime.date(2020, 1, 12),
+                          account_id=1)
 
-    cat_6 = Category.query.filter_by(id=6).one()
+    trans_2.check_rule_matching()
 
-    assert cat_6.regular_rules_done is None
+    db.session.add(trans_2)
+    db.session.commit()
 
-    cat_7 = Category.query.filter_by(id=7).one()
+    # Category has one booked transaction by Rule #1, no other planned transactions => True
+    assert cat.regular_rules_done is True
 
-    assert cat_7.regular_rules_done is None
+
+    cat._cache = {}
+
+    rule2 = Rule(id=2, account_id=1, name="Rule Sub 2", type="in", category_id=cat.id, pattern="PATTERN3", regular=1, next_valuta=10, next_due=datetime.date(2020, 1, 14), description="Description - Rule 2")
+
+    db.session.add(rule2)
+    db.session.commit()
+
+    # Category has one booked transaction by Rule #1, and one planned transaction by Rule #2 => False
+    assert cat.regular_rules_done is False
 
 
 def test_category_has_overdued_planned_transactions(db_filled, start, today):

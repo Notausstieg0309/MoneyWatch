@@ -284,24 +284,16 @@ class Category(db.Model):
 
         if "regular_rules_done" not in self._cache:
 
-            result = None
+            result = False
 
-            for category in self.childs:
-                if category.regular_rules_done is True:
-                    result = True
-                elif category.regular_rules_done is False:
-                    result = False
-                    break
+            for transaction in self.transactions:
+                if transaction.rule_id is not None:
+                    if transaction.rule.regular:
+                        result = True
+                        break
 
-            if result is None or result is True:
-                for transaction in self.transactions:
-                    if transaction.rule_id is not None:
-                        if transaction.rule.regular:
-                            result = True
-                            break
-
-                if result and len(self.planned_transactions) > 0:
-                    result = False
+            if result is True and len(self.planned_transactions) > 0:
+                result = False
 
             self._cache["regular_rules_done"] = result
 
