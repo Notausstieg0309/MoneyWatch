@@ -856,6 +856,18 @@ def test_category_planned_valuta(db_filled, start, end):
     cat_7.setTimeframe(start, end)
     assert cat_7.planned_valuta == -20.0
 
+
+def test_category_has_sibling_name(db_filled):
+
+    cat_1 = Category.query.filter_by(id=1).one()
+    assert cat_1.has_sibling_name("New Category") is False
+    assert cat_1.has_sibling_name("Main Category IN") is True
+
+    cat_2 = Category.query.filter_by(id=2).one()
+    assert cat_2.has_sibling_name("New Category") is False
+    assert cat_2.has_sibling_name("Main Category SUB1") is True
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
