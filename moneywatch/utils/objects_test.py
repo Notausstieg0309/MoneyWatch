@@ -688,6 +688,30 @@ def test_category_transactions_combined(db_filled, start, end):
     assert cat_7.transactions_combined == transactions_out
 
 
+def test_category_getCategoryPath(db_filled):
+
+    cat_1 = Category.query.filter_by(id=1).one()
+    assert cat_1.getCategoryPath(" > ") == "Main Category IN"
+
+    cat_2 = Category.query.filter_by(id=2).one()
+    assert cat_2.getCategoryPath(" > ") == "Main Category IN > Main Category SUB1"
+
+    cat_3 = Category.query.filter_by(id=3).one()
+    assert cat_3.getCategoryPath(" > ") == "Main Category OUT"
+
+    cat_4 = Category.query.filter_by(id=4).one()
+    assert cat_4.getCategoryPath(" > ") == "Main Category OUT > Main Category SUB1"
+
+    cat_5 = Category.query.filter_by(id=5).one()
+    assert cat_5.getCategoryPath(" > ") == "Main Category OUT > Main Category SUB2"
+
+    cat_6 = Category.query.filter_by(id=6).one()
+    assert cat_6.getCategoryPath(" > ") == "Main Category OUT > Main Category SUB2 > Sub-Sub Category SUBSUB1"
+
+    cat_7 = Category.query.filter_by(id=7).one()
+    assert cat_7.getCategoryPath(" > ") == "Main Category OUT > Main Category SUB3 with overdue"
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
