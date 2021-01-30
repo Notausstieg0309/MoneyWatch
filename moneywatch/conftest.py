@@ -53,7 +53,7 @@ def fixed_date(monkeypatch):
             return self._today_date
 
         @classmethod
-        def set_today(self, value):
-            self._today_date = value
+        def set_today(self, *args, **kwargs):
+            self._today_date = datetime.date(*args, **kwargs)
 
     monkeypatch.setattr(datetime, 'date', fixeddate)

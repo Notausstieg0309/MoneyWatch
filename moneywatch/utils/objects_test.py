@@ -23,11 +23,10 @@ from datetime import timedelta
 
 @pytest.fixture
 def today(fixed_date):
-    new_today = datetime.date(2020, 3, 20)
 
-    datetime.date.set_today(new_today)
+    datetime.date.set_today(2020, 3, 20)
 
-    return new_today
+    return datetime.date.today()
 
 
 @pytest.fixture
