@@ -826,6 +826,36 @@ def test_category_planned_transactions_valuta(db_filled, start, end):
     assert cat_7.planned_transactions_valuta == -20.0
 
 
+def test_category_planned_valuta(db_filled, start, end):
+
+    cat_1 = Category.query.filter_by(id=1).one()
+    cat_1.setTimeframe(start, end)
+    assert cat_1.planned_valuta == 3899.54
+
+    cat_2 = Category.query.filter_by(id=2).one()
+    cat_2.setTimeframe(start, end)
+    assert cat_2.planned_valuta == 29.98
+
+    cat_3 = Category.query.filter_by(id=3).one()
+    cat_3.setTimeframe(start, end)
+    assert cat_3.planned_valuta == -1384.85
+
+    cat_4 = Category.query.filter_by(id=4).one()
+    cat_4.setTimeframe(start, end)
+    assert cat_4.planned_valuta == -744.85
+
+    cat_5 = Category.query.filter_by(id=5).one()
+    cat_5.setTimeframe(start, end)
+    assert cat_5.planned_valuta == -620.0
+
+    cat_6 = Category.query.filter_by(id=6).one()
+    cat_6.setTimeframe(start, end)
+    assert cat_6.planned_valuta == -600.0
+
+    cat_7 = Category.query.filter_by(id=7).one()
+    cat_7.setTimeframe(start, end)
+    assert cat_7.planned_valuta == -20.0
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
