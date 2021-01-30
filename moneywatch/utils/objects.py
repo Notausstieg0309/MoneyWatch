@@ -315,10 +315,13 @@ class Category(db.Model):
         for category in self.childs:
             if category.has_overdued_planned_transactions:
                 result = True
+                break
 
-        for transaction in self.planned_transactions:
-            if transaction.overdue:
-                result = True
+        if result is False:
+            for transaction in self.planned_transactions:
+                if transaction.overdue:
+                    result = True
+                    break
 
         return result
 
