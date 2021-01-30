@@ -35,6 +35,9 @@ def start(today):
     start = datetime.date(year=start.year, month=start.month, day=1)
     return start
 
+@pytest.fixture
+def end():
+    return datetime.date(2020, 3, 31)
 
 @pytest.fixture
 def db_only_account(db):
@@ -604,6 +607,23 @@ def test_category_budget(db_filled):
     cat_7 = Category.query.filter_by(id=7).one()
 
     assert cat_7.budget is None
+
+
+def test_category_transactions_with_childs(db_filled, start, end):
+
+    # Main Category In
+    cat_1 = Category.query.filter_by(id=1).one()
+    cat_1.setTimeframe(start, end)
+    transactions_in = Transaction.query.filter(Transaction.id.in_([1, 2, 7])).all()
+    assert set(cat_1.transactions_with_childs) == set(transactions_in)
+
+    # Main Category Out
+    cat_3 = Category.query.filter_by(id=3).one()
+    cat_3.setTimeframe(start, end)
+    transactions_out = Transaction.query.filter(Transaction.id.in_([3, 4, 5])).all()
+
+    # resulting list is not ordered => compare as set
+    assert set(cat_3.transactions_with_childs) == set(transactions_out)
 
 
 #   ____        __                       _   _             _     _    _                 _ _
