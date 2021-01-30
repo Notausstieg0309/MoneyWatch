@@ -626,6 +626,68 @@ def test_category_transactions_with_childs(db_filled, start, end):
     assert set(cat_3.transactions_with_childs) == set(transactions_out)
 
 
+def test_category_transactions_combined(db_filled, start, end):
+
+    # Main Category In
+    cat_1 = Category.query.filter_by(id=1).one()
+    cat_1.setTimeframe(start, end)
+    transactions_in = Transaction.query.filter(Transaction.id.in_([1, 2])).all()
+    assert cat_1.transactions_combined == transactions_in
+
+    # Sub Category In
+    cat_2 = Category.query.filter_by(id=2).one()
+    cat_2.setTimeframe(start, end)
+    transactions_in = Transaction.query.filter(Transaction.id.in_([7])).all()
+    assert cat_2.transactions_combined == transactions_in
+
+
+    # Main Category Out
+    cat_3 = Category.query.filter_by(id=3).one()
+    cat_3.setTimeframe(start, end)
+    assert cat_3.transactions_combined == []
+
+    # Sub #1  Category Out
+    cat_4 = Category.query.filter_by(id=4).one()
+    cat_4.setTimeframe(start, end)
+    transactions_out = Transaction.query.filter(Transaction.id.in_([3, 4, 5])).order_by(Transaction.date.asc()).all()
+    transactions_out.append(PlannedTransaction(date=datetime.date(2020, 3, 23),
+                                               valuta=-293.29,
+                                               description="Description - Rule 3",
+                                               rule_id=3,
+                                               overdue=False)
+                            )
+    assert cat_4.transactions_combined == transactions_out
+
+    # Sub #2 Category Out
+    cat_5 = Category.query.filter_by(id=5).one()
+    cat_5.setTimeframe(start, end)
+    transactions_out = []
+    transactions_out.append(PlannedTransaction(date=datetime.date(2020, 3, 22),
+                                               valuta=-20.0,
+                                               description="Description - Rule 5",
+                                               rule_id=5,
+                                               overdue=False)
+                            )
+    assert cat_5.transactions_combined == transactions_out
+
+    # Sub #2 Sub Category Out
+    cat_6 = Category.query.filter_by(id=6).one()
+    cat_6.setTimeframe(start, end)
+    assert cat_6.transactions_combined == []
+
+    # Sub #3 Category Out with overdued planned transaction
+    cat_7 = Category.query.filter_by(id=7).one()
+    cat_7.setTimeframe(start, end)
+    transactions_out = []
+    transactions_out.append(PlannedTransaction(date=datetime.date(2020, 3, 14),
+                                               valuta=-20.0,
+                                               description="Description - Rule 6 - Overdue",
+                                               rule_id=6,
+                                               overdue=True)
+                            )
+    assert cat_7.transactions_combined == transactions_out
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __

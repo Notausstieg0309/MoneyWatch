@@ -790,4 +790,7 @@ class PlannedTransaction:
         self.overdue = overdue
 
     def __repr__(self):
-        return self.description + " (" + str(self.valuta) + " € at " + str(self.date) + ")"
+        return "PlannedTransaction(description=%r', valuta=%r, date=%r, rule_id=%r, overdue=%r)" % (self.description, self.valuta, self.date, self.rule_id, self.overdue)
+
+    def __eq__(self, other):
+        return repr(self) == repr(other)
