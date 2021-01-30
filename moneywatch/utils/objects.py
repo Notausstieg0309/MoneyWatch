@@ -486,18 +486,6 @@ class Category(db.Model):
 
         return self._cache["planned_valuta"]
 
-    @property
-    def on_target(self):
-
-        if self.budget != 0 and self.planned_valuta < self.budget:
-            return False
-
-        for category in self.childs or []:
-            if not category.on_target:
-                return False
-
-        return True
-
 
     def has_sibling_name(self, name):
 
