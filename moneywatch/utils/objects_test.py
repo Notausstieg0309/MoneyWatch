@@ -712,6 +712,58 @@ def test_category_getCategoryPath(db_filled):
     assert cat_7.getCategoryPath(" > ") == "Main Category OUT > Main Category SUB3 with overdue"
 
 
+def test_category_getCategoryIdsAndPaths(db_filled):
+
+    cat_1 = Category.query.filter_by(id=1).one()
+    result = [
+        {'id': 1, 'path': 'Main Category IN'},
+        {'id': 2, 'path': 'Main Category IN > Main Category SUB1'},
+    ]
+    assert cat_1.getCategoryIdsAndPaths(" > ") == result
+
+    cat_2 = Category.query.filter_by(id=2).one()
+    result = [
+        {'id': 2, 'path': 'Main Category IN > Main Category SUB1'},
+    ]
+    assert cat_2.getCategoryIdsAndPaths(" > ") == result
+
+
+    cat_3 = Category.query.filter_by(id=3).one()
+    result = [
+        {'id': 3, 'path': 'Main Category OUT'},
+        {'id': 4, 'path': 'Main Category OUT > Main Category SUB1'},
+        {'id': 5, 'path': 'Main Category OUT > Main Category SUB2'},
+        {'id': 6, 'path': 'Main Category OUT > Main Category SUB2 > Sub-Sub Category SUBSUB1'},
+        {'id': 7, 'path': 'Main Category OUT > Main Category SUB3 with overdue'},
+    ]
+    assert cat_3.getCategoryIdsAndPaths(" > ") == result
+
+    cat_4 = Category.query.filter_by(id=4).one()
+    result = [
+        {'id': 4, 'path': 'Main Category OUT > Main Category SUB1'},
+    ]
+    assert cat_4.getCategoryIdsAndPaths(" > ") == result
+
+    cat_5 = Category.query.filter_by(id=5).one()
+    result = [
+        {'id': 5, 'path': 'Main Category OUT > Main Category SUB2'},
+        {'id': 6, 'path': 'Main Category OUT > Main Category SUB2 > Sub-Sub Category SUBSUB1'},
+    ]
+    assert cat_5.getCategoryIdsAndPaths(" > ") == result
+
+    cat_6 = Category.query.filter_by(id=6).one()
+    result = [
+        {'id': 6, 'path': 'Main Category OUT > Main Category SUB2 > Sub-Sub Category SUBSUB1'},
+    ]
+    assert cat_6.getCategoryIdsAndPaths(" > ") == result
+
+    cat_7 = Category.query.filter_by(id=7).one()
+    result = [
+        {'id': 7, 'path': 'Main Category OUT > Main Category SUB3 with overdue'},
+    ]
+    assert cat_7.getCategoryIdsAndPaths(" > ") == result
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
