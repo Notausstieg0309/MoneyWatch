@@ -62,22 +62,22 @@ def db_filled(db, today, start):
     cat_in_main = Category(id=1, name="Main Category IN", type="in")
     db.session.add(cat_in_main)
 
-    cat_in_sub1 = Category(id=2, name="Main Category SUB1", type="in", parent_id=None)
+    cat_in_sub1 = Category(id=2, name="Main Category SUB1", type="in", parent_id=cat_in_main.id)
     db.session.add(cat_in_sub1)
 
     cat_out_main = Category(id=3, name="Main Category OUT", type="out", parent_id=None)
     db.session.add(cat_out_main)
 
-    cat_out_sub1 = Category(id=4, name="Main Category SUB1", type="out", parent_id=None)
+    cat_out_sub1 = Category(id=4, name="Main Category SUB1", type="out", parent_id=cat_out_main.id)
     db.session.add(cat_out_sub1)
 
-    cat_out_sub2 = Category(id=5, name="Main Category SUB2", type="out", parent_id=None)
+    cat_out_sub2 = Category(id=5, name="Main Category SUB2", type="out", parent_id=cat_out_main.id)
     db.session.add(cat_out_sub2)
 
     cat_out_subsub1 = Category(id=6, name="Sub-Sub Category SUBSUB1", budget_monthly=200, type="out", parent_id=cat_out_sub2.id)
     db.session.add(cat_out_subsub1)
 
-    cat_out_sub3 = Category(id=7, name="Main Category SUB3 with overdue", type="out", parent_id=None)
+    cat_out_sub3 = Category(id=7, name="Main Category SUB3 with overdue", type="out", parent_id=cat_out_main.id)
     db.session.add(cat_out_sub3)
 
     # Rules
@@ -232,7 +232,7 @@ def test_account_categories_in(db_filled):
 
     categories = account.categories("in")
 
-    result = Category.query.filter(Category.id.in_([1, 2])).all()
+    result = Category.query.filter(Category.id.in_([1])).all()
 
     assert categories == result
 
@@ -242,8 +242,7 @@ def test_account_categories_out(db_filled):
 
     categories = account.categories("out")
 
-    # category 6 is a subcategory and therefore should not appear here
-    result = Category.query.filter(Category.id.in_([3, 4, 5, 7])).all()
+    result = Category.query.filter(Category.id.in_([3])).all()
 
     assert categories == result
 
@@ -560,18 +559,20 @@ def test_category_regular_rules_done(db_only_account, today):
 
 def test_category_has_overdued_planned_transactions(db_filled, start, today):
 
-    categories_no_overdue = Category.query.filter(Category.id.in_([1, 2, 3, 4, 5, 6])).all()
+    categories_no_overdue = Category.query.filter(Category.id.in_([1, 2, 4, 5, 6])).all()
 
-    assert len(categories_no_overdue) == 6
+    assert len(categories_no_overdue) == 5
 
     for category in categories_no_overdue:
         category.setTimeframe(start, today)
         assert category.has_overdued_planned_transactions is False
 
-    category_with_overdue = Category.query.filter_by(id=7).one()
-    category_with_overdue.setTimeframe(start, today)
+    categories_with_overdue = Category.query.filter(Category.id.in_([3, 7])).all()
 
-    assert category_with_overdue.has_overdued_planned_transactions is True
+    for category in categories_with_overdue:
+        category.setTimeframe(start, today)
+
+        assert category.has_overdued_planned_transactions is True
 
 
 
