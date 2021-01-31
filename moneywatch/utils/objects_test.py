@@ -1078,6 +1078,40 @@ def test_rule_assign_transaction_ids(db_filled):
     assert trans_8.rule_id == 7
 
 
+@pytest.mark.parametrize("pattern,result", [
+    ("PATTERN", True),
+    ("PATTERN$", True),
+    ("Text", True),
+    ("TEXT", True),
+    ("TEST", False),
+    (".*TEST", True),
+    ("BOOKING", True),
+    ("^BOOKING", True),
+    ("^TEXT", False),
+    ("TEXT 12345", True),
+    ("TEXT.*TEST PATTERN", True),
+])
+def test_rule_match_transaction(db_filled, today, pattern, result):
+
+    trans = Transaction(id=10,
+                        full_text="BOOKING TEXT  12345 //TEST PATTERN",
+                        valuta=-100,
+                        date=today,
+                        description="Transaction 1",
+                        account_id=1)
+
+    rule = Rule(id=7, account_id=1, name="Rule 7", type="in", category_id=2, pattern=pattern, description="Description - Rule 7")
+
+    # missmatch of type (in/out)
+    assert rule.match_transaction(trans) is False
+
+    # correct type (out)
+    trans.valuta = 100.0
+    assert rule.match_transaction(trans) == result
+
+
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
