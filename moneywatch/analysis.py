@@ -145,7 +145,7 @@ def getSumByRule(start, end, interval, rule_id):
 
     rule = Rule.query.filter_by(id=rule_id).one()
 
-    transactions = rule.getTransactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
+    transactions = rule.transactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
 
     result.update(createResultForTransactions(interval, transactions, highlight_links=True))
 

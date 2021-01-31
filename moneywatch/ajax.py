@@ -34,7 +34,7 @@ def transaction_chart_data(transaction_id):
     else:
         months = 12
 
-    transactions = rule.getTransactions(get_first_day_of_month(date=substract_months(transaction_date, months)), get_last_day_of_month(date=add_months(transaction_date, months)))
+    transactions = rule.transactions(get_first_day_of_month(date=substract_months(transaction_date, months)), get_last_day_of_month(date=add_months(transaction_date, months)))
 
     result = {
         "type": initial_transaction.type,
