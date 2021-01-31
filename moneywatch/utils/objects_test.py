@@ -134,7 +134,7 @@ def db_filled(db, today, start):
     trans_3 = Transaction(id=3,
                           full_text="BOOKING TEXT PATTERN3 #3",
                           valuta=-35.78,
-                          date=start + timedelta(days=3),
+                          date=start + timedelta(days=2),
                           description="Transaction 3",
                           rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
@@ -145,7 +145,7 @@ def db_filled(db, today, start):
     trans_4 = Transaction(id=4,
                           full_text="BOOKING TEXT PATTERN3 #4",
                           valuta=-207.89,
-                          date=start + timedelta(days=2),
+                          date=start + timedelta(days=3),
                           description="Transaction 4",
                           rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
@@ -203,7 +203,7 @@ def test_account_oldest_transaction(db_filled):
 
     oldest_transaction = account.oldest_transaction
 
-    assert oldest_transaction.id == 4
+    assert oldest_transaction.id == 3
 
 
 def test_account_latest_transaction(db_filled):
@@ -334,7 +334,7 @@ def test_account_transactions(db_filled, start, today):
 
     assert len(transactions) > 0
     assert all(isinstance(el, Transaction) for el in transactions)
-    assert transactions[0].id == 4
+    assert transactions[0].id == 3
     assert transactions[-1].id == 2
 
 
@@ -378,7 +378,7 @@ def test_account_transactions_by_type_out(db_filled, start, today):
 
     assert len(transactions) > 0
     assert all(isinstance(el, Transaction) for el in transactions)
-    assert transactions[0].id == 4
+    assert transactions[0].id == 3
     assert transactions[-1].id == 5
 
     transactions = account.transactions_by_type("out", start + timedelta(days=15), today - timedelta(days=20))
@@ -925,6 +925,20 @@ def test_rule_transactions(db_filled, start, end, today):
     assert rule_6.transactions(None, end) == transactions_result
     assert rule_6.transactions(start, end) == transactions_result
     assert rule_6.transactions(today, end) == []
+
+
+def test_rule_latest_transaction(db_filled):
+
+    rule_3 = Rule.query.filter_by(id=3).one()
+
+    transactions_result = Transaction.query.filter_by(id=5).one()
+    assert rule_3.latest_transaction() == transactions_result
+
+    transactions_result = Transaction.query.filter_by(id=4).one()
+    assert rule_3.latest_transaction(5) == transactions_result
+
+    transactions_result = Transaction.query.filter_by(id=3).one()
+    assert rule_3.latest_transaction(4) == transactions_result
 
 
 #   ____        __                       _   _             _     _    _                 _ _
