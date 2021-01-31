@@ -868,6 +868,65 @@ def test_category_has_sibling_name(db_filled):
     assert cat_2.has_sibling_name("Main Category SUB1") is True
 
 
+#    _____       _
+#   |  __ \     | |
+#   | |__) |   _| | ___
+#   |  _  / | | | |/ _ \
+#   | | \ \ |_| | |  __/
+#   |_|  \_\__,_|_|\___|
+#
+#
+
+def test_rule_transactions(db_filled, start, end, today):
+    rule_1 = Rule.query.filter_by(id=1).one()
+    transactions_result = Transaction.query.filter(Transaction.id.in_([1, 2])).order_by(Transaction.date.asc()).all()
+    assert rule_1.transactions() == transactions_result
+    assert rule_1.transactions(start) == transactions_result
+    assert rule_1.transactions(None, end) == transactions_result
+    assert rule_1.transactions(start, end) == transactions_result
+    assert rule_1.transactions(today, end) == []
+
+    rule_2 = Rule.query.filter_by(id=2).one()
+    transactions_result = Transaction.query.filter(Transaction.id.in_([7])).order_by(Transaction.date.asc()).all()
+    assert rule_2.transactions() == transactions_result
+    assert rule_2.transactions(start) == transactions_result
+    assert rule_2.transactions(None, end) == transactions_result
+    assert rule_2.transactions(start, end) == transactions_result
+    assert rule_2.transactions(today, end) == []
+
+    rule_3 = Rule.query.filter_by(id=3).one()
+    transactions_result = Transaction.query.filter(Transaction.id.in_([3, 4, 5])).order_by(Transaction.date.asc()).all()
+    assert rule_3.transactions() == transactions_result
+    assert rule_3.transactions(start) == transactions_result
+    assert rule_3.transactions(None, end) == transactions_result
+    assert rule_3.transactions(start, end) == transactions_result
+    assert rule_3.transactions(today, end) == []
+
+    rule_4 = Rule.query.filter_by(id=4).one()
+    transactions_result = []
+    assert rule_4.transactions() == transactions_result
+    assert rule_4.transactions(start, end) == transactions_result
+    assert rule_4.transactions(None, end) == transactions_result
+    assert rule_4.transactions(start, end) == transactions_result
+    assert rule_4.transactions(today, end) == []
+
+    rule_5 = Rule.query.filter_by(id=5).one()
+    transactions_result = []
+    assert rule_5.transactions() == transactions_result
+    assert rule_5.transactions(start, end) == transactions_result
+    assert rule_5.transactions(None, end) == transactions_result
+    assert rule_5.transactions(start, end) == transactions_result
+    assert rule_5.transactions(today, end) == []
+
+    rule_6 = Rule.query.filter_by(id=6).one()
+    transactions_result = []
+    assert rule_6.transactions() == transactions_result
+    assert rule_6.transactions(start, end) == transactions_result
+    assert rule_6.transactions(None, end) == transactions_result
+    assert rule_6.transactions(start, end) == transactions_result
+    assert rule_6.transactions(today, end) == []
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
