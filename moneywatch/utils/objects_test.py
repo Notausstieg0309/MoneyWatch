@@ -1060,8 +1060,11 @@ def test_rule_update_next_due(db_filled, today):
 def test_rule_assign_transaction_ids(db_filled):
     db = db_filled
 
-    trans_7 = Transaction.query.filter_by(id=7).one()
-    trans_8 = Transaction.query.filter_by(id=8).one()
+    trans_7 = Transaction.query.filter_by(id=7).one() # should NOT be updated
+    trans_8 = Transaction.query.filter_by(id=8).one() # should be updated
+
+    rule_2 = Rule.query.filter_by(id=2).one()
+
     assert trans_7.rule_id == 2
     assert trans_8.rule_id is None
 
@@ -1070,11 +1073,23 @@ def test_rule_assign_transaction_ids(db_filled):
     db.session.commit()
 
     assert trans_7.rule_id == 2
+    assert trans_7.rule is rule_2
+
     assert trans_8.rule_id is None
+    assert trans_8.rule is None
 
     rule_7.assign_transaction_ids([7, 8])
 
     assert trans_7.rule_id == 2
+    assert trans_7.rule is rule_2
+
+    assert trans_8.rule is rule_7
+    assert trans_8.rule_id is None
+
+    # rule_id update takes place after commit
+    db.session.commit()
+
+    assert trans_8.rule is rule_7
     assert trans_8.rule_id == 7
 
 

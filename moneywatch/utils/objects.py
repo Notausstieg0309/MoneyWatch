@@ -577,7 +577,7 @@ class Rule(db.Model):
         for transaction in transactions:
             if not self.match_transaction(transaction):
                 continue
-            transaction.rule_id = self.id
+            transaction.rule = self
             transaction.category_id = self.category_id
 
 
@@ -701,6 +701,7 @@ class Transaction(db.Model):
 
         trend = round(self.valuta - latest_transaction.valuta, 2)
         self.trend = trend if trend != 0 else None
+
         if self.trend is not None:
             current_app.logger.debug("calculated trend '%.2f' for transaction '%s' (%s) from %s based on last transaction from %s (%.2f)", self.trend, self.description, self.valuta, self.date, latest_transaction.date, latest_transaction.valuta)
 
