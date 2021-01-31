@@ -1,6 +1,6 @@
 
 from .objects import Account, Category, Rule, Transaction, PlannedTransaction
-
+from .exceptions import MultipleRuleMatchError
 import pytest
 
 import datetime
@@ -1187,6 +1187,58 @@ def test_transaction_complete(db_filled):
 
     assert message.complete is True
 
+
+def test_transaction_check_rule_matching_multiple_rule_match(db_filled):
+
+    db = db_filled
+
+    rule = Rule(id=7, account_id=1, name="Rule 7", type="out", category_id=4, pattern="PATTERN3", description="Description - Rule Multiple Match")
+    rule_3 = Rule.query.filter_by(id=3).one()
+
+    db.session.add(rule)
+    db.session.commit()
+
+    trans = Transaction(id=10,
+                        full_text="BOOKING TEXT PATTERN3 MULTIPLE MATCH",
+                        valuta=-100,
+                        date=today,
+                        account_id=1)
+
+    with pytest.raises(MultipleRuleMatchError) as e_info:
+        trans.check_rule_matching()
+
+    assert e_info.type is MultipleRuleMatchError
+    assert e_info.value.transaction is trans
+    assert set(e_info.value.rules) == set([rule, rule_3])
+    assert e_info.value.index is None
+
+
+def test_transaction_check_rule_matching_false(db_filled, today):
+
+    db = db_filled
+
+    # transaction would be matched by Rule(id=3) but it should not match
+    # due to rule_id=False
+    trans = Transaction(id=10,
+                        full_text="BOOKING TEXT PATTERN3 SHOULD NOT MATCH",
+                        valuta=-100,
+                        date=today,
+                        rule_id=False,
+                        account_id=1)
+
+    db.session.add(trans)
+
+    assert trans.rule_id is False
+    assert trans.rule is None
+    assert trans.description is None
+    assert trans.category_id is None
+
+    trans.check_rule_matching()
+
+    assert trans.rule_id is None
+    assert trans.rule is None
+    assert trans.description is None
+    assert trans.category_id is None
 
 
 #   ____        __                       _   _             _     _    _                 _ _
