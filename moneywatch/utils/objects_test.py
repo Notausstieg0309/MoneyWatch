@@ -1065,7 +1065,7 @@ def test_rule_assign_transaction_ids(db_filled, today):
     assert trans_7.rule_id == 2
     assert trans_8.rule_id is None
 
-    rule_7 = Rule(id=7, name="Rule 7", type="out", category_id=2, pattern="NO PATTERN", description="Description - Rule 7")
+    rule_7 = Rule(id=7, account_id=1, name="Rule 7", type="in", category_id=2, pattern="NO PATTERN", description="Description - Rule 7")
     db.session.add(rule_7)
     db.session.commit()
 

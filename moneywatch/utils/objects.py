@@ -595,7 +595,7 @@ class Rule(db.Model):
 
         pattern = r'(?:^\s*|\s+)' + pattern + r'(?:\s+|\s*$)'
 
-        if re.search(pattern, transaction.full_text, re.IGNORECASE):
+        if transaction.account_id == self.account_id and transaction.type == self.type and re.search(pattern, transaction.full_text, re.IGNORECASE):
             return True
         else:
             return False
