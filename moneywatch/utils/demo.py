@@ -283,8 +283,8 @@ def create_transactions(items, offset=None):
             if "account_id" not in item:
                 item["account_id"] = ACCOUNT_DEFAULT
             item = Transaction(**item)
-            item.check_rule_matching()
             db.session.add(item)
+            item.check_rule_matching()
         else:
             resolve_account_iban(item)
             importer_items.append(item)

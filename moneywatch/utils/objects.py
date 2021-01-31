@@ -661,43 +661,48 @@ class Transaction(db.Model):
                     founded_rules.append(rule)
 
             if len(founded_rules) == 1:
-                self.rule_id = founded_rules[0].id
+                self.rule = founded_rules[0]
 
             elif len(founded_rules) > 1:
                 raise MultipleRuleMatchError(self, founded_rules)
 
-            if self.rule_id is not None:
+            if self.rule is not None:
 
                 if self.description is None:
-                    self.description = founded_rules[0].description
+                    self.description = self.rule.description
 
                 if self.category_id is None:
-                    self.category_id = founded_rules[0].category_id
-
-        # rule is set (manual by multiple rule match form or found by ruleset search)
-        if self.rule_id is not None:
-            rule = Rule.query.filter_by(id=self.rule_id).one_or_none()
-
-            if rule is None:
-                return
-
-            # update rule next due
-            rule.update_next_due(self.date, self.valuta)
-
-            # calculate trend compared to the latest transaction in the database
-            if rule.regular:
-
-                latest_transaction = rule.latest_transaction(self.id)
-
-                if latest_transaction is not None:
-                    trend = round(self.valuta - latest_transaction.valuta, 2)
-                    self.trend = trend if trend != 0 else None
-                    if self.trend is not None:
-                        current_app.logger.debug("calculated trend '%.2f' for transaction '%s' (%s) from %s based on last transaction from %s (%.2f)", self.trend, self.description, self.valuta, self.date, latest_transaction.date, latest_transaction.valuta)
+                    self.category_id = self.rule.category_id
 
         # if multiple rule match was happened and user selected "None" (value: False)
         if self.rule_id is False:
             self.rule_id = None
+            self.rule = None
+
+        # rule is set (manual by multiple rule match form or found by ruleset search)
+        elif self.rule is not None:
+
+            # update rule next due
+            self.rule.update_next_due(self.date, self.valuta)
+
+            # calculate trend compared to the latest transaction in the database
+            self._calculate_trend()
+
+
+    def _calculate_trend(self):
+
+        if self.rule is None or not self.rule.regular:
+            return
+
+        latest_transaction = self.rule.latest_transaction(self.id)
+
+        if latest_transaction is None:
+            return
+
+        trend = round(self.valuta - latest_transaction.valuta, 2)
+        self.trend = trend if trend != 0 else None
+        if self.trend is not None:
+            current_app.logger.debug("calculated trend '%.2f' for transaction '%s' (%s) from %s based on last transaction from %s (%.2f)", self.trend, self.description, self.valuta, self.date, latest_transaction.date, latest_transaction.valuta)
 
 
     @property
