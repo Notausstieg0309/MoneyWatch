@@ -1110,6 +1110,36 @@ def test_rule_match_transaction(db_filled, today, pattern, result):
     assert rule.match_transaction(trans) == result
 
 
+#    _______                             _   _
+#   |__   __|                           | | (_)
+#      | |_ __ __ _ _ __  ___  __ _  ___| |_ _  ___  _ __
+#      | | '__/ _` | '_ \/ __|/ _` |/ __| __| |/ _ \| '_ \
+#      | | | | (_| | | | \__ \ (_| | (__| |_| | (_) | | | |
+#      |_|_|  \__,_|_| |_|___/\__,_|\___|\__|_|\___/|_| |_|
+#
+#
+
+@pytest.mark.parametrize("trans_type,ids", [
+   ("in", [1, 2, 7, 8]),
+   ("out", [3, 4, 5]),
+   ("message", [6]),
+])
+def test_transaction_type(db_filled, trans_type, ids):
+
+    transactions = Transaction.query.filter_by(type=trans_type).all()
+    expected = Transaction.query.filter(Transaction.id.in_(ids)).all()
+
+    assert set(transactions) == set(expected)
+
+    for transaction in transactions:
+        assert transaction.type == trans_type
+
+    transactions = Transaction.query.filter(Transaction.type == trans_type).all()
+
+    assert set(transactions) == set(expected)
+
+    for transaction in transactions:
+        assert transaction.type == trans_type
 
 
 #   ____        __                       _   _             _     _    _                 _ _
