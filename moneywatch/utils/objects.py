@@ -527,7 +527,7 @@ class Rule(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
     category = db.relationship("Category", back_populates="rules")
 
-    transactions = db.relationship("Transaction", back_populates="rule")
+    _transactions = db.relationship("Transaction", back_populates="rule")
 
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', ondelete="CASCADE"), server_default="1", nullable=False)
     account = db.relationship("Account", back_populates="rules")
@@ -623,7 +623,7 @@ class Transaction(db.Model):
     category = db.relationship("Category", back_populates="_transactions")
 
     rule_id = db.Column(db.Integer, db.ForeignKey('ruleset.id', ondelete="SET NULL"), nullable=True, index=True)
-    rule = db.relationship("Rule", back_populates="transactions")
+    rule = db.relationship("Rule", back_populates="_transactions")
 
     trend = db.Column(db.Float, unique=False, nullable=True)
 
