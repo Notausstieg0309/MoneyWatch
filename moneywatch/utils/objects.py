@@ -643,8 +643,8 @@ class Transaction(db.Model):
 
 
     @type.expression
-    def type_expr(self):
-        return fn.case([(self.valuta > 0, "in"), (self.valuta < 0, "out")], else_="message")
+    def type(cls):
+        return fn.case([(cls.valuta > 0, "in"), (cls.valuta < 0, "out")], else_="message")
 
 
     @property
