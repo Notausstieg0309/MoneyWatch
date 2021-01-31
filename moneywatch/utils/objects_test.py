@@ -1057,7 +1057,7 @@ def test_rule_update_next_due(db_filled, today):
     assert rule_6.next_valuta == 100.0
 
 
-def test_rule_assign_transaction_ids(db_filled, today):
+def test_rule_assign_transaction_ids(db_filled):
     db = db_filled
 
     trans_7 = Transaction.query.filter_by(id=7).one()
