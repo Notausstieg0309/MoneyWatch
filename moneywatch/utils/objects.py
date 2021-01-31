@@ -582,6 +582,8 @@ class Rule(db.Model):
         transactions = Transaction.query.filter(Transaction.id.in_(ids)).all()
 
         for transaction in transactions:
+            if not self.match_transaction(transaction):
+                continue
             transaction.rule_id = self.id
             transaction.category_id = self.category_id
 
