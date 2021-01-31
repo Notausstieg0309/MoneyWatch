@@ -1170,7 +1170,7 @@ def test_transaction_complete(db_filled):
 
     message.description = True
 
-    assert trans.complete is True
+    assert message.complete is True
 
 
 
