@@ -642,9 +642,9 @@ class Transaction(db.Model):
 
     @property
     def complete(self):
-        if self.valuta != 0 and self.description and self.category_id:
+        if self.type != "message" and self.description and self.category_id:
             return True
-        elif self.valuta == 0 and self.description is True:
+        elif self.type == "message" and self.description is True:
             return True
         return False
 
