@@ -184,6 +184,16 @@ def db_filled(db, today, start):
 
     db.session.add(trans_7)
 
+    trans_8 = Transaction(id=8,
+                          full_text="BOOKING TEXT NO PATTERN #1",
+                          valuta=40.45,
+                          date=start + timedelta(days=19),
+                          description="Transaction 8",
+                          category_id=cat_in_sub1.id,
+                          account_id=account.id)
+
+    db.session.add(trans_8)
+
     db.session.commit()
 
     return db
@@ -315,7 +325,7 @@ def test_account_transactions(db_filled, start, today):
 
     transactions = account.transactions()
 
-    assert len(transactions) == 7
+    assert len(transactions) == 8
     assert all(isinstance(el, Transaction) for el in transactions)
 
     transactions = account.transactions(start, start + timedelta(days=14))
@@ -355,7 +365,7 @@ def test_account_transactions_by_type_in(db_filled):
     account = Account.query.filter_by(id=1).one()
 
     result = account.transactions_by_type("in")
-    expected = Transaction.query.filter(Transaction.id.in_([1, 2, 7])).order_by(Transaction.date.asc()).all()
+    expected = Transaction.query.filter(Transaction.id.in_([1, 2, 7, 8])).order_by(Transaction.date.asc()).all()
 
     assert result == expected
 
@@ -471,8 +481,9 @@ def test_category_planned_transactions_monthly_without_existing(db_filled, start
     assert len(planned_transactions) == 1
     assert planned_transactions[0].date == datetime.date(2020, 4, 4)
     assert planned_transactions[0].valuta == 29.98
-    assert len(transactions) == 1
+    assert len(transactions) == 2
     assert transactions[0].id == 7
+    assert transactions[1].id == 8
 
 
 def test_category_planned_transactions_quarterly(db_filled, today):
@@ -614,7 +625,7 @@ def test_category_transactions_with_childs(db_filled, start, end):
     # Main Category In
     cat_1 = Category.query.filter_by(id=1).one()
     cat_1.setTimeframe(start, end)
-    transactions_in = Transaction.query.filter(Transaction.id.in_([1, 2, 7])).all()
+    transactions_in = Transaction.query.filter(Transaction.id.in_([1, 2, 7, 8])).all()
     assert set(cat_1.transactions_with_childs) == set(transactions_in)
 
     # Main Category Out
@@ -637,7 +648,7 @@ def test_category_transactions_combined(db_filled, start, end):
     # Sub Category In
     cat_2 = Category.query.filter_by(id=2).one()
     cat_2.setTimeframe(start, end)
-    transactions_in = Transaction.query.filter(Transaction.id.in_([7])).all()
+    transactions_in = Transaction.query.filter(Transaction.id.in_([7, 8])).all()
     assert cat_2.transactions_combined == transactions_in
 
 
@@ -768,11 +779,11 @@ def test_category_valuta(db_filled, start, end):
 
     cat_1 = Category.query.filter_by(id=1).one()
     cat_1.setTimeframe(start, end)
-    assert cat_1.valuta == 3899.54
+    assert cat_1.valuta == 3939.99
 
     cat_2 = Category.query.filter_by(id=2).one()
     cat_2.setTimeframe(start, end)
-    assert cat_2.valuta == 29.98
+    assert cat_2.valuta == 70.43
 
     cat_3 = Category.query.filter_by(id=3).one()
     cat_3.setTimeframe(start, end)
@@ -830,11 +841,11 @@ def test_category_planned_valuta(db_filled, start, end):
 
     cat_1 = Category.query.filter_by(id=1).one()
     cat_1.setTimeframe(start, end)
-    assert cat_1.planned_valuta == 3899.54
+    assert cat_1.planned_valuta == 3939.99
 
     cat_2 = Category.query.filter_by(id=2).one()
     cat_2.setTimeframe(start, end)
-    assert cat_2.planned_valuta == 29.98
+    assert cat_2.planned_valuta == 70.43
 
     cat_3 = Category.query.filter_by(id=3).one()
     cat_3.setTimeframe(start, end)
@@ -1046,6 +1057,27 @@ def test_rule_update_next_due(db_filled, today):
     assert rule_6.next_valuta == 100.0
 
 
+def test_rule_assign_transaction_ids(db_filled, today):
+    db = db_filled
+
+    trans_7 = Transaction.query.filter_by(id=7).one()
+    trans_8 = Transaction.query.filter_by(id=8).one()
+    assert trans_7.rule_id == 2
+    assert trans_8.rule_id is None
+
+    rule_7 = Rule(id=7, name="Rule 7", type="out", category_id=2, pattern="NO PATTERN", description="Description - Rule 7")
+    db.session.add(rule_7)
+    db.session.commit()
+
+    assert trans_7.rule_id == 2
+    assert trans_8.rule_id is None
+
+    rule_7.assign_transaction_ids([7, 8])
+
+    assert trans_7.rule_id == 2
+    assert trans_8.rule_id == 7
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
@@ -1058,4 +1090,4 @@ def test_rule_update_next_due(db_filled, today):
 def test_before_attach_handler_account_balance(db_filled):
     account = Account.query.first()
 
-    assert account.balance == 3447.98
+    assert account.balance == 3488.43
