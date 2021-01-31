@@ -28,8 +28,8 @@ def db(app):
     with app.app_context():
         db.create_all()
         yield db
-        db.drop_all()
         db.session.commit()
+        db.drop_all()
 
 
 

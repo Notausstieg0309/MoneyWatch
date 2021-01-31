@@ -965,6 +965,87 @@ def test_rule_oldest_transaction(db_filled):
     assert rule_6.oldest_transaction is None
 
 
+def test_rule_update_next_due(db_filled, today):
+
+    # Rule 1 (non regular)
+    rule_1 = Rule.query.filter_by(id=1).one()
+
+    assert rule_1.regular is None
+    assert rule_1.next_due is None
+    assert rule_1.next_valuta is None
+
+    rule_1.update_next_due(today, 100.0)
+
+    assert rule_1.regular is None
+    assert rule_1.next_due is None
+    assert rule_1.next_valuta is None
+
+    # Rule 2 (monthly)
+    rule_2 = Rule.query.filter_by(id=2).one()
+
+    assert rule_2.regular == 1
+    assert rule_2.next_due == datetime.date(2020, 4, 4)
+    assert rule_2.next_valuta == 29.98
+
+    rule_2.update_next_due(today, 100.0)
+
+    assert rule_2.regular == 1
+    assert rule_2.next_due == datetime.date(2020, 4, 20)
+    assert rule_2.next_valuta == 100.0
+
+    # Rule 3 (quarterly)
+    rule_3 = Rule.query.filter_by(id=3).one()
+
+    assert rule_3.regular == 3
+    assert rule_3.next_due == datetime.date(2020, 3, 23)
+    assert rule_3.next_valuta == 293.29
+
+    rule_3.update_next_due(today, 100.0)
+
+    assert rule_3.regular == 3
+    assert rule_3.next_due == datetime.date(2020, 6, 20)
+    assert rule_3.next_valuta == 100.0
+
+    # Rule 4 (non regular)
+    rule_4 = Rule.query.filter_by(id=4).one()
+
+    assert rule_4.regular is None
+    assert rule_4.next_due is None
+    assert rule_4.next_valuta is None
+
+    rule_4.update_next_due(today, 100.0)
+
+    assert rule_4.regular is None
+    assert rule_4.next_due is None
+    assert rule_4.next_valuta is None
+
+    # Rule 5 (monthly)
+    rule_5 = Rule.query.filter_by(id=5).one()
+
+    assert rule_5.regular == 1
+    assert rule_5.next_due == datetime.date(2020, 3, 22)
+    assert rule_5.next_valuta == 20.0
+
+    rule_5.update_next_due(today, 100.0)
+
+    assert rule_5.regular == 1
+    assert rule_5.next_due == datetime.date(2020, 4, 20)
+    assert rule_5.next_valuta == 100.0
+
+    # Rule 6 (monthly / overdued)
+    rule_6 = Rule.query.filter_by(id=6).one()
+
+    assert rule_6.regular == 1
+    assert rule_6.next_due == datetime.date(2020, 3, 14)
+    assert rule_6.next_valuta == 20.0
+
+    rule_6.update_next_due(today, 100.0)
+
+    assert rule_6.regular == 1
+    assert rule_6.next_due == datetime.date(2020, 4, 20)
+    assert rule_6.next_valuta == 100.0
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
