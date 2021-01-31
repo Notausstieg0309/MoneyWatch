@@ -129,8 +129,6 @@ def test_get_last_day_of_halfyear(year, half, expected):
     assert utils.get_last_day_of_halfyear(year, half) == expected
 
 
-
-
 # get_number_of_months()
 @pytest.mark.parametrize("start,end,expected", [
     (None, None, 1),

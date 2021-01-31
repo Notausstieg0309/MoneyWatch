@@ -648,6 +648,7 @@ class Transaction(db.Model):
             return True
         return False
 
+
     def check_rule_matching(self):
         # if no rule is given (from multiple rule match form), check ruleset...
         if self.type != "message" and self.rule_id is None:

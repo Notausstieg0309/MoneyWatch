@@ -35,9 +35,11 @@ def start(today):
     start = datetime.date(year=start.year, month=start.month, day=1)
     return start
 
+
 @pytest.fixture
 def end():
     return datetime.date(2020, 3, 31)
+
 
 @pytest.fixture
 def db_only_account(db):
@@ -1060,8 +1062,8 @@ def test_rule_update_next_due(db_filled, today):
 def test_rule_assign_transaction_ids(db_filled):
     db = db_filled
 
-    trans_7 = Transaction.query.filter_by(id=7).one() # should NOT be updated
-    trans_8 = Transaction.query.filter_by(id=8).one() # should be updated
+    trans_7 = Transaction.query.filter_by(id=7).one()  # should NOT be updated
+    trans_8 = Transaction.query.filter_by(id=8).one()  # should be updated
 
     rule_2 = Rule.query.filter_by(id=2).one()
 
@@ -1135,9 +1137,9 @@ def test_rule_match_transaction(db_filled, today, pattern, result):
 #
 
 @pytest.mark.parametrize("trans_type,ids", [
-   ("in", [1, 2, 7, 8]),
-   ("out", [3, 4, 5]),
-   ("message", [6]),
+    ("in", [1, 2, 7, 8]),
+    ("out", [3, 4, 5]),
+    ("message", [6]),
 ])
 def test_transaction_type(db_filled, trans_type, ids):
 
