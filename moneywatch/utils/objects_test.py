@@ -1142,6 +1142,38 @@ def test_transaction_type(db_filled, trans_type, ids):
         assert transaction.type == trans_type
 
 
+def test_transaction_complete(db_filled):
+
+    trans = Transaction(id=10,
+                        full_text="BOOKING TEXT  12345 //TEST PATTERN",
+                        valuta=-100,
+                        date=today,
+                        account_id=1)
+
+    assert trans.complete is False
+
+    trans.description = "Description"
+
+    assert trans.complete is False
+
+    trans.category_id = 1
+
+    assert trans.complete is True
+
+    message = Transaction(id=11,
+                          full_text="BOOKING TEXT  12345 //TEST PATTERN",
+                          valuta=0.0,
+                          date=today,
+                          account_id=1)
+
+    assert message.complete is False
+
+    message.description = True
+
+    assert trans.complete is True
+
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
