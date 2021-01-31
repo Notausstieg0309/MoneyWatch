@@ -941,6 +941,30 @@ def test_rule_latest_transaction(db_filled):
     assert rule_3.latest_transaction(4) == transactions_result
 
 
+def test_rule_oldest_transaction(db_filled):
+
+    rule_1 = Rule.query.filter_by(id=1).one()
+    transactions_result = Transaction.query.filter_by(id=1).one()
+    assert rule_1.oldest_transaction == transactions_result
+
+    rule_2 = Rule.query.filter_by(id=2).one()
+    transactions_result = Transaction.query.filter_by(id=7).one()
+    assert rule_2.oldest_transaction == transactions_result
+
+    rule_3 = Rule.query.filter_by(id=3).one()
+    transactions_result = Transaction.query.filter_by(id=3).one()
+    assert rule_3.oldest_transaction == transactions_result
+
+    rule_4 = Rule.query.filter_by(id=4).one()
+    assert rule_4.oldest_transaction is None
+
+    rule_5 = Rule.query.filter_by(id=5).one()
+    assert rule_5.oldest_transaction is None
+
+    rule_6 = Rule.query.filter_by(id=6).one()
+    assert rule_6.oldest_transaction is None
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
