@@ -84,6 +84,7 @@ def add(account_id, rule_type):
             item["pattern"] = pattern
             item["description"] = description
             item["category_id"] = category_id
+            item["account_id"] = account.id
             item["regular"] = regular
 
             item["next_due"] = next_due
