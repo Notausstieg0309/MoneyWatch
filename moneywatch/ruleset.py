@@ -23,7 +23,10 @@ def index(account_id):
 @bp.route('/<int:account_id>/ruleset/add/<string:rule_type>/', methods=('GET', 'POST'))
 def add(account_id, rule_type):
 
-    account = Account.query.filter_by(id=account_id).one()
+    account = Account.query.filter_by(id=account_id).one_or_none()
+
+    if account is None:
+        abort(404, "account not found")
 
     categories = account.categories(rule_type)
 
