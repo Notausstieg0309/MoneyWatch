@@ -56,10 +56,11 @@ def add(account_id, type):
             item = {}
             item["type"] = type
             item["name"] = name
-            item["parent"] = parent
+            item["parent_id"] = parent
             item["budget_monthly"] = budget_monthly
+            item["account_id"] = account.id
 
-            new_category = Category(type=type, account_id=account.id, name=name, parent_id=parent, budget_monthly=budget_monthly)
+            new_category = Category(**item)
             db.session.add(new_category)
             db.session.commit()
 
