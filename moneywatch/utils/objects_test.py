@@ -2,7 +2,7 @@
 from .objects import Account, Category, Rule, Transaction, PlannedTransaction
 from .exceptions import MultipleRuleMatchError
 import pytest
-
+import logging
 import datetime
 from datetime import timedelta
 
@@ -1241,6 +1241,32 @@ def test_transaction_check_rule_matching_false(db_filled, today):
     assert trans.rule is None
     assert trans.description is None
     assert trans.category_id is None
+
+
+@pytest.mark.parametrize("transaction_id,trend", [
+    (1, None),
+    (2, None),
+    (3, None),
+    (4, -172.11),
+    (5, None),
+    (6, None),
+    (7, None),
+    (8, None)
+])
+def test_transaction_calculate_trend(db_filled, transaction_id, trend, caplog):
+
+    trans = Transaction.query.filter_by(id=transaction_id).one()
+    trans.trend = None
+
+    assert trans.trend is None
+
+    with caplog.at_level(logging.DEBUG):
+        trans._calculate_trend()
+
+    assert trans.trend == trend
+
+    if trend is not None:
+        assert "calculated trend" in caplog.text
 
 
 #   ____        __                       _   _             _     _    _                 _ _
