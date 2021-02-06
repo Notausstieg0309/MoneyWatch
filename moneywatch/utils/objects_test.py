@@ -1298,6 +1298,18 @@ def test_transaction_is_editable(db_filled, transaction_id, editable, today):
     assert trans.is_editable == editable
 
 
+@pytest.mark.parametrize("text,result", [
+    ("BOOKING TEXT", "BOOKING TEXT"),
+    ("Booking Text", "BOOKING TEXT"),
+    ("  Booking  Text  ", "BOOKING TEXT"),
+    ("Booking // \\ Text ", "BOOKING TEXT"),
+    ("BOOKING TEXT 20.01.2020", "BOOKING TEXT 20 01 2020"),
+    ("BOOKING TEXT 20.01.2020 - 10:00", "BOOKING TEXT 20 01 2020 - 10 00"),
+])
+def test_transaction_normalize_text(text, result):
+
+    assert Transaction._normalizeText(text) == result
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
