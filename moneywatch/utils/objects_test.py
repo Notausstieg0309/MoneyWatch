@@ -196,6 +196,16 @@ def db_filled(db, today, start):
 
     db.session.add(trans_8)
 
+    trans_9 = Transaction(id=9,
+                          full_text="BOOKING TEXT NO PATTERN #2",
+                          valuta=40.45,
+                          date=datetime.date(today.year, today.month, 2),
+                          description="Transaction 8",
+                          category_id=cat_in_sub1.id,
+                          account_id=account.id)
+
+    db.session.add(trans_9)
+
     db.session.commit()
 
     return db
@@ -327,7 +337,7 @@ def test_account_transactions(db_filled, start, today):
 
     transactions = account.transactions()
 
-    assert len(transactions) == 8
+    assert len(transactions) == 9
     assert all(isinstance(el, Transaction) for el in transactions)
 
     transactions = account.transactions(start, start + timedelta(days=14))
@@ -367,7 +377,7 @@ def test_account_transactions_by_type_in(db_filled):
     account = Account.query.filter_by(id=1).one()
 
     result = account.transactions_by_type("in")
-    expected = Transaction.query.filter(Transaction.id.in_([1, 2, 7, 8])).order_by(Transaction.date.asc()).all()
+    expected = Transaction.query.filter(Transaction.id.in_([1, 2, 7, 8, 9])).order_by(Transaction.date.asc()).all()
 
     assert result == expected
 
@@ -483,9 +493,10 @@ def test_category_planned_transactions_monthly_without_existing(db_filled, start
     assert len(planned_transactions) == 1
     assert planned_transactions[0].date == datetime.date(2020, 4, 4)
     assert planned_transactions[0].valuta == 29.98
-    assert len(transactions) == 2
+    assert len(transactions) == 3
     assert transactions[0].id == 7
     assert transactions[1].id == 8
+    assert transactions[2].id == 9
 
 
 def test_category_planned_transactions_quarterly(db_filled, today):
@@ -627,7 +638,7 @@ def test_category_transactions_with_childs(db_filled, start, end):
     # Main Category In
     cat_1 = Category.query.filter_by(id=1).one()
     cat_1.setTimeframe(start, end)
-    transactions_in = Transaction.query.filter(Transaction.id.in_([1, 2, 7, 8])).all()
+    transactions_in = Transaction.query.filter(Transaction.id.in_([1, 2, 7, 8, 9])).all()
     assert set(cat_1.transactions_with_childs) == set(transactions_in)
 
     # Main Category Out
@@ -650,7 +661,7 @@ def test_category_transactions_combined(db_filled, start, end):
     # Sub Category In
     cat_2 = Category.query.filter_by(id=2).one()
     cat_2.setTimeframe(start, end)
-    transactions_in = Transaction.query.filter(Transaction.id.in_([7, 8])).all()
+    transactions_in = Transaction.query.filter(Transaction.id.in_([7, 8, 9])).all()
     assert cat_2.transactions_combined == transactions_in
 
 
@@ -781,11 +792,11 @@ def test_category_valuta(db_filled, start, end):
 
     cat_1 = Category.query.filter_by(id=1).one()
     cat_1.setTimeframe(start, end)
-    assert cat_1.valuta == 3939.99
+    assert cat_1.valuta == 3980.44
 
     cat_2 = Category.query.filter_by(id=2).one()
     cat_2.setTimeframe(start, end)
-    assert cat_2.valuta == 70.43
+    assert cat_2.valuta == 110.88
 
     cat_3 = Category.query.filter_by(id=3).one()
     cat_3.setTimeframe(start, end)
@@ -843,11 +854,11 @@ def test_category_planned_valuta(db_filled, start, end):
 
     cat_1 = Category.query.filter_by(id=1).one()
     cat_1.setTimeframe(start, end)
-    assert cat_1.planned_valuta == 3939.99
+    assert cat_1.planned_valuta == 3980.44
 
     cat_2 = Category.query.filter_by(id=2).one()
     cat_2.setTimeframe(start, end)
-    assert cat_2.planned_valuta == 70.43
+    assert cat_2.planned_valuta == 110.88
 
     cat_3 = Category.query.filter_by(id=3).one()
     cat_3.setTimeframe(start, end)
@@ -1137,7 +1148,7 @@ def test_rule_match_transaction(db_filled, today, pattern, result):
 #
 
 @pytest.mark.parametrize("trans_type,ids", [
-    ("in", [1, 2, 7, 8]),
+    ("in", [1, 2, 7, 8, 9]),
     ("out", [3, 4, 5]),
     ("message", [6]),
 ])
@@ -1269,6 +1280,24 @@ def test_transaction_calculate_trend(db_filled, transaction_id, trend, caplog):
         assert "calculated trend" in caplog.text
 
 
+@pytest.mark.parametrize("transaction_id,editable", [
+    (1, False),
+    (2, False),
+    (3, False),
+    (4, False),
+    (5, False),
+    (6, True),
+    (7, False),
+    (8, False),
+    (9, True)
+])
+def test_transaction_is_editable(db_filled, transaction_id, editable, today):
+
+    trans = Transaction.query.filter_by(id=transaction_id).one()
+
+    assert trans.is_editable == editable
+
+
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
 #  | |_) | ___| |_ ___  _ __ ___   /  \ | |_| |_ __ _  ___| |__ | |__| | __ _ _ __   __| | | ___ _ __
@@ -1281,4 +1310,4 @@ def test_transaction_calculate_trend(db_filled, transaction_id, trend, caplog):
 def test_before_attach_handler_account_balance(db_filled):
     account = Account.query.first()
 
-    assert account.balance == 3488.43
+    assert account.balance == 3528.88

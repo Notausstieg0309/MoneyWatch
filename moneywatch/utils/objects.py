@@ -712,7 +712,9 @@ class Transaction(db.Model):
 
         now = datetime.date.today()
 
-        if (now - datetime.timedelta(days=14) <= self.date <= now) or utils.is_same_month(self.date, now):
+        if ((now - datetime.timedelta(days=14)) <= self.date <= now):
+            return True
+        elif utils.is_same_month(self.date, now):
             return True
 
         return False
