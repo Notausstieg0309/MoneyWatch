@@ -58,13 +58,16 @@ class Account(db.Model):
     def oldest_transaction(self):
         return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.asc(), Transaction.id.asc()).first() # noqa
 
+
     @property
     def latest_transaction(self):
         return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.desc(), Transaction.id.desc()).first()
 
+
     @property
     def iban_formatted(self):
         return utils.format_iban_human(self.iban)
+
 
     @property
     def last_update(self):
@@ -78,6 +81,7 @@ class Account(db.Model):
 
         return None
 
+
     def categories(self, type, start=None, end=None):
 
         result = Category.query.filter_by(account_id=self.id, type=type, parent_id=None).order_by(Category.id.asc()).all()
@@ -88,12 +92,12 @@ class Account(db.Model):
 
         return result
 
+
     def rules_by_type(self, type):
 
         result = Rule.query.filter_by(account_id=self.id, type=type).order_by(asc(collate(Rule.name, 'NOCASE'))).all()
 
         return result
-
 
 
     def non_regular_rules(self, type, start, end):
@@ -118,7 +122,6 @@ class Account(db.Model):
         return result
 
 
-
     def transactions(self, start=None, end=None):
 
         result = Transaction.query.filter_by(account_id=self.id)
@@ -134,11 +137,13 @@ class Account(db.Model):
 
         return result.all()
 
+
     def search_for_transactions(self, term):
 
         transactions = Transaction.query.filter(Transaction.account_id == self.id).filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc(), Transaction.id.desc()).all()
 
         return transactions
+
 
     def transactions_by_type(self, type, start=None, end=None):
 
@@ -192,20 +197,22 @@ class Category(db.Model):
 
     _transactions = db.relationship("Transaction", back_populates="category")
 
+
     def __init__(self, start=None, end=None, **kwargs):
         self._cache = {}
         self.setTimeframe(start, end)
         super(Category, self).__init__(**kwargs)
 
+
     @orm.reconstructor
     def init_on_load(self):
         self._cache = {}
+
 
     def setTimeframe(self, start=None, end=None):
         self._data = {}
         self._data["start"] = start
         self._data["end"] = end
-
 
 
     @property
@@ -292,6 +299,7 @@ class Category(db.Model):
 
         return self._cache["regular_rules_done"]
 
+
     @property
     def has_overdued_planned_transactions(self):
 
@@ -334,6 +342,7 @@ class Category(db.Model):
         else:
             return None
 
+
     @property
     def end(self):
 
@@ -341,6 +350,7 @@ class Category(db.Model):
             return self._data.get("end", utils.get_last_day_of_month())
         else:
             return None
+
 
     @property
     def childs(self):
@@ -367,6 +377,7 @@ class Category(db.Model):
             self._cache["transactions"] = result.all()
 
         return self._cache["transactions"]
+
 
     @property
     def transactions_with_childs(self):
@@ -412,6 +423,7 @@ class Category(db.Model):
         else:
             return self.name
 
+
     def getCategoryIdsAndPaths(self, delimiter):
 
         result = []
@@ -422,6 +434,7 @@ class Category(db.Model):
             result.extend(category.getCategoryIdsAndPaths(delimiter))
 
         return result
+
 
     @property
     def valuta(self):
@@ -439,6 +452,7 @@ class Category(db.Model):
             self._cache["valuta"] = round(result, 2)
 
         return self._cache["valuta"]
+
 
     @property
     def planned_transactions_valuta(self):
@@ -490,7 +504,6 @@ class Category(db.Model):
         return False
 
 
-
 #    _____       _
 #   |  __ \     | |
 #   | |__) |   _| | ___
@@ -499,8 +512,6 @@ class Category(db.Model):
 #   |_|  \_\__,_|_|\___|
 #
 #
-
-
 
 
 class Rule(db.Model):
@@ -528,7 +539,6 @@ class Rule(db.Model):
     def transactions(self, start=None, end=None):
 
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
-
 
         if start is not None and end is not None:
             result = result.filter(Transaction.date.between(start, end))
