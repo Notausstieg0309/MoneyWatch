@@ -1,4 +1,3 @@
-
 from .objects import Account, Category, Rule, Transaction, PlannedTransaction
 from .exceptions import MultipleRuleMatchError
 import pytest
@@ -1298,6 +1297,7 @@ def test_transaction_is_editable(db_filled, transaction_id, editable, today):
     assert trans.is_editable == editable
 
 
+
 @pytest.mark.parametrize("text,result", [
     ("BOOKING TEXT", "BOOKING TEXT"),
     ("Booking Text", "BOOKING TEXT"),
@@ -1309,6 +1309,35 @@ def test_transaction_is_editable(db_filled, transaction_id, editable, today):
 def test_transaction_normalize_text(text, result):
 
     assert Transaction._normalizeText(text) == result
+
+
+@pytest.mark.parametrize("date,valuta,full_text,exists", [
+    (datetime.date(2020, 1, 13), 1890.28, "BOOKING TEXT PATTERN1 #1", True),
+    (datetime.date(2020, 2, 12), 1979.28, "BOOKING TEXT PATTERN1 #2", True),
+    (datetime.date(2020, 1, 3), -35.78, "BOOKING TEXT PATTERN3 #3", True),
+    (datetime.date(2020, 1, 4), -207.89, "BOOKING TEXT PATTERN3 #4", True),
+    (datetime.date(2020, 2, 2), -207.89, "BOOKING TEXT PATTERN3 #5", True),
+    (datetime.date(2020, 3, 18), 0.0, "MESSAGE TEXT #6", True),
+    (datetime.date(2020, 1, 3), 29.98, "BOOKING TEXT PATTERN2 #1", True),
+    (datetime.date(2020, 1, 20), 40.45, "BOOKING TEXT NO PATTERN #1", True),
+    (datetime.date(2020, 3, 2), 40.45, "BOOKING TEXT NO PATTERN #2", True),
+    (datetime.date(2020, 3, 2), 40.45, "    Booking   Text No Pattern   #2   ", True),
+    (datetime.date(2020, 1, 13), 1800.28, "BOOKING TEXT PATTERN1 #1", False),
+    (datetime.date(2020, 2, 13), 1979.28, "BOOKING TEXT PATTERN1 #2", False),
+])
+def test_transaction_exist(db_filled, date, valuta, full_text, exists):
+
+    trans = Transaction(
+        date=date,
+        valuta=valuta,
+        full_text=full_text,
+    )
+
+    assert trans.exist == exists
+
+    if(exists is True):
+        assert trans.account_id is not None
+
 
 #   ____        __                       _   _             _     _    _                 _ _
 #  |  _ \      / _|                 /\  | | | |           | |   | |  | |               | | |
