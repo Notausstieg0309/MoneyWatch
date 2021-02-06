@@ -1003,7 +1003,7 @@ def test_rule_update_next_due(db_filled, today):
     assert rule_1.next_due is None
     assert rule_1.next_valuta is None
 
-    # Rule 2 (monthly)
+    # Rule 2 (monthly) but it is already updated to 2020-04-04, so it should not update
     rule_2 = Rule.query.filter_by(id=2).one()
 
     assert rule_2.regular == 1
@@ -1013,8 +1013,8 @@ def test_rule_update_next_due(db_filled, today):
     rule_2.update_next_due(today, 100.0)
 
     assert rule_2.regular == 1
-    assert rule_2.next_due == datetime.date(2020, 4, 20)
-    assert rule_2.next_valuta == 100.0
+    assert rule_2.next_due == datetime.date(2020, 4, 4)
+    assert rule_2.next_valuta == 29.98
 
     # Rule 3 (quarterly)
     rule_3 = Rule.query.filter_by(id=3).one()
@@ -1063,6 +1063,13 @@ def test_rule_update_next_due(db_filled, today):
     assert rule_6.next_valuta == 20.0
 
     rule_6.update_next_due(today, 100.0)
+
+    assert rule_6.regular == 1
+    assert rule_6.next_due == datetime.date(2020, 4, 20)
+    assert rule_6.next_valuta == 100.0
+
+    # update to a date that is older than current next due => no update should be performed
+    rule_6.update_next_due(today - timedelta(days=2), 90.0)
 
     assert rule_6.regular == 1
     assert rule_6.next_due == datetime.date(2020, 4, 20)
