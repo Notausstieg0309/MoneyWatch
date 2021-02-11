@@ -231,7 +231,7 @@ class Category(db.Model):
                 latest_transaction_date = latest_transaction.date
 
             for rule in self.rules:
-                current_app.logger.error("%r (%s)", rule, rule.name)
+
                 if rule.regular and not rule.next_due > self.end and rule.next_valuta > 0:
 
                     booked_dates = []
