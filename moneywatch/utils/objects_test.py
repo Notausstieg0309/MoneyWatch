@@ -1117,7 +1117,7 @@ def test_rule_assign_transaction_ids(db_filled):
     ("PATTERN$", True),
     ("Text", True),
     ("TEXT", True),
-    ("TEST", False),
+    ("TEST", True),
     (".*TEST", True),
     ("BOOKING", True),
     ("^BOOKING", True),
@@ -1128,7 +1128,7 @@ def test_rule_assign_transaction_ids(db_filled):
 def test_rule_match_transaction(db_filled, today, pattern, result):
 
     trans = Transaction(id=10,
-                        full_text="BOOKING TEXT  12345 //TEST PATTERN",
+                        full_text="BOOKING TEXT  12345//TEST PATTERN",
                         valuta=-100,
                         date=today,
                         description="Transaction 1",

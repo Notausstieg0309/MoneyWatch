@@ -231,7 +231,7 @@ class Category(db.Model):
                 latest_transaction_date = latest_transaction.date
 
             for rule in self.rules:
-
+                current_app.logger.error("%r (%s)", rule, rule.name)
                 if rule.regular and not rule.next_due > self.end and rule.next_valuta > 0:
 
                     booked_dates = []
@@ -603,7 +603,7 @@ class Rule(db.Model):
 
         pattern = pattern.replace(" ", r'\s+')
 
-        pattern = r'(?:^\s*|\s+)' + pattern + r'(?:\s+|\s*$)'
+        pattern = r'(?:^\s*|\s+|[^a-z0-9])' + pattern + r'(?:[^a-z0-9]|\s+|\s*$)'
 
         if transaction.account_id == self.account_id and transaction.type == self.type and re.search(pattern, transaction.full_text, re.IGNORECASE):
             return True
