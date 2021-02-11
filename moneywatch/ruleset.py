@@ -171,7 +171,7 @@ def change(id):
             rule.category_id = category_id
             rule.regular = regular
 
-            if regular != "0":
+            if regular is not None and regular != "0":
                 rule.next_due = utils.get_date_from_string(next_due, "%Y-%m-%d")
                 rule.next_valuta = next_valuta
             else:
