@@ -163,7 +163,7 @@ def change(id):
 
         try:
             re.compile(pattern)
-        except re.error as e:
+        except re.error:
             errors.append(gettext("Invalid search pattern. The given search pattern is not a valid regular expression"))
 
         if len(errors) > 0:
