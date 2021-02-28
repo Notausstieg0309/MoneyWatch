@@ -141,6 +141,7 @@ def delete(id):
 def change(id):
 
     rule = Rule.query.filter_by(id=id).one()
+    errors = []
 
     if request.method == 'POST':
         error = None
@@ -154,14 +155,20 @@ def change(id):
         next_valuta = request.form['next_valuta']
 
         if not name:
-            error = gettext('Name is required.')
+            errors.append(gettext('Name is required.'))
         if not pattern:
-            error = gettext('Search pattern is required.')
+            errors.append(gettext('Search pattern is required.'))
         if not category_id:
-            error = gettext('Category is required.')
+            errors.append(gettext('Category is required.'))
 
-        if error is not None:
-            flash(error)
+        try:
+            re.compile(pattern)
+        except re.error as e:
+            errors.append(gettext("Invalid search pattern. The given search pattern is not a valid regular expression"))
+
+        if len(errors) > 0:
+            for error in errors:
+                flash(error)
 
         else:
 
