@@ -92,9 +92,10 @@ def createOverview(account_id, start, end):
 
     messages = len(account.transactions_by_type("message", start=start, end=end))
 
-    highlight_ids = request.args.getlist("h")
+    highlight_transactions = request.args.getlist("ht")
+    highlight_categories = request.args.getlist("hc")
 
-    return render_template('overview/overview.html', account=account, list_in=list_in, list_out=list_out, profit=profit, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages, highlight_ids=highlight_ids)
+    return render_template('overview/overview.html', account=account, list_in=list_in, list_out=list_out, profit=profit, timing=timing, current_month=current_month, particular_rules=particular_rules, messages=messages, highlight_transactions=highlight_transactions, highlight_categories=highlight_categories)
 
 
 @bp.route('/')

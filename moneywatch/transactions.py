@@ -88,7 +88,7 @@ def transaction_details_single(id):
 @bp.route('/transactions/multi/')
 def transaction_details_multi():
 
-    ids = request.args.getlist("h")
+    ids = request.args.getlist("id")
 
     ids = int_list(ids)
 

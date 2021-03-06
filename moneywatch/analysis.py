@@ -147,7 +147,7 @@ def getSumByRule(start, end, interval, rule_id):
 
     transactions = rule.transactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
 
-    result.update(createResultForTransactions(interval, transactions, highlight_links=True))
+    result.update(createResultForTransactions(interval, transactions, show_transaction_details=True))
 
     return result
 
@@ -166,7 +166,7 @@ def getSumByCategory(start, end, interval, category_id):
     # transactions are not in the correct date order, sort here only once instead of multiple recursive sorting runs in Category.transactions_with_childs()
     transactions.sort(key=lambda x: x.date)
 
-    result.update(createResultForTransactions(interval, transactions))
+    result.update(createResultForTransactions(interval, transactions, highlight_category=category.id, show_transaction_details=True))
 
     return result
 
@@ -186,7 +186,7 @@ def transToDict(transaction):
 
 
 
-def createResultForTransactions(interval, transactions, create_links=True, highlight_links=False, reference_id=None):
+def createResultForTransactions(interval, transactions, create_links=True, show_transaction_details=False, highlight_category=None, reference_id=None):
 
     data = []
     result = {}
@@ -209,31 +209,42 @@ def createResultForTransactions(interval, transactions, create_links=True, highl
             "label": tmp_last_label,
         }
 
-        if (create_links and highlight_links) or reference_id is not None:
+        if (create_links and show_transaction_details) or reference_id is not None:
             tmp_dict["ids"] = [transaction.id for transaction in tmp_transactions]
+
+        if (create_links and highlight_category is not None and isinstance(highlight_category, int)):
+            tmp_dict["category"] = highlight_category
+
 
         if reference_id is not None:
             tmp_dict["reference"] = 1 if reference_id in tmp_dict["ids"] else 0
 
-        if create_links:
-            if interval == 3:
-                tmp_dict["overview_link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), h=tmp_dict.get("ids", None))
-            elif interval == 6:
-                tmp_dict["overview_link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), h=tmp_dict.get("ids", None))
-            elif interval == 12:
-                tmp_dict["overview_link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, h=tmp_dict.get("ids", None))
-            else:
-                tmp_dict["overview_link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, h=tmp_dict.get("ids", None))
 
-            if(highlight_links):
-                tmp_dict["transaction_details_link"] = url_for("transactions.transaction_details_multi", h=tmp_dict.get("ids", None))
+        if create_links:
+            if highlight_category is not None:
+                args = {"hc": tmp_dict.get("category", None)}
+            else:
+                args = {"ht": tmp_dict.get("ids", None)}
+
+            if interval == 3:
+                tmp_dict["overview_link"] = url_for("overview.quarter_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, quarter=utils.get_quarter_from_date(tmp_transactions[0].date), **args)
+            elif interval == 6:
+                tmp_dict["overview_link"] = url_for("overview.halfyear_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, half=utils.get_half_year_from_date(tmp_transactions[0].date), **args)
+            elif interval == 12:
+                tmp_dict["overview_link"] = url_for("overview.year_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, **args)
+            else:
+                tmp_dict["overview_link"] = url_for("overview.month_overview", account_id=tmp_transactions[0].account_id, year=tmp_transactions[0].date.year, month=tmp_transactions[0].date.month, **args)
+
+            if(show_transaction_details):
+                tmp_dict["transaction_details_link"] = url_for("transactions.transaction_details_multi", id=tmp_dict.get("ids", None))
+
 
         tmp_valuta = 0
         tmp_count = 0
         tmp_transactions = []
 
         tmp_dict.pop("ids", None)
-
+        tmp_dict.pop("categories", None)
         return tmp_dict
 
 

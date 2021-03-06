@@ -86,8 +86,8 @@
     {%- endset -%}
     {%- endif -%}
 
-    {%- if highlight_ids is not none -%}
-    {%- set row_class -%}{{ row_class }}{%- if transaction.id|string in highlight_ids %} highlighted{% endif %}{% endset -%}
+    {%- if highlight_transactions is not none -%}
+    {%- set row_class -%}{{ row_class }}{%- if transaction.id|string in highlight_transactions %} highlighted{% endif %}{% endset -%}
     {% endif %}
 
     {{ item_row(row_class, name, transaction.trend, planned_text, transaction.valuta, transaction.valuta|currencyformat('EUR')) }}
@@ -116,13 +116,19 @@
         {% endif -%}
 
     {%- endset -%}
+
+    {%- if highlight_categories is not none -%}
+    {%- set row_class -%}{{ row_class }}{%- if category.id|string in highlight_categories %} highlighted{% endif %}{% endset -%}
+    {% endif %}
+
     {{ item_row(row_class, name, category.planned_valuta, category.planned_valuta|currencyformat('EUR'), category.valuta, category.valuta|currencyformat('EUR') )}}
 {%- endmacro %}
 
 
 {% macro category_item(category_list) -%}
 {% for category in category_list recursive %}
-  <div class="category_container{% if loop.depth == 1 %} root{% endif %}{% if category.transactions|length == 0 %} no_transactions{% endif %}{% if category.childs|length == 0 %} no_subcategories{% endif %}">
+
+  <div class="category_container{% if loop.depth == 1 %} root{% endif %}{% if category.transactions|length == 0 %} no_transactions{% endif %}{% if category.childs|length == 0 %} no_subcategories{% endif %}{%- if highlight_categories is not none and category.id|string in highlight_categories %} highlighted{% endif %}">
     {{ category_row("category_header", category) }}
     {%- if category.childs|length > 0 or category.transactions|length > 0 or category.planned_transactions|length > 0 %}
     <div class="category_content">

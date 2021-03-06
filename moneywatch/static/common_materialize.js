@@ -146,13 +146,13 @@ $(function() {
 
     // overview: minimize categories that have no subcategories and no higlighted items
     $('div.category_container.no_subcategories').each(function() {
-        if($(this).find(".category_content .highlighted").length == 0) {
+        if($(this).find(".category_content .transaction.highlighted").length == 0) {
             $(this).children(".category_content").hide();
         }
     });
 
     // overview: highlight category container for highlighted transactions as well
-    $('div.category_container .category_content .highlighted').each(function() {
+    $('div.category_container .category_content .transaction.highlighted').each(function() {
        $(this).closest(".category_container").addClass("highlighted");
     });
 

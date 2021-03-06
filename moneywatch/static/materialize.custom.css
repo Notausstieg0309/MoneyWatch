@@ -225,14 +225,15 @@ div.overview div.col.num {
 }
 
 /* style highlighted items */
-div.overview .transaction.highlighted {
+div.overview .transaction.highlighted, div.overview .category_header.highlighted {
     text-shadow: 0px 0px 6px  rgb(255, 255, 0);
     font-weight:  600;
 }
 
-div.overview .transaction.highlighted .description {
+div.overview .transaction.highlighted .description, div.overview .category_header.highlighted .name {
     color: #c54c14;
 }
+
 
 /* highlighted category container */
 div.overview div.category_container.highlighted {
