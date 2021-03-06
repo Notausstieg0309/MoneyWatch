@@ -48,7 +48,7 @@ def edit(id):
         if request.method == 'POST':
 
             description = request.form['description'].strip()
-            category_id = int(request.form['category_id'].strip())
+            category_id = int(request.form['category'].strip())
             clear_rule = request.form.get('clear_rule', None)
 
             current_transaction.description = description
