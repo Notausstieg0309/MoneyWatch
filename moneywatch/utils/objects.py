@@ -574,13 +574,14 @@ class Rule(db.Model):
 
             next_due = utils.add_months(date, self.regular)
 
-            if self.next_due is not None and next_due <= self.next_due:
-                return
+            if self.next_due is not None:
+                if next_due <= self.next_due:
+                    return
 
-            # do not update when rule next due is in the same month as the calculated one
-            if utils.is_same_month(self.next_due, next_due):
-                current_app.logger.debug("skipping next due update for rule '%s', as next due is already in the same month", self.name)
-                return
+                # do not update when rule next due is in the same month as the calculated one
+                if utils.is_same_month(self.next_due, next_due):
+                    current_app.logger.debug("skipping next due update for rule '%s', as next due is already in the same month", self.name)
+                    return
 
             current_app.logger.info("update rule '%s' (id: '%s') with next due '%s' and next valuta '%.2f'", self.name, self.id, next_due, valuta)
 
