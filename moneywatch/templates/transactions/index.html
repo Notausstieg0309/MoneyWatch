@@ -8,22 +8,23 @@
 {% macro item(transaction, edit, categories) %}
 <div class="transaction item_container z-depth-1 {{ transaction.type }} {% if edit %}with_controls {% endif %}">
   <div class="left_ribbon">
-    {%- if not edit and transaction.type != "message" -%}
+    {%- if not edit and transaction.account_id is defined and transaction.type != "message" -%}
     <a href="{{ url_for('overview.month_overview', account_id=transaction.account_id, year=transaction.date.year, month=transaction.date.month, h=transaction.id) }}">
     {%- endif %}
       {{- transaction.date | dateformat(_("yyyy-MM-dd")) -}}
-    {%- if not edit and transaction.type != "message" -%}
+    {%- if not edit and transaction.account_id is defined and transaction.type != "message" -%}
     </a>
     {%- endif -%}
   </div>
   <div class="top_row">
     <div class="description">
       {% if transaction.type != "message" %}
+
       <div class="short_description">
         {%- if edit %}
             <label for="description">{% trans %}Description{% endtrans %}</label>
             <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
-        {% else -%}
+        {% elif transaction.description is defined -%}
         {{ transaction.description }}
             {% if transaction.is_editable -%}
               <span class='edit' style="display:none;">
@@ -48,7 +49,7 @@
           </select>
           <label>{% trans %}Category{% endtrans %}</label>
         </div>
-        {% else -%}
+        {% elif transaction.category is defined -%}
           {{ transaction.category.name }}
         {% endif %}
       </div>

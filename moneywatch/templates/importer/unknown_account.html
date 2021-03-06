@@ -1,37 +1,9 @@
+{%- import 'transactions/index.html' as transactions -%}
 {% extends 'base.html' %}
 
 {% block header %}
 {% block title %}{% trans %}Check imported transactions{% endtrans %}{% endblock %}
 {% endblock %}
-
-{% macro item(transaction) %}
-
-    {%- if transaction.valuta > 0 -%}
-    {%- set transaction_type = "in" -%}
-    {%- elif transaction.valuta < 0 -%}
-    {%- set transaction_type = "out" -%}
-    {%- else -%}
-    {%- set transaction_type = "message" -%}
-    {%- endif -%}
-
-<div class="transaction item_container z-depth-1 {{ transaction_type }}">
-  <div class="left_ribbon">
-      {{- transaction.date | dateformat(_("yyyy-MM-dd")) -}}
-  </div>
-  <div class="top_row">
-    <div class="description">
-
-    </div>
-    {% if transaction_type != "message" %}
-    <span class="valuta_box {{ transaction_type }}">
-      <span class="valuta num" data-num="{{ transaction.valuta }}">{{ transaction.valuta | currencyformat("EUR") }}</span>
-    </span>
-    {% endif %}
-  </div>
-  <div class="full_text black-text">{{ transaction.full_text }}</div>
-</div>
-{% endmacro %}
-
 
 {% block content %}
 <br>
@@ -75,7 +47,7 @@
 </div>
 <div class="row">
     <div class="col s12 m8 offset-m2">
-        {{ item(transaction) }}
+        {{ transactions.item(transaction) }}
     </div>
 </div>
 <p>

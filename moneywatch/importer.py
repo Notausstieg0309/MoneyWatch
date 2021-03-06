@@ -145,8 +145,16 @@ def handle_no_account_given(error):
 
 @bp.errorhandler(UnknownAccountError)
 def handle_unknown_account_error(error):
+    transaction = error.item
 
-    return render_template('importer/unknown_account.html', transaction=error.item, plugin_description=error.plugin_description, iban=error.iban, iban_formatted=utils.format_iban_human(error.iban))
+    if transaction["valuta"]  > 0:
+        transaction["type"] = "in"
+    elif transaction["valuta"] < 0:
+        transaction["type"] = "out"
+    else:
+        transaction["type"] = "message"
+
+    return render_template('importer/unknown_account.html', transaction=transaction, plugin_description=error.plugin_description, iban=error.iban, iban_formatted=utils.format_iban_human(error.iban))
 
 
 def create_transactions_from_import(items, check_all=False):
