@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, redirect, render_template, request, url_for, session, current_app)
+from flask import (Blueprint, flash, redirect, render_template, request, url_for, session)
 
 import os
 
@@ -143,11 +143,12 @@ def handle_no_account_given(error):
 
     return render_template('importer/no_account_given.html', accounts=accounts, count_items=len(error.index_list))
 
+
 @bp.errorhandler(UnknownAccountError)
 def handle_unknown_account_error(error):
     transaction = error.item
 
-    if transaction["valuta"]  > 0:
+    if transaction["valuta"] > 0:
         transaction["type"] = "in"
     elif transaction["valuta"] < 0:
         transaction["type"] = "out"
