@@ -1,49 +1,10 @@
+{%- import 'transactions/index.html' as transactions -%}
 {% extends 'base.html' %}
 
 {% block header %}
 {% block title %}{% trans %}Edit Transaction{% endtrans %}{% endblock %}
 {% endblock %}
 
-
-{% macro transaction_item(transaction) %}
-<div class="transaction item_container z-depth-1 with_controls {{ transaction.type }}">
-  <div class="left_ribbon">{{ transaction.date | dateformat(_("yyyy-MM-dd")) }}</div>
-  <div class="top_row">
-    <div class="description">
-      <div class="short_description">
-        <label for="description">{% trans %}Description{% endtrans %}</label>
-        <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
-      </div>
-      <div class="category">
-        <div class="input-field">
-          <select name="category_id" required>
-            <option disabled value>{% trans %}Please Choose{% endtrans %}...</option>
-            {% for cat in categories recursive %}
-                <option value="{{ cat.id }}"{% if transaction.category_id == cat.id %} selected{% endif %}>{{ cat.getCategoryPath(" > ") }}</option>
-                {% if cat.childs | length > 0 %}
-                    {{ loop(cat.childs)}}
-                {% endif %}
-            {% endfor %}
-            </select>
-          <label>{% trans %}Category{% endtrans %}</label>
-        </div>
-      </div>
-    </div>
-    <span class="valuta_box {{ transaction.type }}">
-      <span class="valuta num" data-num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</span>
-      {%- if transaction.trend %}
-      <br>
-      <span class="trend num" data-num="{{ transaction.trend }}">{%- if transaction.trend > 0 -%}
-        &#8599;
-      {%- elif transaction.trend < 0 -%}
-        &#8600;
-      {%- endif %} {{ transaction.trend | currencyformat("EUR") }}</span>
-      {% endif %}
-    </span>
-  </div>
-  <div class="full_text">{{ transaction.full_text }}</div>
-</div>
-{% endmacro %}
 
 
 {% block content %}
@@ -55,7 +16,7 @@
   </p>
 
   <p>
-    {{ transaction_item(transaction) }}
+    {{ transactions.item(transaction, True, categories) }}
   </p>
   <input type="hidden" name="transaction_id" value="{{ transaction.id }}">
 

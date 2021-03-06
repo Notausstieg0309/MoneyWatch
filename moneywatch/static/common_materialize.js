@@ -191,14 +191,14 @@ $(function() {
 
         if( typeof(category_id) != "undefined")
         {
-            var select_el = $("div.multiple-rule-transaction select[name='category_id']");
+            var select_el = $("div.multiple-rule-transaction select[name='category']");
 
             select_el.val(category_id);
             select_el.formSelect();
         }
         else
         {
-            var select_el = $("div.multiple-rule-transaction select[name='category_id']");
+            var select_el = $("div.multiple-rule-transaction select[name='category']");
 
             select_el.val(null);
             select_el.formSelect();

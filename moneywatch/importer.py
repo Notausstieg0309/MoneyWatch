@@ -258,8 +258,8 @@ def apply_multiple_rule_match_edits(import_objects, input_data):
 
     if len(input_data["description"]) > 0:
         item["description"] = input_data["description"]
-    if "category_id" in input_data:
-        item["category_id"] = int(input_data["category_id"])
+    if "category" in input_data:
+        item["category_id"] = int(input_data["category"])
 
 
 def get_categories():
@@ -275,6 +275,6 @@ def get_categories():
             categories[account.id][type] = []
 
             for category in account.categories(type):
-                categories[account.id][type].extend(category.getCategoryIdsAndPaths(" > "))
+                categories[account.id][type].append(category)
 
     return categories
