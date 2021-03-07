@@ -5,83 +5,10 @@
 {% endblock %}
 
 
-{% macro item(transaction, edit, categories) %}
-<div class="transaction item_container z-depth-1 {{ transaction.type }} {% if edit %}with_controls {% endif %}">
-  <div class="left_ribbon">
-    {%- if not edit and transaction.account_id is defined and transaction.type != "message" %}
-    <a href="{{ url_for('overview.month_overview', account_id=transaction.account_id, year=transaction.date.year, month=transaction.date.month, ht=transaction.id) }}">
-    {%- endif %}
-      {{ transaction.date | dateformat(_("yyyy-MM-dd")) }}
-    {%- if not edit and transaction.account_id is defined and transaction.type != "message" %}
-    </a>
-    {%- endif %}
-  </div>
-  <div class="top_row">
-    <div class="description">
-      {% if transaction.type != "message" -%}
-      <div class="short_description">
-        {%- if edit %}
-          <label for="description">{% trans %}Description{% endtrans %}</label>
-          <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
-        {%- elif transaction.description is defined %}
-          {{ transaction.description }}
-          {% if transaction.is_editable -%}
-          <span class='edit' style="display:none;">
-            <a class="tooltipped" href="{{ url_for('transactions.edit',id = transaction.id ) }}" data-tooltip="{% trans %}Edit transaction{% endtrans %}">
-              <i class='tiny material-icons'>edit</i>
-            </a>
-          </span>
-          {%- endif -%}
-        {%- endif %}
-      </div>
-      <div class="category">
-        {% if edit -%}
-        <div class="input-field">
-          <select name="category" required>
-              <option disabled {% if transaction.category_id is none %}selected {% endif %}value>{% trans %}Please Choose{% endtrans %}...</option>
-              {% for cat in categories recursive %}
-              <option value="{{ cat.id }}"{% if transaction.category_id == cat.id %} selected{% endif %}>{{ cat.getCategoryPath(" > ") }}</option>
-              {% if cat.childs | length > 0 %}
-                  {{ loop(cat.childs)}}
-              {%- endif -%}
-          {%- endfor %}
-          </select>
-          <label>{% trans %}Category{% endtrans %}</label>
-        </div>
-        {% elif transaction.category is defined -%}
-          {{ transaction.category.getCategoryPath(" > ") }}
-        {%- endif %}
-      </div>
-      {%- elif edit %}
-      <div class="message_noted">
-        <input type="hidden" name="message" value="1" />
-        <label>
-          <input type="checkbox" class="filled-in" name="noted" {% if transaction.description %} checked{% endif%} />
-          <span class="black-text">{% trans %}I have noted this message{% endtrans %}</span>
-        </label>
-      </div>
-      {%- endif %}
-    </div>
-    {%- if transaction.type != "message" %}
-    <span class="valuta_box {{ transaction.type }}">
-      <span class="valuta num" data-num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</span>
-      {%- if transaction.trend %}
-      <br>
-      <span class="trend num" data-num="{{ transaction.trend }}">{%- if transaction.trend > 0 -%}
-        &#8599;
-      {%- elif transaction.trend < 0 -%}
-        &#8600;
-      {%- endif %} {{ transaction.trend | currencyformat("EUR") }}</span>
-      {%- endif %}
-    </span>
-    {%- endif %}
-  </div>
-  <div class="full_text">{{ transaction.full_text }}</div>
-</div>
-{% endmacro %}
+
 
 {% block content %}
-{% if transactions or term %}
+
 <div class="row">
   <div class="col m6 l8 hide-on-small-only"></div>
   <div class="col m6 l4 s12">
@@ -94,21 +21,10 @@
     </form>
   </div>
 </div>
-{% endif %}
 
-{%- if transactions -%}
-{% for transaction in transactions -%}
-{%- if loop.previtem is defined and (loop.previtem.date.month != transaction.date.month or loop.previtem.date.year != transaction.date.year) %}
-<div class="transaction_divider">
-{{ loop.previtem.date | dateformat(_("MMMM yyyy"))}}
-<hr class="transaction_divider" />
-{{ transaction.date | dateformat(_("MMMM yyyy")) }}
-</div>
-{% endif -%}
-{{ item(transaction) }}
-{%- endfor %}
-{% else %}
+<div class="infinite_scroll transaction_container" data-url="{{ scroll_url }}"></div>
+
 <div class="no_content center-align">{% trans %}No transactions available.{% endtrans %}</div>
-{% endif %}
+
 
 {% endblock %}

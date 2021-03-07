@@ -1,4 +1,4 @@
-{%- import 'transactions/index.html' as transactions -%}
+{%- import 'transactions/macro.j2' as macro -%}
 {% extends 'base.html' %}
 
 {% block header %}
@@ -29,7 +29,7 @@
 
 
   <div class="multiple-rule-transaction">
-  {{ transactions.item(transaction, True, categories) }}
+  {{ macro.item(transaction, True, categories) }}
   </div>
 
 </form>

@@ -1,4 +1,4 @@
-{%- import 'transactions/index.html' as transactions -%}
+{%- import 'transactions/macro.j2' as macro -%}
 {% extends 'base.html' %}
 
 {% block header %}
@@ -17,7 +17,7 @@
 <form method="post" id="import_check">
   {{ save_button() }}
 {% for transaction in data %}
-{{ transactions.item(transaction, True, categories[transaction.account_id][transaction.type]) }}
+{{ macro.item(transaction, True, categories[transaction.account_id][transaction.type]) }}
 {% endfor %}
 
 {% if data|length > 3 %}

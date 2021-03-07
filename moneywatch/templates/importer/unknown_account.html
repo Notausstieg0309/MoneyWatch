@@ -1,4 +1,4 @@
-{%- import 'transactions/index.html' as transactions -%}
+{%- import 'transactions/macro.j2' as macro -%}
 {% extends 'base.html' %}
 
 {% block header %}
@@ -47,7 +47,7 @@
 </div>
 <div class="row">
     <div class="col s12 m8 offset-m2">
-        {{ transactions.item(transaction) }}
+        {{ macro.item(transaction) }}
     </div>
 </div>
 <p>

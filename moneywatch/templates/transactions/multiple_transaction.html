@@ -1,4 +1,4 @@
-{%- import 'transactions/index.html' as base -%}
+{%- import 'transactions/macro.j2' as macro -%}
 {% for transaction in transactions %}
-{{ base.item(transaction) }}
+{{ macro.item(transaction) }}
 {% endfor %}
