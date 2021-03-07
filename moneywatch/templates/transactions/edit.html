@@ -1,4 +1,4 @@
-{%- import 'transactions/index.html' as transactions -%}
+{%- import 'transactions/macro.j2' as macro -%}
 {% extends 'base.html' %}
 
 {% block header %}
@@ -16,7 +16,7 @@
   </p>
 
   <p>
-    {{ transactions.item(transaction, True, categories) }}
+    {{ macro.item(transaction, True, categories) }}
   </p>
   <input type="hidden" name="transaction_id" value="{{ transaction.id }}">
 
