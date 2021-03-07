@@ -9,7 +9,7 @@
 {% endmacro %}
 
 {% if transactions | length > 0 %}
-{% if previous_transaction is not none and (previous_transaction.date.month != transactions[0].date.month or previous_transaction.date.year != transactions[0].date.year) %}
+{% if previous_transaction is defined and previous_transaction is not none and (previous_transaction.date.month != transactions[0].date.month or previous_transaction.date.year != transactions[0].date.year) %}
 {{ divider(previous_transaction.date, transactions[0].date)}}
 {% endif -%}
 
