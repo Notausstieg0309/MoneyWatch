@@ -26,7 +26,10 @@ def index(account_id):
 @bp.route('/transactions/edit/<int:id>/', methods=('GET', 'POST'))
 def edit(id):
 
-    current_transaction = Transaction.query.filter_by(id=id).one()
+    current_transaction = Transaction.query.filter_by(id=id).one_or_none()
+
+    if current_transaction is None:
+        abort(404)
 
     if current_transaction.is_editable:
 
@@ -62,10 +65,10 @@ def transaction_details_single(id):
     transaction = Transaction.query.filter_by(id=id).one_or_none()
 
     if transaction is None:
-        return jsonify(None), 404
+        abort(404)
 
     if transaction.type == "message":
-        return jsonify(None), 404
+        abort(404)
 
     return render_template('transactions/single_transaction.html', transaction=transaction)
 
@@ -78,7 +81,7 @@ def transaction_details_multi():
     ids = int_list(ids)
 
     if ids is None:
-        return jsonify(None), 404
+        abort(404)
 
     transactions = Transaction.query.filter(Transaction.id.in_(ids)).all()
 
@@ -91,7 +94,7 @@ def transaction_messages(account_id, year, month, month_count):
     account = Account.query.filter_by(id=account_id).one_or_none()
 
     if account is None:
-        return jsonify(None), 404
+        abort(404)
 
     end_date = utils.add_months(utils.get_last_day_of_month(year, month), (month_count - 1))
     transactions = account.transactions_by_type("message", start=utils.get_first_day_of_month(year, month), end=end_date)
