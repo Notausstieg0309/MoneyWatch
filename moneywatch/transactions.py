@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort, jsonify)
+from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort)
 
 import moneywatch.utils.functions as utils
 from sqlalchemy import or_
@@ -115,7 +115,6 @@ def scroll(account_id):
     (previous_transaction, transactions) = get_scroll_items(account.id, data)
 
     return render_template('transactions/multiple_transaction.html', transactions=transactions, previous_transaction=previous_transaction).strip()
-
 
 
 def int_list(values):
