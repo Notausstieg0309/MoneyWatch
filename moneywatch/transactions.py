@@ -1,7 +1,7 @@
-from flask import (Blueprint, flash, redirect, render_template, request, url_for, jsonify)
+from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort, jsonify)
 
 import moneywatch.utils.functions as utils
-
+from sqlalchemy import or_
 from flask_babel import gettext
 
 from moneywatch.utils.objects import db, Transaction, Account
@@ -13,29 +13,14 @@ bp = Blueprint('transactions', __name__)
 def index(account_id):
     """Show all the transaction"""
 
-    account = Account.query.filter_by(id=account_id).one()
+    account = Account.query.filter_by(id=account_id).one_or_none()
 
-    transactions = []
-    term = None
+    if account is None:
+        abort(404)
 
+    scroll_url = url_for("transactions.scroll", account_id=account.id)
 
-    if request.method == 'POST' and "search" in request.form and request.form["search"] and request.form["search"].strip() != "":
-        term = request.form["search"]
-        transactions = account.search_for_transactions(term)
-    else:
-
-        latest_transaction = account.latest_transaction
-
-        if latest_transaction:
-
-            end = latest_transaction.date
-            start = utils.substract_months(end, 2)
-
-            transactions = account.transactions(start, end)
-
-        transactions.reverse()
-
-    return render_template('transactions/index.html', transactions=transactions, term=term)
+    return render_template('transactions/index.html', scroll_url=scroll_url)
 
 
 @bp.route('/transactions/edit/<int:id>/', methods=('GET', 'POST'))
@@ -114,6 +99,22 @@ def transaction_messages(account_id, year, month, month_count):
     return render_template('transactions/multiple_transaction.html', transactions=transactions)
 
 
+@bp.route('/<int:account_id>/transactions/scroll/')
+def scroll(account_id):
+
+    data = request.args
+
+    account = Account.query.filter_by(id=account_id).one_or_none()
+
+    if account is None:
+        abort(404)
+
+    (previous_transaction, transactions) = get_scroll_items(account.id, data)
+
+    return render_template('transactions/multiple_transaction.html', transactions=transactions, previous_transaction=previous_transaction).strip()
+
+
+
 def int_list(values):
 
     result = []
@@ -124,3 +125,32 @@ def int_list(values):
         except Exception:
             return None
     return result
+
+
+def get_scroll_items(account_id, params):
+
+    page_size = 50
+
+    result = Transaction.query.filter_by(account_id=account_id)
+
+    if "search" in params:
+        term = params["search"]
+        result = result.filter(or_(Transaction.description.contains(term, autoescape=True), Transaction.full_text.contains(term, autoescape=True)))
+
+    result = result.order_by(Transaction.date.desc(), Transaction.id.desc())
+
+    main_result = result.limit(page_size)
+
+    prev_transaction = None
+
+    if "page" in params:
+        offset = (int(params["page"]) - 1) * page_size
+        main_result = main_result.offset(offset)
+
+        if int(params["page"]) > 1:
+            prev_transaction = result.limit(1)
+            prev_transaction = prev_transaction.offset(offset - 1).one_or_none()
+
+    transactions = main_result.all()
+
+    return (prev_transaction, transactions)

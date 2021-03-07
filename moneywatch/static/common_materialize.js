@@ -283,6 +283,54 @@ $(function() {
             $("div.matched_transactions").slideUp();
         }
     });
+
+    // transactions: enable infinite scroll for transaction list
+    $(".infinite_scroll").each(function () {
+
+        $(window).infinitescroll({
+            url: $(this).data("url"),
+            triggerAt: 600,
+            appendTo: this,
+        });
+
+        $(this).on("infinitescroll.beforesend", function() {
+            $(".no_content").hide();
+            $(".loading_spinner").show();
+        });
+
+        $(this).on("infinitescroll.finish", function() {
+            $(".loading_spinner").hide();
+            $(this).find(".num").each(function () { formatNumberEl(this); });
+        });
+
+        $(this).on("infinitescroll.maxreached", function() {
+            $(".loading_spinner").hide();
+        });
+
+        $(this).on("infinitescroll.nodata", function() {
+            $(".loading_spinner").hide();
+            $(".no_content").show();
+        });
+
+    })
+
+    // transactions: activate search parameters for transaction list
+    $("form.transaction_list_params").submit(function(event) {
+        params = {};
+
+        search = $("input#search").val();
+
+        if(search) {
+            params["search"] = search;
+        }
+        // set new parameters
+        $("div.infinite_scroll").data("params", params)
+
+        // restart infinite scroll with new parameters
+        $("div.infinite_scroll").trigger("infinitescroll.scrollpage", 1);
+
+        event.preventDefault();
+    })
 });
 
 

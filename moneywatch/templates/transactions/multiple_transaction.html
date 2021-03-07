@@ -1,4 +1,21 @@
 {%- import 'transactions/macro.j2' as macro -%}
-{% for transaction in transactions %}
+
+{%- macro divider(prev_date, next_date) %}
+<div class="transaction_divider">
+{{ prev_date| dateformat(_("MMMM yyyy"))}}
+<hr class="transaction_divider" />
+{{ next_date | dateformat(_("MMMM yyyy")) }}
+</div>
+{% endmacro %}
+
+
+{% if previous_transaction is not none and (previous_transaction.date.month != transactions[0].date.month or previous_transaction.date.year != transactions[0].date.year) %}
+{{ divider(previous_transaction.date, transactions[0].date)}}
+{% endif -%}
+
+{%- for transaction in transactions -%}
+{%- if loop.previtem is defined and (loop.previtem.date.month != transaction.date.month or loop.previtem.date.year != transaction.date.year) %}
+{{ divider(loop.previtem.date, transaction.date)}}
+{%- endif -%}
 {{ macro.item(transaction) }}
-{% endfor %}
+{%- endfor %}
