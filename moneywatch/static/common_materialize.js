@@ -244,11 +244,8 @@ $(function() {
 
     // importer: add index values to form elements before submitting
     $("form#import_check").submit(function (e) {
-        $("form#import_check .item_container").each(function() {
-            var el = $(this);
-            var index = el.data("index");
-
-            el.find("input,select").each(function() {
+        $("form#import_check .item_container").each(function(index, container) {
+            $(container).find("input[name],select[name]").each(function() {
                 var item = $(this);
                 item.attr("name", index + "_" + item.attr("name"));
             });
