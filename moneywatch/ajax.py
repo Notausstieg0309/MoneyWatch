@@ -41,6 +41,6 @@ def transaction_chart_data(transaction_id):
         "description": rule.description
     }
 
-    result.update(createResultForTransactions(rule.regular, transactions, highlight_links=True, reference_id=initial_transaction.id))
+    result.update(createResultForTransactions(rule.regular, transactions, create_links=True, reference_id=initial_transaction.id))
 
     return jsonify(result)
