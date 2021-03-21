@@ -193,11 +193,11 @@ def create_transactions_from_import(items, check_all=False):
         if latest_transaction_account_id is None and "account" not in item and exist:
             latest_transaction_account_id = trans.account_id
 
-        if exist and not check_all:
-            break
-
-        if exist and check_all:
-            continue
+        if exist:
+            if check_all:
+                continue
+            else:
+                break
 
         if not trans.account_id:
             item_ids_iban_missing.append(items.index(item))
