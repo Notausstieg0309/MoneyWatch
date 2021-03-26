@@ -267,6 +267,17 @@ $(function() {
         checkTransactionsImport();
     }
 
+    // importer: if only one category available, select it right away
+    $(".transaction.item_container.with_controls select[name='category']").each(function () {
+        var select_el = $(this);
+        var options = select_el.children("option:not(:disabled)");
+
+        if (options && options.length == 1) {
+            select_el.val(options[0].value);
+            select_el.formSelect();
+        }
+    });
+
     // ruleset: enable check button, if "check historical transactions" is active
     $("input[name='check_historical']").change(function() {
         var checked = $(this).prop('checked');
