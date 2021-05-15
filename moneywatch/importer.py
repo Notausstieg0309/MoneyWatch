@@ -95,6 +95,10 @@ def index():
 
                 return redirect(url_for('overview.index'))
 
+            else:
+                # don't save anything
+                db.session.rollback()
+
             categories = {}
 
             if len(session.get("import_objects", [])) > 0:
