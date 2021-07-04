@@ -1,4 +1,4 @@
-{%- import 'transactions/index.html' as trans_templ -%}
+{%- import 'transactions/macro.j2' as trans_macro -%}
 
 {%- macro matched_transaction_item(transaction) %}
   <li class="collection-item">
@@ -8,7 +8,7 @@
         <span class="black-text italic">{% trans %}Assign{% endtrans %}</span>
       </label>
     </span>
-    {{ trans_templ.item(transaction) }}
+    {{ trans_macro.item(transaction) }}
   </li>
 {% endmacro %}
 
