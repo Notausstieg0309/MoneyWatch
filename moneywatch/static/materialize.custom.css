@@ -30,6 +30,11 @@ ul.tabs li.tab a.active, ul.tabs li.tab:not(.disabled) a:hover {
     font-weight: bold;
 }
 
+/* transaction details modal */
+i.material-icons.tooltipped.transaction_chart {
+    cursor: pointer;
+}
+
 /* change mouse icon for tooltipped icons, disable selection */
 i.material-icons.tooltipped {
     cursor: default;

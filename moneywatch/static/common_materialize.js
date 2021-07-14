@@ -167,11 +167,9 @@ $(function() {
     });
 
     // overview: add click handler for transaction charts modal popup
-    $('div.overview i.transaction_chart[data-chart-data-url]')
-       .css("cursor", "pointer")
-       .click(function() {
-           modalChart($(this).data("chart-data-url"));
-    });
+    $("body").on("click", "i.transaction_chart[data-chart-data-url]", function() {
+        modalChart($(this).data("chart-data-url"));
+    },)
 
 
     // import: multiple rule match - preset description and category if rule get's changed
