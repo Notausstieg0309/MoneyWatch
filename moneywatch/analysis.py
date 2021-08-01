@@ -324,7 +324,7 @@ def data():
 
     data = request.form
 
-    current_app.logger.debug("analysis data request with params: %s", data)
+    current_app.logger.debug("analysis data request with params: %r", dict(data))
 
     start_date = utils.get_date_from_string(data["start"], "%Y-%m")
     end_date = utils.get_date_from_string(data["end"], "%Y-%m")
