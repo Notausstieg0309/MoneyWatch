@@ -1,6 +1,7 @@
 from flask import (Blueprint, flash, redirect, render_template, request, url_for, session)
 
 import os
+import datetime
 
 import moneywatch.utils.functions as utils
 
@@ -86,12 +87,18 @@ def index():
                     if transaction.account_id not in account_ids:
                         account_ids.append(transaction.account_id)
 
-                db.session.commit()
+                last_date = session['import_objects'][0].date
 
+                db.session.commit()
                 session.clear()
 
                 if len(account_ids) == 1:
-                    return redirect(url_for('overview.overview', account_id=account_ids[0]))
+
+                    today = datetime.date.today()
+                    if last_date.month == today.month and last_date.year == today.year:
+                        return redirect(url_for('overview.overview', account_id=account_ids[0]))
+                    else:
+                        return redirect(url_for('overview.month_overview', account_id=account_ids[0], year=last_date.year, month=last_date.month))
 
                 return redirect(url_for('overview.index'))
 
