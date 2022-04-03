@@ -43,8 +43,17 @@ def edit(id):
             current_transaction.category_id = category_id
 
             if clear_rule is not None:
+                rule_id = current_transaction.rule_id
                 current_transaction.rule_id = None
                 current_transaction.trend = None
+
+                # in case a future transaction exists for cleared rule, recalculate trend
+                future_transaction = Transaction.query.filter(Transaction.id > current_transaction.id).filter_by(rule_id=rule_id).limit(1).one_or_none()
+
+                if future_transaction:
+                    future_transaction.trend = None
+                    future_transaction._calculate_trend()
+
 
             db.session.commit()
 
