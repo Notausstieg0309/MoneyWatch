@@ -1,5 +1,7 @@
 var sel_dates = {}
 var analysis_chart = null;
+var xhr = null;
+
 
 // helper function to generate <input type="month"> compatible strings from JS Date() object
 function formatYearMonth(date) {
@@ -557,7 +559,11 @@ $(function () {
             var ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            $.ajax({
+            if (xhr !== null) {
+                xhr.abort()
+            }
+
+            xhr = $.ajax({
                 url: $(this).data("submit-url"),
                 async: true,
                 dataType: 'json',
@@ -581,6 +587,8 @@ $(function () {
                     $("canvas.chart-container").slideDown()
                     $("div.table-container").show()
                 }
+
+                xhr = null;
             });
         }
 
