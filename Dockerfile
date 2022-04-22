@@ -8,6 +8,7 @@ COPY --chown=moneywatch:moneywatch  . .
 RUN pip install --no-cache-dir -e .
 
 USER moneywatch
+VOLUME /data
 WORKDIR /data
 
 CMD [ "/usr/src/app/docker-entry.sh" ]
