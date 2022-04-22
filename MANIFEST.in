@@ -1,7 +1,7 @@
-include moneywatch/schema.sql
-graft moneywatch/static
-graft moneywatch/templates
-graft moneywatch/translations
-graft moneywatch/import_plugins
-graft moneywatch/migrations
+include src/moneywatch/schema.sql
+graft src/moneywatch/static
+graft src/moneywatch/templates
+graft src/moneywatch/translations
+graft src/moneywatch/import_plugins
+graft src/moneywatch/migrations
 global-exclude *.pyc *.sh *.po *.pot

@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
+# Copyright (C) 2022 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-24 13:03+0100\n"
+"POT-Creation-Date: 2022-04-22 19:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: accounts.py:34 accounts.py:89 categories.py:38 categories.py:113
-#: ruleset.py:153
+#: accounts.py:34 accounts.py:89 categories.py:38 categories.py:114
+#: ruleset.py:159
 msgid "Name is required."
 msgstr ""
 
@@ -34,33 +34,30 @@ msgstr ""
 msgid "The provided balance is not a valid numeric value."
 msgstr ""
 
-#: analysis.py:182 templates/importer/check.html:10
-#: templates/importer/multiple_rule_match.html:9
-#: templates/importer/unknown_account.html:19
-#: templates/overview/overview.html:45 templates/overview/overview.html:58
-#: templates/transactions/edit.html:10 templates/transactions/index.html:14
+#: analysis.py:182 templates/overview/overview.html:45
+#: templates/overview/overview.html:58
 msgid "yyyy-MM-dd"
 msgstr ""
 
-#: categories.py:41 categories.py:116
+#: categories.py:41 categories.py:117
 msgid "The budget must be given as numeric value."
 msgstr ""
 
-#: categories.py:45 categories.py:119
+#: categories.py:45 categories.py:120
 #, python-format
 msgid "The name '%(name)s' already exists on this level"
 msgstr ""
 
-#: importer.py:24
+#: importer.py:25
 msgid "No file uploaded"
 msgstr ""
 
-#: importer.py:42
+#: importer.py:43
 #, python-format
 msgid "Import plugin file \"%(name)s\""
 msgstr ""
 
-#: importer.py:129
+#: importer.py:140
 #, python-format
 msgid ""
 "The file contains transactions that cannot be clearly assigned to an "
@@ -71,31 +68,31 @@ msgid ""
 "account during import."
 msgstr ""
 
-#: ruleset.py:31
+#: ruleset.py:34
 msgid ""
 "Unable to create new rules. No categories are available to create rules "
 "for. Please create categories first."
 msgstr ""
 
-#: ruleset.py:49
+#: ruleset.py:53
 msgid "Rule name is required."
 msgstr ""
 
-#: ruleset.py:52 ruleset.py:155
+#: ruleset.py:56 ruleset.py:161
 msgid "Search pattern is required."
 msgstr ""
 
-#: ruleset.py:55 ruleset.py:157
+#: ruleset.py:59 ruleset.py:163
 msgid "Category is required."
 msgstr ""
 
-#: ruleset.py:61
+#: ruleset.py:65 ruleset.py:168
 msgid ""
 "Invalid search pattern. The given search pattern is not a valid regular "
 "expression"
 msgstr ""
 
-#: transactions.py:70
+#: transactions.py:67
 #, python-format
 msgid "The transaction '%(description)s' cannot be edited anymore."
 msgstr ""
@@ -152,9 +149,9 @@ msgstr ""
 
 #: templates/accounts/add.html:62 templates/accounts/change.html:54
 #: templates/categories/add.html:27 templates/categories/change.html:37
-#: templates/importer/check.html:58 templates/ruleset/add.html:83
+#: templates/importer/check.html:10 templates/ruleset/add.html:83
 #: templates/ruleset/change.html:57 templates/ruleset/check.html:121
-#: templates/transactions/edit.html:54
+#: templates/transactions/edit.html:15
 msgid "Save"
 msgstr ""
 
@@ -186,13 +183,13 @@ msgstr ""
 msgid "Account Balance (end of interval)"
 msgstr ""
 
-#: templates/analysis/index.html:52 templates/overview/overview.html:189
+#: templates/analysis/index.html:52 templates/overview/overview.html:195
 msgid "Net Change"
 msgstr ""
 
 #: templates/analysis/index.html:57 templates/categories/add.html:4
 #: templates/categories/change.html:4 templates/categories/index.html:43
-#: templates/overview/overview.html:179 templates/overview/overview.html:234
+#: templates/overview/overview.html:185 templates/overview/overview.html:240
 msgid "Deposits"
 msgstr ""
 
@@ -210,7 +207,7 @@ msgstr ""
 
 #: templates/analysis/index.html:76 templates/categories/add.html:4
 #: templates/categories/change.html:4 templates/categories/index.html:47
-#: templates/overview/overview.html:184 templates/overview/overview.html:238
+#: templates/overview/overview.html:190 templates/overview/overview.html:244
 msgid "Withdrawals"
 msgstr ""
 
@@ -237,10 +234,9 @@ msgstr ""
 msgid "Rule"
 msgstr ""
 
-#: templates/analysis/index.html:161 templates/importer/check.html:26
-#: templates/importer/multiple_rule_match.html:24 templates/ruleset/add.html:43
+#: templates/analysis/index.html:161 templates/ruleset/add.html:43
 #: templates/ruleset/change.html:31 templates/ruleset/check.html:57
-#: templates/ruleset/index.html:23 templates/transactions/edit.html:28
+#: templates/ruleset/index.html:23
 msgid "Category"
 msgstr ""
 
@@ -349,42 +345,18 @@ msgstr ""
 msgid "New Main Category"
 msgstr ""
 
-#: templates/importer/check.html:4
-#: templates/importer/multiple_rule_match.html:4
+#: templates/importer/check.html:5
+#: templates/importer/multiple_rule_match.html:5
 #: templates/importer/no_account_given.html:4
-#: templates/importer/unknown_account.html:4
+#: templates/importer/unknown_account.html:5
 msgid "Check imported transactions"
 msgstr ""
 
-#: templates/importer/check.html:15
-#: templates/importer/multiple_rule_match.html:13
-#: templates/transactions/edit.html:14
-msgid "Description"
-msgstr ""
-
-#: templates/importer/check.html:16
-#: templates/importer/multiple_rule_match.html:14
-#: templates/transactions/edit.html:15
-msgid "Please enter a description"
-msgstr ""
-
-#: templates/importer/check.html:21
-#: templates/importer/multiple_rule_match.html:19
-#: templates/importer/multiple_rule_match.html:57
-#: templates/importer/no_account_given.html:19
-#: templates/transactions/edit.html:20
-msgid "Please Choose"
-msgstr ""
-
-#: templates/importer/check.html:34
-msgid "I have noted this message"
-msgstr ""
-
-#: templates/importer/check.html:58
+#: templates/importer/check.html:10
 msgid "Please check the missing input for the following highlighted transactions."
 msgstr ""
 
-#: templates/importer/check.html:76
+#: templates/importer/check.html:28
 msgid "No transactions found."
 msgstr ""
 
@@ -408,12 +380,12 @@ msgstr ""
 msgid "Load"
 msgstr ""
 
-#: templates/importer/multiple_rule_match.html:49
+#: templates/importer/multiple_rule_match.html:14
 #: templates/importer/no_account_given.html:12
 msgid "Check again"
 msgstr ""
 
-#: templates/importer/multiple_rule_match.html:51
+#: templates/importer/multiple_rule_match.html:16
 msgid ""
 "The following transaction matches multiple rules. This problem can occur "
 "when rules uses a search pattern that is not specific enough for such "
@@ -421,15 +393,20 @@ msgid ""
 "involved please consider to precise the search pattern of these rules."
 msgstr ""
 
-#: templates/importer/multiple_rule_match.html:53
+#: templates/importer/multiple_rule_match.html:18
 msgid "Please decide which rule this transaction applies to."
 msgstr ""
 
-#: templates/importer/multiple_rule_match.html:55
+#: templates/importer/multiple_rule_match.html:20
 msgid "Matching Rule"
 msgstr ""
 
-#: templates/importer/multiple_rule_match.html:58
+#: templates/importer/multiple_rule_match.html:22
+#: templates/importer/no_account_given.html:19
+msgid "Please Choose"
+msgstr ""
+
+#: templates/importer/multiple_rule_match.html:23
 msgid "None"
 msgstr ""
 
@@ -448,21 +425,21 @@ msgstr[1] ""
 msgid "Please decide for which account these transactions should be imported."
 msgstr ""
 
-#: templates/importer/unknown_account.html:41
+#: templates/importer/unknown_account.html:13
 msgid ""
 "The uploaded file contains transactions for the following unknown account"
 " IBAN."
 msgstr ""
 
-#: templates/importer/unknown_account.html:64
+#: templates/importer/unknown_account.html:36
 msgid "Do you want to create a new account for this IBAN?"
 msgstr ""
 
-#: templates/importer/unknown_account.html:70
+#: templates/importer/unknown_account.html:42
 msgid "No"
 msgstr ""
 
-#: templates/importer/unknown_account.html:71
+#: templates/importer/unknown_account.html:43
 msgid "Yes"
 msgstr ""
 
@@ -520,7 +497,7 @@ msgstr ""
 msgid "Show historical graph"
 msgstr ""
 
-#: templates/overview/overview.html:71 templates/transactions/index.html:25
+#: templates/overview/overview.html:71
 msgid "Edit transaction"
 msgstr ""
 
@@ -547,68 +524,68 @@ msgstr ""
 msgid "The current consumption of the planned budget of %(budget)s."
 msgstr ""
 
-#: templates/overview/overview.html:140
+#: templates/overview/overview.html:146
 msgid "No transactions available"
 msgstr ""
 
-#: templates/overview/overview.html:161
+#: templates/overview/overview.html:167
 msgid "previous month"
 msgstr ""
 
-#: templates/overview/overview.html:163 templates/overview/overview.html:202
+#: templates/overview/overview.html:169 templates/overview/overview.html:208
 #, python-format
 msgid "current month in %(year)s"
 msgstr ""
 
-#: templates/overview/overview.html:165
+#: templates/overview/overview.html:171
 msgid "previous year"
 msgstr ""
 
-#: templates/overview/overview.html:167
+#: templates/overview/overview.html:173
 msgid "previous timeperiod"
 msgstr ""
 
-#: templates/overview/overview.html:175 templates/overview/overview.html:234
-#: templates/overview/overview.html:238
+#: templates/overview/overview.html:181 templates/overview/overview.html:240
+#: templates/overview/overview.html:244
 msgid "Planned"
 msgstr ""
 
-#: templates/overview/overview.html:176 templates/overview/overview.html:234
-#: templates/overview/overview.html:238
+#: templates/overview/overview.html:182 templates/overview/overview.html:240
+#: templates/overview/overview.html:244
 msgid "Current"
 msgstr ""
 
-#: templates/overview/overview.html:194
+#: templates/overview/overview.html:200
 msgid "current values incl. pending regular transactions"
 msgstr ""
 
-#: templates/overview/overview.html:200
+#: templates/overview/overview.html:206
 msgid "next month"
 msgstr ""
 
-#: templates/overview/overview.html:204
+#: templates/overview/overview.html:210
 msgid "next year"
 msgstr ""
 
-#: templates/overview/overview.html:206
+#: templates/overview/overview.html:212
 msgid "next timeperiod"
 msgstr ""
 
-#: templates/overview/overview.html:214
+#: templates/overview/overview.html:220
 #, python-format
 msgid "This month contains %(num)d message. Click here to show them."
 msgid_plural "This month contains %(num)d messages. Click here to show them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/overview/overview.html:214
+#: templates/overview/overview.html:220
 #, python-format
 msgid "This timeframe contains %(num)d message. Click here to show them."
 msgid_plural "This timeframe contains %(num)d messages. Click here to show them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/overview/overview.html:223
+#: templates/overview/overview.html:229
 msgid "particular transactions:"
 msgstr ""
 
@@ -733,11 +710,11 @@ msgstr ""
 msgid "Rules for withdrawals"
 msgstr ""
 
-#: templates/transactions/edit.html:4
+#: templates/transactions/edit.html:5
 msgid "Edit Transaction"
 msgstr ""
 
-#: templates/transactions/edit.html:64
+#: templates/transactions/edit.html:25
 msgid ""
 "This transaction was identified by a rule. You can clear the binding of "
 "this transaction to the matched rule in case this transaction was "
@@ -745,21 +722,22 @@ msgid ""
 "the corresponding rule."
 msgstr ""
 
-#: templates/transactions/edit.html:70
+#: templates/transactions/edit.html:31
 #, python-format
 msgid "Clear rule binding (%(rulename)s)"
 msgstr ""
 
-#: templates/transactions/index.html:62
+#: templates/transactions/index.html:19
 msgid "search for transactions..."
 msgstr ""
 
-#: templates/transactions/index.html:73 templates/transactions/index.html:75
-msgid "MMMM yyyy"
+#: templates/transactions/index.html:31
+msgid "No transactions available."
 msgstr ""
 
-#: templates/transactions/index.html:81
-msgid "No transactions available."
+#: templates/transactions/multiple_transaction.html:5
+#: templates/transactions/multiple_transaction.html:7
+msgid "MMMM yyyy"
 msgstr ""
 
 #: utils/functions.py:241

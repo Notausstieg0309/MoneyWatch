@@ -1,4 +1,4 @@
-from . import functions as utils
+from moneywatch.utils import functions as utils
 
 import pytest
 import datetime

@@ -12,9 +12,9 @@
 
 
 /* colorize positive/negative numbers */
-.num.negative {color: #ff0000;}
-.num.positive {color: #006d14;}
-.num {white-space: nowrap; }
+.num.negative {color: #ff0000 !important;}
+.num.positive {color: #006d14 !important;}
+.num {white-space: nowrap !important; }
 
 /* additional helper class for inline block display */
 .inline-block {display: inline-block;}

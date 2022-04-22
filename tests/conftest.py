@@ -1,7 +1,7 @@
 import pytest
 import datetime
 
-from . import create_app
+from moneywatch import create_app
 
 
 @pytest.fixture

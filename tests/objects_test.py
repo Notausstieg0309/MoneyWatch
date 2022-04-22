@@ -1,5 +1,5 @@
-from .objects import Account, Category, Rule, Transaction, PlannedTransaction
-from .exceptions import MultipleRuleMatchError
+from moneywatch.utils.objects import Account, Category, Rule, Transaction, PlannedTransaction
+from moneywatch.utils.exceptions import MultipleRuleMatchError
 import pytest
 import logging
 import datetime
