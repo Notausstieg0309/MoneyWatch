@@ -44,7 +44,7 @@ def end():
 def db_only_account(db):
 
     # Account
-    account = Account(id=1, name="Main Account", balance=0, iban="DE67100200301230002345")
+    account = Account(id=1, name="Main Account", balance=0, iban="DE16500105171721253655")
     db.session.add(account)
 
     db.session.commit()
@@ -58,7 +58,7 @@ def db_filled(db, today, start):
 
     # Accounts
 
-    account = Account(id=1, name="Main Account", balance=0, iban="DE67100200301230002345")
+    account = Account(id=1, name="Main Account", balance=0, iban="DE16500105171721253655")
     db.session.add(account)
 
     # Categories
@@ -240,7 +240,7 @@ def test_account_iban_formatted(db_filled):
 
     iban = account.iban_formatted
 
-    assert iban == 'DE67 1002 0030 1230 0023 45'
+    assert iban == 'DE16 5001 0517 1721 2536 55'
 
 
 def test_account_last_update(db_filled):

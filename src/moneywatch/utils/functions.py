@@ -1,6 +1,8 @@
 import datetime
 import math
 import re
+import schwifty
+
 
 from calendar import monthrange
 from flask_babel import format_date, gettext
@@ -247,18 +249,17 @@ def get_label_for_date(date, interval):
 
 def normalize_iban(value):
 
-    value = value.upper()
+    iban = schwifty.IBAN(value)
+    return iban.compact
 
-    value = re.sub(r"[^A-Z0-9]+", "", value)
-
-    return value
 
 
 def is_valid_iban(value):
 
-    value = normalize_iban(value)
-
-    if not re.fullmatch(r"[A-Z]{2}\d{20}", value):
+    try:
+        iban = schwifty.IBAN(value)
+        iban.validate()
+    except ValueError:
         return False
 
     return True
@@ -266,13 +267,9 @@ def is_valid_iban(value):
 
 def format_iban_human(value):
 
-    value = normalize_iban(value)
-    items = []
+    iban = schwifty.IBAN(value)
+    return iban.formatted
 
-    for index in range(0, len(value), 4):
-        items.append(value[index: index + 4])
-
-    return " ".join(items)
 
 
 def demo_date(day, month=0):

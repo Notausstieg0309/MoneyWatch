@@ -227,9 +227,8 @@ def test_get_cyclic_dates_for_timerange(date, months_interval, start, end, expec
 
 # normalize_iban()
 @pytest.mark.parametrize("iban,expected", [
-    ("DE73 7294 0493 0000 4030 05", "DE73729404930000403005"),
-    ("'DE73 - 7294 - 0493 - 0000 - 4030 - 05'", "DE73729404930000403005"),
-    ("DE73729404930000403005", "DE73729404930000403005")
+    ("DE16 5001 0517 1721 2536 55", "DE16500105171721253655"),
+    ("FR2014508000507933961258H61", "FR2014508000507933961258H61")
 ])
 def test_normalize_iban(iban, expected):
 
@@ -238,10 +237,10 @@ def test_normalize_iban(iban, expected):
 
 # is_valid_iban()
 @pytest.mark.parametrize("iban,expected", [
-    ("DE73 7294 0493 0000 4030 05", True),
-    ("'DE73 - 7294 - 0493 - 0000 - 4030 - 05'", True),
-    ("DE73729404930000403005", True),
-    ("DE7372940493000040300", False)
+    ("DE16 5001 0517 1721 2536 55", True),
+    ("FR2014508000507933961258H61", True),
+    ("DE7372940493000040300", False),
+    ("DE18500105171721253655", False),
 ])
 def test_is_valid_iban(iban, expected):
 
