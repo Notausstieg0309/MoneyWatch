@@ -66,13 +66,13 @@ def getProfit(account_id, start, end, interval):
     if account_id == "ALL":
         accounts = Account.query.all()
         for account in accounts:
-            transactions.extend(account.transactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end)))
+            transactions.extend(account.transactions(utils.get_first_day_of_month(start), utils.get_last_day_of_month(end)))
 
         # transactions are not in the correct date order as the transaction list is extended per account with the given timerange, we need to sort everything correctly
         transactions.sort(key=lambda x: x.date)
     else:
         account = Account.query.filter_by(id=account_id).one()
-        transactions = account.transactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
+        transactions = account.transactions(utils.get_first_day_of_month(start), utils.get_last_day_of_month(end))
 
     transactions = filter(lambda x: x.type != "message", transactions)
 
@@ -132,7 +132,7 @@ def getSumByType(account_id, start, end, interval, trans_type):
 
     if account:
 
-        transactions = account.transactions_by_type(trans_type, utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
+        transactions = account.transactions_by_type(trans_type, utils.get_first_day_of_month(start), utils.get_last_day_of_month(end))
 
         result.update(createResultForTransactions(interval, transactions))
 
@@ -145,7 +145,7 @@ def getSumByRule(start, end, interval, rule_id):
 
     rule = Rule.query.filter_by(id=rule_id).one()
 
-    transactions = rule.transactions(utils.get_first_day_of_month(date=start), utils.get_last_day_of_month(date=end))
+    transactions = rule.transactions(utils.get_first_day_of_month(start), utils.get_last_day_of_month(end))
 
     result.update(createResultForTransactions(interval, transactions, show_transaction_details=True))
 
@@ -329,7 +329,7 @@ def data():
     start_date = utils.get_date_from_string(data["start"], "%Y-%m")
     end_date = utils.get_date_from_string(data["end"], "%Y-%m")
 
-    end_date = utils.get_last_day_of_month(year=end_date.year, month=end_date.month)
+    end_date = utils.get_last_day_of_month(end_date)
 
     interval = int(data.get("interval", 1))
 

@@ -1,6 +1,5 @@
 import datetime
 import math
-import re
 import schwifty
 
 
@@ -23,7 +22,7 @@ def get_half_year_from_date(date):
     return (date.month - 1) // 6 + 1
 
 
-def get_first_day_of_month(year=None, month=None, date=None):
+def get_first_day_of_month(date=None):
 
     date_today = datetime.date.today()
 
@@ -31,13 +30,13 @@ def get_first_day_of_month(year=None, month=None, date=None):
         date_month = date.month
         date_year = date.year
     else:
-        date_year = year if year is not None else date_today.year
-        date_month = month if month is not None else date_today.month
+        date_year = date_today.year
+        date_month = date_today.month
 
     return datetime.date(date_year, date_month, 1)
 
 
-def get_last_day_of_month(year=None, month=None, date=None):
+def get_last_day_of_month(date=None):
 
     date_first = get_first_day_of_month()
 
@@ -45,8 +44,8 @@ def get_last_day_of_month(year=None, month=None, date=None):
         date_month = date.month
         date_year = date.year
     else:
-        date_year = year if year is not None else date_first.year
-        date_month = month if month is not None else date_first.month
+        date_year = date_first.year
+        date_month = date_first.month
 
     return datetime.date(date_year + date_month // 12, date_month % 12 + 1, 1) - datetime.timedelta(days=1)
 
@@ -276,7 +275,7 @@ def demo_date(day, month=0):
     new_date = datetime.date.today()
 
     if day < 0:
-        new_date = get_last_day_of_month(new_date.year, new_date.month)
+        new_date = get_last_day_of_month(new_date)
     else:
         new_date = new_date.replace(day=day)
 

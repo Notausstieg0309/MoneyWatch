@@ -1,6 +1,7 @@
 from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort)
 
 import moneywatch.utils.functions as utils
+import datetime
 from sqlalchemy import or_
 from flask_babel import gettext
 
@@ -105,8 +106,8 @@ def transaction_messages(account_id, year, month, month_count):
     if account is None:
         abort(404)
 
-    end_date = utils.add_months(utils.get_last_day_of_month(year, month), (month_count - 1))
-    transactions = account.transactions_by_type("message", start=utils.get_first_day_of_month(year, month), end=end_date)
+    end_date = utils.add_months(utils.get_last_day_of_month(datetime.date(year, month, 1)), (month_count - 1))
+    transactions = account.transactions_by_type("message", start=datetime.date(year, month, 1), end=end_date)
 
     return render_template('transactions/multiple_transaction.html', transactions=transactions)
 

@@ -20,7 +20,7 @@ def createOverview(account_id, start, end):
         start = oldest_transaction.date
 
     if end < start:
-        end = utils.get_last_day_of_month(start.year, start.month)
+        end = utils.get_last_day_of_month(start)
 
     current_month = start <= datetime.date.today() <= end
 
@@ -116,12 +116,12 @@ def overview(account_id):
 
 @bp.route('/<int:account_id>/<int:year>/')
 def year_overview(account_id, year):
-    return createOverview(account_id, utils.get_first_day_of_month(year, 1), utils.get_last_day_of_month(year, 12))
+    return createOverview(account_id, datetime.date(year, 1, 1), datetime.date(year, 12, 31))
 
 
 @bp.route('/<int:account_id>/<int:year>/<int:month>/')
 def month_overview(account_id, year, month):
-    return createOverview(account_id, utils.get_first_day_of_month(year, month), utils.get_last_day_of_month(year, month))
+    return createOverview(account_id, datetime.date(year, month, 1), utils.get_last_day_of_month(datetime.date(year, month, 1)))
 
 
 @bp.route('/<int:account_id>/<int:year>/Q<int(min=1, max=4):quarter>/')
@@ -136,4 +136,4 @@ def halfyear_overview(account_id, year, half):
 
 @bp.route('/<int:account_id>/<int:year>/<int:month>/<int:interval>')
 def custom_overview(account_id, year, month, interval):
-    return createOverview(account_id, utils.get_first_day_of_month(year, month), utils.add_months(utils.get_last_day_of_month(year, month), (interval - 1)))
+    return createOverview(account_id, datetime.date(year, month, 1), utils.add_months(utils.get_last_day_of_month(datetime.date(year, month, 1)), (interval - 1)))

@@ -53,33 +53,28 @@ def test_get_half_year_from_date(input, expected):
 
 
 # get_first_day_of_month()
-@pytest.mark.parametrize("year,month,date,expected", [
-    (None, None, None, datetime.date(datetime.date.today().year, datetime.date.today().month, 1)),
-    (2009, None, None, datetime.date(2009, datetime.date.today().month, 1)),
-    (None, 12, None, datetime.date(datetime.date.today().year, 12, 1)),
-    (2009, 3, None, datetime.date(2009, 3, 1)),
-    (2009, 3, datetime.date(2010, 5, 19), datetime.date(2010, 5, 1)),
-    (None, 3, datetime.date(2010, 2, 19), datetime.date(2010, 2, 1)),
-    (None, None, datetime.date(2010, 5, 19), datetime.date(2010, 5, 1)),
+@pytest.mark.parametrize("date,expected", [
+    (None, datetime.date(datetime.date.today().year, datetime.date.today().month, 1)),
+    (datetime.date(2010, 5, 19), datetime.date(2010, 5, 1)),
+    (datetime.date(2010, 2, 19), datetime.date(2010, 2, 1)),
 ])
-def test_get_first_day_of_month(year, month, date, expected):
-    assert utils.get_first_day_of_month(year, month, date) == expected
+def test_get_first_day_of_month(date, expected):
+    assert utils.get_first_day_of_month(date) == expected
 
 
 # get_last_day_of_month()
-@pytest.mark.parametrize("year,month,date,expected", [
-    (2020, 1, None, datetime.date(2020, 1, 31)),
-    (2020, 2, None, datetime.date(2020, 2, 29)),
-    (2021, 2, None, datetime.date(2021, 2, 28)),
-    (2100, 2, None, datetime.date(2100, 2, 28)),
-    (2000, 2, None, datetime.date(2000, 2, 29)),
-    (None, 3, None, datetime.date(datetime.date.today().year, 3, 31)),
-    (2000, 2, datetime.date(2010, 5, 19), datetime.date(2010, 5, 31)),
-    (None, 2, datetime.date(2000, 2, 3), datetime.date(2000, 2, 29)),
-    (None, None, datetime.date(2010, 5, 19), datetime.date(2010, 5, 31)),
+@pytest.mark.parametrize("date,expected", [
+    (datetime.date(2020, 1, 1), datetime.date(2020, 1, 31)),
+    (datetime.date(2020, 2, 3), datetime.date(2020, 2, 29)),
+    (datetime.date(2021, 2, 4), datetime.date(2021, 2, 28)),
+    (datetime.date(2100, 2, 5), datetime.date(2100, 2, 28)),
+    (datetime.date(2000, 2, 6), datetime.date(2000, 2, 29)),
+    (datetime.date(2010, 5, 19), datetime.date(2010, 5, 31)),
+    (datetime.date(2000, 2, 3), datetime.date(2000, 2, 29)),
+    (datetime.date(2010, 5, 19), datetime.date(2010, 5, 31)),
 ])
-def test_get_last_day_of_month(year, month, date, expected):
-    assert utils.get_last_day_of_month(year, month, date) == expected
+def test_get_last_day_of_month(date, expected):
+    assert utils.get_last_day_of_month(date) == expected
 
 
 # get_first_day_of_quarter()
