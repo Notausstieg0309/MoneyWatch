@@ -157,7 +157,7 @@ def handle_no_account_given(error):
 
 @bp.errorhandler(UnknownAccountError)
 def handle_unknown_account_error(error):
-    transaction = error.item
+    transaction = error.item.copy()
 
     if transaction["valuta"] > 0:
         transaction["type"] = "in"
