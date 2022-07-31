@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, redirect, render_template, request, url_for)
+from flask import (Blueprint, flash, redirect, render_template, request, url_for, session)
 
 from flask_babel import gettext
 
@@ -54,6 +54,10 @@ def add():
             db.session.add(new_account)
             db.session.commit()
 
+        if "import_items" in session and "account_not_found" in session:
+            session.pop("account_not_found", None)
+            return redirect(url_for('import.index', resume=1))
+        else:
             return redirect(url_for('overview.index'))
 
     return render_template('accounts/add.html', colors=colors)

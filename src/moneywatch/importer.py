@@ -18,7 +18,7 @@ plugins = ImportPluginsManager(os.path.dirname(os.path.realpath(__file__)) + "/i
 @bp.route('/import/', methods=('GET', 'POST'))
 def index():
 
-    if request.method == 'POST':
+    if request.method == 'POST' or ("resume" in request.args and "import_items" in session):
         error = None
 
         if "file" not in request.files and "import_objects" not in session and "import_items" not in session:
@@ -62,8 +62,12 @@ def index():
                     apply_account_id_changes(session["no_account_given"], request.form["account_id"])
                     session.pop("no_account_given", None)
 
+                # unknown account iban is ignored during import
                 if "ignore_iban" in request.form:
+                    session.pop("account_not_found", None)
                     iban = request.form["ignore_iban"]
+
+                    # remove all related transaction items from import
                     for item in session['import_items'][:]:
                         if item.get("account", None) == iban:
                             session['import_items'].remove(item)
@@ -73,6 +77,7 @@ def index():
                 except UnknownAccountError as e:
                     raise UnknownAccountError(iban=e.iban, item=e.item, plugin_description=session['import_plugin_description'])
 
+                # indicate that session objects where modified inline
                 session.modified = True
 
 
@@ -165,6 +170,8 @@ def handle_unknown_account_error(error):
         transaction["type"] = "out"
     else:
         transaction["type"] = "message"
+
+    session["account_not_found"] = 1
 
     return render_template('importer/unknown_account.html', transaction=transaction, plugin_description=error.plugin_description, iban=error.iban, iban_formatted=utils.format_iban_human(error.iban))
 
