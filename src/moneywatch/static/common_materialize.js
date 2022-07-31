@@ -43,7 +43,6 @@ function checkTransactionsImport() {
         }
         else if(item.hasClass("message")) {
             var noted = $(item).find("input[name='noted']").is(":checked");
-            console.log(item, noted);
             if(noted) {
                 item.removeClass("incomplete");
                 item.addClass("complete");
