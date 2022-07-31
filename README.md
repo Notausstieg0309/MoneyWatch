@@ -1,6 +1,6 @@
 # MoneyWatch
 
-MoneyWatch is a lightweight web application helps you to monitor your bank account about performed and planned transactions. It helps you to track your earnings/spendings and gives you indication of your current and planned balance. 
+MoneyWatch is a lightweight web application helps you to monitor your bank account about performed and planned transactions. It helps you to track your earnings/spendings and gives you indication of your current and planned balance.
 
 You can import your transactions via file import. Currently supported file formats are:
 * Targobank CSV
@@ -34,7 +34,7 @@ To get an idea how the net change would look like when all planned transactions 
 
 ![](screenshots/balance_clicked.png?raw=true "Balance view including all pending transactions valutas")
 
-Each category indicates planned transactions (formatted as gray italic transaction) based on defined rules for regular transactions. 
+Each category indicates planned transactions (formatted as gray italic transaction) based on defined rules for regular transactions.
 
 ![](screenshots/planned_transaction.png?raw=true "Planned transactions")
 
@@ -56,7 +56,7 @@ Regular transactions are expected to be booked on a specific date (based on the 
 
 ![](screenshots/overdue.png?raw=true "The overdue indicator.")
 
-Depending on your bank, your account statement can contain important messages, during import you must acknowledge these messages. 
+Depending on your bank, your account statement can contain important messages, during import you must acknowledge these messages.
 
 ![](screenshots/messages_import.png?raw=true "Acknowledge of messages during import")
 
@@ -192,7 +192,7 @@ You can stop the server by pressing CTRL+C.
 
 ## Import Plugin Mechanism
 
-As every bank has its own export format for account transactions, MoneyWatch uses a import plugin mechanism, so it is possible to implement other file formats quite easily. 
+As every bank has its own export format for account transactions, MoneyWatch uses a import plugin mechanism, so it is possible to implement other file formats quite easily.
 
 A import plugin implements 3 important components:
 
@@ -207,7 +207,7 @@ Just look at the  [import plugins directory](moneywatch/import_plugins "Director
 The function will be called before the actual import takes place. It is used to determine, if the given file can be handled by the plugin or not.
 
 ```python
-def check_csv(stream, name):    
+def check_csv(stream, name):
     if name.startswith("CHK_"):
         return True
     return False
@@ -228,30 +228,30 @@ The parse function is called with the same arguments as the parse function. The 
 def parse_csv(stream, name):
 
     items = stream.read().decode("latin-1").split('\r\n')
-    
+
     result = []
-    
+
     for item in items:
-    
+
         if item.strip():
             result_item = {}
-            
+
             columns = re.split('?;"', item)
-            
+
             date = columns[0]
             full_text = columns[1]
             valuta = columns[2]
             account = columns[5]
-            
+
             if re.match(r"^\d\d\.\d\d\.\d\d\d\d$", date): # european format (dd.mm.yyyy)
                 result_item['date'] = get_date_from_string(columns[0], '%d.%m.%Y')
             elif re.match(r"^\d\d\/\d\d\/\d\d\d\d$", date): # american format (mm/dd/yyyy)
                 result_item['date'] = get_date_from_string(columns[0], '%m/%d/%Y')
-                
+
             result_item['full_text'] = full_text
             result_item['valuta'] = float(valuta)
             result_item['account'] = account
-            
+
             if result_item['valuta'] != 0:
                 result.append(result_item)
 
@@ -265,7 +265,7 @@ The parse function must return a list of dicts ordered by the date ascending (ol
     {'date': datetime.date(2018, 12, 21), 'valuta': -37.99, 'account': 'DE99123456781000987654', 'full_text': 'SEPA DIRECT DEBIT PayPal SHOES24 ONLINE SHOP'},
     {'date': datetime.date(2018, 12, 21), 'valuta': 150.0, 'account': 'DE99123456781000987654', 'full_text': 'CASH DEPOSIT VIA COUNTER 150 EUR'},
     {'date': datetime.date(2019, 1, 1), 'valuta': -37.89, 'account': 'DE99123456781000987654', 'full_text': 'SEPA DIRECT DEBIT YourInsurance LLC. contract 3483-39432 JON DOE 2018/12/01 BOOKING REFERENCE NO. 123-2345-678'},
-    
+
     ...
 ]
 ```
@@ -275,7 +275,7 @@ The dict for one transaction item must use the following keys with their corresp
 | :--------------:|:------------:|-----------------------------------|------------------
 | `date`          | mandatory    | `datetime.date(2018, 12, 21)`     | A `datetime.date()` object representing the date of the transaction. |
 | `valuta`        | mandatory    | `-37.99` / `150.0`                | The amount of money for this particular transaction as a numeric float value, that was moved.<br/><br/>For incoming transactions, the value must be positive (>0). For outgoing transaction, the value must be negative (<0).<br/><br/> However, if the transaction is more like a message rather than a transaction, the valuta `0` should be used. In this case, it will be displayed as a notification and the user must take note of.
-| `full_text`     | mandatory    | `"SEPA DIRECT DEBIT PayPal SHOES24 ONLINE SHOP"` | The complete booking text of the transaction as string. 
+| `full_text`     | mandatory    | `"SEPA DIRECT DEBIT PayPal SHOES24 ONLINE SHOP"` | The complete booking text of the transaction as string.
 | `account`       | *optional*   | `"DE99123456781000987654"`        | The IBAN (in formatted or normalized form) of the related account for which the import should be done. If the account IBAN is available, the transaction will be straight mapped to the corresponding account (incl. ruleset/categories) in MoneyWatch. This ensures a smooth processing.<br/><br/>If the IBAN is not available, MoneyWatch tries to autodetect the account in case a transaction from the file already exists in the database. If not, the user will be prompted to decide to which account these transactions should  be imported.
 
 ### register the plugin
@@ -290,5 +290,5 @@ plugin_info["targobank_csv"] = { "description": "Targobank CSV",
                                }
  ```
 The plugin_info can be registered using an internal identifier and deploying a dict wich contains a short description for the user, the two functions and optionally the file_extension it supports.
- 
+
 
