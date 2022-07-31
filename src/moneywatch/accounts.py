@@ -1,7 +1,7 @@
 from flask import (Blueprint, flash, redirect, render_template, request, url_for, session)
 
 from flask_babel import gettext
-
+from sqlalchemy.exc import IntegrityError
 from moneywatch.utils.objects import db, Account
 
 import moneywatch.utils.functions as utils
@@ -48,11 +48,18 @@ def add():
 
         if error is not None:
             flash(error)
+            return render_template('accounts/add.html', colors=colors)
         else:
 
             new_account = Account(name=name, iban=utils.normalize_iban(iban), balance=balance, color=color)
             db.session.add(new_account)
-            db.session.commit()
+
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+                flash(gettext('An account with the same name or IBAN already exists.'))
+                return render_template('accounts/add.html', colors=colors)
 
         if "import_items" in session and "account_not_found" in session:
             session.pop("account_not_found", None)
@@ -102,7 +109,12 @@ def change(id):
             current_account.balance = balance
             current_account.color = color
 
-            db.session.commit()
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+                flash(gettext('An account with the same name already exists.'))
+                return render_template('accounts/change.html', account=current_account, colors=colors)
 
             return redirect(url_for('overview.index'))
 
