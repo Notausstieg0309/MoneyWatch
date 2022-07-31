@@ -16,7 +16,7 @@
       </div>
 
       <div class="input-field">
-        <input name="iban" id="iban" type="text" value="{{ request.form['iban'] or account.iban_formatted }}" required>
+        <input name="iban" id="iban" type="text" value="{{ account.iban_formatted }}" disabled>
         <label for="iban">{% trans %}IBAN{% endtrans %}</label>
       </div>
 

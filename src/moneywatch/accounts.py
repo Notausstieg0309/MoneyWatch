@@ -84,19 +84,12 @@ def change(id):
 
         error = None
         name = request.form['name']
-        iban = request.form['iban']
         balance = request.form['balance']
         color = request.form['color']
 
 
         if not name:
             error = gettext('Name is required.')
-
-        if not iban:
-            error = gettext('IBAN is required.')
-
-        if not utils.is_valid_iban(iban):
-            error = gettext('The provided IBAN is not valid')
 
         if color and color == "NONE":
             color = None
@@ -106,7 +99,6 @@ def change(id):
         else:
 
             current_account.name = name
-            current_account.iban = utils.normalize_iban(iban)
             current_account.balance = balance
             current_account.color = color
 
