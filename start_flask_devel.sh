@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 WD=$(dirname $0)
 
@@ -15,6 +15,7 @@ pip3 install -e $WD/.
 
 export FLASK_APP=moneywatch
 export FLASK_ENV=development
+export FLASK_RUN_EXTRA_FILES="$(ls -1 src/moneywatch/translations/*/LC_MESSAGES/messages.mo)"
 
 echo "-> updating database"
 flask db upgrade
