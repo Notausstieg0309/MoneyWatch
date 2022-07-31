@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-31 10:04+0200\n"
+"POT-Creation-Date: 2022-07-31 11:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgid "An account with the same name already exists."
 msgstr ""
 
 #: analysis.py:182 templates/overview/overview.html:45
-#: templates/overview/overview.html:58
+#: templates/overview/overview.html:58 templates/transactions/macro.j2:7
 msgid "yyyy-MM-dd"
 msgstr ""
 
@@ -244,7 +244,7 @@ msgstr ""
 
 #: templates/analysis/index.html:161 templates/ruleset/add.html:43
 #: templates/ruleset/change.html:31 templates/ruleset/check.html:57
-#: templates/ruleset/index.html:23
+#: templates/ruleset/index.html:23 templates/transactions/macro.j2:47
 msgid "Category"
 msgstr ""
 
@@ -411,6 +411,7 @@ msgstr ""
 
 #: templates/importer/multiple_rule_match.html:22
 #: templates/importer/no_account_given.html:19
+#: templates/transactions/macro.j2:39
 msgid "Please Choose"
 msgstr ""
 
@@ -501,11 +502,11 @@ msgstr ""
 msgid "Planned transaction is overdue."
 msgstr ""
 
-#: templates/overview/overview.html:65
+#: templates/overview/overview.html:65 templates/transactions/macro.j2:22
 msgid "Show historical graph"
 msgstr ""
 
-#: templates/overview/overview.html:71
+#: templates/overview/overview.html:71 templates/transactions/macro.j2:28
 msgid "Edit transaction"
 msgstr ""
 
@@ -741,6 +742,18 @@ msgstr ""
 
 #: templates/transactions/index.html:31
 msgid "No transactions available."
+msgstr ""
+
+#: templates/transactions/macro.j2:17
+msgid "Description"
+msgstr ""
+
+#: templates/transactions/macro.j2:18
+msgid "Please enter a description"
+msgstr ""
+
+#: templates/transactions/macro.j2:58
+msgid "I have noted this message"
 msgstr ""
 
 #: templates/transactions/multiple_transaction.html:5
