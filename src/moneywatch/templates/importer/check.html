@@ -17,7 +17,9 @@
 <form method="post" id="import_check">
   {{ save_button() }}
 {% for transaction in data %}
+<div class="import_check_container" data-item-id="{{loop.index0}}">
 {{ macro.item(transaction, True, categories[transaction.account_id][transaction.type]) }}
+</div>
 {% endfor %}
 
 {% if data|length > 3 %}

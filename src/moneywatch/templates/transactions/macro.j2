@@ -16,9 +16,9 @@
         {%- if edit %}
           <label for="description">{% trans %}Description{% endtrans %}</label>
           <input type="text" placeholder="{% trans %}Please enter a description{% endtrans %}..." name="description" {% if transaction.description %} value="{{ transaction.description }}"{% endif %} required>
-        {%- elif transaction.description is defined %}
+        {%- elif transaction.description is defined and transaction.description is not none %}
           {{ transaction.description }}
-          {% if transaction.id is not none and transaction.rule_id is not none and transaction.rule.regular -%}
+          {% if transaction.id is not none and transaction.rule is defined and transaction.rule is not none and transaction.rule.regular -%}
             <i data-chart-data-url="{{ url_for('ajax.transaction_chart_data', transaction_id=transaction.id) }}" class="tooltipped tiny material-icons transaction_chart" data-tooltip="{% trans %}Show historical graph{% endtrans %}">
              show_chart
             </i>
@@ -46,7 +46,7 @@
           </select>
           <label>{% trans %}Category{% endtrans %}</label>
         </div>
-        {% elif transaction.category is defined -%}
+        {% elif transaction.category is defined and transaction.category is not none -%}
           {{ transaction.category.getCategoryPath(" > ") }}
         {%- endif %}
       </div>
@@ -61,16 +61,23 @@
       {%- endif %}
     </div>
     {%- if transaction.type != "message" %}
-    <span class="valuta_box {{ transaction.type }}">
-      <span class="valuta num" data-num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</span>
-      {%- if transaction.trend %}
-      <br>
-      <span class="trend num" data-num="{{ transaction.trend }}">{%- if transaction.trend > 0 -%}
-        &#8599;
-      {%- elif transaction.trend < 0 -%}
-        &#8600;
-      {%- endif %} {{ transaction.trend | currencyformat("EUR") }}</span>
-      {%- endif %}
+    <span class="right_popouts">
+      {% if edit and transaction.rule is none -%}
+      <span class="rule_add_button tooltipped" data-tooltip="{% trans %}Create an import rule based on this transaction{% endtrans %}">
+        <a class="black-text" href="#" data-id="{{transaction.id}}" data-url="{{url_for('ruleset.add', account_id=transaction.account_id, rule_type=transaction.type)}}">{% trans %}Create Rule{% endtrans %}</a>
+      </span>
+      {%- endif -%}
+      <span class="valuta_box {{ transaction.type }}">
+        <span class="valuta num" data-num="{{transaction.valuta}}">{{ transaction.valuta | currencyformat("EUR") }}</span>
+        {%- if transaction.trend %}
+        <br>
+        <span class="trend num" data-num="{{ transaction.trend }}">{%- if transaction.trend > 0 -%}
+          &#8599;
+        {%- elif transaction.trend < 0 -%}
+          &#8600;
+        {%- endif %} {{ transaction.trend | currencyformat("EUR") }}</span>
+        {%- endif %}
+      </span>
     </span>
     {%- endif %}
   </div>

@@ -541,13 +541,17 @@ div.item_container.with_controls div.top_row div.description div.category div.in
 
 
 /* valuta box in top right corner */
-div.item_container div.top_row span.valuta_box {
+div.item_container div.top_row span.right_popouts {
     position: absolute;
     right:-10px;
     top:-10px;
+    text-align:right;
+}
+
+div.item_container div.top_row span.valuta_box {
     border-radius: 5px;
     padding: 5px;
-    text-align:right;
+    display:inline-block;
 }
 
 div.item_container div.top_row span.valuta_box.out {
@@ -559,6 +563,20 @@ div.item_container div.top_row span.valuta_box.in {
     border:  1px solid rgb(40, 136, 48);
     background-color: rgb(226,250,229);
 }
+
+div.item_container div.top_row span.right_popouts span.rule_add_button {
+    border-left:  1px solid #5c5c5cfd;
+    border-top:  1px solid #5c5c5cfd;
+    border-bottom:  1px solid #5c5c5cfd;
+    background-color: rgb(231, 231, 231);
+    border-radius: 5px 0px 0px 5px;
+    padding:4px 2px 2px 4px;
+    font-size: 0.8em;
+    font-style: italic;
+    color: rgb(53, 53, 53);
+    font-weight: bold
+}
+
 
 div.item_container div.top_row span.valuta_box span.valuta{
     font-weight: bold;

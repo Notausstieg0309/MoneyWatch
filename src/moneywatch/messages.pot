@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-31 11:58+0200\n"
+"POT-Creation-Date: 2022-07-31 14:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Generated-By: Babel 2.10.3\n"
 
 #: accounts.py:34 accounts.py:99 categories.py:38 categories.py:114
-#: ruleset.py:159
+#: ruleset.py:192
 msgid "Name is required."
 msgstr ""
 
@@ -76,28 +76,34 @@ msgid ""
 "account during import."
 msgstr ""
 
-#: ruleset.py:34
+#: ruleset.py:53
 msgid ""
 "Unable to create new rules. No categories are available to create rules "
 "for. Please create categories first."
 msgstr ""
 
-#: ruleset.py:53
+#: ruleset.py:72
 msgid "Rule name is required."
 msgstr ""
 
-#: ruleset.py:56 ruleset.py:161
+#: ruleset.py:75 ruleset.py:194
 msgid "Search pattern is required."
 msgstr ""
 
-#: ruleset.py:59 ruleset.py:163
+#: ruleset.py:78 ruleset.py:196
 msgid "Category is required."
 msgstr ""
 
-#: ruleset.py:65 ruleset.py:168
+#: ruleset.py:84 ruleset.py:201
 msgid ""
 "Invalid search pattern. The given search pattern is not a valid regular "
 "expression"
+msgstr ""
+
+#: ruleset.py:89
+msgid ""
+"Entered pattern does not matched the selected transaction you want to "
+"create this rule for."
 msgstr ""
 
 #: transactions.py:68
@@ -157,8 +163,8 @@ msgstr ""
 
 #: templates/accounts/add.html:62 templates/accounts/change.html:54
 #: templates/categories/add.html:27 templates/categories/change.html:37
-#: templates/importer/check.html:10 templates/ruleset/add.html:83
-#: templates/ruleset/change.html:57 templates/ruleset/check.html:121
+#: templates/importer/check.html:10 templates/ruleset/add.html:90
+#: templates/ruleset/change.html:57 templates/ruleset/check.html:127
 #: templates/transactions/edit.html:15
 msgid "Save"
 msgstr ""
@@ -224,8 +230,8 @@ msgid "For which account?"
 msgstr ""
 
 #: templates/analysis/index.html:104 templates/analysis/index.html:136
-#: templates/analysis/index.html:159 templates/ruleset/add.html:35
-#: templates/ruleset/check.html:49
+#: templates/analysis/index.html:159 templates/ruleset/add.html:42
+#: templates/ruleset/check.html:55
 msgid "Please select..."
 msgstr ""
 
@@ -242,8 +248,8 @@ msgstr ""
 msgid "Rule"
 msgstr ""
 
-#: templates/analysis/index.html:161 templates/ruleset/add.html:43
-#: templates/ruleset/change.html:31 templates/ruleset/check.html:57
+#: templates/analysis/index.html:161 templates/ruleset/add.html:50
+#: templates/ruleset/change.html:31 templates/ruleset/check.html:63
 #: templates/ruleset/index.html:23 templates/transactions/macro.j2:47
 msgid "Category"
 msgstr ""
@@ -264,26 +270,26 @@ msgstr ""
 msgid "Grouping"
 msgstr ""
 
-#: templates/analysis/index.html:186 templates/ruleset/add.html:52
-#: templates/ruleset/change.html:38 templates/ruleset/check.html:66
+#: templates/analysis/index.html:186 templates/ruleset/add.html:59
+#: templates/ruleset/change.html:38 templates/ruleset/check.html:72
 #: templates/ruleset/index.html:8
 msgid "monthly"
 msgstr ""
 
-#: templates/analysis/index.html:190 templates/ruleset/add.html:53
-#: templates/ruleset/change.html:39 templates/ruleset/check.html:67
+#: templates/analysis/index.html:190 templates/ruleset/add.html:60
+#: templates/ruleset/change.html:39 templates/ruleset/check.html:73
 #: templates/ruleset/index.html:9
 msgid "quarterly"
 msgstr ""
 
-#: templates/analysis/index.html:194 templates/ruleset/add.html:54
-#: templates/ruleset/change.html:40 templates/ruleset/check.html:68
+#: templates/analysis/index.html:194 templates/ruleset/add.html:61
+#: templates/ruleset/change.html:40 templates/ruleset/check.html:74
 #: templates/ruleset/index.html:10
 msgid "semi-annual"
 msgstr ""
 
-#: templates/analysis/index.html:198 templates/ruleset/add.html:55
-#: templates/ruleset/change.html:41 templates/ruleset/check.html:69
+#: templates/analysis/index.html:198 templates/ruleset/add.html:62
+#: templates/ruleset/change.html:41 templates/ruleset/check.html:75
 #: templates/ruleset/index.html:11
 msgid "annual"
 msgstr ""
@@ -364,7 +370,7 @@ msgstr ""
 msgid "Please check the missing input for the following highlighted transactions."
 msgstr ""
 
-#: templates/importer/check.html:28
+#: templates/importer/check.html:30
 msgid "No transactions found."
 msgstr ""
 
@@ -598,76 +604,76 @@ msgstr[1] ""
 msgid "particular transactions:"
 msgstr ""
 
-#: templates/ruleset/add.html:4 templates/ruleset/check.html:18
+#: templates/ruleset/add.html:5 templates/ruleset/check.html:18
 msgid "New rule"
 msgstr ""
 
-#: templates/ruleset/add.html:4 templates/ruleset/check.html:18
+#: templates/ruleset/add.html:5 templates/ruleset/check.html:18
 msgid "deposits"
 msgstr ""
 
-#: templates/ruleset/add.html:4 templates/ruleset/check.html:18
+#: templates/ruleset/add.html:5 templates/ruleset/check.html:18
 msgid "withdrawals"
 msgstr ""
 
-#: templates/ruleset/add.html:15 templates/ruleset/check.html:29
+#: templates/ruleset/add.html:22 templates/ruleset/check.html:35
 msgid ""
 "The name of the rule. This value is only displayed in the ruleset "
 "overview."
 msgstr ""
 
-#: templates/ruleset/add.html:16 templates/ruleset/change.html:13
-#: templates/ruleset/check.html:30 templates/ruleset/index.html:21
+#: templates/ruleset/add.html:23 templates/ruleset/change.html:13
+#: templates/ruleset/check.html:36 templates/ruleset/index.html:21
 msgid "Rule Name"
 msgstr ""
 
-#: templates/ruleset/add.html:21 templates/ruleset/check.html:35
+#: templates/ruleset/add.html:28 templates/ruleset/check.html:41
 msgid ""
 "The search pattern (phython based regular expression) used to identify "
 "matching transactions during import based on their booking text."
 msgstr ""
 
-#: templates/ruleset/add.html:22 templates/ruleset/change.html:16
-#: templates/ruleset/check.html:36
+#: templates/ruleset/add.html:29 templates/ruleset/change.html:16
+#: templates/ruleset/check.html:42
 msgid "Search Pattern"
 msgstr ""
 
-#: templates/ruleset/add.html:27 templates/ruleset/check.html:41
+#: templates/ruleset/add.html:34 templates/ruleset/check.html:47
 msgid ""
 "The short description that will be used for all matched transactions "
 "during import. The short description still can be changed during import."
 msgstr ""
 
-#: templates/ruleset/add.html:28 templates/ruleset/change.html:19
-#: templates/ruleset/check.html:42
+#: templates/ruleset/add.html:35 templates/ruleset/change.html:19
+#: templates/ruleset/check.html:48
 msgid "Short Description"
 msgstr ""
 
-#: templates/ruleset/add.html:51 templates/ruleset/change.html:37
-#: templates/ruleset/check.html:65
+#: templates/ruleset/add.html:58 templates/ruleset/change.html:37
+#: templates/ruleset/check.html:71
 msgid "no regularity"
 msgstr ""
 
-#: templates/ruleset/add.html:57 templates/ruleset/change.html:43
-#: templates/ruleset/check.html:71
+#: templates/ruleset/add.html:64 templates/ruleset/change.html:43
+#: templates/ruleset/check.html:77
 msgid "Regularity"
 msgstr ""
 
-#: templates/ruleset/add.html:64 templates/ruleset/change.html:50
-#: templates/ruleset/check.html:78
+#: templates/ruleset/add.html:71 templates/ruleset/change.html:50
+#: templates/ruleset/check.html:84
 msgid "Next Due"
 msgstr ""
 
-#: templates/ruleset/add.html:68 templates/ruleset/change.html:54
-#: templates/ruleset/check.html:82
+#: templates/ruleset/add.html:75 templates/ruleset/change.html:54
+#: templates/ruleset/check.html:88
 msgid "Amount"
 msgstr ""
 
-#: templates/ruleset/add.html:75 templates/ruleset/check.html:89
+#: templates/ruleset/add.html:82 templates/ruleset/check.html:95
 msgid "Check also all historical transactions for a successful match"
 msgstr ""
 
-#: templates/ruleset/add.html:82 templates/ruleset/check.html:120
+#: templates/ruleset/add.html:89 templates/ruleset/check.html:126
 msgid "Check"
 msgstr ""
 
@@ -679,11 +685,11 @@ msgstr ""
 msgid "Assign"
 msgstr ""
 
-#: templates/ruleset/check.html:98
+#: templates/ruleset/check.html:104
 msgid "No matching transactions found."
 msgstr ""
 
-#: templates/ruleset/check.html:107
+#: templates/ruleset/check.html:113
 msgid "Matched Transactions"
 msgstr ""
 
@@ -754,6 +760,14 @@ msgstr ""
 
 #: templates/transactions/macro.j2:58
 msgid "I have noted this message"
+msgstr ""
+
+#: templates/transactions/macro.j2:66
+msgid "Create an import rule based on this transaction"
+msgstr ""
+
+#: templates/transactions/macro.j2:67
+msgid "Create Rule"
 msgstr ""
 
 #: templates/transactions/multiple_transaction.html:5

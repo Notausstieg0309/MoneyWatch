@@ -265,6 +265,17 @@ $(function() {
         checkTransactionsImport();
     }
 
+    // importer/transaction: set the "create rule" link accordingly (transaction import or transaction edit)
+    $("span.rule_add_button a").each(function () {
+        var el = $(this);
+        var import_el = el.parents("div.import_check_container");
+        if(import_el.length > 0) {
+            el.attr("href", el.data("url") + "?import_id=" + import_el.data("item-id"));
+        } else {
+            el.attr("href", el.data("url") + "?transaction_id=" + el.data("id"));
+        }
+    });
+
     // importer: if only one category available, select it right away
     $(".transaction.item_container.with_controls select[name='category']").each(function () {
         var select_el = $(this);
