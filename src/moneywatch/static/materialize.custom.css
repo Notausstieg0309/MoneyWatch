@@ -352,7 +352,12 @@ div.account_item {
     margin: 2em 0em 2em 0em ;
     border: 1px solid #aaaaaa;
     border-radius: 0.5em;
-    overflow: hidden;
+}
+
+div.account_item  table.account_detail {
+    border-radius: 0.5em;
+    border-collapse: inherit;
+    background-color: white;
 }
 
 /* overrule text color from <a> link */
