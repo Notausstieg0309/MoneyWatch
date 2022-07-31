@@ -6,7 +6,7 @@ You can import your transactions via file import. Currently supported file forma
 * Targobank CSV
 * ING.de CSV
 
-The supported file formats can be easily extended by implementing an own [import plugin](/moneywatch/import_plugins).
+The supported file formats can be easily extended by implementing an own [import plugin](/src/moneywatch/import_plugins).
 
 Currently the following translations are available:
 * English (default)
