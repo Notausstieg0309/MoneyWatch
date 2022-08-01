@@ -17,9 +17,9 @@ ACCOUNT_DEFAULT = 1
 
 
 ACCOUNTS = [
-    {"id": 1, "name": "Checking account", "iban": "DE99123456781000987654", "balance": 2038.45, "color": "bbdefb"},
-    {"id": 2, "name": "Savings account", "iban": "DE99123456781000543210", "balance": 0, "color": "fff9c4"},
-    {"id": 3, "name": "Credit line", "iban": "DE99002198761000003456", "balance": -1050.98, "color": "ffcdd2"}
+    {"id": 1, "name": "Checking account", "iban": "DE89500105172556777943", "balance": 2038.45, "color": "bbdefb"},
+    {"id": 2, "name": "Savings account", "iban": "FR2210096000508544965615Y06", "balance": 0, "color": "fff9c4"},
+    {"id": 3, "name": "Credit line", "iban": "NL16ABNA2786219639", "balance": -1050.98, "color": "ffcdd2"}
 ]
 
 CATEGORIES = [
