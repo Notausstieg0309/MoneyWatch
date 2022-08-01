@@ -157,3 +157,12 @@ class ImportPluginsManager(PluginManager):
 
     def plugin_loaded(self, plugin_name):
         return plugin_name in self._plugin_info
+
+    def is_implemented(self, plugin_name, function_name):
+        function_dummy = self._plugin_info[plugin_name].get(function_name, None)
+        if function_dummy is not None:
+            return True
+        return False
+
+    def get_plugin_names(self):
+        return self._plugin_info.keys()

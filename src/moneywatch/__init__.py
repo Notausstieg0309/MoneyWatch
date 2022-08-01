@@ -59,22 +59,48 @@ def create_app(test_config=None):
         return dict(accounts_list=Account.query.with_entities(Account.id, Account.name).order_by(Account.id.asc()).all())
 
     # create a demo database // ATTENTION: THIS COMMAND WIPES YOUR LOCAL DATABASE
-    @app.cli.command("create-demo")
+    @app.cli.command("create-demo", short_help="create database with dummy data")
     @click.argument("plugin", required=True, type=str)
-    @click.option("--offset", type=click.IntRange(min=0))
+    @click.option("--offset", type=click.IntRange(min=0), help="the number of days to go back from todays date for generating the import file (new transactions)")
     def create_demo(plugin, offset):
-        print("using plugin: %s" % plugin)
+        """create a database with generated data for demonstrational purpose. The current database will be wiped and recreated with dummy data based on the current date.
+
+        PLUGIN is the name of an available import plugin that implements a 'create_function'"""
+
         from moneywatch.utils.demo import create_demo_db
         from moneywatch.importer import plugins
 
+        def list_plugins():
+            nonlocal plugins
+            click.echo()
+            click.echo("please use one of:")
+            click.echo()
+
+            for name in plugins.get_plugin_names():
+                if plugins.is_implemented(name, "create_function"):
+                    click.echo(" - %s" % name)
+
+
         if not plugins.plugin_loaded(plugin):
-            print("unavailable plugin: %s" % plugin)
+            click.echo("unavailable plugin: %s" % plugin)
+            list_plugins()
+            return
+
+        if not plugins.is_implemented(plugin, "create_function"):
+            click.echo("the selected plugin '%s' does not implement a 'create_function'" % plugin)
+            list_plugins()
+            return
+
+        if click.confirm('ATTENTION! YOU\'RE CURRENT DATABASE WILL BE WIPED AND RECREATED. ARE YOU SURE YOU WANT TO CONTINUE?'):
+            click.echo('alright...')
+        else:
+            click.echo('aborting...')
             return
 
         # create the demo database and retrieve all importable items
         importer_items = create_demo_db(offset)
 
-        print("creating import file via plugin '%s'" % plugin)
+        click.echo("creating import file via plugin '%s'" % plugin)
 
         filename = None
 
@@ -85,7 +111,7 @@ def create_app(test_config=None):
         with open(os.path.join(app.instance_path, "demo_import_filename"), "w") as f:
             f.write(filename)
 
-        print("successfuly created demo databaase. You can download the import file by accessing '/demo' via web browser")
+        click.echo("successfuly created demo databaase. You can download the generated import file by accessing '/demo' via web browser")
 
     # Configure logging
     handler = logging.FileHandler(app.config.get('LOGGING_LOCATION', os.path.join(app.instance_path, 'moneywatch.log')))
