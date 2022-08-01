@@ -1,13 +1,12 @@
 FROM python:3
 WORKDIR /usr/src/app
 
-RUN useradd -r moneywatch ; mkdir /data/ ; pip install --upgrade pip ; pip install gunicorn
+RUN mkdir /data/ ; pip install --upgrade pip ; pip install gunicorn
 
-COPY --chown=moneywatch:moneywatch  . .
+COPY . .
 
-RUN pip install --no-cache-dir -e .
+RUN pip install --no-cache-dir -e . ; chmod +x docker-entry.sh
 
-USER moneywatch
 VOLUME /data
 WORKDIR /data
 

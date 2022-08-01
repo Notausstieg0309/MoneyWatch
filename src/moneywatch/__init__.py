@@ -10,13 +10,13 @@ from babel import negotiate_locale
 
 
 
-def create_app(test_config=None):
+def create_app(test_config=None, instance_path=None):
 
     from moneywatch import ruleset, categories, transactions, overview, importer, ajax, accounts, analysis
     from moneywatch.utils.objects import db, Account
     from moneywatch.utils.cache_buster import cache_busting
 
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, instance_path=instance_path)
 
     if test_config is not None:
         app.config.from_mapping(test_config)
