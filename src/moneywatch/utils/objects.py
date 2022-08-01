@@ -10,9 +10,9 @@ from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression as fn
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import event, orm, or_
+from sqlalchemy import event, orm, or_, MetaData
 from sqlalchemy.sql import collate, asc
-from sqlalchemy import MetaData
+from sqlalchemy.orm import validates
 
 
 # define explicit naming convention defaults for SQL-Alchemy
@@ -53,6 +53,12 @@ class Account(db.Model):
     _transactions = db.relationship("Transaction", back_populates="account", cascade="all, delete, delete-orphan")
     _categories = db.relationship("Category", back_populates="account", cascade="all, delete, delete-orphan")
 
+
+    @validates('iban')
+    def validate_name(self, key, value):
+        if not utils.is_valid_iban(value):
+            raise ValueError("the provided IBAN is not valid")
+        return value
 
     @property
     def oldest_transaction(self):
