@@ -419,7 +419,7 @@ def test_account_transactions_by_type_message(db_filled):
 
 
 def test_account_creation_primary_key(db):
-    item = Account(name="test", balance=0, iban="DE71003002001232345678")
+    item = Account(name="test", balance=0, iban="DE16500105171721253655")
     assert item.id is None
     db.session.add(item)
     db.session.commit()
@@ -427,7 +427,7 @@ def test_account_creation_primary_key(db):
 
 
 def test_account_empty(db):
-    item = Account(name="test", balance=0, iban="DE71003002001232345678")
+    item = Account(name="test", balance=0, iban="DE16500105171721253655")
 
     assert item.latest_transaction is None
     assert item.oldest_transaction is None
