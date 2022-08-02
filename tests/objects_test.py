@@ -434,6 +434,36 @@ def test_account_empty(db):
     assert item.last_update is None
 
 
+def test_account_duplicate_iban(db):
+    from sqlalchemy.exc import IntegrityError
+
+
+    item1 = Account(name="test", balance=0, iban="DE16500105171721253655")
+    db.session.add(item1)
+    db.session.commit()
+
+    item2 = Account(name="test2", balance=0, iban="DE16500105171721253655")
+    db.session.add(item2)
+
+    with pytest.raises(IntegrityError):
+        db.session.commit()
+
+
+
+def test_account_duplicate_name(db):
+    from sqlalchemy.exc import IntegrityError
+
+    item1 = Account(name="test", balance=0, iban="DE16500105171721253655")
+    db.session.add(item1)
+    db.session.commit()
+
+    item2 = Account(name="test", balance=0, iban="DE35500105177714537799")
+    db.session.add(item2)
+
+    with pytest.raises(IntegrityError):
+        db.session.commit()
+
+
 #     _____      _
 #    / ____|    | |
 #   | |     __ _| |_ ___  __ _  ___  _ __ _   _
