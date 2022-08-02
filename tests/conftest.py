@@ -28,7 +28,7 @@ def db(app):
     with app.app_context():
         db.create_all()
         yield db
-        db.session.commit()
+        db.session.rollback()
         db.drop_all()
 
 
