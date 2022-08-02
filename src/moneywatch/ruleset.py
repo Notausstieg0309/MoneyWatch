@@ -1,6 +1,7 @@
 from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort, session)
 
 from flask_babel import gettext
+from sqlalchemy.exc import IntegrityError
 
 from moneywatch.utils.objects import db, Rule, Account, Transaction
 import moneywatch.utils.functions as utils
@@ -132,7 +133,16 @@ def add(account_id, rule_type):
         if request.form['action'] == "save":
 
             db.session.add(new_rule)
-            db.session.commit()
+
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+                flash(gettext('A rule with the same name already exists.'))
+                if request.form.get("check_historical", None) == "on":
+                    return render_template('ruleset/check.html', account=account, rule_type=rule_type, categories=categories, matched_transactions=matched_transactions, selected_transaction_ids=selected_transaction_ids, transaction=transaction)
+                else:
+                    return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories, transaction=transaction)
 
             if request.form.get("check_historical", None) == "on" and len(selected_transaction_ids) > 0:
                 new_rule.assign_transaction_ids(selected_transaction_ids)
@@ -221,7 +231,13 @@ def change(id):
                 rule.next_due = None
                 rule.next_valuta = None
 
-            db.session.commit()
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+                flash(gettext('A rule with the same name already exists.'))
+                categories = rule.account.categories(rule.type)
+                return render_template('ruleset/change.html', rule=rule, categories=categories)
 
             return redirect(url_for('ruleset.index', account_id=rule.account_id))
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-31 14:36+0200\n"
-"PO-Revision-Date: 2022-07-31 14:36+0200\n"
+"POT-Creation-Date: 2022-08-02 10:39+0200\n"
+"PO-Revision-Date: 2022-08-02 10:39+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Generated-By: Babel 2.10.3\n"
 
 #: accounts.py:34 accounts.py:99 categories.py:38 categories.py:114
-#: ruleset.py:192
+#: ruleset.py:204
 msgid "Name is required."
 msgstr "Name ist notwendig."
 
@@ -83,7 +83,7 @@ msgstr ""
 "zuerst das neue Konto anlegen und anschließend die Transaktionen im "
 "Rahmen des Import-Vorgangs manuell dem neuen Konto zuordnen."
 
-#: ruleset.py:53
+#: ruleset.py:54
 msgid ""
 "Unable to create new rules. No categories are available to create rules "
 "for. Please create categories first."
@@ -92,19 +92,19 @@ msgstr ""
 "vorhanden für die Regeln angelegt werden können. Bitte zuerst Kategorien "
 "anlegen."
 
-#: ruleset.py:72
+#: ruleset.py:73
 msgid "Rule name is required."
 msgstr "Regel-Name ist notwendig."
 
-#: ruleset.py:75 ruleset.py:194
+#: ruleset.py:76 ruleset.py:206
 msgid "Search pattern is required."
 msgstr "Suchausdruck ist notwendig."
 
-#: ruleset.py:78 ruleset.py:196
+#: ruleset.py:79 ruleset.py:208
 msgid "Category is required."
 msgstr "Kategorie ist notwendig."
 
-#: ruleset.py:84 ruleset.py:201
+#: ruleset.py:85 ruleset.py:213
 msgid ""
 "Invalid search pattern. The given search pattern is not a valid regular "
 "expression"
@@ -112,13 +112,17 @@ msgstr ""
 "Ungültiger Suchausdruck. Der angegebene Suchausdruck ist kein gültiger "
 "regulärer Ausdruck (Regex)."
 
-#: ruleset.py:89
+#: ruleset.py:90
 msgid ""
 "Entered pattern does not matched the selected transaction you want to "
 "create this rule for."
 msgstr ""
 "Der eingegebene Such-Ausdruck passt nicht zu der ausgewählten Transaktion"
 " für die diese Regel erstellt werden soll."
+
+#: ruleset.py:141 ruleset.py:238
+msgid "A rule with the same name already exists."
+msgstr "Eine Regel mit demselben Namen existiert bereits."
 
 #: transactions.py:68
 #, python-format
@@ -333,6 +337,7 @@ msgid "Monthly Budget"
 msgstr "monatliches Budget"
 
 #: templates/categories/add.html:20 templates/categories/change.html:17
+#: templates/ruleset/add.html:35 templates/ruleset/change.html:19
 msgid "optional"
 msgstr "optional"
 
@@ -660,13 +665,15 @@ msgstr "Einnahmen"
 msgid "withdrawals"
 msgstr "Ausgaben"
 
-#: templates/ruleset/add.html:22 templates/ruleset/check.html:35
+#: templates/ruleset/add.html:22
 msgid ""
-"The name of the rule. This value is only displayed in the ruleset "
-"overview."
+"The unique name of the rule. This value will also used as the description"
+" of newly found transactions if no short description is configured "
+"explicitly for this rule."
 msgstr ""
-"Der Name der Regel. Dieser Wert wird nur in der Übersicht aller Import-"
-"Regeln benutzt."
+"Der eindeutige Name der Regel. Dieser Wert wird auch als "
+"Buchungsbezeichnung für neu gefundene Transaktionen verwendet, wenn für "
+"diese Regel keine Buchungsbezeichnung explizit konfiguriert ist."
 
 #: templates/ruleset/add.html:23 templates/ruleset/change.html:13
 #: templates/ruleset/check.html:36 templates/ruleset/index.html:21

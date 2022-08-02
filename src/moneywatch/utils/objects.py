@@ -542,6 +542,10 @@ class Rule(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id', ondelete="CASCADE"), server_default="1", nullable=False)
     account = db.relationship("Account", back_populates="rules")
 
+    __table_args__ = (
+        db.UniqueConstraint('name', 'account_id', 'type'),
+    )
+
     def transactions(self, start=None, end=None):
 
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
