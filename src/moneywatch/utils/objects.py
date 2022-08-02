@@ -698,7 +698,7 @@ class Transaction(db.Model):
             if self.rule is not None:
 
                 if self.description is None:
-                    self.description = self.rule.description
+                    self.description = self.rule.description if self.rule.description else self.rule.name
 
                 if self.category_id is None:
                     self.category_id = self.rule.category_id

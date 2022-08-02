@@ -31,8 +31,8 @@
   </div>
   <div class="row">
     <div class="input-field col s12">
-      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required>
-      <label for="description">{% trans %}Short Description{% endtrans %}</label>
+      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. If not given, the rule name will be used as short description. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}">
+      <label for="description">{% trans %}Short Description{% endtrans %} ({% trans %}optional{% endtrans %})</label>
     </div>
   </div>
   <div class="row">

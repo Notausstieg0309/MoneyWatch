@@ -644,10 +644,11 @@ msgstr ""
 msgid "Search Pattern"
 msgstr ""
 
-#: templates/ruleset/add.html:34 templates/ruleset/check.html:47
+#: templates/ruleset/add.html:34
 msgid ""
 "The short description that will be used for all matched transactions "
-"during import. The short description still can be changed during import."
+"during import. If not given, the rule name will be used as short "
+"description. The short description still can be changed during import."
 msgstr ""
 
 #: templates/ruleset/add.html:35 templates/ruleset/change.html:19

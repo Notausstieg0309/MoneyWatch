@@ -236,6 +236,7 @@ def change(id):
             except IntegrityError:
                 db.session.rollback()
                 flash(gettext('A rule with the same name already exists.'))
+
                 categories = rule.account.categories(rule.type)
                 return render_template('ruleset/change.html', rule=rule, categories=categories)
 

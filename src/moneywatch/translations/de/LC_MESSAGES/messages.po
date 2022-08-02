@@ -694,14 +694,16 @@ msgstr ""
 msgid "Search Pattern"
 msgstr "Suchausdruck"
 
-#: templates/ruleset/add.html:34 templates/ruleset/check.html:47
+#: templates/ruleset/add.html:34
 msgid ""
 "The short description that will be used for all matched transactions "
-"during import. The short description still can be changed during import."
+"during import. If not given, the rule name will be used as short "
+"description. The short description still can be changed during import."
 msgstr ""
-"Die Kurzbeschreibung, welche für alle erkannten Transaktionen im Rahmend "
-"es Importvorgangs benutzt werden. Die Kurzbeschreibung kann im Rahmen des"
-" Imports dennoch geändert werden."
+"Die Buchungsbezeichnung, die beim Import für alle passenden Transaktionen"
+" verwendet wird. Sofern nicht angegeben, wird der Name der Regel als "
+"Buchungsbezeichnung verwendet. Die Buchungsbezeichnung kann während des "
+"Imports noch geändert werden."
 
 #: templates/ruleset/add.html:35 templates/ruleset/change.html:19
 #: templates/ruleset/check.html:48
