@@ -641,9 +641,7 @@ class Rule(db.Model):
 
     @active.expression
     def active(cls):
-        return cls.end == None
-
-
+        return cls.end == None  # noqa: E711
 
 
 #    _______                             _   _
