@@ -14,32 +14,44 @@
 {%- trans %}This is a rule identifying regular transactions{% endtrans %} ({{tmp_msg[regularity]}}).
 {%- endmacro %}
 
-{% macro rule_table(rules) %}
-    {% if rules %}
+{% macro rule_last_transaction_date(rule) -%}
+  {%- set latest_transaction = rule.latest_transaction() -%}
+  {%- if latest_transaction is not none -%}
+    {{ days_since_today(latest_transaction.date) }}
+  {%- else -%}
+    <i>{%- trans %}never{% endtrans -%}<i>
+  {%- endif -%}
+{%- endmacro %}
+
+
+
+{% macro rule_table(rules) -%}
+    {%- if rules %}
     <table cellspacing="0" class="ruleset">
     <tr>
       <th class="name">{% trans %}Rule Name{% endtrans %}</th>
       <th class="pattern">{% trans %}Match Pattern{% endtrans %}</th>
       <th class="category_path">{% trans %}Category{% endtrans %}</th>
+      <th class="last_transaction_date center-align">{% trans %}Last Match{% endtrans %}</th>
       <th class="buttons">&nbsp;</th>
     </tr>
 
-    {% for rule in rules %}
+    {%- for rule in rules %}
     <tr>
       <td class="name valign-wrapper">{{ rule.name }}{% if rule.regular %}&nbsp;&nbsp;<i class="tooltipped grey-text material-icons" data-tooltip="{{ tooltip_regular(rule.regular) }}">update</i>{% endif %}</td>
       <td class="pattern">{{ rule.pattern }}</td>
       <td class="category_path">{{ rule.category.getCategoryPath(" > ") }}</td>
+      <td class="last_transaction_date center-align">{{ rule_last_transaction_date(rule) }}</td>
       <td class="buttons">
         <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.change', id=rule.id) }}" data-tooltip="{% trans %}change this rule{% endtrans %}"><i class="material-icons">edit</i></a>
         <a class="btn-small tooltipped" data-position="bottom" href="{{ url_for('ruleset.delete', id=rule.id) }}" data-tooltip="{% trans %}delete this rule{% endtrans %}"><i class="material-icons">delete</i></a>
       </td>
     </tr>
-    {% endfor %}
-
+    {% endfor -%}
     </table>
-    {% else %}
+    {% else -%}
     <div class="no_content center-align">{% trans %}No rules exist yet.{% endtrans %}</div>
-    {% endif %}
+    {% endif -%}
 {% endmacro %}
 
 {% block content %}
