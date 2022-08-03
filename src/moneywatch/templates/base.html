@@ -30,6 +30,25 @@
 </ul>
 {%- endmacro -%}
 
+{% macro days_since_today(historic_date) %}
+  {% if historic_date is not none %}
+    {%- set difference = historic_date - today -%}
+    {% if difference.days > -14 %}
+      {% if difference.days == 0 -%}
+        {% trans %}today{% endtrans -%}
+      {% elif difference.days == -1 -%}
+        {% trans %}yesterday{% endtrans -%}
+      {% else -%}
+        {{ difference | timedeltaformat(granularity='day', add_direction=True) }}
+      {%- endif -%}
+    {% else -%}
+      {{ historic_date | dateformat(_("yyyy-MM-dd")) }}
+    {%- endif -%}
+  {% else -%}
+    {% trans %}never{% endtrans %}
+  {%- endif %}
+{%- endmacro -%}
+
 <!doctype html>
 <html>
 <head>

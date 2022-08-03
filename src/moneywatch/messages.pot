@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-02 10:39+0200\n"
+"POT-Creation-Date: 2022-08-03 15:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Generated-By: Babel 2.10.3\n"
 
 #: accounts.py:34 accounts.py:99 categories.py:38 categories.py:114
-#: ruleset.py:204
+#: ruleset.py:211
 msgid "Name is required."
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 msgid "An account with the same name already exists."
 msgstr ""
 
-#: analysis.py:182 templates/overview/overview.html:45
+#: analysis.py:182 templates/base.html:45 templates/overview/overview.html:45
 #: templates/overview/overview.html:58 templates/transactions/macro.j2:7
 msgid "yyyy-MM-dd"
 msgstr ""
@@ -76,37 +76,37 @@ msgid ""
 "account during import."
 msgstr ""
 
-#: ruleset.py:54
+#: ruleset.py:55
 msgid ""
 "Unable to create new rules. No categories are available to create rules "
 "for. Please create categories first."
 msgstr ""
 
-#: ruleset.py:73
+#: ruleset.py:74
 msgid "Rule name is required."
 msgstr ""
 
-#: ruleset.py:76 ruleset.py:206
+#: ruleset.py:77 ruleset.py:213
 msgid "Search pattern is required."
 msgstr ""
 
-#: ruleset.py:79 ruleset.py:208
+#: ruleset.py:80 ruleset.py:215
 msgid "Category is required."
 msgstr ""
 
-#: ruleset.py:85 ruleset.py:213
+#: ruleset.py:86 ruleset.py:220
 msgid ""
 "Invalid search pattern. The given search pattern is not a valid regular "
 "expression"
 msgstr ""
 
-#: ruleset.py:90
+#: ruleset.py:91
 msgid ""
 "Entered pattern does not matched the selected transaction you want to "
 "create this rule for."
 msgstr ""
 
-#: ruleset.py:141 ruleset.py:238
+#: ruleset.py:142 ruleset.py:245
 msgid "A rule with the same name already exists."
 msgstr ""
 
@@ -143,6 +143,18 @@ msgstr ""
 #: templates/base.html:22 templates/overview/index.html:5
 #: templates/overview/overview.html:6
 msgid "Overview"
+msgstr ""
+
+#: templates/base.html:38
+msgid "today"
+msgstr ""
+
+#: templates/base.html:40
+msgid "yesterday"
+msgstr ""
+
+#: templates/base.html:48 templates/ruleset/index.html:22
+msgid "never"
 msgstr ""
 
 #: templates/accounts/add.html:4
@@ -254,7 +266,7 @@ msgstr ""
 
 #: templates/analysis/index.html:161 templates/ruleset/add.html:50
 #: templates/ruleset/change.html:31 templates/ruleset/check.html:63
-#: templates/ruleset/index.html:23 templates/transactions/macro.j2:47
+#: templates/ruleset/index.html:34 templates/transactions/macro.j2:47
 msgid "Category"
 msgstr ""
 
@@ -302,7 +314,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: templates/analysis/index.html:253 templates/overview/index.html:60
+#: templates/analysis/index.html:253 templates/overview/index.html:50
 msgid "total"
 msgstr ""
 
@@ -463,37 +475,29 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: templates/overview/index.html:10
-msgid "today"
-msgstr ""
-
-#: templates/overview/index.html:12
-msgid "yesterday"
-msgstr ""
-
-#: templates/overview/index.html:25
+#: templates/overview/index.html:15
 msgid "edit"
 msgstr ""
 
-#: templates/overview/index.html:26
+#: templates/overview/index.html:16
 msgid "delete"
 msgstr ""
 
-#: templates/overview/index.html:34
+#: templates/overview/index.html:24
 msgid "Copy IBAN to clipboard"
 msgstr ""
 
-#: templates/overview/index.html:39
+#: templates/overview/index.html:29
 msgid "last transaction"
 msgstr ""
 
-#: templates/overview/index.html:63
+#: templates/overview/index.html:53
 msgid ""
 "There are no accounts defined yet. Please click below on the add button "
 "to create a new account."
 msgstr ""
 
-#: templates/overview/index.html:66
+#: templates/overview/index.html:56
 msgid "Add a new account"
 msgstr ""
 
@@ -621,7 +625,7 @@ msgstr ""
 msgid "withdrawals"
 msgstr ""
 
-#: templates/ruleset/add.html:22
+#: templates/ruleset/add.html:22 templates/ruleset/check.html:35
 msgid ""
 "The unique name of the rule. This value will also used as the description"
 " of newly found transactions if no short description is configured "
@@ -629,7 +633,7 @@ msgid ""
 msgstr ""
 
 #: templates/ruleset/add.html:23 templates/ruleset/change.html:13
-#: templates/ruleset/check.html:36 templates/ruleset/index.html:21
+#: templates/ruleset/check.html:36 templates/ruleset/index.html:32
 msgid "Rule Name"
 msgstr ""
 
@@ -644,7 +648,7 @@ msgstr ""
 msgid "Search Pattern"
 msgstr ""
 
-#: templates/ruleset/add.html:34
+#: templates/ruleset/add.html:34 templates/ruleset/check.html:47
 msgid ""
 "The short description that will be used for all matched transactions "
 "during import. If not given, the rule name will be used as short "
@@ -704,31 +708,35 @@ msgstr ""
 msgid "This is a rule identifying regular transactions"
 msgstr ""
 
-#: templates/ruleset/index.html:22
+#: templates/ruleset/index.html:33
 msgid "Match Pattern"
 msgstr ""
 
-#: templates/ruleset/index.html:33
-msgid "change this rule"
-msgstr ""
-
-#: templates/ruleset/index.html:34
-msgid "delete this rule"
-msgstr ""
-
-#: templates/ruleset/index.html:41
-msgid "No rules exist yet."
+#: templates/ruleset/index.html:35
+msgid "Last Match"
 msgstr ""
 
 #: templates/ruleset/index.html:46
-msgid "Rules for deposits"
+msgid "change this rule"
 msgstr ""
 
-#: templates/ruleset/index.html:50 templates/ruleset/index.html:56
-msgid "Add rule"
+#: templates/ruleset/index.html:47
+msgid "delete this rule"
 msgstr ""
 
 #: templates/ruleset/index.html:53
+msgid "No rules exist yet."
+msgstr ""
+
+#: templates/ruleset/index.html:58
+msgid "Rules for deposits"
+msgstr ""
+
+#: templates/ruleset/index.html:62 templates/ruleset/index.html:68
+msgid "Add rule"
+msgstr ""
+
+#: templates/ruleset/index.html:65
 msgid "Rules for withdrawals"
 msgstr ""
 

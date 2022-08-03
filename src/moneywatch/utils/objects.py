@@ -80,10 +80,7 @@ class Account(db.Model):
         latest_transaction = self.latest_transaction
 
         if latest_transaction is not None:
-            date = latest_transaction.date
-            now = datetime.date.today()
-            delta = date - now
-            return delta
+            return latest_transaction.date
 
         return None
 

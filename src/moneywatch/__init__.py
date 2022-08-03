@@ -1,3 +1,4 @@
+from datetime import date
 import os
 import logging
 import click
@@ -57,7 +58,10 @@ def create_app(test_config=None, instance_path=None):
 
     @app.context_processor
     def context_processor():
-        return dict(accounts_list=Account.query.with_entities(Account.id, Account.name).order_by(Account.id.asc()).all())
+        return {
+            "accounts_list": Account.query.with_entities(Account.id, Account.name).order_by(Account.id.asc()).all(),
+            "today": date.today()
+        }
 
     # create a demo database // ATTENTION: THIS COMMAND WIPES YOUR LOCAL DATABASE
     @app.cli.command("create-demo", short_help="create database with dummy data")
