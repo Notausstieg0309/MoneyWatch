@@ -32,7 +32,7 @@
     {% endif %}
   <div class="row">
     <div class="input-field col s12">
-    <input name="name" id="name" type="text" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The name of the rule. This value is only displayed in the ruleset overview.{% endtrans %}" value="{{ request.form['name'] }}" required>
+    <input name="name" id="name" type="text" data-position="bottom" class="validate tooltipped" data-position="bottom" data-tooltip="{% trans %}The unique name of the rule. This value will also used as the description of newly found transactions if no short description is configured explicitly for this rule.{% endtrans %}" value="{{ request.form['name'] }}" required>
     <label for="name" class="active">{% trans %}Rule Name{% endtrans %}</label>
     </div>
   </div>
@@ -44,7 +44,7 @@
   </div>
   <div class="row">
     <div class="input-field col s12">
-      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required>
+      <input name="description" class="validate tooltipped" id="description" data-position="bottom" data-tooltip="{% trans %}The short description that will be used for all matched transactions during import. If not given, the rule name will be used as short description. The short description still can be changed during import.{% endtrans %}" type="text" value="{{ request.form['description'] }}" required>
       <label for="description">{% trans %}Short Description{% endtrans %}</label>
     </div>
   </div>
