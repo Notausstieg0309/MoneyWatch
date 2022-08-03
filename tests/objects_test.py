@@ -86,26 +86,41 @@ def db_filled(db, today, start):
 
     # Rules
 
+    # change the today date to get a differing "start" date
+    datetime.date.set_today(2020, 3, 1)
+
     rule_in_1 = Rule(id=1, name="Rule 1", type="in", category_id=cat_in_main.id, pattern="PATTERN1", description="Description - Rule 1")
     db.session.add(rule_in_1)
+
+    datetime.date.set_today(2020, 3, 2)
 
     rule_in_2 = Rule(id=2, name="Rule 2", type="in", category_id=cat_in_sub1.id, pattern="PATTERN2", regular=1, next_valuta=29.98, next_due=today + datetime.timedelta(days=15), description="Description - Rule 2")
     db.session.add(rule_in_2)
 
+    datetime.date.set_today(2020, 3, 3)
+
     rule_out_1 = Rule(id=3, name="Rule 3", type="out", category_id=cat_out_sub1.id, pattern="PATTERN3", regular=3, next_valuta=293.29, next_due=today + datetime.timedelta(days=3), description="Description - Rule 3")
     db.session.add(rule_out_1)
+
+    datetime.date.set_today(2020, 3, 4)
 
     rule_out_2 = Rule(id=4, name="Rule 4", type="out", category_id=cat_out_sub1.id, pattern=r"PATTERN4.*PATTERN4", description="Description - Rule 4")
     db.session.add(rule_out_2)
 
+    datetime.date.set_today(2020, 3, 5)
+
     rule_out_3 = Rule(id=5, name="Rule 5", type="out", category_id=cat_out_sub2.id, pattern="PATTERN5", regular=1, next_valuta=20, next_due=today + timedelta(days=2), description="Description - Rule 5")
     db.session.add(rule_out_3)
+
+    datetime.date.set_today(2020, 3, 6)
 
     # overdue rule
     rule_out_4 = Rule(id=6, name="Rule 6", type="out", category_id=cat_out_sub3.id, pattern="PATTERN6", regular=1, next_valuta=20, next_due=today - timedelta(days=6), description="Description - Rule 6 - Overdue")
     db.session.add(rule_out_4)
 
     db.session.commit()
+
+    datetime.date.set_today_date(today)
 
     # Transactions
 
@@ -1172,6 +1187,51 @@ def test_rule_match_transaction(db_filled, today, pattern, result):
     # correct type (out)
     trans.valuta = 100.0
     assert rule.match_transaction(trans) == result
+
+
+def test_rule_has_assigned_transactions(db_filled):
+
+    rule_7 = Rule(id=7, account_id=1, name="Rule 7", type="in", category_id=2, pattern="NO PATTERN", description="Description - Rule 7")
+
+    assert rule_7.has_assigned_transactions is False
+
+    rule_1 = Rule.query.filter_by(id=1).one()
+    rule_2 = Rule.query.filter_by(id=2).one()
+
+    assert rule_1.has_assigned_transactions is True
+    assert rule_2.has_assigned_transactions is True
+
+
+def test_rule_start_date_is_today(db_filled, today):
+
+    rule_7 = Rule(id=7, account_id=1, name="Rule 7", type="in", category_id=2, pattern="NO PATTERN", description="Description - Rule 7")
+
+    assert rule_7.start == today
+
+    rule_1 = Rule.query.filter_by(id=1).one()
+    assert rule_1.start == datetime.date(2020, 3, 1)
+
+
+def test_rule_active(db_filled):
+
+    db = db_filled
+
+    rule_1 = Rule.query.filter_by(id=1).one()
+
+    assert rule_1.end is None
+    assert rule_1.active is True
+
+    rule_1.end = datetime.date.today()
+
+    db.session.commit()
+
+    assert rule_1.active is False
+
+    rule_result = Rule.query.filter_by(active=False).one()
+    assert rule_result == rule_1
+
+    rule_2 = Rule.query.filter_by(id=2).one()
+    assert rule_2.active is True
 
 
 #    _______                             _   _

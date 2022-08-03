@@ -30,7 +30,8 @@ def create_app(test_config=None, instance_path=None):
             BABEL_DEFAULT_LOCALE='en',
             LOGGING_FORMAT='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             LOGGING_LOCATION=os.path.join(app.instance_path, 'moneywatch.log'),
-            LOGGING_LEVEL=logging.DEBUG
+            LOGGING_LEVEL=logging.DEBUG,
+            KEEP_DELETED_OBJECTS_FOR_ANALYSIS=True   # when deleting Rule/Category objects, keep them inactive in the database as long as transactions exist for
         )
 
     os.makedirs(app.instance_path, exist_ok=True)

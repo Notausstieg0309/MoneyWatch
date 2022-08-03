@@ -99,11 +99,16 @@ class Account(db.Model):
         return result
 
 
-    def rules_by_type(self, type):
+    def rules_by_type(self, type, active=True):
 
-        result = Rule.query.filter_by(account_id=self.id, type=type).order_by(asc(collate(Rule.name, 'NOCASE'))).all()
+        result = Rule.query.filter_by(account_id=self.id, type=type)
 
-        return result
+        if active is not None:
+            result = result.filter_by(active=active)
+
+        result = result.order_by(asc(collate(Rule.name, 'NOCASE')))
+
+        return result.all()
 
 
     def non_regular_rules(self, type, start, end):
@@ -528,7 +533,8 @@ class Rule(db.Model):
     description = db.Column(db.String(100), unique=False, nullable=False)
     pattern = db.Column(db.String(100), unique=False, nullable=False)
     type = db.Column(db.Enum("in", "out"), unique=False, nullable=False)
-    # active = db.Column(db.Boolean, server_default=True, nullable=False)
+    start = db.Column(db.Date, unique=False, nullable=True, index=True)
+    end = db.Column(db.Date, unique=False, nullable=True, index=True)
 
     next_due = db.Column(db.Date, unique=False, nullable=True)
     next_valuta = db.Column(db.Float, unique=False, nullable=True)
@@ -545,6 +551,12 @@ class Rule(db.Model):
     __table_args__ = (
         db.UniqueConstraint('name', 'account_id', 'type'),
     )
+
+
+    def __init__(self, **kwargs):
+        self.start = datetime.date.today()
+        super(Rule, self).__init__(**kwargs)
+
 
     def transactions(self, start=None, end=None):
 
@@ -620,6 +632,21 @@ class Rule(db.Model):
             return True
         else:
             return False
+
+
+    @property
+    def has_assigned_transactions(self):
+        return self._transactions is not None and len(self._transactions) > 0
+
+    @hybrid_property
+    def active(self):
+        return self.end is None
+
+    @active.expression
+    def active(cls):
+        return cls.end == None
+
+
 
 
 #    _______                             _   _
@@ -777,8 +804,12 @@ class Transaction(db.Model):
         return False
 
 
-
-
+#   _____                 _   _   _                 _ _
+#  | ____|_   _____ _ __ | |_| | | | __ _ _ __   __| | | ___ _ __
+#  |  _| \ \ / / _ \ '_ \| __| |_| |/ _` | '_ \ / _` | |/ _ \ '__|
+#  | |___ \ V /  __/ | | | |_|  _  | (_| | | | | (_| | |  __/ |
+#  |_____| \_/ \___|_| |_|\__|_| |_|\__,_|_| |_|\__,_|_|\___|_|
+#
 
 @event.listens_for(db.session, 'before_attach')
 def handle_before_attach(session, item):

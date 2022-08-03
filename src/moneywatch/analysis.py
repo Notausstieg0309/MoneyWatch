@@ -376,7 +376,7 @@ def json_rules(account_id, trans_type):
 
     result = []
 
-    for rule in account.rules_by_type(trans_type):
+    for rule in account.rules_by_type(trans_type, active=None):
         item = {}
         item["id"] = rule.id
         item["name"] = rule.name

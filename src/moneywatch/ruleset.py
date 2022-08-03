@@ -1,4 +1,5 @@
-from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort, session)
+from datetime import date
+from flask import (Blueprint, flash, redirect, render_template, request, url_for, abort, session, current_app)
 
 from flask_babel import gettext
 from sqlalchemy.exc import IntegrityError
@@ -166,15 +167,21 @@ def add(account_id, rule_type):
 @bp.route('/ruleset/delete/<int:id>/')
 def delete(id):
 
-    rule = Rule.query.filter_by(id=id).one_or_none()
+    rule = Rule.query.filter_by(id=id, active=True).one_or_none()
 
     if rule is not None:
 
         # preserve account ID for redirection back to the ruleset overview
         account_id = rule.account_id
 
-        # delete the rule
-        db.session.delete(rule)
+
+        if current_app.config.get('KEEP_DELETED_OBJECTS_FOR_ANALYSIS', False) and rule.has_assigned_transactions:
+            # if transactions exist for rule, only set the end date to "disable" the rule
+            rule.end = date.today()
+        else:
+            # delete the rule
+            db.session.delete(rule)
+
         db.session.commit()
 
         return redirect(url_for('ruleset.index', account_id=account_id))
@@ -186,7 +193,7 @@ def delete(id):
 @bp.route('/ruleset/change/<int:id>/', methods=('GET', 'POST'))
 def change(id):
 
-    rule = Rule.query.filter_by(id=id).one()
+    rule = Rule.query.filter_by(id=id, active=True).one()
     errors = []
 
     if request.method == 'POST':
