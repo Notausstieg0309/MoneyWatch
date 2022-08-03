@@ -1449,3 +1449,35 @@ def test_before_attach_handler_account_balance(db_filled):
     account = Account.query.first()
 
     assert account.balance == 3528.88
+
+
+def test_before_flush_handler_inactive_rule_deleted(db_filled, today):
+
+    db = db_filled
+
+    # set Rule 2 to inactive (deleted)
+    rule_2 = Rule.query.filter_by(id=2).one()
+    rule_2.end = today - datetime.timedelta(days=1)
+
+    assert rule_2.active is False
+
+    # now delete all transactions
+    transactions = Transaction.query.all()
+
+    for transaction in transactions:
+        db.session.delete(transaction)
+    db.session.commit()
+
+    # check if rule 2 (inactive) was deleted by before_flush handler
+    rule_2_deleted = Rule.query.filter_by(id=2).one_or_none()
+    assert rule_2_deleted is None
+
+    # active rules should remain intact
+    rule_1 = Rule.query.filter_by(id=1).one()
+    rule_3 = Rule.query.filter_by(id=3).one()
+
+    assert rule_1.active is True
+    assert rule_1.has_assigned_transactions is False
+
+    assert rule_3.active is True
+    assert rule_3.has_assigned_transactions is False

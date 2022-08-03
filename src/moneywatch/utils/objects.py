@@ -821,6 +821,27 @@ def handle_before_attach(session, item):
         account.balance = round(account.balance + item.valuta, 2)
 
 
+@event.listens_for(db.session, 'before_flush')
+def handler_before_flush(session, flush_context, instances):
+    if session.deleted:
+        for item in session.deleted:
+
+            # when transactions are deleted,
+            # check if assigned inactive rules can be deleted as well
+            if isinstance(item, Transaction):
+                if item.rule is None:
+                    continue
+
+                # clear rule binding
+                rule = item.rule
+                item.rule = None
+
+                # check if rule can be deleted (inactive and no transactions assigned)
+                if not rule.has_assigned_transactions and not rule.active:
+                    current_app.logger.debug("deleting rule '%s' after last transaction '%s' was deleted and rule is inactive", rule, item)
+                    session.delete(rule)
+
+
 #    _____  _                            _ _______                             _   _
 #   |  __ \| |                          | |__   __|                           | | (_)
 #   | |__) | | __ _ _ __  _ __   ___  __| |  | |_ __ __ _ _ __  ___  __ _  ___| |_ _  ___  _ __
