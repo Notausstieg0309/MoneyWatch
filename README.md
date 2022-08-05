@@ -102,6 +102,16 @@ Transactions, which are not covered by any rule, must be assigned manually.
 ![Screenshot of file upload](screenshots/import_fileupload.png?raw=true "Screenshot of file upload")
 ![Screenshot of transaction import](screenshots/imports.png?raw=true "Screenshot of importing new transactions")
 
+If a found transaction is not covered by a rule, you can easily create a rule based on the imported transaction by clicking on "Create Rule".
+
+![Screenshot of 'Create Rule' button during import](screenshots/import_create_rule.png?raw=true "Screenshot of 'Create Rule' button during import")
+
+You can then enter the rule name and the search pattern based on the related transaction details shown above.
+
+![Screenshot of creating a rule during import](screenshots/import_save_rule.png?raw=true "Screenshot of creating a rule during import")
+
+After saving the rule, you will be redirected back to the import, where the selected transaction now is identified by the newly created rule.
+
 ## Quickstart Guide
 
 To get quickly started with MoneyWatch, just check out the repo and launch `start_flask_devel.sh` to start the flask server in development mode.
