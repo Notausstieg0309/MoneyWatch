@@ -1,6 +1,9 @@
+from typing import List, Optional, Type, Union
 from moneywatch.utils.objects import db, Account, Category, Rule, Transaction
 from moneywatch.utils.functions import demo_date
-import datetime
+from datetime import date, timedelta
+
+from moneywatch.utils.typedefs import DemoTransactionItem, RawTransactionItem
 
 #
 #  _____ _
@@ -109,7 +112,7 @@ RULESET = [
 ]
 
 
-TRANSACTIONS = [
+TRANSACTIONS: List[DemoTransactionItem] = [
 
     # Checking account
     # ================
@@ -251,7 +254,7 @@ TRANSACTIONS = [
 #
 
 
-def create_items(items, cls, additional_values=None):
+def create_items(items: List[dict], cls: Type[Union[Account, Rule, Transaction, Category]], additional_values: Optional[dict] = None):
     print("creating %s() items..." % cls.__name__)
 
     for item in items:
@@ -263,16 +266,16 @@ def create_items(items, cls, additional_values=None):
         db.session.add(cls(**item))
 
 
-def create_transactions(items, offset=None):
+def create_transactions(items: List[DemoTransactionItem], offset: Optional[int] = None) -> List[RawTransactionItem]:
 
     print("creating transactions...")
 
     items.sort(key=lambda x: x["date"])
 
-    today = datetime.date.today()
+    today = date.today()
 
     if offset is not None:
-        today -= datetime.timedelta(days=offset)
+        today -= timedelta(days=offset)
 
     importer_items = []
 
@@ -292,7 +295,7 @@ def create_transactions(items, offset=None):
     return importer_items
 
 
-def resolve_account_iban(item):
+def resolve_account_iban(item: DemoTransactionItem):
 
     account_id = ACCOUNT_DEFAULT
 
@@ -305,7 +308,7 @@ def resolve_account_iban(item):
             item["account"] = account["iban"]
 
 
-def create_demo_db(offset):
+def create_demo_db(offset: Optional[int]) -> List[RawTransactionItem]:
     print("dropping existing database...")
     db.drop_all()
 

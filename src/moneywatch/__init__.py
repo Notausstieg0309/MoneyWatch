@@ -8,10 +8,10 @@ from flask_session import Session
 from flask_babel import Babel
 from flask_migrate import Migrate
 from babel import negotiate_locale
+from typing import Mapping, Optional
 
 
-
-def create_app(test_config=None, instance_path=None):
+def create_app(test_config: Optional[Mapping] = None, instance_path: Optional[str] = None) -> Flask:
 
     from moneywatch import ruleset, categories, transactions, overview, importer, ajax, accounts, analysis
     from moneywatch.utils.objects import db, Account
@@ -67,7 +67,7 @@ def create_app(test_config=None, instance_path=None):
     @app.cli.command("create-demo", short_help="create database with dummy data")
     @click.argument("plugin", required=True, type=str)
     @click.option("--offset", type=click.IntRange(min=0), help="the number of days to go back from todays date for generating the import file (new transactions)")
-    def create_demo(plugin, offset):
+    def create_demo(plugin: str, offset: int):
         """create a database with generated data for demonstrational purpose. The current database will be wiped and recreated with dummy data based on the current date.
 
         PLUGIN is the name of an available import plugin that implements a 'create_function'"""
@@ -106,8 +106,6 @@ def create_app(test_config=None, instance_path=None):
         importer_items = create_demo_db(offset)
 
         click.echo("creating import file via plugin '%s'" % plugin)
-
-        filename = None
 
         with open(os.path.join(app.instance_path, "demo_import_content"), "wb") as f:
             # create the import file by using the selected plugin

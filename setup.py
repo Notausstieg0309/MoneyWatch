@@ -4,7 +4,7 @@ setup(
     name='moneywatch',
     version='0.1',
     packages=find_packages("src"),
-    package_dir={'':'src'},
+    package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
     install_requires=[
@@ -13,7 +13,8 @@ setup(
         'Flask-Babel',
         'Flask-SQLAlchemy',
         'Flask-Migrate',
-        'schwifty'
+        'schwifty',
+        'typing-extensions'
     ],
     tests_require=['pytest'],
     setup_requires=['pytest-runner']

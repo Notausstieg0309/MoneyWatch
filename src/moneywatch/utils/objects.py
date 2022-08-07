@@ -1,4 +1,5 @@
-# import moneywatch.utils.db as db
+from typing import Mapping, Optional, Any, List, Union
+
 import moneywatch.utils.functions as utils
 import datetime
 import re
@@ -61,22 +62,22 @@ class Account(db.Model):
         return value
 
     @property
-    def oldest_transaction(self):
-        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.asc(), Transaction.id.asc()).first() # noqa
+    def oldest_transaction(self) -> 'Transaction':
+        return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.asc(), Transaction.id.asc()).first()
 
 
     @property
-    def latest_transaction(self):
+    def latest_transaction(self) -> 'Transaction':
         return Transaction.query.filter_by(account_id=self.id).order_by(Transaction.date.desc(), Transaction.id.desc()).first()
 
 
     @property
-    def iban_formatted(self):
+    def iban_formatted(self) -> str:
         return utils.format_iban_human(self.iban)
 
 
     @property
-    def last_update(self):
+    def last_update(self) -> Optional[datetime.date]:
         latest_transaction = self.latest_transaction
 
         if latest_transaction is not None:
@@ -85,7 +86,7 @@ class Account(db.Model):
         return None
 
 
-    def categories(self, type, start=None, end=None):
+    def categories(self, type: str, start: Optional[datetime.date] = None, end: Optional[datetime.date] = None) -> List['Category']:
 
         result = Category.query.filter_by(account_id=self.id, type=type, parent_id=None).order_by(Category.id.asc()).all()
 
@@ -96,7 +97,7 @@ class Account(db.Model):
         return result
 
 
-    def rules_by_type(self, type, active=True):
+    def rules_by_type(self, type: str, active: bool = True) -> List['Rule']:
 
         result = Rule.query.filter_by(account_id=self.id, type=type)
 
@@ -108,7 +109,7 @@ class Account(db.Model):
         return result.all()
 
 
-    def non_regular_rules(self, type, start, end):
+    def non_regular_rules(self, type: str, start: datetime.date, end: datetime.date) -> List['Rule']:
 
         result = []
 
@@ -130,7 +131,7 @@ class Account(db.Model):
         return result
 
 
-    def transactions(self, start=None, end=None):
+    def transactions(self, start: Optional[datetime.date] = None, end: Optional[datetime.date] = None) -> List['Transaction']:
 
         result = Transaction.query.filter_by(account_id=self.id)
 
@@ -146,14 +147,14 @@ class Account(db.Model):
         return result.all()
 
 
-    def search_for_transactions(self, term):
+    def search_for_transactions(self, term: str) -> List['Transaction']:
 
         transactions = Transaction.query.filter(Transaction.account_id == self.id).filter(or_(Transaction.description.like('%' + term + '%'), Transaction.full_text.like('%' + term + '%'))).order_by(Transaction.date.desc(), Transaction.id.desc()).all()
 
         return transactions
 
 
-    def transactions_by_type(self, type, start=None, end=None):
+    def transactions_by_type(self, type, start: Optional[datetime.date] = None, end: Optional[datetime.date] = None) -> List['Transaction']:
 
         result = Transaction.query.filter_by(account_id=self.id, type=type)
 
@@ -206,9 +207,10 @@ class Category(db.Model):
     _transactions = db.relationship("Transaction", back_populates="category")
 
 
-    def __init__(self, start=None, end=None, **kwargs):
+    def __init__(self, start: Optional[datetime.date] = None, end: Optional[datetime.date] = None, **kwargs):
         self._cache = {}
-        self.setTimeframe(start, end)
+        if start is not None and end is not None:
+            self.setTimeframe(start, end)
         super(Category, self).__init__(**kwargs)
 
 
@@ -217,14 +219,17 @@ class Category(db.Model):
         self._cache = {}
 
 
-    def setTimeframe(self, start=None, end=None):
+    def setTimeframe(self, start: datetime.date, end: datetime.date):
         self._data = {}
         self._data["start"] = start
         self._data["end"] = end
 
 
     @property
-    def planned_transactions(self):
+    def planned_transactions(self) -> List['PlannedTransaction']:
+
+        if self.start is None or self.end is None:
+            return []
 
         if "planned_transactions" not in self._cache:
 
@@ -288,14 +293,14 @@ class Category(db.Model):
 
 
     @property
-    def regular_rules_done(self):
+    def regular_rules_done(self) -> bool:
 
         if "regular_rules_done" not in self._cache:
 
             result = False
 
             for transaction in self.transactions:
-                if transaction.rule_id is not None:
+                if transaction.rule is not None:
                     if transaction.rule.regular:
                         result = True
                         break
@@ -309,7 +314,7 @@ class Category(db.Model):
 
 
     @property
-    def has_overdued_planned_transactions(self):
+    def has_overdued_planned_transactions(self) -> bool:
 
         result = False
 
@@ -328,7 +333,7 @@ class Category(db.Model):
 
 
     @property
-    def budget(self):
+    def budget(self) -> float:
 
         budget = self.budget_monthly
 
@@ -343,7 +348,7 @@ class Category(db.Model):
 
 
     @property
-    def start(self):
+    def start(self) -> Optional[datetime.date]:
 
         if hasattr(self, "_data"):
             return self._data.get("start", utils.get_first_day_of_month())
@@ -352,7 +357,7 @@ class Category(db.Model):
 
 
     @property
-    def end(self):
+    def end(self) -> Optional[datetime.date]:
 
         if hasattr(self, "_data"):
             return self._data.get("end", utils.get_last_day_of_month())
@@ -361,7 +366,7 @@ class Category(db.Model):
 
 
     @property
-    def childs(self):
+    def childs(self) -> List['Category']:
 
         result = self._childs
 
@@ -374,7 +379,7 @@ class Category(db.Model):
 
 
     @property
-    def transactions(self):
+    def transactions(self) -> List['Transaction']:
 
         if "transactions" not in self._cache:
 
@@ -388,7 +393,7 @@ class Category(db.Model):
 
 
     @property
-    def transactions_with_childs(self):
+    def transactions_with_childs(self) -> List['Transaction']:
 
         if "transactions_with_childs" not in self._cache:
 
@@ -407,7 +412,7 @@ class Category(db.Model):
 
 
     @property
-    def transactions_combined(self):
+    def transactions_combined(self) -> List[Union['Transaction', 'PlannedTransaction']]:
 
         if "transactions_combined" not in self._cache:
 
@@ -423,7 +428,7 @@ class Category(db.Model):
         return self._cache["transactions_combined"]
 
 
-    def getCategoryPath(self, delimiter):
+    def getCategoryPath(self, delimiter) -> str:
 
         if self.parent_id is not None:
             parent = self.parent
@@ -432,7 +437,7 @@ class Category(db.Model):
             return self.name
 
 
-    def getCategoryIdsAndPaths(self, delimiter):
+    def getCategoryIdsAndPaths(self, delimiter) -> List[Mapping]:
 
         result = []
 
@@ -445,7 +450,7 @@ class Category(db.Model):
 
 
     @property
-    def valuta(self):
+    def valuta(self) -> float:
 
         if "valuta" not in self._cache:
 
@@ -463,7 +468,7 @@ class Category(db.Model):
 
 
     @property
-    def planned_transactions_valuta(self):
+    def planned_transactions_valuta(self) -> float:
 
         if "planned_transactions_valuta" not in self._cache:
 
@@ -480,7 +485,7 @@ class Category(db.Model):
         return self._cache["planned_transactions_valuta"]
 
     @property
-    def planned_valuta(self):
+    def planned_valuta(self) -> float:
 
         if "planned_valuta" not in self._cache:
 
@@ -502,7 +507,7 @@ class Category(db.Model):
         return self._cache["planned_valuta"]
 
 
-    def has_sibling_name(self, name):
+    def has_sibling_name(self, name) -> bool:
 
         res = Category.query.filter_by(type=self.type, parent_id=self.parent_id, name=name).one_or_none()
 
@@ -555,7 +560,7 @@ class Rule(db.Model):
         super(Rule, self).__init__(**kwargs)
 
 
-    def transactions(self, start=None, end=None):
+    def transactions(self, start: Optional[datetime.date] = None, end: Optional[datetime.date] = None) -> List['Transaction']:
 
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
 
@@ -571,7 +576,7 @@ class Rule(db.Model):
         return result.all()
 
 
-    def latest_transaction(self, before_id=None):
+    def latest_transaction(self, before_id: Optional[int] = None) -> 'Transaction':
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
 
         if before_id is not None:
@@ -581,13 +586,13 @@ class Rule(db.Model):
 
 
     @property
-    def oldest_transaction(self):
+    def oldest_transaction(self) -> 'Transaction':
         result = Transaction.query.filter_by(account_id=self.account_id, rule_id=self.id)
 
         return result.order_by(Transaction.date.asc(), Transaction.id.asc()).first()
 
 
-    def update_next_due(self, date, valuta):
+    def update_next_due(self, date: datetime.date, valuta: float):
 
         if self.regular:
 
@@ -608,7 +613,7 @@ class Rule(db.Model):
             self.next_due = next_due
 
 
-    def assign_transaction_ids(self, ids):
+    def assign_transaction_ids(self, ids: List[int]):
         transactions = Transaction.query.filter(Transaction.id.in_(ids)).all()
 
         for transaction in transactions:
@@ -619,7 +624,7 @@ class Rule(db.Model):
 
 
 
-    def match_transaction(self, transaction):
+    def match_transaction(self, transaction: 'Transaction') -> bool:
         pattern = self.pattern.strip()
 
         pattern = pattern.replace(" ", r'\s+')
@@ -633,15 +638,15 @@ class Rule(db.Model):
 
 
     @property
-    def has_assigned_transactions(self):
+    def has_assigned_transactions(self) -> bool:
         return self._transactions is not None and len(self._transactions) > 0
 
     @hybrid_property
-    def active(self):
+    def active(self) -> bool:  # type: ignore
         return self.end is None
 
     @active.expression
-    def active(cls):
+    def active(cls) -> Any:
         return cls.end == None  # noqa: E711
 
 
@@ -677,7 +682,7 @@ class Transaction(db.Model):
     account = db.relationship("Account", back_populates="_transactions")
 
     @hybrid_property
-    def type(self):
+    def type(self) -> str:   # type: ignore
         if self.valuta > 0:
             return "in"
         elif self.valuta < 0:
@@ -687,12 +692,12 @@ class Transaction(db.Model):
 
 
     @type.expression
-    def type(cls):
+    def type(cls) -> Any:
         return fn.case([(cls.valuta > 0, "in"), (cls.valuta < 0, "out")], else_="message")
 
 
     @property
-    def complete(self):
+    def complete(self) -> bool:
         if self.type != "message" and self.description and self.category_id:
             return True
         elif self.type == "message" and self.description is True:
@@ -759,7 +764,7 @@ class Transaction(db.Model):
 
 
     @property
-    def is_editable(self):
+    def is_editable(self) -> bool:
 
         now = datetime.date.today()
 
@@ -777,7 +782,7 @@ class Transaction(db.Model):
 
 
     @staticmethod
-    def _normalizeText(text):
+    def _normalizeText(text: str) -> str:
         new_text = text
 
         for char in "/:.\\":
@@ -788,7 +793,7 @@ class Transaction(db.Model):
         return new_text.upper()
 
     @property
-    def exist(self):
+    def exist(self) -> bool:
         transactions = Transaction.query.filter_by(date=self.date, valuta=self.valuta).all()
 
         for transaction in transactions:
@@ -857,8 +862,8 @@ class PlannedTransaction:
         self.rule_id = rule_id
         self.overdue = overdue
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "PlannedTransaction(description=%r', valuta=%r, date=%r, rule_id=%r, overdue=%r)" % (self.description, self.valuta, self.date, self.rule_id, self.overdue)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return repr(self) == repr(other)

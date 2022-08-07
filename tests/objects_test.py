@@ -22,7 +22,7 @@ import datetime
 @pytest.fixture
 def today(fixed_date):
 
-    datetime.date.set_today(2020, 3, 20)
+    datetime.date.set_today(2020, 3, 20)  # type: ignore
 
     return datetime.date.today()
 
@@ -86,32 +86,32 @@ def db_filled(db, today, start):
     # Rules
 
     # change the today date to get a differing "start" date
-    datetime.date.set_today(2020, 3, 1)
+    datetime.date.set_today(2020, 3, 1)  # type: ignore
 
     rule_in_1 = Rule(id=1, name="Rule 1", type="in", category_id=cat_in_main.id, pattern="PATTERN1", description="Description - Rule 1")
     db.session.add(rule_in_1)
 
-    datetime.date.set_today(2020, 3, 2)
+    datetime.date.set_today(2020, 3, 2)  # type: ignore
 
     rule_in_2 = Rule(id=2, name="Rule 2", type="in", category_id=cat_in_sub1.id, pattern="PATTERN2", regular=1, next_valuta=29.98, next_due=today + datetime.timedelta(days=15), description="Description - Rule 2")
     db.session.add(rule_in_2)
 
-    datetime.date.set_today(2020, 3, 3)
+    datetime.date.set_today(2020, 3, 3)  # type: ignore
 
     rule_out_1 = Rule(id=3, name="Rule 3", type="out", category_id=cat_out_sub1.id, pattern="PATTERN3", regular=3, next_valuta=293.29, next_due=today + datetime.timedelta(days=3), description="Description - Rule 3")
     db.session.add(rule_out_1)
 
-    datetime.date.set_today(2020, 3, 4)
+    datetime.date.set_today(2020, 3, 4)  # type: ignore
 
     rule_out_2 = Rule(id=4, name="Rule 4", type="out", category_id=cat_out_sub1.id, pattern=r"PATTERN4.*PATTERN4", description="Description - Rule 4")
     db.session.add(rule_out_2)
 
-    datetime.date.set_today(2020, 3, 5)
+    datetime.date.set_today(2020, 3, 5)  # type: ignore
 
     rule_out_3 = Rule(id=5, name="Rule 5", type="out", category_id=cat_out_sub2.id, pattern="PATTERN5", regular=1, next_valuta=20, next_due=today + datetime.timedelta(days=2), description="Description - Rule 5")
     db.session.add(rule_out_3)
 
-    datetime.date.set_today(2020, 3, 6)
+    datetime.date.set_today(2020, 3, 6)  # type: ignore
 
     # overdue rule
     rule_out_4 = Rule(id=6, name="Rule 6", type="out", category_id=cat_out_sub3.id, pattern="PATTERN6", regular=1, next_valuta=20, next_due=today - datetime.timedelta(days=6), description="Description - Rule 6 - Overdue")
@@ -119,7 +119,7 @@ def db_filled(db, today, start):
 
     db.session.commit()
 
-    datetime.date.set_today_date(today)
+    datetime.date.set_today_date(today)  # type: ignore
 
     # Transactions
 
@@ -575,7 +575,7 @@ def test_category_planned_transactions_only_in_future(db_filled, today, start):
 
 def test_category_regular_rules_done(db_only_account, today):
 
-    datetime.date.set_today(2020, 1, 15)
+    datetime.date.set_today(2020, 1, 15)  # type: ignore
     db = db_only_account
 
     cat = Category(id=1, name="Main Category", account_id=1, type="in", parent_id=None)
@@ -1113,7 +1113,7 @@ def test_rule_update_next_due(db_filled, today):
     assert rule_6.next_valuta == 100.0
 
     # update to a date that is older than current next due => no update should be performed
-    rule_6.update_next_due(today - timedelta(days=2), 90.0)
+    rule_6.update_next_due(today - datetime.timedelta(days=2), 90.0)
 
     assert rule_6.regular == 1
     assert rule_6.next_due == datetime.date(2020, 4, 20)

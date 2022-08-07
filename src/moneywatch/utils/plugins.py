@@ -1,6 +1,13 @@
+
 import os
+
 import moneywatch.utils.functions as functions
 from flask_babel import gettext
+from typing import KeysView, List, Optional, IO
+from werkzeug.datastructures import FileStorage
+
+from moneywatch.utils.typedefs import CheckFunction, ParseFunction, PluginInfoItem, PluginNameItem, RawTransactionItem
+
 
 
 class LoadPluginException(Exception):
@@ -9,6 +16,7 @@ class LoadPluginException(Exception):
 
 class NoParseFunctionException(Exception):
     pass
+
 
 class NoCreateFunctionException(Exception):
     pass
@@ -19,19 +27,19 @@ class UnknownCreatePlugin(Exception):
 
 
 class PluginManager:
-    def __init__(self, path):
+    def __init__(self, path: str):
 
-        self._plugin_info = {}
-        self._file_info = {}
+        self._plugin_info: dict[str, PluginInfoItem] = {}
+        self._file_info: dict[str, str] = {}
         self._path = path
         self._load_plugins()
 
-    def _load_error_str(self, file, message):
-        return "error while loading plugin:" + str(file) + str(message)
+    def _load_error_str(self, file: str, message: str) -> str:
+        return "error while loading plugin: %s => %s" % (file, message)
 
     def _load_plugins(self):
 
-        def _get_plugin_pathnames(path):
+        def _get_plugin_pathnames(path: str) -> List[str]:
             if path and os.path.exists(path):
                 return sorted([
                     path + "/" + f
@@ -46,7 +54,7 @@ class PluginManager:
 
         for f in self._file_list:
 
-            plugin_info = {}
+            plugin_info: dict[str, PluginInfoItem] = {}
 
             plugin_context = {
                 "plugin_info": plugin_info,
@@ -59,7 +67,7 @@ class PluginManager:
                 exec(open(f, "r").read(), plugin_context)
 
             except Exception as e:
-                print(self._load_error_str(f, e))
+                print(self._load_error_str(f, str(e)))
                 continue
 
             for key in plugin_info.keys():
@@ -69,23 +77,23 @@ class PluginManager:
 
 
 class ImportPluginsManager(PluginManager):
-    def __init__(self, path):
+    def __init__(self, path: str):
 
         super().__init__(path)
 
-    def _load_error_str(self, file, message):
-        return "error while loading import plugin: " + str(file) + " => " + str(message)
+    def _load_error_str(self, file: str, message: str) -> str:
+        return "error while loading import plugin: %s => %s" % (file, message)
 
-    def resolve_plugins_for_file(self, file):
+    def resolve_plugins_for_file(self, file: FileStorage) -> List[PluginNameItem]:
 
-        result = []
+        result: List[PluginNameItem] = []
 
         for name, info in self._plugin_info.items():
-            check_function = info.get("check_function", None)
-            file_extension = info.get("file_extension", None)
+            check_function: Optional[CheckFunction] = info.get("check_function", None)
+            file_extension: Optional[str] = info.get("file_extension", None)
 
             # check file extension match
-            if file_extension is not None and not file.filename.lower().endswith(file_extension.strip().lower()):
+            if file_extension is not None and file.filename is not None and not file.filename.lower().endswith(file_extension.strip().lower()):
                 continue
 
             # check if check function exists and matches
@@ -115,19 +123,19 @@ class ImportPluginsManager(PluginManager):
         result = []
 
         for plugin in self._plugin_info:
-            file_extension = self._plugin_info[plugin].get("file_extension", None)
+            file_extension: Optional[str] = self._plugin_info[plugin].get("file_extension", None)
             if file_extension is not None and not file_extension.strip().lower() in result:
                 result.append(file_extension.strip().lower())
         return result
 
-    def parse_file(self, file, plugin):
+    def parse_file(self, file: FileStorage, plugin: str) -> List[RawTransactionItem]:
 
-        result = []
+        result: List[RawTransactionItem] = []
 
         self._load_plugins()
 
         if plugin in self._plugin_info:
-            parse_function = self._plugin_info[plugin].get("parse_function", None)
+            parse_function: Optional[ParseFunction] = self._plugin_info[plugin].get("parse_function", None)
 
             if parse_function is not None and hasattr(parse_function, '__call__'):
                 file.stream.seek(0)
@@ -143,7 +151,7 @@ class ImportPluginsManager(PluginManager):
         return result
 
 
-    def create_file(self, items, fd, plugin):
+    def create_file(self, items: List[RawTransactionItem], fd: IO[bytes], plugin: str) -> str:
 
         result = None
 
@@ -161,14 +169,16 @@ class ImportPluginsManager(PluginManager):
             raise UnknownCreatePlugin(plugin)
         return result
 
-    def plugin_loaded(self, plugin_name):
+
+    def plugin_loaded(self, plugin_name: str) -> bool:
         return plugin_name in self._plugin_info
 
-    def is_implemented(self, plugin_name, function_name):
+
+    def is_implemented(self, plugin_name: str, function_name: str) -> bool:
         function_dummy = self._plugin_info[plugin_name].get(function_name, None)
         if function_dummy is not None:
             return True
         return False
 
-    def get_plugin_names(self):
+    def get_plugin_names(self) -> KeysView[str]:
         return self._plugin_info.keys()

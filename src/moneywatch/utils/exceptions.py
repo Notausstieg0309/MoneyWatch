@@ -1,5 +1,17 @@
+from __future__ import annotations
+
+from typing import List, Optional
+
+from werkzeug.datastructures import FileStorage
+
+# needed to avoid cyclic imports
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from moneywatch.utils.objects import Rule, Transaction
+
+
 class MultipleRuleMatchError(Exception):
-    def __init__(self, transaction, rules, index=None):
+    def __init__(self, transaction: 'Transaction', rules: 'List[Rule]', index=None):
 
         super().__init__()
 
@@ -18,7 +30,7 @@ class MultiplePluginMatchError(Exception):
 
 
 class NoPluginMatchError(Exception):
-    def __init__(self, file):
+    def __init__(self, file: FileStorage):
 
         super().__init__()
 
@@ -27,7 +39,7 @@ class NoPluginMatchError(Exception):
 
 class UnknownAccountError(Exception):
 
-    def __init__(self, iban, item, plugin_description=None):
+    def __init__(self, iban: str, item: dict, plugin_description: Optional[str] = None):
 
         super().__init__()
 

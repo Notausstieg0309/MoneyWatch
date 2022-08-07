@@ -5,24 +5,25 @@ import schwifty
 
 from calendar import monthrange
 from flask_babel import format_date, gettext
+from typing import List, Optional
 
 
-def get_date_from_string(date, format):
+def get_date_from_string(date: str, format: str) -> datetime.date:
 
     return datetime.datetime.strptime(date, format).date()
 
 
-def get_quarter_from_date(date):
+def get_quarter_from_date(date: datetime.date) -> int:
 
     return (date.month - 1) // 3 + 1
 
 
-def get_half_year_from_date(date):
+def get_half_year_from_date(date: datetime.date) -> int:
 
     return (date.month - 1) // 6 + 1
 
 
-def get_first_day_of_month(date=None):
+def get_first_day_of_month(date: Optional[datetime.date] = None) -> datetime.date:
 
     date_today = datetime.date.today()
 
@@ -36,7 +37,7 @@ def get_first_day_of_month(date=None):
     return datetime.date(date_year, date_month, 1)
 
 
-def get_last_day_of_month(date=None):
+def get_last_day_of_month(date: Optional[datetime.date] = None) -> datetime.date:
 
     date_first = get_first_day_of_month()
 
@@ -50,7 +51,7 @@ def get_last_day_of_month(date=None):
     return datetime.date(date_year + date_month // 12, date_month % 12 + 1, 1) - datetime.timedelta(days=1)
 
 
-def get_first_day_of_quarter(year, quarter):
+def get_first_day_of_quarter(year: int, quarter: int) -> datetime.date:
 
     date_first = get_first_day_of_month()
 
@@ -60,7 +61,7 @@ def get_first_day_of_quarter(year, quarter):
     return datetime.date(date_year, (3 * date_quarter) - 2, 1)
 
 
-def get_last_day_of_quarter(year, quarter):
+def get_last_day_of_quarter(year: int, quarter: int) -> datetime.date:
     date_first = get_first_day_of_month()
 
     date_year = year if year is not None else date_first.year
@@ -71,7 +72,7 @@ def get_last_day_of_quarter(year, quarter):
     return datetime.date(date_year + remaining, month % 12 + 1, 1) + datetime.timedelta(days=-1)
 
 
-def get_first_day_of_halfyear(year, half):
+def get_first_day_of_halfyear(year: int, half: int) -> datetime.date:
     date_first = get_first_day_of_month()
 
     date_year = year if year is not None else date_first.year
@@ -82,13 +83,13 @@ def get_first_day_of_halfyear(year, half):
     return datetime.date(date_year, month, 1)
 
 
-def get_last_day_of_halfyear(year, half):
+def get_last_day_of_halfyear(year: int, half: int) -> datetime.date:
     month = 6 * half
     remaining = month // 12
     return datetime.date(year + remaining, month % 12 + 1, 1) + datetime.timedelta(days=-1)
 
 
-def get_number_of_months(start=None, end=None):
+def get_number_of_months(start: Optional[datetime.date] = None, end: Optional[datetime.date] = None) -> int:
 
     start_date = get_first_day_of_month()
     end_date = get_last_day_of_month()
@@ -107,16 +108,16 @@ def get_number_of_months(start=None, end=None):
     return int(math.ceil(diff))
 
 
-def _monthdelta(d1, d2):
-    delta = 0
+def _monthdelta(d1: datetime.date, d2: datetime.date) -> float:
+    delta = 0.0
     while True:
         mdays = monthrange(d1.year, d1.month)[1]
 
         d1 += datetime.timedelta(days=mdays)
         if d1 < d2:
-            delta += 1
+            delta += 1.0
         elif d1 == d2:
-            delta += 1
+            delta += 1.0
             break
         else:
             break
@@ -128,7 +129,7 @@ def _monthdelta(d1, d2):
     return delta
 
 
-def add_months(date, months):
+def add_months(date: datetime.date, months: int) -> datetime.date:
     date_new = date
     original_day = date.day
     maxdays_original = monthrange(date_new.year, date_new.month)[1]
@@ -154,7 +155,7 @@ def add_months(date, months):
     return date_new
 
 
-def substract_months(date, months):
+def substract_months(date: datetime.date, months: int) -> datetime.date:
     date_new = date
     original_day = date.day
     maxdays_original = monthrange(date_new.year, date_new.month)[1]
@@ -180,7 +181,7 @@ def substract_months(date, months):
     return date_new
 
 
-def is_same_month_in_list(date, date_list):
+def is_same_month_in_list(date: datetime.date, date_list: List[datetime.date]) -> bool:
 
     result = False
     for item in date_list:
@@ -191,12 +192,12 @@ def is_same_month_in_list(date, date_list):
     return result
 
 
-def is_same_month(date1, date2):
+def is_same_month(date1: datetime.date, date2: datetime.date) -> bool:
 
     return True if date1.year == date2.year and date1.month == date2.month else False
 
 
-def get_cyclic_dates_for_timerange(date, months_interval, start, end):
+def get_cyclic_dates_for_timerange(date: datetime.date, months_interval: int, start: datetime.date, end: datetime.date) -> List[datetime.date]:
 
     result = []
 
@@ -221,7 +222,7 @@ def get_cyclic_dates_for_timerange(date, months_interval, start, end):
     return result
 
 
-def get_babel_month_names():
+def get_babel_month_names() -> List[str]:
 
     month_names = []
 
@@ -232,7 +233,7 @@ def get_babel_month_names():
     return month_names
 
 
-def get_label_for_date(date, interval):
+def get_label_for_date(date: datetime.date, interval: int):
 
     month_names = get_babel_month_names()
 
@@ -246,14 +247,14 @@ def get_label_for_date(date, interval):
         return gettext("%(month_name)s %(year)s", month=date.month, month_name=month_names[date.month - 1], year=date.year)
 
 
-def normalize_iban(value):
+def normalize_iban(value: str) -> str:
 
     iban = schwifty.IBAN(value)
     return iban.compact
 
 
 
-def is_valid_iban(value):
+def is_valid_iban(value: str) -> bool:
 
     try:
         iban = schwifty.IBAN(value)
@@ -264,14 +265,14 @@ def is_valid_iban(value):
     return True
 
 
-def format_iban_human(value):
+def format_iban_human(value: str) -> str:
 
     iban = schwifty.IBAN(value)
     return iban.formatted
 
 
 
-def demo_date(day, month=0):
+def demo_date(day: int, month: int = 0) -> datetime.date:
     new_date = datetime.date.today()
 
     if day < 0:
