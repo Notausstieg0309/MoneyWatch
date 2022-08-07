@@ -3,7 +3,6 @@ from moneywatch.utils.exceptions import MultipleRuleMatchError
 import pytest
 import logging
 import datetime
-from datetime import timedelta
 
 
 
@@ -109,13 +108,13 @@ def db_filled(db, today, start):
 
     datetime.date.set_today(2020, 3, 5)
 
-    rule_out_3 = Rule(id=5, name="Rule 5", type="out", category_id=cat_out_sub2.id, pattern="PATTERN5", regular=1, next_valuta=20, next_due=today + timedelta(days=2), description="Description - Rule 5")
+    rule_out_3 = Rule(id=5, name="Rule 5", type="out", category_id=cat_out_sub2.id, pattern="PATTERN5", regular=1, next_valuta=20, next_due=today + datetime.timedelta(days=2), description="Description - Rule 5")
     db.session.add(rule_out_3)
 
     datetime.date.set_today(2020, 3, 6)
 
     # overdue rule
-    rule_out_4 = Rule(id=6, name="Rule 6", type="out", category_id=cat_out_sub3.id, pattern="PATTERN6", regular=1, next_valuta=20, next_due=today - timedelta(days=6), description="Description - Rule 6 - Overdue")
+    rule_out_4 = Rule(id=6, name="Rule 6", type="out", category_id=cat_out_sub3.id, pattern="PATTERN6", regular=1, next_valuta=20, next_due=today - datetime.timedelta(days=6), description="Description - Rule 6 - Overdue")
     db.session.add(rule_out_4)
 
     db.session.commit()
@@ -127,7 +126,7 @@ def db_filled(db, today, start):
     trans_1 = Transaction(id=1,
                           full_text="BOOKING TEXT PATTERN1 #1",
                           valuta=1890.28,
-                          date=start + timedelta(days=12),
+                          date=start + datetime.timedelta(days=12),
                           description="Transaction 1",
                           rule_id=rule_in_1.id,
                           category_id=cat_in_main.id,
@@ -138,7 +137,7 @@ def db_filled(db, today, start):
     trans_2 = Transaction(id=2,
                           full_text="BOOKING TEXT PATTERN1 #2",
                           valuta=1979.28,
-                          date=start + timedelta(days=42),
+                          date=start + datetime.timedelta(days=42),
                           description="Transaction 2",
                           rule_id=rule_in_1.id,
                           category_id=cat_in_main.id,
@@ -150,7 +149,7 @@ def db_filled(db, today, start):
     trans_3 = Transaction(id=3,
                           full_text="BOOKING TEXT PATTERN3 #3",
                           valuta=-35.78,
-                          date=start + timedelta(days=2),
+                          date=start + datetime.timedelta(days=2),
                           description="Transaction 3",
                           rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
@@ -161,7 +160,7 @@ def db_filled(db, today, start):
     trans_4 = Transaction(id=4,
                           full_text="BOOKING TEXT PATTERN3 #4",
                           valuta=-207.89,
-                          date=start + timedelta(days=3),
+                          date=start + datetime.timedelta(days=3),
                           description="Transaction 4",
                           rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
@@ -172,7 +171,7 @@ def db_filled(db, today, start):
     trans_5 = Transaction(id=5,
                           full_text="BOOKING TEXT PATTERN3 #5",
                           valuta=-207.89,
-                          date=start + timedelta(days=32),
+                          date=start + datetime.timedelta(days=32),
                           description="Transaction 5",
                           rule_id=rule_out_1.id,
                           category_id=cat_out_sub1.id,
@@ -184,7 +183,7 @@ def db_filled(db, today, start):
                           full_text="MESSAGE TEXT #6",
                           valuta=0,
                           description="",
-                          date=today - timedelta(days=2),
+                          date=today - datetime.timedelta(days=2),
                           account_id=account.id)
 
     db.session.add(trans_6)
@@ -192,7 +191,7 @@ def db_filled(db, today, start):
     trans_7 = Transaction(id=7,
                           full_text="BOOKING TEXT PATTERN2 #1",
                           valuta=29.98,
-                          date=start + timedelta(days=2),
+                          date=start + datetime.timedelta(days=2),
                           description="Transaction 7",
                           rule_id=rule_in_2.id,
                           category_id=cat_in_sub1.id,
@@ -203,7 +202,7 @@ def db_filled(db, today, start):
     trans_8 = Transaction(id=8,
                           full_text="BOOKING TEXT NO PATTERN #1",
                           valuta=40.45,
-                          date=start + timedelta(days=19),
+                          date=start + datetime.timedelta(days=19),
                           description="Transaction 8",
                           category_id=cat_in_sub1.id,
                           account_id=account.id)
@@ -329,7 +328,7 @@ def test_account_rules_by_type_out(db_filled):
 def test_account_nonmonthly_rules_in(db_filled, today):
     account = Account.query.filter_by(id=1).one()
 
-    rules_in = account.non_regular_rules("in", today + timedelta(weeks=8), today + timedelta(weeks=12))
+    rules_in = account.non_regular_rules("in", today + datetime.timedelta(weeks=8), today + datetime.timedelta(weeks=12))
 
     assert rules_in == []
 
@@ -337,7 +336,7 @@ def test_account_nonmonthly_rules_in(db_filled, today):
 def test_account_nonmonthly_rules_out(db_filled, today):
     account = Account.query.filter_by(id=1).one()
 
-    rules_out = account.non_regular_rules("out", today + timedelta(weeks=6), today + timedelta(weeks=23))
+    rules_out = account.non_regular_rules("out", today + datetime.timedelta(weeks=6), today + datetime.timedelta(weeks=23))
 
     assert len(rules_out) == 1
     assert isinstance(rules_out[0], tuple)
@@ -354,19 +353,19 @@ def test_account_transactions(db_filled, start, today):
     assert len(transactions) == 9
     assert all(isinstance(el, Transaction) for el in transactions)
 
-    transactions = account.transactions(start, start + timedelta(days=14))
+    transactions = account.transactions(start, start + datetime.timedelta(days=14))
 
     assert len(transactions) == 4
     assert all(isinstance(el, Transaction) for el in transactions)
 
-    transactions = account.transactions(start + timedelta(days=20))
+    transactions = account.transactions(start + datetime.timedelta(days=20))
 
     assert len(transactions) > 0
     assert all(isinstance(el, Transaction) for el in transactions)
     assert transactions[0].id == 5
     assert transactions[-1].id == 6
 
-    transactions = account.transactions(None, today - timedelta(days=20))
+    transactions = account.transactions(None, today - datetime.timedelta(days=20))
 
     assert len(transactions) > 0
     assert all(isinstance(el, Transaction) for el in transactions)
@@ -404,20 +403,20 @@ def test_account_transactions_by_type_out(db_filled, start, today):
 
     assert result == expected
 
-    transactions = account.transactions_by_type("out", start + timedelta(days=20))
+    transactions = account.transactions_by_type("out", start + datetime.timedelta(days=20))
 
     assert len(transactions) == 1
     assert all(isinstance(el, Transaction) for el in transactions)
     assert transactions[0].id == 5
 
-    transactions = account.transactions_by_type("out", None, today - timedelta(days=20))
+    transactions = account.transactions_by_type("out", None, today - datetime.timedelta(days=20))
 
     assert len(transactions) > 0
     assert all(isinstance(el, Transaction) for el in transactions)
     assert transactions[0].id == 3
     assert transactions[-1].id == 5
 
-    transactions = account.transactions_by_type("out", start + timedelta(days=15), today - timedelta(days=20))
+    transactions = account.transactions_by_type("out", start + datetime.timedelta(days=15), today - datetime.timedelta(days=20))
 
     assert len(transactions) == 1
     assert all(isinstance(el, Transaction) for el in transactions)
@@ -493,7 +492,7 @@ def test_category_planned_transactions_none(db_filled, today):
 
     cat_1 = Category.query.filter_by(id=1).one()
 
-    cat_1.setTimeframe(today, today + timedelta(weeks=5))
+    cat_1.setTimeframe(today, today + datetime.timedelta(weeks=5))
 
     planned_transactions = cat_1.planned_transactions
 
@@ -506,7 +505,7 @@ def test_category_planned_transactions_monthly(db_filled, today):
 
     cat_2 = Category.query.filter_by(id=2).one()
 
-    cat_2.setTimeframe(today, today + timedelta(weeks=5))
+    cat_2.setTimeframe(today, today + datetime.timedelta(weeks=5))
 
     planned_transactions = cat_2.planned_transactions
 
@@ -519,7 +518,7 @@ def test_category_planned_transactions_monthly_past_month_none(db_filled, start)
 
     cat_5 = Category.query.filter_by(id=5).one()
 
-    cat_5.setTimeframe(start, start + timedelta(weeks=4))
+    cat_5.setTimeframe(start, start + datetime.timedelta(weeks=4))
 
     planned_transactions = cat_5.planned_transactions
 
@@ -530,7 +529,7 @@ def test_category_planned_transactions_monthly_without_existing(db_filled, start
 
     cat_2 = Category.query.filter_by(id=2).one()
 
-    cat_2.setTimeframe(start, today + timedelta(weeks=3))
+    cat_2.setTimeframe(start, today + datetime.timedelta(weeks=3))
 
     planned_transactions = cat_2.planned_transactions
     transactions = cat_2.transactions
@@ -564,7 +563,7 @@ def test_category_planned_transactions_only_in_future(db_filled, today, start):
 
     cat_2 = Category.query.filter_by(id=2).one()
 
-    cat_2.setTimeframe(start, today + timedelta(weeks=5))
+    cat_2.setTimeframe(start, today + datetime.timedelta(weeks=5))
 
     planned_transactions = cat_2.planned_transactions
 
