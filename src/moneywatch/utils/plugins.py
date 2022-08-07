@@ -100,7 +100,8 @@ class ImportPluginsManager(PluginManager):
             else:
                 result.append({
                     "name": name,
-                    "description": info.get("description", None)
+                    "description": info.get("description", None),
+                    "_filename": info.get("_filename", None)
                 })
 
         return result
