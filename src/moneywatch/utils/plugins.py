@@ -14,6 +14,10 @@ class NoCreateFunctionException(Exception):
     pass
 
 
+class UnknownCreatePlugin(Exception):
+    pass
+
+
 class PluginManager:
     def __init__(self, path):
 
@@ -153,7 +157,8 @@ class ImportPluginsManager(PluginManager):
                 result = create_function(items, fd)
             else:
                 raise NoCreateFunctionException(plugin)
-
+        else:
+            raise UnknownCreatePlugin(plugin)
         return result
 
     def plugin_loaded(self, plugin_name):
