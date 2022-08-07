@@ -279,7 +279,7 @@ class Category(db.Model):
                                 (planned_date >= today_date or utils.is_same_month(planned_date, today_date))
                         ):
 
-                            overdue = (planned_date <= latest_transaction_date and planned_date < today_date)
+                            overdue = ((planned_date + datetime.timedelta(days=3)) <= latest_transaction_date and planned_date < today_date)
 
                             if self.type == "out":
                                 result.append(PlannedTransaction(planned_date, rule.next_valuta * -1, rule.description, rule.id, overdue))
