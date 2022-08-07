@@ -262,7 +262,7 @@ def test_account_last_update(db_filled):
 
     last_update = account.last_update
     latest_transaction = account.latest_transaction
-    assert (latest_transaction.date - datetime.date.today()) == last_update
+    assert latest_transaction.date == last_update
 
 
 def test_account_categories_in(db_filled):
