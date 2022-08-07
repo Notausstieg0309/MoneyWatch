@@ -1129,32 +1129,51 @@ def test_rule_assign_transaction_ids(db_filled):
 
     rule_2 = Rule.query.filter_by(id=2).one()
 
+    category_1 = Category.query.filter_by(id=1).one()
+    category_2 = Category.query.filter_by(id=2).one()
+
+
     assert trans_7.rule_id == 2
     assert trans_8.rule_id is None
 
-    rule_7 = Rule(id=7, account_id=1, name="Rule 7", type="in", category_id=2, pattern="NO PATTERN", description="Description - Rule 7")
+    rule_7 = Rule(id=7, account_id=1, name="Rule 7", type="in", category_id=1, pattern="NO PATTERN", description="Description - Rule 7")
     db.session.add(rule_7)
     db.session.commit()
 
     assert trans_7.rule_id == 2
     assert trans_7.rule is rule_2
+    assert trans_7.category_id == 2
+    assert trans_7.category == category_2
 
     assert trans_8.rule_id is None
     assert trans_8.rule is None
+    assert trans_8.category_id == 2
+    assert trans_8.category == category_2
 
     rule_7.assign_transaction_ids([7, 8])
 
     assert trans_7.rule_id == 2
     assert trans_7.rule is rule_2
+    assert trans_7.category_id == 2
+    assert trans_7.category == category_2
 
     assert trans_8.rule is rule_7
     assert trans_8.rule_id is None
+    assert trans_8.category_id == 2
+    assert trans_8.category == category_1
 
     # rule_id update takes place after commit
     db.session.commit()
 
+    assert trans_7.rule_id == 2
+    assert trans_7.rule is rule_2
+    assert trans_7.category_id == 2
+    assert trans_7.category == category_2
+
     assert trans_8.rule is rule_7
     assert trans_8.rule_id == 7
+    assert trans_8.category_id == 1
+    assert trans_8.category == category_1
 
 
 @pytest.mark.parametrize("pattern,result", [

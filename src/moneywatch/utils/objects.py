@@ -615,7 +615,8 @@ class Rule(db.Model):
             if not self.match_transaction(transaction):
                 continue
             transaction.rule = self
-            transaction.category_id = self.category_id
+            transaction.category = self.category
+
 
 
     def match_transaction(self, transaction):
