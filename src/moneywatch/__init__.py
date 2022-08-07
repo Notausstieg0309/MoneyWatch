@@ -146,7 +146,7 @@ def create_app(test_config=None, instance_path=None):
         if os.path.exists(os.path.join(app.instance_path, "demo_import_content")) and os.path.exists(os.path.join(app.instance_path, "demo_import_filename")):
             with open(os.path.join(app.instance_path, "demo_import_filename")) as f:
                 filename = f.readline()
-            return send_file(os.path.join(app.instance_path, "demo_import_content"), as_attachment=True, attachment_filename=filename.strip(), cache_timeout=-1)
+            return send_file(os.path.join(app.instance_path, "demo_import_content"), as_attachment=True, download_name=filename.strip())
         else:
             return abort(404)
 
