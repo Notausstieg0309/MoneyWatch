@@ -1,3 +1,4 @@
+from moneywatch.utils.functions import get_first_day_of_month, get_last_day_of_month
 from moneywatch.utils.objects import Account, Category, Rule, Transaction, PlannedTransaction
 from moneywatch.utils.exceptions import MultipleRuleMatchError
 import pytest
@@ -571,6 +572,95 @@ def test_category_planned_transactions_only_in_future(db_filled, today, start):
 
     for planned_transaction in planned_transactions:
         assert planned_transaction.date >= latest_transaction.date
+
+
+def test_category_planned_transactions_overdue(db_only_account, fixed_date):
+
+    db = db_only_account
+    datetime.date.set_today(2020, 1, 1)  # type: ignore
+
+    cat = Category(id=1, name="Main Category", account_id=1, type="in", parent_id=None)
+
+    rule = Rule(id=1,
+                account_id=1,
+                name="Rule In",
+                type="in",
+                category=cat,
+                pattern="PATTERN",
+                regular=1,
+                next_valuta=10,
+                next_due=datetime.date(2020, 1, 1),
+                description="Description - Rule 1")
+
+    trans_1 = Transaction(id=1,
+                          full_text="TEST TRANSACTION #1",
+                          valuta=20,
+                          date=datetime.date(2020, 1, 1),
+                          description="Transaction 1",
+                          category=cat,
+                          account_id=1)
+
+    db.session.add_all([cat, rule])
+    db.session.commit()
+
+    cat.setTimeframe(get_first_day_of_month(), get_last_day_of_month())
+
+    assert len(cat.planned_transactions) == 1
+    assert cat.planned_transactions[0].rule_id == rule.id
+    assert cat.planned_transactions[0].valuta == rule.next_valuta
+    assert cat.planned_transactions[0].date == rule.next_due
+    assert cat.planned_transactions[0].overdue is False
+
+
+    def insert_transaction(transaction, expected_overdue):
+
+        db.session.add(transaction)
+        db.session.commit()
+
+        datetime.date.set_today_date(datetime.date.today() + datetime.timedelta(days=1))  # type: ignore
+
+        cat._cache = {}
+
+        assert len(cat.planned_transactions) == 1
+        assert cat.planned_transactions[0].rule_id == rule.id
+        assert cat.planned_transactions[0].valuta == rule.next_valuta
+        assert cat.planned_transactions[0].date == rule.next_due
+        assert cat.planned_transactions[0].overdue is expected_overdue
+
+    insert_transaction(trans_1, False)  # day 1 - 2020-01-01
+
+    trans_2 = Transaction(id=2,
+                          account_id=1,
+                          full_text="TEST TRANSACTION #2",
+                          valuta=20,
+                          date=datetime.date(2020, 1, 2),
+                          description="Transaction 2",
+                          category_id=cat.id
+                          )
+
+    insert_transaction(trans_2, False)  # day 2 - 2020-01-02
+
+    trans_3 = Transaction(id=3,
+                          account_id=1,
+                          full_text="TEST TRANSACTION #3",
+                          valuta=20,
+                          date=datetime.date(2020, 1, 3),
+                          description="Transaction 3",
+                          category_id=cat.id
+                          )
+
+    insert_transaction(trans_3, False)  # day 3 - 2020-01-03
+
+    trans_4 = Transaction(id=4,
+                          account_id=1,
+                          full_text="TEST TRANSACTION #4",
+                          valuta=20,
+                          date=datetime.date(2020, 1, 4),
+                          description="Transaction 4",
+                          category_id=cat.id
+                          )
+
+    insert_transaction(trans_4, True)   # day 4 - 2020-01-04
 
 
 def test_category_regular_rules_done(db_only_account, today):
