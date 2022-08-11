@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-03 15:21+0200\n"
+"POT-Creation-Date: 2022-08-11 22:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,16 +56,16 @@ msgstr ""
 msgid "The name '%(name)s' already exists on this level"
 msgstr ""
 
-#: importer.py:25
+#: importer.py:27
 msgid "No file uploaded"
 msgstr ""
 
-#: importer.py:43
+#: importer.py:45
 #, python-format
 msgid "Import plugin file \"%(name)s\""
 msgstr ""
 
-#: importer.py:145
+#: importer.py:147
 #, python-format
 msgid ""
 "The file contains transactions that cannot be clearly assigned to an "
@@ -74,6 +74,17 @@ msgid ""
 "\"%(account_name)s\". In case this is wrong, please create an appropriate"
 " account first and then assign the transactions manually to the new "
 "account during import."
+msgstr ""
+
+#: importer.py:168
+msgid "No suitable import plugin found, that can handle the uploaded file."
+msgstr ""
+
+#: importer.py:174
+#, python-format
+msgid ""
+"The given file contains an invalid account IBAN value: "
+"%(exception_message)s"
 msgstr ""
 
 #: ruleset.py:55
@@ -790,22 +801,22 @@ msgstr ""
 msgid "MMMM yyyy"
 msgstr ""
 
-#: utils/functions.py:242
+#: utils/functions.py:243
 #, python-format
 msgid "%(half_year)sH %(year)s"
 msgstr ""
 
-#: utils/functions.py:244
+#: utils/functions.py:245
 #, python-format
 msgid "Q%(quarter)s/%(year)s"
 msgstr ""
 
-#: utils/functions.py:246
+#: utils/functions.py:247
 #, python-format
 msgid "%(month_name)s %(year)s"
 msgstr ""
 
-#: utils/plugins.py:131
+#: utils/plugins.py:144
 #, python-format
 msgid "The plugin %s has no parse_function implemented or registered"
 msgstr ""

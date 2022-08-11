@@ -11,6 +11,8 @@ from moneywatch.utils.objects import db, Transaction, Account
 from moneywatch.utils.plugins import ImportPluginsManager
 from moneywatch.utils.exceptions import MultipleRuleMatchError, ItemsWithoutAccountError, UnknownAccountError, MultiplePluginMatchError, NoPluginMatchError
 
+from schwifty.exceptions import SchwiftyException
+
 bp = Blueprint('import', __name__)
 plugins = ImportPluginsManager(os.path.dirname(os.path.realpath(__file__)) + "/import_plugins")
 
@@ -158,6 +160,19 @@ def handle_no_account_given(error):
         session["no_account_given"] = error.index_list
 
     return render_template('importer/no_account_given.html', accounts=accounts, count_items=len(error.index_list))
+
+
+
+@bp.errorhandler(NoPluginMatchError)
+def handle_no_plugin_match(error):
+    flash(gettext("No suitable import plugin found, that can handle the uploaded file."))
+    return redirect(url_for("import.index"))
+
+
+@bp.errorhandler(SchwiftyException)
+def handle_schwifty_exception(error):
+    flash(gettext("The given file contains an invalid account IBAN value: %(exception_message)s", exception_message=error))
+    return redirect(url_for("import.index"))
 
 
 @bp.errorhandler(UnknownAccountError)

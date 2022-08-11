@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-03 15:21+0200\n"
-"PO-Revision-Date: 2022-08-03 14:59+0200\n"
+"POT-Creation-Date: 2022-08-11 22:11+0200\n"
+"PO-Revision-Date: 2022-08-11 22:10+0200\n"
 "Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -57,16 +57,16 @@ msgstr "Das Budget muss als numerischer Wert angegeben werden."
 msgid "The name '%(name)s' already exists on this level"
 msgstr "Der Name '%(name)s' existiert bereits auf dieser Ebene."
 
-#: importer.py:25
+#: importer.py:27
 msgid "No file uploaded"
 msgstr "Keine Datei hochgeladen"
 
-#: importer.py:43
+#: importer.py:45
 #, python-format
 msgid "Import plugin file \"%(name)s\""
 msgstr "Import Plugin-Datei \"%(name)s\""
 
-#: importer.py:145
+#: importer.py:147
 #, python-format
 msgid ""
 "The file contains transactions that cannot be clearly assigned to an "
@@ -82,6 +82,21 @@ msgstr ""
 "\"%(account_name)s\" zugeordnet. Sollte dies nicht korrekt sein, bitte "
 "zuerst das neue Konto anlegen und anschließend die Transaktionen im "
 "Rahmen des Import-Vorgangs manuell dem neuen Konto zuordnen."
+
+#: importer.py:168
+msgid "No suitable import plugin found, that can handle the uploaded file."
+msgstr ""
+"Kein passendes Import-Plugin gefunden, welches die hochgeladene Datei "
+"verarbeiten kann."
+
+#: importer.py:174
+#, python-format
+msgid ""
+"The given file contains an invalid account IBAN value: "
+"%(exception_message)s"
+msgstr ""
+"Die übertragene Datei enthält eine ungültige Konto-IBAN: "
+"%(exception_message)s"
 
 #: ruleset.py:55
 msgid ""
@@ -849,22 +864,22 @@ msgstr "Erstelle Regel"
 msgid "MMMM yyyy"
 msgstr "MMMM yyyy"
 
-#: utils/functions.py:242
+#: utils/functions.py:243
 #, python-format
 msgid "%(half_year)sH %(year)s"
 msgstr "%(half_year)s. Hj. %(year)s"
 
-#: utils/functions.py:244
+#: utils/functions.py:245
 #, python-format
 msgid "Q%(quarter)s/%(year)s"
 msgstr "Q%(quarter)s/%(year)s"
 
-#: utils/functions.py:246
+#: utils/functions.py:247
 #, python-format
 msgid "%(month_name)s %(year)s"
 msgstr "%(month_name)s %(year)s"
 
-#: utils/plugins.py:131
+#: utils/plugins.py:144
 #, python-format
 msgid "The plugin %s has no parse_function implemented or registered"
 msgstr "Das Plugin %s hat keine parse_function implementiert oder registriert."
