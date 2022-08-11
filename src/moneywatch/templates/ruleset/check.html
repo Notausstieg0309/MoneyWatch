@@ -24,9 +24,9 @@
 <div class="row">
  <div class="col l6 s12 offset-l3">
   <form class="row" method="post">
-    {% if transaction is not none %}
+    {% if corresponding_transaction is not none %}
     <div class="rule_add_based_transaction">
-      {{ trans_macro.item(transaction, False) }}
+      {{ trans_macro.item(corresponding_transaction, False) }}
     </div>
    <br>
     {% endif %}

@@ -27,7 +27,7 @@ def add(account_id, rule_type):
 
     account = Account.query.filter_by(id=account_id).one_or_none()
 
-    transaction = None
+    corresponding_transaction = None
 
     if "import_objects" in session and "import_id" in request.args:
         try:
@@ -36,7 +36,7 @@ def add(account_id, rule_type):
             index = None
 
         if index is not None:
-            transaction = session["import_objects"][index]
+            corresponding_transaction = session["import_objects"][index]
     elif "transaction_id" in request.args:
         try:
             index = int(request.args["transaction_id"])
@@ -44,7 +44,7 @@ def add(account_id, rule_type):
             index = None
 
         if index is not None:
-            transaction = Transaction.query.filter_by(id=index).one_or_none()
+            corresponding_transaction = Transaction.query.filter_by(id=index).one_or_none()
 
     if account is None:
         abort(404, "account not found")
@@ -56,7 +56,7 @@ def add(account_id, rule_type):
         return redirect(url_for('ruleset.index', account_id=account.id))
 
     if request.method != 'POST':
-        return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories, transaction=transaction)
+        return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories, corresponding_transaction=corresponding_transaction)
 
     name = request.form['name'].strip()
     pattern = request.form['pattern']
@@ -85,9 +85,9 @@ def add(account_id, rule_type):
         valid_pattern = False
         errors.append(gettext("Invalid search pattern. The given search pattern is not a valid regular expression"))
 
-    if valid_pattern and transaction is not None:
+    if valid_pattern and corresponding_transaction is not None:
         tmp_rule = Rule(account_id=account.id, type=rule_type, pattern=pattern)
-        if not tmp_rule.match_transaction(transaction):
+        if not tmp_rule.match_transaction(corresponding_transaction):
             errors.append(gettext("Entered pattern does not matched the selected transaction you want to create this rule for."))
 
 
@@ -141,9 +141,9 @@ def add(account_id, rule_type):
                 db.session.rollback()
                 flash(gettext('A rule with the same name already exists.'))
                 if request.form.get("check_historical", None) == "on":
-                    return render_template('ruleset/check.html', account=account, rule_type=rule_type, categories=categories, matched_transactions=matched_transactions, selected_transaction_ids=selected_transaction_ids, transaction=transaction)
+                    return render_template('ruleset/check.html', account=account, rule_type=rule_type, categories=categories, matched_transactions=matched_transactions, selected_transaction_ids=selected_transaction_ids, corresponding_transaction=corresponding_transaction)
                 else:
-                    return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories, transaction=transaction)
+                    return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories, corresponding_transaction=corresponding_transaction)
 
             if request.form.get("check_historical", None) == "on" and len(selected_transaction_ids) > 0:
                 new_rule.assign_transaction_ids(selected_transaction_ids)
@@ -151,15 +151,15 @@ def add(account_id, rule_type):
 
             if "import_objects" in session and "import_id" in request.args:
                 return redirect(url_for('import.index', resume=1))
-            elif "transaction_id" in request.args and transaction is not None:
-                return redirect(url_for('transactions.edit', id=transaction.id))
+            elif "transaction_id" in request.args and corresponding_transaction is not None:
+                return redirect(url_for('transactions.edit', id=corresponding_transaction.id))
 
             return redirect(url_for('ruleset.index', account_id=account.id))
 
     if request.form.get("check_historical", None) == "on":
-        return render_template('ruleset/check.html', account=account, rule_type=rule_type, categories=categories, matched_transactions=matched_transactions, selected_transaction_ids=selected_transaction_ids, transaction=transaction)
+        return render_template('ruleset/check.html', account=account, rule_type=rule_type, categories=categories, matched_transactions=matched_transactions, selected_transaction_ids=selected_transaction_ids, corresponding_transaction=corresponding_transaction)
     else:
-        return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories, transaction=transaction)
+        return render_template('ruleset/add.html', account=account, rule_type=rule_type, categories=categories, corresponding_transaction=corresponding_transaction)
 
 
 
