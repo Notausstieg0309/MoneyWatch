@@ -91,12 +91,12 @@ def add(account_id, rule_type):
             errors.append(gettext("Entered pattern does not matched the selected transaction you want to create this rule for."))
 
 
-    if next_due.strip() != "":
+    if next_due is not None and next_due.strip() != "":
         next_due = utils.get_date_from_string(next_due, "%Y-%m-%d")
     else:
         next_due = None
 
-    if next_valuta.strip() == "":
+    if next_valuta is not None and next_valuta.strip() == "":
         next_valuta = None
 
     matched_transactions = []
