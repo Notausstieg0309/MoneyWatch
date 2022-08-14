@@ -351,13 +351,11 @@ div.budget_perc span.value {
 div.account_item {
     margin: 2em 0em 2em 0em ;
     border: 1px solid #aaaaaa;
-    border-radius: 0.5em;
+    border-radius: 5px;
 }
 
 div.account_item  table.account_detail {
-    border-radius: 0.5em;
-    border-collapse: inherit;
-    background-color: white;
+    border-radius: 4px;
 }
 
 /* overrule text color from <a> link */
@@ -378,7 +376,7 @@ div.account_item table.account_detail td.balance {
     font-size: 1.5em;
     background-color: rgba(0,0,0,0.06);
     border-left: 1px solid #aaaaaa;
-    border-radius: 0em 0.5em 0.5em 0em;
+    border-radius: 0px 4px 4px 0px;
 }
 
 div.account_item table.account_detail td.name {
@@ -408,7 +406,7 @@ div.account_item  table.account_detail td.id {
     border-right: 1px solid #aaaaaa;
     white-space:nowrap;
     vertical-align:top;
-    border-radius: 0.5em 0em 0em 0.5em;
+    border-radius: 4px 0px 0px 4px;
 }
 
 
