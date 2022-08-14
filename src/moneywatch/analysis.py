@@ -358,12 +358,12 @@ def data():
                 elif data["subtype"] == "category":
                     return jsonify(getSumByCategory(start_date, end_date, interval, data["category"]))
             else:
-                abort("400", "no subtype specified")
+                abort(400, "no subtype specified")
 
         else:
-            abort("400", "unknown type specified")
+            abort(400, "unknown type specified")
     else:
-        abort("400", "no type specified")
+        abort(400, "no type specified")
 
     return jsonify(data)
 
