@@ -319,10 +319,13 @@ def index():
     return render_template('analysis/index.html', account_list=account_list, oldest=oldest, newest=newest)
 
 
-@bp.route('/analysis/data/', methods=["POST"])
-def data():
+@bp.route('/analysis/json/data/', methods=["POST"])
+def json_data():
 
-    data = request.form
+    data = request.json
+
+    if data is None:
+        return abort(400, "invalid request data received")
 
     current_app.logger.debug("analysis data request with params: %r", dict(data))
 

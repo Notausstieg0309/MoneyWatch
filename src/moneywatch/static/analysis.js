@@ -567,8 +567,9 @@ $(function () {
                 url: $(this).data("submit-url"),
                 async: true,
                 dataType: 'json',
-                type: "post",
-                data: params
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(params)
             }).done(function (res) {
 
                 var data = generateAnalysisChartData(res);
