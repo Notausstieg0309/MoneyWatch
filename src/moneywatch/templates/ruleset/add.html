@@ -67,11 +67,11 @@
     </div>
     <div id="regular_form_fields" class="row" style="display:none;">
       <div class="input-field col s6">
-        <input name="next_date" id="next_date" type="date" value="{% if not request.form['next_date'] and transaction is not none %}{{ transaction.date.strftime('%Y-%m-%d') }}{% else %}{{ request.form['next_date'] }}{% endif %}">
+        <input name="next_date" id="next_date" type="date" value="{% if not request.form['next_date'] and corresponding_transaction is not none %}{{ corresponding_transaction.date.strftime('%Y-%m-%d') }}{% else %}{{ request.form['next_date'] }}{% endif %}">
         <label for="next_date">{% trans %}Next Due{% endtrans %}</label>
       </div>
       <div class="input-field col s6">
-        <input name="next_valuta" type="number" step="0.01" id="next_valuta" value="{% if not request.form['next_valuta'] and transaction is not none %}{{ transaction.valuta }}{% else %}{{ request.form['next_valuta'] }}{% endif %}">
+        <input name="next_valuta" type="number" step="0.01" id="next_valuta" value="{% if not request.form['next_valuta'] and corresponding_transaction is not none %}{{ corresponding_transaction.valuta }}{% else %}{{ request.form['next_valuta'] }}{% endif %}">
         <label for="next_valuta">{% trans %}Amount{% endtrans %}</label>
       </div>
     </div>
