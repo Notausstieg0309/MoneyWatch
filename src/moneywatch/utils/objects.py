@@ -1,4 +1,5 @@
 from typing import Mapping, Optional, Any, List, Union
+from typing_extensions import Literal
 
 import moneywatch.utils.functions as utils
 import datetime
@@ -682,7 +683,7 @@ class Transaction(db.Model):
     account = db.relationship("Account", back_populates="_transactions")
 
     @hybrid_property
-    def type(self) -> str:   # type: ignore
+    def type(self) -> Literal["in", "out", "message"]:  # type: ignore
         if self.valuta > 0:
             return "in"
         elif self.valuta < 0:
